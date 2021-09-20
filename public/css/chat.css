@@ -1,0 +1,174 @@
+.filepond--item {
+    width: calc(30% - 0.5em);
+}
+
+.filepond--file-status-sub {
+    font-size: 12px;
+}
+
+.filepond--root {
+    max-height: 200px;
+    margin-top: -76px;
+    margin-bottom: 10px;
+}
+
+.filepond--drop-label {
+    visibility: hidden;
+}
+
+.chat p {
+    font-family: "Futura PT Light", serif;
+    color: #1c1c16;
+    font-size: 24px;
+    line-height: 30px;
+    margin: 0;
+    display: inline-block;
+}
+
+.filepond--browser.filepond--browser {
+    visibility: hidden;
+}
+
+textarea, .editable_div {
+    font-family: "Futura PT Light", serif;
+    padding: 10px;
+    font-size: 20px;
+    border-radius: 5px;
+    border: 1px #6dc4b1 solid;
+}
+
+.filepond--list.filepond--list {
+    margin-top: 10px;
+    border-top: 1px #b2b2b2 solid;
+}
+
+
+.chat {
+    width: 90%;
+    max-width: 850px;
+}
+
+button:focus-visible, button:focus {
+    outline: 0 !important;
+}
+
+.chat .container {
+    margin: 0;
+    width: 100%;
+    max-width: 1000px;
+    flex-direction: column;
+    z-index: 9;
+    display: flex;
+    padding: 0 !important;
+    background: #FFFFFF;
+    box-shadow: 0 0 10px 1px rgb(0 0 0 / 11%);
+    border-radius: 15px;
+    transition: all .1s;
+}
+
+.tooltip {
+    opacity: 1;
+    position: relative;
+}
+
+.chat .container .message {
+    margin-bottom: 15px;
+    width: fit-content;
+}
+
+.chat .container .messages {
+    height: 500px;
+    padding: 10px 30px 30px 30px;
+    overflow: auto;
+    position: relative;
+    z-index: 9;
+}
+
+.message-wrap {
+    padding: 10px 20px;
+    color: #fff !important;
+    border-radius: 15px;
+    overflow-wrap: anywhere;
+}
+
+.message-wrap p {
+    color: #fff !important;
+    font-size: 20px;
+}
+
+.input-block {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    border-radius: 0 0 15px 15px;
+    position: relative;
+}
+
+.input-block textarea {
+    width: 100%;
+    height: 75px;
+    border-radius: 0 0 0 15px;
+    resize: none;
+}
+
+.send_message {
+    height: 75px;
+    background: #fff;
+    border: 1px #6dc4b1 solid;
+    border-left: none;
+    font-family: "Futura PT Book", serif;
+    font-size: 18px;
+    color: #115747;
+    /*position: absolute;*/
+    /*right:0;*/
+    border-radius: 0 0 15px 0;
+}
+
+
+.send-wrap button {
+    height: 60px;
+    display: flex;
+    align-items: flex-end;
+    padding-right: 10px;
+    padding-bottom: 5px;
+    border: 1px #6dc4b1 solid;
+    border-radius: 0 10px 10px 0;
+    border-left: none;
+    background: none;
+}
+
+.send-wrap button button svg {
+    fill: #6dc4b1;
+    opacity: .7;
+    transition: all .3s;
+    width: 22px;
+}
+
+.send-wrap button svg {
+    fill: #6dc4b1;
+    width: 22px;
+    opacity: 0.7;
+    transition: all .1s;
+}
+
+.send-wrap button svg:hover {
+    opacity: 1;
+    transition: all .3s;
+    cursor: pointer;
+}
+
+.attach_icon {
+    width: 13px;
+    position: absolute;
+    top: 6px;
+    transform: rotate(24deg);
+    fill: #6dc4b1;
+    opacity: 0.7;
+    transition: all .1s;
+}
+
+.attach_icon:hover {
+    opacity: 1;
+    transition: all .1s;
+    cursor: pointer;
+}

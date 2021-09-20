@@ -1,0 +1,141 @@
+.no-books-yet {
+    max-width: 1000px;
+
+}
+
+.no-books-yet h1 {
+    font-size: 33px;
+    color: #c5c5c5;
+    margin-top: 0;
+}
+
+.book-links {
+    display: flex;
+    width:100%;
+}
+.my-collections, .my-own-books {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.my-collections .container, .my-own-books .container {
+    width: 650px;
+    padding: 15px;
+    margin: 0 20px 20px 0;
+}
+
+.my-own-books .container {
+    width: auto;
+}
+
+.my-own-books .img-wrap {
+    width: auto;
+    padding-left: 10px;
+    align-items: flex-start !important;
+}
+
+.my-own-books .img-wrap img {
+ margin-right: 0 !important;
+}
+
+.img-wrap {
+    width: 25%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.img-wrap img {
+    width: 80%;
+}
+
+.right-wrap {
+    padding-left: 20px;
+}
+
+.right-wrap h3 {
+    font-size: 27px;
+    padding-bottom: 10px;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    margin: 10px 0;
+}
+
+.info p {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.create_book_wrap h2 {
+    font-size: 30px;
+}
+
+.create_book_wrap .participation-inputs-row {
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+
+.create_book_wrap .input-file {
+    font-size: 19px;
+}
+
+.create_book_wrap form .check-block {
+    margin:0;
+}
+
+.create_book_wrap .input-group {
+    margin-bottom: 0;
+}
+
+.create_book_wrap .participation-inputs {
+    padding:0;
+}
+
+.ob-applic-block {
+    padding: 10px 20px 10px 20px;
+    border-bottom: 1px #ebebeb solid;
+}
+
+.create_book_wrap {
+    min-width: 1100px;
+    max-width: 1100px;
+}
+
+#check_needed input {
+    margin-left: 10px !important;
+    margin-right: 15px;
+    margin-top: 0;
+}
+
+.promo-needed div {
+    display: flex;
+}
+
+.prices {
+    text-align: center;
+}
+
+
+.create_book_wrap .participation-price-desc {
+    margin-top: 5px;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.create_book_wrap .participation-outputs {
+    padding: 10px 10px;
+    justify-content: space-between;
+}
+
+
+.create_book_wrap .participation-outputs h2 {
+    font-size: 45px;
+    letter-spacing: 3px;
+}
+
