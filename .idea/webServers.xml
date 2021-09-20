@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="9cb6ae60-fdae-4c38-8361-a5906105051d" name="my_server" url="http://127.0.0.1:8000/myaccount/work/create_from_doc">
+        <fileTransfer mountedRoot="C:\OpenServer\domains\bookfirst" accessType="MOUNT" port="0" />
+      </webServer>
+    </option>
+  </component>
+</project>

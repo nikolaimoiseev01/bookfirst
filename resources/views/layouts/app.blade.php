@@ -1,0 +1,581 @@
+@if(!Request::ajax())
+    <!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="/js/jquery.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    {{--    <script>--}}
+    {{--        $(window).on('load', function() {--}}
+    {{--            $('.preloader-wrap').addClass('completed')--}}
+    {{--        })--}}
+    {{--    </script>--}}
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="/css/books-index.css">
+    <link rel="stylesheet" href="/css/participation-index.css">
+    <link rel="stylesheet" href="/css/create-participation.css">
+    <link rel="stylesheet" href="/plugins/filepond/filepond.css">
+    <link rel="stylesheet" href="{{ asset('css/portal-media.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/app-media.css') }}">
+    @yield('page-style')
+    <title>@yield('page-tab-title')</title>
+    <script src="https://kit.fontawesome.com/f0b80ff062.js" crossorigin="anonymous"></script>
+
+</head>
+<body>
+<div class="navbar">
+    <div class="menu">
+        <a class="menu-link" id="home" href="/">Главная</a>
+        <a class="menu-link" href="{{route('old_collections')}}">Сборники</a>
+        <a class="menu-link" href="/own_books">Книги авторов</a>
+        <a class="menu-link" href="/about">О нас</a>
+        <a class="menu-link" href="/#reviews-block">Отзывы</a>
+        <div class="account">
+            @guest
+                @if (Route::has('register'))
+                    <a id="a_modal_login" href="/login" class="menu-link">
+                        <svg id="Слой_1" data-name="Слой 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                            <path
+                                d="M512,256C512,114.51,397.5,0,256,0S0,114.5,0,256C0,396.23,113.54,512,256,512,397.88,512,512,396.88,512,256ZM256,30c124.62,0,226,101.38,226,226a225,225,0,0,1-38.7,126.52c-101-108.61-273.44-108.81-374.6,0A225,225,0,0,1,30,256C30,131.38,131.38,30,256,30ZM87.41,406.5c89.78-100.7,247.43-100.67,337.17,0C334.51,507.27,177.53,507.3,87.41,406.5Z"/>
+                            <path
+                                d="M256,271a90.1,90.1,0,0,0,90-90V151a90,90,0,0,0-180,0v30A90.1,90.1,0,0,0,256,271ZM196,151a60,60,0,0,1,120,0v30a60,60,0,0,1-120,0Z"/>
+                        </svg>
+                        {{ __('Войти') }}
+                    </a>
+                @endif
+            @else
+                <a class="menu-link" href="/myaccount/collections">
+                    <div class="not-bell">
+                        <svg id="Слой_1" data-name="Слой 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                            <path
+                                d="M512,256C512,114.51,397.5,0,256,0S0,114.5,0,256C0,396.23,113.54,512,256,512,397.88,512,512,396.88,512,256ZM256,30c124.62,0,226,101.38,226,226a225,225,0,0,1-38.7,126.52c-101-108.61-273.44-108.81-374.6,0A225,225,0,0,1,30,256C30,131.38,131.38,30,256,30ZM87.41,406.5c89.78-100.7,247.43-100.67,337.17,0C334.51,507.27,177.53,507.3,87.41,406.5Z"/>
+                            <path
+                                d="M256,271a90.1,90.1,0,0,0,90-90V151a90,90,0,0,0-180,0v30A90.1,90.1,0,0,0,256,271ZM196,151a60,60,0,0,1,120,0v30a60,60,0,0,1-120,0Z"/>
+                        </svg>
+                        @if (count($notifications) > 0)
+                            <span>{{count($notifications)}}</span>
+                        @endif
+                    </div>
+
+                    Мой кабинет
+                </a>
+            @endguest
+        </div>
+
+        <div style="display: none" class="account account-mobile">
+            @guest
+                @if (Route::has('register'))
+                    <a id="a_modal_login" href="/login" class="menu-link">
+                        <svg id="Слой_1" data-name="Слой 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                            <path
+                                d="M512,256C512,114.51,397.5,0,256,0S0,114.5,0,256C0,396.23,113.54,512,256,512,397.88,512,512,396.88,512,256ZM256,30c124.62,0,226,101.38,226,226a225,225,0,0,1-38.7,126.52c-101-108.61-273.44-108.81-374.6,0A225,225,0,0,1,30,256C30,131.38,131.38,30,256,30ZM87.41,406.5c89.78-100.7,247.43-100.67,337.17,0C334.51,507.27,177.53,507.3,87.41,406.5Z"/>
+                            <path
+                                d="M256,271a90.1,90.1,0,0,0,90-90V151a90,90,0,0,0-180,0v30A90.1,90.1,0,0,0,256,271ZM196,151a60,60,0,0,1,120,0v30a60,60,0,0,1-120,0Z"/>
+                        </svg>
+                        {{ __('Войти') }}
+                    </a>
+                @endif
+            @else
+                <a class="menu-link" href="/myaccount/collections">
+                    <div class="not-bell">
+                        <svg id="Слой_1" data-name="Слой 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                            <path
+                                d="M512,256C512,114.51,397.5,0,256,0S0,114.5,0,256C0,396.23,113.54,512,256,512,397.88,512,512,396.88,512,256ZM256,30c124.62,0,226,101.38,226,226a225,225,0,0,1-38.7,126.52c-101-108.61-273.44-108.81-374.6,0A225,225,0,0,1,30,256C30,131.38,131.38,30,256,30ZM87.41,406.5c89.78-100.7,247.43-100.67,337.17,0C334.51,507.27,177.53,507.3,87.41,406.5Z"/>
+                            <path
+                                d="M256,271a90.1,90.1,0,0,0,90-90V151a90,90,0,0,0-180,0v30A90.1,90.1,0,0,0,256,271ZM196,151a60,60,0,0,1,120,0v30a60,60,0,0,1-120,0Z"/>
+                        </svg>
+                        @if (count($notifications) > 0)
+                            <span>{{count($notifications)}}</span>
+                        @endif
+                    </div>
+                </a>
+            @endguest
+        </div>
+    </div>
+    <div class="hamburger-menu">
+        <input id="menu__toggle" type="checkbox" />
+        <label class="menu__btn" for="menu__toggle">
+            <span></span>
+        </label>
+
+        <ul class="menu__box">
+            <li><a class="menu__item" id="home_mobile" href="/">Главная</a></li>
+            <li><a class="menu__item" href="#">Сборники</a></li>
+            <li><a class="menu__item" href="/own_books">Книги авторов</a></li>
+            <li><a class="menu__item" href="#">О нас</a></li>
+            <li><a class="menu__item" href="/#reviews-block">Отзывы</a></li>
+
+        </ul>
+    </div>
+</div>
+
+<aside class="side-bar">
+    <div class="side-menu">
+        <a href="{{route('collections')}}" class="nav-item">
+            <svg id="Capa_1" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 412.72 296.11">
+                <path
+                    d="M404.72,82.94h-27.2V73.66a8,8,0,0,0-5.76-8,225.91,225.91,0,0,0-57.68-7.36c-32,0-75.6,7.2-107.84,40-32-33.12-75.92-40-107.84-40a225.91,225.91,0,0,0-57.68,7.36,8,8,0,0,0-5.76,8v9.2H8a8,8,0,0,0-8,8V346.38a8,8,0,0,0,11.92,7c.8-.4,80.8-44.16,192.48-16h1.92a7.71,7.71,0,0,0,1.92,0c112-28.4,192,15.28,192.48,16a8,8,0,0,0,12-6.88V90.94A8,8,0,0,0,404.72,82.94ZM16,333.66V98.94H35.12V299.58A8,8,0,0,0,43,307.67a7,7,0,0,0,1.29-.09,351.71,351.71,0,0,1,50-4,207.69,207.69,0,0,1,68.32,10.32A294.27,294.27,0,0,0,16,333.66Zm78.32-46a353.83,353.83,0,0,0-43.52,2.8V80A220.72,220.72,0,0,1,98.24,74.7c29.92,0,71.2,6.88,99.84,39.2l.24,199.28C181.68,302.3,149.2,287.66,94.32,287.66Zm120-173.76c28.64-32,69.92-39.2,99.84-39.2A222,222,0,0,1,361.6,80V290.46a351.87,351.87,0,0,0-43.28-2.88c-54.56,0-87.12,14.64-104,25.52ZM396.64,333.66a294.26,294.26,0,0,0-147-19.76,208,208,0,0,1,68.64-10.32,351.71,351.71,0,0,1,50.32,3.92,8,8,0,0,0,9.11-6.71,6.88,6.88,0,0,0,.09-1.29V98.94H397Z"
+                    transform="translate(0 -58.3)"/>
+            </svg>
+            <div class="app_menu_text">Мои сборники</div>
+        </a>
+        <a href="{{route('own_books')}}" class="nav-item">
+            <svg id="Capa_1" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 412.72 296.11">
+                <path
+                    d="M404.72,82.94h-27.2V73.66a8,8,0,0,0-5.76-8,225.91,225.91,0,0,0-57.68-7.36c-32,0-75.6,7.2-107.84,40-32-33.12-75.92-40-107.84-40a225.91,225.91,0,0,0-57.68,7.36,8,8,0,0,0-5.76,8v9.2H8a8,8,0,0,0-8,8V346.38a8,8,0,0,0,11.92,7c.8-.4,80.8-44.16,192.48-16h1.92a7.71,7.71,0,0,0,1.92,0c112-28.4,192,15.28,192.48,16a8,8,0,0,0,12-6.88V90.94A8,8,0,0,0,404.72,82.94ZM16,333.66V98.94H35.12V299.58A8,8,0,0,0,43,307.67a7,7,0,0,0,1.29-.09,351.71,351.71,0,0,1,50-4,207.69,207.69,0,0,1,68.32,10.32A294.27,294.27,0,0,0,16,333.66Zm78.32-46a353.83,353.83,0,0,0-43.52,2.8V80A220.72,220.72,0,0,1,98.24,74.7c29.92,0,71.2,6.88,99.84,39.2l.24,199.28C181.68,302.3,149.2,287.66,94.32,287.66Zm120-173.76c28.64-32,69.92-39.2,99.84-39.2A222,222,0,0,1,361.6,80V290.46a351.87,351.87,0,0,0-43.28-2.88c-54.56,0-87.12,14.64-104,25.52ZM396.64,333.66a294.26,294.26,0,0,0-147-19.76,208,208,0,0,1,68.64-10.32,351.71,351.71,0,0,1,50.32,3.92,8,8,0,0,0,9.11-6.71,6.88,6.88,0,0,0,.09-1.29V98.94H397Z"
+                    transform="translate(0 -58.3)"/>
+            </svg>
+            <div class="app_menu_text">Собственные книги</div>
+        </a>
+        <a href="{{route('work.index')}}" class="nav-item">
+            <svg id="Слой_1" data-name="Слой 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 474 474">
+                <path
+                    d="M487.75,19.3a7,7,0,0,0-8.06,3.7c-.64,1.31-16.47,32.45-85.84,69.08a7,7,0,0,0-4,4.57,262.83,262.83,0,0,1-17.55,47.13,96.52,96.52,0,0,1-8.05-27.68,7,7,0,0,0-7.93-5.93,6.71,6.71,0,0,0-1.75.49c-18.33,7.81-38.29,15.25-59.31,22.1a431.64,431.64,0,0,0-80.28,35,7,7,0,0,0-3.14,3.81q-4.74,13.92-10.25,26.3.24-4.12.61-8.78a7,7,0,0,0-11-6.33C120.17,232,81.42,301.51,69.38,401.24A349.78,349.78,0,0,0,21.67,464a19.48,19.48,0,0,0,5.93,26.05,18.89,18.89,0,0,0,10.22,3h320a7,7,0,0,0,0-14H57.06a321.64,321.64,0,0,1,42.42-54.32c69-3.39,229-17.32,291.9-74.18a174.52,174.52,0,0,0,13-13.09A7,7,0,0,0,400.61,326c-1.5-.31-3-.64-4.46-1,5-.71,10.57-1.37,16.73-1.93a7,7,0,0,0,5.14-3c51.12-74.17,65.83-131.8,75-293.6a7,7,0,0,0-5.22-7.16Zm-454,451.77c43.6-74.8,124.28-131.64,209.7-191.81,17.87-12.59,38.14-26.86,57.57-41.13a5,5,0,0,1,3-1,5.29,5.29,0,0,1,.8.06,4.93,4.93,0,0,1,3.25,2,5,5,0,0,1-1.07,7c-19.51,14.29-39.84,28.61-57.78,41.24C164.55,347.07,84.59,403.4,42.1,476.6a5,5,0,0,1-6.77,1.81l-.23-.14a5.43,5.43,0,0,1-1.34-7.2ZM408.33,309.43a250.92,250.92,0,0,0-43.87,7.6,7,7,0,0,0-.33,13.29c6.74,2.4,13.92,4.59,21.45,6.52-1.2,1.14-2.38,2.26-3.6,3.34-56,50.68-202,65.54-267.75,69.72,40.45-38.73,90.84-74.24,143-111,18-12.67,38.36-27,58-41.4a19,19,0,0,0-22.38-30.71l-.11.08c-19.34,14.18-39.54,28.4-57.36,41C181.06,306.1,128.62,343.05,85.92,384.36c13-80.08,45.63-138.45,101.47-181.44a198.13,198.13,0,0,0,.32,24.49,7,7,0,0,0,13,2.89,283.76,283.76,0,0,0,23.6-51.7,420.44,420.44,0,0,1,75.39-32.52c18.36-6,35.93-12.43,52.37-19.16,5.08,23.32,14.9,35.1,15.37,35.64a7,7,0,0,0,11.42-1.08,263.33,263.33,0,0,0,23.77-58.19c39.38-21.07,62.22-40.65,75-54.44-9,139.29-23.87,193.85-69.28,260.58Z"
+                    transform="translate(-18.98 -19.08)"/>
+                <path
+                    d="M449.07,160.16a7,7,0,0,0-8.13,5.63v0c-1.91,10.61-4,20.29-6.35,29.6a7,7,0,0,0,5.07,8.5,6.64,6.64,0,0,0,1.72.21,7,7,0,0,0,6.78-5.28c2.44-9.6,4.59-19.6,6.56-30.54A7,7,0,0,0,449.07,160.16Z"
+                    transform="translate(-18.98 -19.08)"/>
+            </svg>
+            <div class="app_menu_text">Произведения</div>
+        </a>
+{{--        <a href="{{route('myawards')}}" class="nav-item">--}}
+{{--            <svg id="fix_1" data-name="fix 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 426.05 512">--}}
+{{--                <path--}}
+{{--                    d="M256,298.67c-82.33,0-149.33-67-149.33-149.34S173.67,0,256,0,405.33,67,405.33,149.33,338.33,298.67,256,298.67Zm0-277.34a128,128,0,1,0,128,128A128.14,128.14,0,0,0,256,21.33Z"--}}
+{{--                    transform="translate(-42.34)"/>--}}
+{{--                <path--}}
+{{--                    d="M302.14,234.67a10.81,10.81,0,0,1-5.16-1.33l-41-22.65-41,22.65a10.65,10.65,0,0,1-15.68-11.05l7.93-48.72-33.55-34.41a10.65,10.65,0,0,1,6-18l46-7,20.67-44c3.5-7.51,15.78-7.51,19.28,0l20.67,44,46,7a10.65,10.65,0,0,1,6,18l-33.55,34.41,7.93,48.72a10.64,10.64,0,0,1-10.52,12.38ZM256,187.84a10.85,10.85,0,0,1,5.16,1.32l26.93,14.89-5.27-32.36a10.62,10.62,0,0,1,2.9-9.17l22.82-23.41-31.06-4.75a10.54,10.54,0,0,1-8-6L256,99.78l-13.44,28.58a10.61,10.61,0,0,1-8,6l-31.06,4.73,22.82,23.41a10.66,10.66,0,0,1,2.9,9.17l-5.27,32.36,26.93-14.89a10.85,10.85,0,0,1,5.16-1.32Z"--}}
+{{--                    transform="translate(-42.34)"/>--}}
+{{--                <path--}}
+{{--                    d="M163.73,512h-.36a10.63,10.63,0,0,1-9.22-5.95l-30.76-62.51L53.7,448A11,11,0,0,1,44,443a10.6,10.6,0,0,1-.15-11L151.32,245.63a10.67,10.67,0,1,1,18.47,10.67L72.23,425.43l56.92-3.63a10.77,10.77,0,0,1,10.24,5.93l25.09,51,81.54-141a10.67,10.67,0,1,1,18.47,10.68L173,506.69a10.7,10.7,0,0,1-9.24,5.31Z"--}}
+{{--                    transform="translate(-42.34)"/>--}}
+{{--                <path--}}
+{{--                    d="M346.77,512a10.66,10.66,0,0,1-9.23-5.33L212.89,289.86a10.66,10.66,0,1,1,18.53-10.54l33.11,58.43,81.52,141,25.32-51.09a10.94,10.94,0,0,1,10.24-5.91l56.92,3.63-97.26-168.6a10.69,10.69,0,0,1,18.52-10.67L467,432a10.65,10.65,0,0,1-.2,11,10.84,10.84,0,0,1-9.75,5l-69.71-4.46-31,62.55a10.68,10.68,0,0,1-9.24,5.91A.56.56,0,0,1,346.77,512Z"--}}
+{{--                    transform="translate(-42.34)"/>--}}
+{{--            </svg>--}}
+{{--            Мои награды--}}
+{{--        </a>--}}
+        <a href="{{route('mynotifications')}}" class="nav-item">
+            <svg id="Capa_1" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 461.5 512">
+                <path
+                    d="M256,0a68.19,68.19,0,0,0-68.11,68.11V88.66h35.23V68.11a32.89,32.89,0,0,1,65.77,0V88.66h35.23V68.11A68.2,68.2,0,0,0,256,0Z"
+                    transform="translate(-25.25)"/>
+                <path
+                    d="M304.15,429.2a47.62,47.62,0,0,1-47.56,47.57h-1.18a47.62,47.62,0,0,1-47.56-47.57H172.62A82.89,82.89,0,0,0,255.41,512h1.18a82.88,82.88,0,0,0,82.79-82.79H304.15Z"
+                    transform="translate(-25.25)"/>
+                <path
+                    d="M484,422.62l-50-77.85V244.84c0-99.07-79.81-179.67-177.91-179.67S78.09,145.77,78.09,244.84v99.93l-50,77.85a17.61,17.61,0,0,0,14.81,27.14H469.14A17.62,17.62,0,0,0,484,422.62ZM75.13,414.53l35.39-55.06a17.59,17.59,0,0,0,2.8-9.52V244.84c0-79.64,64-144.44,142.68-144.44s142.68,64.8,142.68,144.44V350a17.59,17.59,0,0,0,2.8,9.52l35.39,55.06Z"
+                    transform="translate(-25.25)"/>
+            </svg>
+            <div class="app_menu_text">Оповещения</div>
+            @if (count($notifications) > 0)
+                <span>{{count($notifications)}}</span>
+            @endif
+        </a>
+
+        <a href="{{route('all_chats')}}" class="nav-item">
+            <svg id="Capa_1" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                <path
+                    d="M468.53,306.58a20,20,0,1,0-37.08,15L455,379.83,385,349a20,20,0,0,0-15.91-.09A192.87,192.87,0,0,1,293,364.27c-107.07,0-179-83.83-179-162.13C114,112.73,194.3,40,293,40s179,72.73,179,162.14a163.3,163.3,0,0,1-1.78,22.91,20,20,0,0,0,39.56,5.9A201.92,201.92,0,0,0,512,202.14c0-54.33-23-105.31-64.78-143.55C405.94,20.81,351.17,0,293,0S180.07,20.81,138.78,58.59c-37.33,34.17-59.66,78.52-64,126.34C27.84,216,0,265.85,0,319.52a155.16,155.16,0,0,0,30.67,92.72L1.46,484.5a20,20,0,0,0,26.61,25.8l84.23-37.13A190.26,190.26,0,0,0,179,485.05c.5,0,1,0,1.48-.07a189.35,189.35,0,0,0,94.1-25.51,172.08,172.08,0,0,0,60.5-58.92A230.07,230.07,0,0,0,376.63,389l107.3,47.3a20,20,0,0,0,26.61-25.8ZM179,445c-.27,0-.54,0-.81,0a149.92,149.92,0,0,1-58.43-12,20,20,0,0,0-15.92.1L57,453.83l15.11-37.37A20,20,0,0,0,68.79,396C50,373.89,40,347.45,40,319.52c0-32,13.45-62.24,37-85.2,7.32,39.92,28,78.12,59.16,108.12,38.79,37.33,90.1,59,145.51,61.56C255.63,429.61,218.4,445,179,445Z"
+                    transform="translate(0 0)"/>
+                <circle cx="292" cy="203" r="20"/>
+                <circle cx="372" cy="203" r="20"/>
+                <circle cx="212" cy="203" r="20"/>
+            </svg>
+            <div class="app_menu_text">Мои вопросы</div>
+        </a>
+
+        <a href="{{route('mysettings')}}" class="nav-item">
+            <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                <path
+                    d="M272.07,512H239.93a47.18,47.18,0,0,1-47.13-47.13V454a206.71,206.71,0,0,1-32.1-13.33l-7.7,7.71a47.14,47.14,0,0,1-66.67,0L63.62,425.66a47.12,47.12,0,0,1,0-66.66l7.7-7.7A206.71,206.71,0,0,1,58,319.2H47.13A47.19,47.19,0,0,1,0,272.07V239.93A47.19,47.19,0,0,1,47.13,192.8H58a207.69,207.69,0,0,1,13.33-32.1L63.62,153a47.13,47.13,0,0,1,0-66.66L86.34,63.62a47.14,47.14,0,0,1,66.67,0l7.69,7.7A206.71,206.71,0,0,1,192.8,58V47.13A47.18,47.18,0,0,1,239.93,0h32.14A47.18,47.18,0,0,1,319.2,47.13V58a206.71,206.71,0,0,1,32.1,13.33l7.7-7.71a47.14,47.14,0,0,1,66.67,0l22.71,22.71a47.13,47.13,0,0,1,0,66.67l-7.7,7.69A207.69,207.69,0,0,1,454,192.8h10.87A47.18,47.18,0,0,1,512,239.93v32.14a47.18,47.18,0,0,1-47.13,47.13H454a207.69,207.69,0,0,1-13.33,32.1l7.71,7.7a47.14,47.14,0,0,1,0,66.67l-22.71,22.71a47.13,47.13,0,0,1-66.67,0l-7.69-7.69A207.65,207.65,0,0,1,319.2,454v10.87A47.18,47.18,0,0,1,272.07,512ZM165.72,409.17a176.67,176.67,0,0,0,45.83,19,15,15,0,0,1,11.25,14.53v22.15A17.16,17.16,0,0,0,239.93,482h32.14a17.16,17.16,0,0,0,17.13-17.13V442.72a15,15,0,0,1,11.25-14.53,176.67,176.67,0,0,0,45.83-19,15,15,0,0,1,18.25,2.3l15.69,15.69a17.11,17.11,0,0,0,24.22,0l22.73-22.73a17.12,17.12,0,0,0,0-24.22l-15.69-15.7a15,15,0,0,1-2.31-18.24,176.36,176.36,0,0,0,19-45.83,15,15,0,0,1,14.52-11.25h22.15A17.16,17.16,0,0,0,482,272.07V239.93a17.16,17.16,0,0,0-17.13-17.13H442.72a15,15,0,0,1-14.52-11.25,176.7,176.7,0,0,0-19-45.83,15,15,0,0,1,2.31-18.24l15.69-15.69a17.13,17.13,0,0,0,0-24.23L404.45,84.84a17.13,17.13,0,0,0-24.23,0l-15.69,15.7a15,15,0,0,1-18.24,2.3,176.88,176.88,0,0,0-45.84-19A15,15,0,0,1,289.2,69.28V47.13A17.16,17.16,0,0,0,272.07,30H239.93A17.16,17.16,0,0,0,222.8,47.13V69.28A15,15,0,0,1,211.55,83.8a177,177,0,0,0-45.83,19,15,15,0,0,1-18.25-2.31L131.79,84.84a17.13,17.13,0,0,0-24.23,0L84.84,107.55a17.13,17.13,0,0,0,0,24.23l15.69,15.69a15,15,0,0,1,2.31,18.25,176.67,176.67,0,0,0-19,45.83A15,15,0,0,1,69.28,222.8H47.13A17.16,17.16,0,0,0,30,239.93v32.14A17.16,17.16,0,0,0,47.13,289.2H69.28A15,15,0,0,1,83.8,300.45a177,177,0,0,0,19,45.83,15,15,0,0,1-2.31,18.24L84.83,380.21a17.13,17.13,0,0,0,0,24.23l22.72,22.72a17.13,17.13,0,0,0,24.23,0l15.69-15.7a15.09,15.09,0,0,1,18.25-2.3Z"
+                    transform="translate(0 0)"/>
+                <path
+                    d="M256,367.4A111.4,111.4,0,1,1,367.4,256,111.52,111.52,0,0,1,256,367.4Zm0-192.8A81.4,81.4,0,1,0,337.4,256,81.5,81.5,0,0,0,256,174.6Z"
+                    transform="translate(0 0)"/>
+            </svg>
+            <div class="app_menu_text">Мои настройки</div>
+        </a>
+    </div>
+</aside>
+
+<div class="account-content">
+    <!-- preloader -->
+    <div class="app-preloader book-preloader-wrap">
+        <div class="book-preloader">
+            <div class="inner">
+                <div class="left"></div>
+                <div class="middle"></div>
+                <div class="right"></div>
+            </div>
+            <ul>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+        </div>
+    </div>
+    <!-- preloader -->
+    @yield('page-title')
+
+    @yield('content')
+
+</div>
+
+<div class="footer">
+    <img src="/img/man.svg" class="footer-man" alt="">
+    <div class="footer-content">
+        <div class="footer-company-info">
+            Независимое издательство<br>
+            “Первая Книга”.<br>
+            ©2016-2021 Budapest/Москва
+        </div>
+
+        <div class="footer-socials">
+            <div class="footer-socials-title">
+                Мы в соц. сетях:
+            </div>
+            <div class="footer-socials-icons">
+                <a href="https://vk.com/yourfirstbook" target="_blank">
+                    <svg id="regular" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.01 320">
+                        <path
+                            d="M259.09,416c74.07,0,47.66-46.89,53.38-60.37-.09-10.07-.17-19.76.17-25.65,4.69,1.33,15.77,6.94,38.63,29.17C386.58,394.77,395.61,416,424.13,416h52.5c16.64,0,25.3-6.89,29.63-12.67,4.18-5.59,8.28-15.4,3.8-30.68-11.71-36.78-80-100.29-84.27-107,.64-1.23,1.67-2.88,2.2-3.73h0c13.48-17.81,64.94-94.91,72.51-125.76a.43.43,0,0,0,0-.17c4.1-14.08.34-23.21-3.54-28.37C491.11,99.9,481.81,96,469.25,96h-52.5c-17.58,0-30.92,8.85-37.66,25-11.28,28.7-43,87.7-66.75,108.59-.72-29.59-.23-52.18.15-69,.77-32.75,3.24-64.62-30.74-64.62H199.23c-21.29,0-41.66,23.25-19.6,50.86,19.28,24.19,6.93,37.67,11.09,104.79-16.21-17.39-45.06-64.34-65.45-124.35C119.55,111.06,110.89,96,86.51,96H34c-21.3,0-34,11.61-34,31C0,170.71,96.62,416,259.09,416ZM86.51,128c4.63,0,5.1,0,8.53,9.75,20.89,61.5,67.73,152.51,102,152.51,25.71,0,25.71-26.34,25.71-36.26l0-79c-1.41-26.13-10.93-39.15-17.18-47l74.84.09c0,.36-.43,87.36.21,108.43,0,29.93,23.77,47.09,60.87,9.54,39.15-44.18,66.22-110.23,67.31-112.92,1.6-3.84,3-5.14,8-5.14h52.71c0,.06,0,.13,0,.19-4.8,22.4-52.18,93.78-68,116-.26.34-.49.7-.73,1.07-7,11.39-12.65,24,1,41.68h0c1.24,1.49,4.46,5,9.15,9.86,14.6,15.06,64.64,66.56,69.08,87-2.94.47-6.14.12-55.74.23-10.56,0-18.82-15.79-50.33-47.57-28.33-27.56-46.72-38.83-63.46-38.83-32.52,0-30.15,26.39-29.85,58.31.11,34.6-.11,23.65.13,25.83-1.9.75-7.34,2.24-21.53,2.24C123.73,384,35.58,169.15,32.19,128.09c1.18-.11,17.32-.05,54.32-.07Z"
+                            transform="translate(0 -96)"/>
+                    </svg>
+                </a>
+                <a href="https://www.instagram.com/pervayakniga/" target="_blank">
+                    <svg id="Слой_1" data-name="Слой 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 510.9 511">
+                        <path
+                            d="M510.5,150.24c-1.2-27.16-5.59-45.82-11.88-62a130.86,130.86,0,0,0-74.77-74.76C407.58,7.19,389,2.8,361.86,1.6,334.51.3,325.83,0,256.45,0S178.39.3,151.13,1.5s-45.81,5.59-62,11.87A124.84,124.84,0,0,0,43.82,42.92,125.81,125.81,0,0,0,14.37,88.15C8.08,104.42,3.69,123,2.5,150.13,1.2,177.49.9,186.17.9,255.55s.3,78.06,1.49,105.31,5.6,45.82,11.89,62a125.86,125.86,0,0,0,29.54,45.32A125.75,125.75,0,0,0,89,497.62c16.28,6.29,34.84,10.68,62,11.88S187,511,256.35,511s78.06-.3,105.31-1.5,45.82-5.59,62-11.88a130.68,130.68,0,0,0,74.77-74.76c6.29-16.28,10.68-34.84,11.88-62s1.5-35.93,1.5-105.31S511.7,177.49,510.5,150.24Zm-46,208.63c-1.1,24.95-5.29,38.43-8.78,47.41a84.78,84.78,0,0,1-48.52,48.52c-9,3.49-22.56,7.69-47.41,8.78-27,1.2-35,1.5-103.22,1.5s-76.37-.3-103.22-1.5c-25-1.09-38.43-5.29-47.42-8.78a78.44,78.44,0,0,1-29.34-19.07A79.32,79.32,0,0,1,57.5,406.39c-3.5-9-7.69-22.57-8.78-47.42-1.21-27-1.5-35-1.5-103.22s.29-76.37,1.5-103.22c1.09-25,5.28-38.43,8.78-47.41A77.56,77.56,0,0,1,76.67,75.76,79.34,79.34,0,0,1,106,56.7c9-3.49,22.57-7.68,47.42-8.78,26.95-1.2,35-1.5,103.22-1.5s76.36.3,103.22,1.5c24.95,1.1,38.43,5.29,47.41,8.78a78.58,78.58,0,0,1,29.35,19.06,79.44,79.44,0,0,1,19.07,29.36c3.49,9,7.68,22.55,8.78,47.41,1.2,26.95,1.5,35,1.5,103.22S465.68,331.92,464.48,358.87Z"
+                            transform="translate(-0.9 0)"/>
+                        <path
+                            d="M256.45,124.28A131.27,131.27,0,1,0,387.72,255.55,131.31,131.31,0,0,0,256.45,124.28Zm0,216.42a85.15,85.15,0,1,1,85.15-85.15A85.16,85.16,0,0,1,256.45,340.7Z"
+                            transform="translate(-0.9 0)"/>
+                        <path d="M423.56,119.09a30.65,30.65,0,1,1-30.65-30.64A30.66,30.66,0,0,1,423.56,119.09Z"
+                              transform="translate(-0.9 0)"/>
+                    </svg>
+                </a>
+                <a href="https://www.facebook.com/pervaya.kniga" target="_blank">
+                    <svg id="Bold" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256.02 512">
+                        <path
+                            d="M341.27,85H388V3.61C380,2.5,352.21,0,319.91,0,252.52,0,206.36,42.39,206.36,120.3V192H132v91h74.37V512h91.18V283H368.9l11.32-91H297.51v-62.7c0-26.3,7.11-44.31,43.76-44.31Z"
+                            transform="translate(-131.99 0)"/>
+                    </svg>
+                </a>
+                <a href="https://ok.ru/group/54728360853742" target="_blank">
+                    <svg id="Bold" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 319.95 512">
+                        <path
+                            d="M100.71,274.79c-13.07,25.71,1.78,38,35.65,59,28.8,17.79,68.59,24.3,94.15,26.9C220,370.75,268,324.59,129.79,457.56c-29.31,28.09,17.88,73.17,47.17,45.67l79.3-76.48c30.35,29.21,59.45,57.2,79.29,76.59,29.31,27.6,76.48-17.09,47.49-45.68-2.18-2.07-107.46-103.06-101-96.87,25.87-2.6,65.06-9.49,93.52-26.9l0,0c33.88-21.1,48.72-33.37,35.84-59.08-7.79-14.59-28.78-26.79-56.73-5.69,0,0-37.73,28.91-98.6,28.91s-98.6-28.91-98.6-28.91c-27.93-21.21-49-8.9-56.71,5.69Z"
+                            transform="translate(-96)"/>
+                        <path
+                            d="M256,259c74.2,0,134.78-58,134.78-129.37C390.76,58,330.18,0,256,0S121.17,58,121.17,129.66C121.17,201.05,181.76,259,256,259Zm0-193.34c36.46,0,66.2,28.6,66.2,64,0,35.08-29.74,63.68-66.2,63.68s-66.2-28.6-66.2-63.68c0-35.39,29.72-64,66.2-64Z"
+                            transform="translate(-96)"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+
+        <div class="footer-questions">
+            <div style="margin-bottom: 10px;">Остались вопросы?</div>
+            <a class="button">Вопрос-ответ</a>
+        </div>
+    </div>
+</div>
+@livewireScripts
+<script src="/js/js.js"></script>
+<script src="/js/sweetalert2.js"></script>
+<script src="/plugins/filepond/filepond.js"></script>
+<!-- include FilePond jQuery adapter -->
+<script src="https://unpkg.com/jquery-filepond/filepond.jquery.js"></script>
+<!-- include FilePond file-validate-size adapter -->
+<script src="/plugins/filepond/filepond-plugin-file-validate-size.min.js"></script>
+<!-- include FilePond file-validate-type adapter -->
+<script src="/plugins/filepond/filepond-plugin-file-validate-type.min.js"></script>
+
+
+
+
+<script>
+
+
+    window.addEventListener('swal:modal', event => {
+        Swal.fire({
+            title: event.detail.title,
+            icon: event.detail.type,
+            html: event.detail.text,
+            showConfirmButton: false,
+        })
+        if (event.detail.type === 'success') {
+
+            $('#go-to-part-page').attr('href', event.detail.link);
+            $('#go-to-part-page').trigger('click');
+            $('#back').trigger('click');
+        }
+
+    })
+
+    window.addEventListener('swal:confirm', event => {
+        Swal.fire({
+            title: event.detail.title,
+            showDenyButton: true,
+            showCancelButton: false,
+            confirmButtonText: `Все верно`,
+            denyButtonText: `Отменить`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.livewire.emit('delete', event.detail.id)
+            }
+        })
+    })
+
+    window.addEventListener('swal:min', event => {
+        Swal.fire({
+            position: 'top-end',
+            title: event.detail.title,
+            icon: event.detail.type,
+            html: event.detail.text,
+            showConfirmButton: false,
+            timer: 3000
+        })
+    })
+
+    $(document).ready(function () {
+        if (window.location.pathname.startsWith('/email/verify/'))
+        {
+            Swal.fire({
+                title: 'Отлично, Ваш Email подтвержден!',
+                icon: 'success',
+                showConfirmButton: false,
+            })
+        }
+    })
+
+    @if (session('show_modal') == 'yes')
+    Swal.fire({
+        title: '{{session('alert_title')}}',
+        icon: '{{session('alert_type')}}',
+        html: '<p>{{session('alert_text')}}</p>',
+        showConfirmButton: false,
+    })
+
+    @endif
+
+
+</script>
+
+<script>
+    jq_loaded = 0
+</script>
+
+<script>
+    function update_file_input() {
+        file_input = $('.custom-file-input')
+        for (var i = 0; i < file_input.length; i++) {
+            file_input[i].addEventListener('change', function () {
+                cut_dots = '';
+                var fileName = document.getElementById($(this).attr('name')).files[0].name;
+                if (fileName.length > 30) {
+                    cut_dots = '...'
+                }
+                $("#label_" + $(this).attr('name')).show();
+                $("#label_" + $(this).attr('name') + ' p').html(fileName.substring(0, 30) + cut_dots);
+
+            }, false);
+        }
+    }
+    update_file_input()
+</script>
+
+<script>
+    window.addEventListener('loader', event => {
+        $('#' + event.detail.id).toggle();
+    })
+</script>
+
+@yield('page-js')
+
+<script>
+    {{-------- Авто функции скрытия - показ блоков ---------}}
+    $('.show-hide').on('click', function () {
+        $('.' + $(this).attr('name')).each(function () {
+            $(this).hide();
+        })
+
+        $('#block_' + $(this).attr('id')).toggle();
+    })
+
+    $('.up-down').on('change', function () {
+        if ($(this).val() === 'show' || $(this).prop('checked') & $(this).prop('type') === 'checkbox') {
+            $('.' + $(this).attr('name')).slideDown()
+        } else {
+            $('.' + $(this).attr('name')).slideUp()
+        }
+    })
+    // ------// Авто функции скрытия - показ блоков---------------------
+</script>
+<script>
+
+    // -------- SMOOTH SCROLLING
+
+    $('a[href*="#"]')
+        // Remove links that don't actually link to anything
+        .not('[href="#"]')
+        .not('[href="#0"]')
+        .click(function(event) {
+            // On-page links
+            if (
+                location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '')
+                &&
+                location.hostname == this.hostname
+            ) {
+                // Figure out element to scroll to
+                var target = $(this.hash);
+                target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+                // Does a scroll target exist?
+                if (target.length) {
+                    // Only prevent default if animation is actually gonna happen
+                    event.preventDefault();
+                    $('html, body').animate({
+                        scrollTop: target.offset().top
+                    }, 1000, function() {
+                        // Callback after animation
+                        // Must change focus!
+                        var $target = $(target);
+                        $target.focus();
+                        if ($target.is(":focus")) { // Checking if the target was focused
+                            return false;
+                        } else {
+                            $target.attr('tabindex','-1'); // Adding tabindex for elements not focusable
+                            $target.focus(); // Set focus again
+                        };
+                    });
+                }
+            }
+        });
+    // -------- //SMOOTH SCROLLING
+</script>
+
+<script>
+    // -- SWAL при полном обновлении страницы.
+    @if (session('success'))
+    Swal.fire({
+        title: '{{session('alert_title')}}',
+        icon: 'success',
+        html: '<p>{{session('alert_text')}}</p>',
+        showConfirmButton: false,
+    })
+    @endif
+</script>
+
+</body>
+</html>
+
+@else
+    @yield('page-style')
+    @yield('page-title')
+
+    @yield('content')
+    <script>
+        $.ajaxPrefilter(function (options, original_Options, jqXHR) {
+            options.async = true;
+        });
+    </script>
+
+    @yield('page-js')
+
+    <script>
+        {{-------- Авто функции скрытия - показ блоков ---------}}
+        $('.show-hide').on('click', function () {
+            $('.' + $(this).attr('name')).each(function () {
+                $(this).hide();
+            })
+
+            $('#block_' + $(this).attr('id')).toggle();
+        })
+
+        $('.up-down').on('change', function () {
+            if ($(this).val() === 'show' || $(this).prop('checked') & $(this).prop('type') === 'checkbox') {
+                $('.' + $(this).attr('name')).slideDown()
+            } else {
+                $('.' + $(this).attr('name')).slideUp()
+            }
+        })
+        // ------// Авто функции скрытия - показ блоков---------------------
+    </script>
+
+    <script>
+        // -- SWAL при полном обновлении страницы.
+        @if (session('success'))
+        Swal.fire({
+            title: '{{session('alert_title')}}',
+            icon: 'success',
+            html: '<p>{{session('alert_text')}}</p>',
+            showConfirmButton: false,
+        })
+        @endif
+    </script>
+
+    <script>
+
+        // -------- SMOOTH SCROLLING
+
+        $('a[href*="#"]')
+            // Remove links that don't actually link to anything
+            .not('[href="#"]')
+            .not('[href="#0"]')
+            .click(function(event) {
+                // On-page links
+                if (
+                    location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '')
+                    &&
+                    location.hostname == this.hostname
+                ) {
+                    // Figure out element to scroll to
+                    var target = $(this.hash);
+                    target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+                    // Does a scroll target exist?
+                    if (target.length) {
+                        // Only prevent default if animation is actually gonna happen
+                        event.preventDefault();
+                        $('html, body').animate({
+                            scrollTop: target.offset().top
+                        }, 1000, function() {
+                            // Callback after animation
+                            // Must change focus!
+                            var $target = $(target);
+                            $target.focus();
+                            if ($target.is(":focus")) { // Checking if the target was focused
+                                return false;
+                            } else {
+                                $target.attr('tabindex','-1'); // Adding tabindex for elements not focusable
+                                $target.focus(); // Set focus again
+                            };
+                        });
+                    }
+                }
+            });
+        // -------- //SMOOTH SCROLLING
+    </script>
+
+
+@endif
+
