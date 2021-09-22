@@ -10,7 +10,7 @@
 
 .back-vector-left {
     position: absolute;
-    width: 50%;
+    height: 100%;
     max-width: 650px;
     z-index: -1;
 }
