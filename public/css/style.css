@@ -35,7 +35,7 @@
 }
 
 @font-face {
-    font-family: 'Futura PT';
+    font-family: 'Futura PT Medium';
     src: url('/fonts/FuturaPT-Medium.woff2') format('woff2'),
     url('/fonts/FuturaPT-Medium.woff') format('woff');
     font-weight: 500;
@@ -71,7 +71,7 @@
 }
 
 @font-face {
-    font-family: 'Futura PT';
+    font-family: 'Futura PT Medium';
     src: url('/fonts/FuturaPT-MediumObl.woff2') format('woff2'),
     url('/fonts/FuturaPT-MediumObl.woff') format('woff');
     font-weight: 500;
