@@ -49,45 +49,42 @@
 }
 
 /*----------------------------------------*/
+@media screen and (max-width: 1700px) {
+    .woman {
+        max-width: 650px;
+    }
+}
+
+@media screen and (max-width: 1600px) {
+    .covers-ex-wrap {
+        height: 306px;
+        width: 585px;
+    }
+
+    .cover {
+        width: 100%;
+    }
+}
+
 
 @media screen and (max-width: 1500px) {
     .woman {
-        width: 70%;
+        width: 90%;
         margin-right: auto;
     }
 
     .hero-wrap {
-        width: 55%;
+        width: 80%;
     }
 
     .back-vector-right {
         width: 80%
     }
 
-
-    .how-it-works {
-        font-size: 2.3vw;
-    }
-
-    .cta-container a {
-        font-size: 2.3vw;
-    }
-
-    .hero span {
-        font-size: 2.3vw;
-    }
-
-    .hero {
-        margin-left: 50px;
-    }
-
     .ex_name {
         font-size: 4vw;
     }
 
-    .project p {
-        font-size: 2vw;
-    }
 
     .buttons-wrap .button {
         width: auto;
