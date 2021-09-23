@@ -18,6 +18,11 @@ $(".menu-link").each(function () {
     var link = $(this).attr('href');
     if (window.location.pathname.startsWith('/myaccount'))
     {$('.account a').addClass('active-menu-link');}
+
+    if (window.location.pathname.startsWith('/collections'))
+    { $('a[href$="our_collections"]').addClass('active-menu-link');}
+
+
     //alert("link: " + link + " AND current: " + location2)
     if (location2.startsWith(link)) {
         if(location2 === '/')
@@ -34,7 +39,7 @@ $(".menu-link").each(function () {
 
 
 $(".menu__item").each(function () {
-    var location2 = window.location.pathname;
+    var location2 = window.location.href;
     var link = $(this).attr('href');
 
     if (link === '/myaccount/collections')
