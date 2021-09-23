@@ -7,8 +7,8 @@
          class="content">
         <div class="log_reg_wrap">
             <div class="nav go-to">
-                <a href="/login"><h2>Вход</h2></a>
-                <a href="/register" class="current"><h2>Регистрация</h2></a>
+                <a style="margin: 0;" href="/login" ><h2>Вход</h2></a>
+                <a style="margin: 0 0 0 30px;" class="current" href="/register"><h2>Регистрация</h2></a>
             </div>
 
             <div class="login_register_list">

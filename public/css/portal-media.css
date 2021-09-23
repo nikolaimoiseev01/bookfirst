@@ -34,6 +34,7 @@
         font-size: 18px !important;
         display: flex;
         width: fit-content;
+        margin: auto;
     }
 }
 
@@ -637,7 +638,7 @@
     }
 
     .log_reg_wrap .nav a {
-        margin: auto;
+        margin: auto !important;
     }
 }
 
