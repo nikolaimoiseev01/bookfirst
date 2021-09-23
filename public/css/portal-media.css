@@ -32,6 +32,8 @@
 
     .button {
         font-size: 18px !important;
+        display: flex;
+        width: fit-content;
     }
 }
 
@@ -359,7 +361,9 @@
 
     .menu {
         height: 100%;
+        padding: 17px 15px 17px 20px;
         float: right;
+
     }
 
     .hamburger-menu {

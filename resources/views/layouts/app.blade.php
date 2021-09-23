@@ -80,7 +80,7 @@
                     </a>
                 @endif
             @else
-                <a class="menu-link" href="/myaccount/collections">
+                <a  id="svg-app-only"  class="menu-link" href="/myaccount/collections">
                     <div class="not-bell">
                         <svg id="Слой_1" data-name="Слой 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                             <path
@@ -202,39 +202,39 @@
         </a>
     </div>
 </aside>
-
-<div class="account-content">
-    <!-- preloader -->
-    <div class="app-preloader book-preloader-wrap">
-        <div class="book-preloader">
-            <div class="inner">
-                <div class="left"></div>
-                <div class="middle"></div>
-                <div class="right"></div>
-            </div>
-            <ul>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-            </ul>
+<!-- preloader -->
+<div class="app-preloader book-preloader-wrap">
+    <div class="book-preloader">
+        <div class="inner">
+            <div class="left"></div>
+            <div class="middle"></div>
+            <div class="right"></div>
         </div>
+        <ul>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
     </div>
-    <!-- preloader -->
+</div>
+<!-- preloader -->
+<div class="account-content">
+
     @yield('page-title')
 
     @yield('content')

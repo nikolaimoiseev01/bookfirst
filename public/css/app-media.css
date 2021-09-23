@@ -40,7 +40,7 @@
 
 @media screen and (max-width: 1200px) {
 .account-content {
-    margin-bottom: 200px;
+    margin-bottom: 260px;
 }
 
     .participation-wrapper {
@@ -321,7 +321,7 @@
     }
 
     .account-content {
-        margin-bottom: 170px;
+        margin-bottom: 200px;
     }
     .footer-man {
         bottom: 220px;

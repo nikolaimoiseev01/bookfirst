@@ -170,6 +170,9 @@ a:hover {
     color: #1fe0b6;
 }
 
+#svg-app-only:after {
+    background: none !important;
+}
 
 input {
     font-family: "Futura PT Light", serif;
@@ -1295,7 +1298,6 @@ form .check-block {
 }
 
 .app-preloader {
-    margin-left: -50px;
     padding-bottom: 95px;
     padding-right: 210px;
     z-index: 10;

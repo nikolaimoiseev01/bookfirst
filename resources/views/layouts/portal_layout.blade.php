@@ -116,7 +116,7 @@
                     </a>
                 @endif
             @else
-                <a class="menu-link" href="/myaccount/collections">
+                <a id="svg-app-only" class="menu-link" href="/myaccount/collections">
                     <div class="not-bell">
                         <svg id="Слой_1" data-name="Слой 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                             <path
