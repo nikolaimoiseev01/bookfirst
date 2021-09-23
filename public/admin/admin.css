@@ -20,14 +20,25 @@ input[type=number]::-webkit-outer-spin-button {
     .content-wrapper {
         margin-left: 250px !important;
     }
+
+    .card {
+        margin: auto !important;
+    }
 }
 
 @media (max-width: 767px) {
     .content-wrapper {
         margin-left: 0 !important;
     }
+
+    #menu-trig {
+        display: flex !important;
+    }
 }
 
+.menu__active {
+    margin-left: 0 !important;
+}
 
 .question-mark:hover {
     opacity: .8;

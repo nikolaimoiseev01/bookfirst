@@ -136,7 +136,7 @@
     <!-- Content Wrapper. Contains page content -->
     <div style="padding-left: 20px;padding-right: 20px;" class="fixed content-wrapper">
         <div class="pt-3">
-        <a id="menu-trig" class="d-flex justify-content-center btn btn-outline-info">Меню</a>
+        <a id="menu-trig" class="d-none justify-content-center btn btn-outline-info">Меню</a>
         </div>
         @yield('content')
     </div>
@@ -186,19 +186,19 @@
 
 <script>
     $('#menu-trig').on('click', function () {
-        $('.main-sidebar').css('margin-left', 0);
+        $('.main-sidebar').toggleClass('menu__active');
     });
 
-    $(document).mouseup(function(e)
-    {
-        var container = $(".main-sidebar");
-
-        // if the target of the click isn't the container nor a descendant of the container
-        if (!container.is(e.target) && container.has(e.target).length === 0)
-        {
-            $('.main-sidebar').css('margin-left', '-250px');
-        }
-    });
+    // $(document).mouseup(function(e)
+    // {
+    //     var container = $(".main-sidebar");
+    //
+    //     // if the target of the click isn't the container nor a descendant of the container
+    //     if (!container.is(e.target) && container.has(e.target).length === 0)
+    //     {
+    //         $('.main-sidebar').css('margin-left', '-250px');
+    //     }
+    // });
 </script>
 
 {{-------- МЕНЯТЬ СТАТУС КНОПКА ----------}}
