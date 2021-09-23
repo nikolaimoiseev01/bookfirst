@@ -109,7 +109,7 @@
         <div style="margin-top: 30px; justify-content: center;" class="my-collections">
             @foreach($collections as $collection)
 
-                <div id="collection_{{$collection['id']}}" style="margin-top: -85px; padding-top: 85px;">
+                <div id="collection_{{$collection['id']}}" style="margin-bottom: 50px; margin-top: -85px; padding-top: 85px;">
                     <div
                         class="container">
                         <div class="label-wrap">
