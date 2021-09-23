@@ -226,7 +226,7 @@
             slidesToShow: 2,
             slidesToScroll: 1,
             arrows: true,
-            adaptiveHeight: true,
+            // adaptiveHeight: true,
             responsive: [
                 {
                     breakpoint: 700,
