@@ -585,6 +585,10 @@
         display: flex;
         flex-direction: column;
     }
+
+    .woman {
+        width: 100%;
+    }
 }
 
 
