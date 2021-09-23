@@ -1,5 +1,7 @@
 @extends('layouts.admin_layout')
 
+
+
 @section('title', 'Главная')
 @section('content')
     <!-- Content Header (Page header) -->
@@ -52,7 +54,7 @@
                 @foreach($collections as $collection)
                     <div>
                         <!-- Widget: user widget style 2 -->
-                        <div style=" min-width:400px; max-width:400px" class="card mb-5 mr-5 card-widget widget-user-2">
+                        <div style=" max-width:400px" class="card mb-5 mr-5 card-widget widget-user-2">
                             <!-- Add the bg color to the header using any of the bg-* classes -->
                             <div
                                 class="widget-user-header

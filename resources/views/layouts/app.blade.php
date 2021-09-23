@@ -235,6 +235,7 @@
 <!-- preloader -->
 <div class="account-content">
 
+
     @yield('page-title')
 
     @yield('content')

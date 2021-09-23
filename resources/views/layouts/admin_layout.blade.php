@@ -135,6 +135,9 @@
     </aside>
     <!-- Content Wrapper. Contains page content -->
     <div style="padding-left: 20px;padding-right: 20px;" class="fixed content-wrapper">
+        <div class="pt-3">
+        <a id="menu-trig" class="d-flex justify-content-center btn btn-outline-info">Меню</a>
+        </div>
         @yield('content')
     </div>
     <!-- /.content-wrapper -->
@@ -178,6 +181,23 @@
             uiLibrary: 'bootstrap4',
             format: 'yyyy-mm-dd'
         });
+    });
+</script>
+
+<script>
+    $('#menu-trig').on('click', function () {
+        $('.main-sidebar').css('margin-left', 0);
+    });
+
+    $(document).mouseup(function(e)
+    {
+        var container = $(".main-sidebar");
+
+        // if the target of the click isn't the container nor a descendant of the container
+        if (!container.is(e.target) && container.has(e.target).length === 0)
+        {
+            $('.main-sidebar').css('margin-left', '-250px');
+        }
     });
 </script>
 
