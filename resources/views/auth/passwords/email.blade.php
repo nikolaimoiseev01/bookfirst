@@ -1,5 +1,32 @@
 @extends('layouts.portal_layout')
 
+@section('page-style')
+    <style>
+        .login-buttons-wrap {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        @media screen and (max-width: 1000px) {
+            .login-buttons-wrap button {
+                margin: inherit;
+            }
+
+            @media screen and (max-width: 500px) {
+                .login-buttons-wrap {
+                    flex-direction: column;
+                    align-items: center;
+                }
+
+                .login-buttons-wrap button {
+                    margin-bottom: 10px;
+                }
+            }
+        }
+    </style>
+@endsection
+
 @section('content')
     <div style="
     display: flex;
@@ -50,11 +77,13 @@
                         >
                     </div>
 
-                    <button id="form_login" class="preloader_button button" type="submit">
-                        <span class="button__text">Напомнить пароль</span>
-                    </button>
+                    <div class="login-buttons-wrap">
+                        <button id="form_login" class="preloader_button button" type="submit">
+                            <span class="button__text">Напомнить пароль</span>
+                        </button>
 
-                    <a style="float:right;" class="link" href="/login">Войти</a>
+                        <a style="float:right;" class="link" href="/login">Войти</a>
+                    </div>
 
                 </form>
             </div>
