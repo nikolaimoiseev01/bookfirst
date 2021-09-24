@@ -22,19 +22,16 @@ $(".menu-link").each(function () {
     if (window.location.pathname.startsWith('/collections'))
     { $('a[href$="our_collections"]').addClass('active-menu-link');}
 
-
-    //alert("link: " + link + " AND current: " + location2)
+    if(window.location.pathname === '/')
+    {
+        $('#home').addClass('active-menu-link')
+        $('#home_mobile').addClass('active-menu-link')
+    }
     if (location2.startsWith(link)) {
-        if(location2 === '/')
-        {
-            $('#home').addClass('active-menu-link')
-            $('#home_mobile').addClass('active-menu-link')
-        }
-        else{
+
             $('#home').removeClass('active-menu-link')
             $('#home_mobile').removeClass('active-menu-link')
             $(this).addClass('active-menu-link');}
-    }
 });
 
 
@@ -44,18 +41,19 @@ $(".menu__item").each(function () {
 
     if (link === '/myaccount/collections')
     {link = '/myaccount'}
-    //alert("link: " + link + " AND current: " + location2)
+
+    if(window.location.pathname === '/')
+    {
+        $('#home').addClass('active-menu-link')
+        $('#home_mobile').addClass('active-menu-link')
+    }
+
     if (location2.startsWith(link)) {
-        if(location2 === '/')
-        {
-            $('#home').addClass('active-menu-link')
-            $('#home_mobile').addClass('active-menu-link')
-        }
-        else{
+
             $('#home').removeClass('active-menu-link')
             $('#home_mobile').removeClass('active-menu-link')
             $(this).addClass('active-menu-link');}
-    }
+
 });
 // ------  // ACTIVE MENU ELEMENT  ------ //
 

@@ -65,8 +65,8 @@
             <div class="rights">
                 <div class="rights-docs">
                     <h2 style="margin: 0 0 10px 0; font-size: 25px;">Правовая информация:</h2>
-                    <a href="" download class="link">Договор на участие в сборниках</a>
-                    <a href="" download class="link">Договор на издание книги</a>
+                    <a href="/admin_files/Договор публичной оферты на оказание услуг по публикации.pdf" download class="link">Договор издания и публикации</a>
+{{--                    <a href="" download class="link">Договор на издание книги</a>--}}
                 </div>
                 <div class="rights-info">
                     <h2 style="margin: 0 0 10px 0; font-size: 25px;">Юридическое лицо:</h2>
