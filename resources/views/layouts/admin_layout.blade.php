@@ -218,7 +218,6 @@
 
 <script>
     $('.change_status').on('click', function (e) {
-        alert(123);
         e.preventDefault();
         var form = $(this).parents('form');
         var status_from = $(this).attr('data-status-from');

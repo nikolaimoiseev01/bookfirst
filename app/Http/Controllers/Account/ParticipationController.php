@@ -9,7 +9,7 @@ use App\Models\Collection;
 use App\Models\Participation;
 use App\Models\Participation_work;
 use App\Models\Pat_status;
-use App\Models\PrintOrder;
+use App\Models\Printorder;
 use App\Models\User;
 use App\Models\Work;
 use App\Notifications\EmailNotification;
@@ -49,7 +49,7 @@ class ParticipationController extends Controller
     public function index(Request $request)
     {
         $participation = Participation::where('user_id', Auth::user()->id)->where('collection_id', $request->collection_id)->first() ?? array('pat_status_id' => 0);
-        $printorder = PrintOrder::where('id', $participation['printorder_id'] ?? 1)->first() ?? 0;
+        $printorder = Printorder::where('id', $participation['printorder_id'] ?? 1)->first() ?? 0;
         $collection = Collection::orderBY('id')->find($request->collection_id);
         $col_statuses = Col_status::orderBY('id')->get();
         $pat_statuses = Pat_status::orderBY('id')->get();
@@ -172,7 +172,7 @@ class ParticipationController extends Controller
             "Отлично, вы успешно оплатили заявку в сборике: '".collection::where('id',$collection_id)->value('title').
             "'. Теперь остается ждать издания! Вся информацию по этому сборнику будет по ссылке:",
             "Страница сборника",
-            "http://127.0.0.1:8000/collection/".$collection_id."/participation/"));
+            route('homePortal') . "/collection/".$collection_id."/participation/"));
 
         return redirect()->back();
 

@@ -52,12 +52,12 @@ class ParticipationController extends Controller
             "У Вас сменился статус участия сборнике: " . collection::where('id',$collection_id)->value('title') .
             "'. Новый статус: '" . Pat_status::where('id', $request->pat_status_id)->value('pat_status_title') . "'",
             "На страницу участия",
-            "http://127.0.0.1:8000/myaccount/collections/" . $collection_id . "/participation/" . $request->pat_id)
+                route('homePortal') . "/myaccount/collections/" . $collection_id . "/participation/" . $request->pat_id)
         );
 
         \Illuminate\Support\Facades\Notification::send($user, new UserNotification(
             'Смена статуса участия в сборинке!',
-            "http://127.0.0.1:8000/myaccount/collections/" . $collection_id . "/participation/" . $request->pat_id)
+                route('homePortal') . "/myaccount/collections/" . $collection_id . "/participation/" . $request->pat_id)
         );
 
         return redirect()->back();

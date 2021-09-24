@@ -213,7 +213,7 @@ class CollectionController extends Controller
 
                 \Illuminate\Support\Facades\Notification::send($user, new UserNotification(
                     'Статус сборника был изменен!',
-                    route('homePortal') . "/myaccount/mybooks/" . $collection->id . "/participation/" . Participation::where([['user_id', $user->id],['collection_id', $collection->id]])->value('id')
+                    route('homePortal') . "/myaccount/collections/" . $collection->id . "/participation/" . Participation::where([['user_id', $user->id],['collection_id', $collection->id]])->value('id')
                 ));
             }
         }
