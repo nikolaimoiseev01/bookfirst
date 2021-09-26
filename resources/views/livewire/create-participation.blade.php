@@ -74,7 +74,8 @@
                                                 а затем выбраны из этого списка.</p>
                                         @endif
 
-                                        <input id="work_search" placeholder="поиск..." style="height: 30px; width: 100%; margin-bottom: 14px;" type="text">
+                                        <input id="work_search" placeholder="поиск..."
+                                               style="height: 30px; width: 100%; margin-bottom: 14px;" type="text">
                                         @foreach($user_works as $work)
 
                                             <div id="work-container-{{$work['id']}}" class="container">
@@ -182,7 +183,8 @@
                             </div>
 
                         </div>
-                        <div style="margin-bottom: 0; flex-direction: row;     align-items: center;" class="participation-inputs-row">
+                        <div style="margin-bottom: 0; flex-direction: row;     align-items: center;"
+                             class="participation-inputs-row">
                             <div style="margin-bottom: 0;" class="input-group">
                                 <p>Фио получателя</p>
                                 <input wire:model="send_to_name" type="text"
@@ -210,9 +212,23 @@
                     <div class="participation-price">
                         <h1 id="participation_price">0</h1>
                         <h1> руб.</h1>
-                        <div class="participation-price-desc"><p>За участие (
+                        <div style="position: relative;" class="participation-price-desc"><p>За участие (
                             <p id="pages">0</p>
-                            <p>стр.)</p></div>
+                            <p>стр.)</p>
+                            <a href="/collections/{{$collection['id']}}" target="_blank">
+                            <span style="bottom: 0; right: -30px;" class="question-mark tooltip"
+                                  title="Строки/страницы считаются на основе единого стиля орформления сборника. Порядок расчета указан здесь ↓">
+                                   <svg id="question-circle"
+                                        viewBox="0 0 40.12 40.12">
+                                        <path
+                                            d="M19.94,12.14c1.85,0,3,1,3,2.66,0,3-5.41,3.87-5.41,7.55a2,2,0,0,0,2,2.07c2.05,0,1.8-1.51,2.54-2.6,1-1.45,5.6-3,5.6-7,0-4.36-3.89-6.19-7.86-6.19-3.77,0-7.24,2.69-7.24,5.73a1.85,1.85,0,0,0,2,1.88C17.52,16.23,16,12.14,19.94,12.14Z"/>
+                                        <path d="M22.14,29a2.54,2.54,0,1,0-2.54,2.54A2.55,2.55,0,0,0,22.14,29Z"/>
+                                        <path
+                                            d="M40.12,20.06A20.06,20.06,0,1,0,20.06,40.12,20.08,20.08,0,0,0,40.12,20.06ZM2,20.06A18.06,18.06,0,1,1,20.06,38.12,18.08,18.08,0,0,1,2,20.06Z"/>
+                                    </svg>
+                            </span>
+                            </a>
+                        </div>
                     </div>
                     <div style="display: none" id="print-price" class="participation-price">
                         <h1 id="print_price">300</h1>
@@ -237,21 +253,36 @@
                     <div id="i_have_promo_inputs" style="display: none;">
                         <div style="display: flex; align-items: center;">
                             <div style="margin-left: 20px;" class="search-bar-wrap">
-                                <input wire:model="promo_search_input" required placeholder="Промокод..." id="promo_search_input" name="promo_search_input" type="text">
+                                <input wire:model="promo_search_input" required placeholder="Промокод..."
+                                       id="promo_search_input" name="promo_search_input" type="text">
 
-                                <a wire:click.prevent="check_promo"  style="opacity: 1;" id="work_input_search_link">
+                                <a wire:click.prevent="check_promo" style="opacity: 1;" id="work_input_search_link">
                                     <span class="tooltip" title="Проверить">
-                                    <svg width="14px" viewBox="0 0 188.9 210"><defs><style>.cls-1{fill:none;stroke:#6dc4b1;stroke-linecap:round;stroke-linejoin:round;stroke-width:23px;}</style></defs><polyline class="cls-1" points="11.5 98.4 84.3 198.5 177.4 11.5"/></svg>
+                                    <svg width="14px" viewBox="0 0 188.9 210"><defs><style>.cls-1 {
+                                                    fill: none;
+                                                    stroke: #6dc4b1;
+                                                    stroke-linecap: round;
+                                                    stroke-linejoin: round;
+                                                    stroke-width: 23px;
+                                                }</style></defs><polyline class="cls-1"
+                                                                          points="11.5 98.4 84.3 198.5 177.4 11.5"/></svg>
                                     </span>
                                 </a>
                             </div>
-                            <span id="close_promo_inputs" style="margin-left: 8px; margin-top: 1px;" class="cursor tooltip" title="Отменить">
-                            <svg width="13px" viewBox="0 0 50 50"><defs><style>.cls-11{fill:#ff6565;}</style></defs><path class="cls-11" d="M45.8,50a4,4,0,0,1-2.9-1.2L1.2,7.1a4.23,4.23,0,0,1,0-5.9,4.23,4.23,0,0,1,5.9,0L48.8,42.9a4.15,4.15,0,0,1-3,7.1Z" transform="translate(0 0)"/><path class="cls-11" d="M4.2,50a4,4,0,0,1-2.9-1.2,4.23,4.23,0,0,1,0-5.9L42.9,1.2a4.23,4.23,0,0,1,5.9,0,4.23,4.23,0,0,1,0,5.9L7.1,48.8A4.18,4.18,0,0,1,4.2,50Z" transform="translate(0 0)"/></svg>
+                            <span id="close_promo_inputs" style="margin-left: 8px; margin-top: 1px;"
+                                  class="cursor tooltip" title="Отменить">
+                            <svg width="13px" viewBox="0 0 50 50"><defs><style>.cls-11 {
+                                            fill: #ff6565;
+                                        }</style></defs><path class="cls-11"
+                                                              d="M45.8,50a4,4,0,0,1-2.9-1.2L1.2,7.1a4.23,4.23,0,0,1,0-5.9,4.23,4.23,0,0,1,5.9,0L48.8,42.9a4.15,4.15,0,0,1-3,7.1Z"
+                                                              transform="translate(0 0)"/><path class="cls-11"
+                                                                                                d="M4.2,50a4,4,0,0,1-2.9-1.2,4.23,4.23,0,0,1,0-5.9L42.9,1.2a4.23,4.23,0,0,1,5.9,0,4.23,4.23,0,0,1,0,5.9L7.1,48.8A4.18,4.18,0,0,1,4.2,50Z"
+                                                                                                transform="translate(0 0)"/></svg>
                             </span>
                         </div>
                     </div>
 
-                    </div>
+                </div>
             </div>
         </div>
 
@@ -295,24 +326,21 @@
             menu.addClass('is-active');
         });
 
-        $('#work_search').keyup(function() {
+        $('#work_search').keyup(function () {
             worksearch = this.value
 
-            $('.work-menu .container').each(function() {
+            $('.work-menu .container').each(function () {
                 if (worksearch != "") {
                     if ($(this).find("p:first").text().toLowerCase().indexOf(worksearch) == -1) {
                         $(this).css('display', 'none');
                     } else {
                         $(this).css('display', 'flex');
                     }
-                }
-                else {
-                   $(this).css('display', 'flex');
+                } else {
+                    $(this).css('display', 'flex');
                 }
             })
         })
-
-
 
 
         // WORK WITH PROMO_DISCOUNT BLOCK
@@ -320,17 +348,15 @@
         var promo_discount = 0;
 
 
-        $('#i_have_promo_link').on('click', function() {
+        $('#i_have_promo_link').on('click', function () {
             $('#i_have_promo_inputs').toggle();
             $(this).toggle();
         })
 
-        $('#close_promo_inputs').on('click', function() {
+        $('#close_promo_inputs').on('click', function () {
             $('#i_have_promo_inputs').toggle();
             $('#i_have_promo_link').toggle();
         })
-
-
 
 
         window.addEventListener('update_promo_discount', event => {
@@ -384,28 +410,28 @@
 
                 if (rows === 0) {
                     participation_price = 0
-                } else if (rows < 219) {
+                } else if (rows < 245) {
+                    participation_price = 1000
+                } else if (rows < 490) {
+                    participation_price = 1900
+                } else if (rows < 735) {
                     participation_price = 800
-                } else if (rows < 462) {
-                    participation_price = 1600
-                } else if (rows < 2400) {
-                    participation_price = 800
-                } else if (rows < 924) {
+                } else if (rows < 980) {
                     participation_price = 3200
+                } else {
+                    participation_price = 3200 + (((row - 980) / 35) * 300);
                 }
 
                 if (print_needed <= 5) {
                     print_discount = 1;
-                }
-                else if(print_needed > 5 && print_needed <= 10) {
+                } else if (print_needed > 5 && print_needed <= 10) {
                     print_discount = 0.95
-                }
-                else if(print_needed > 10 && print_needed <= 20) {
+                } else if (print_needed > 10 && print_needed <= 20) {
                     print_discount = 0.90;
-                }
-                else if(print_needed > 20) {
+                } else if (print_needed > 20) {
                     print_discount = 0.85;
-                };
+                }
+                ;
 
                 participation_price = participation_price * (1 - promo_discount)
 
@@ -460,12 +486,16 @@
 
                 console.log('--------------------------------');
 
-                $( function() {
-                    $( ".works-to-go" ).sortable({
+                $(function () {
+                    $(".works-to-go").sortable({
                         placeholder: "to-drop",
                         revert: true,
-                        start: function( event, ui ) {ui.item.addClass( "start-anim" )},
-                        stop: function( event, ui ) {ui.item.addClass( "stop-anim" )}
+                        start: function (event, ui) {
+                            ui.item.addClass("start-anim")
+                        },
+                        stop: function (event, ui) {
+                            ui.item.addClass("stop-anim")
+                        }
                     });
                 });
             };
