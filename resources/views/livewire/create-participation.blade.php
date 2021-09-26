@@ -215,9 +215,8 @@
                         <div style="position: relative;" class="participation-price-desc"><p>За участие (
                             <p id="pages">0</p>
                             <p>стр.)</p>
-                            <a href="/collections/{{$collection['id']}}" target="_blank">
                             <span style="bottom: 0; right: -30px;" class="question-mark tooltip"
-                                  title="Строки/страницы считаются на основе единого стиля орформления сборника. Порядок расчета указан здесь ↓">
+                                  title="Cтраницы считаются на основе единого орформления. Каждая страница сверх 28-ми оплачивается в размере 300 руб./стр.">
                                    <svg id="question-circle"
                                         viewBox="0 0 40.12 40.12">
                                         <path
@@ -227,7 +226,7 @@
                                             d="M40.12,20.06A20.06,20.06,0,1,0,20.06,40.12,20.08,20.08,0,0,0,40.12,20.06ZM2,20.06A18.06,18.06,0,1,1,20.06,38.12,18.08,18.08,0,0,1,2,20.06Z"/>
                                     </svg>
                             </span>
-                            </a>
+
                         </div>
                     </div>
                     <div style="display: none" id="print-price" class="participation-price">

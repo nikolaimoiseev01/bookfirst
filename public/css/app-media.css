@@ -151,7 +151,7 @@
     }
 }
 
-@media screen and (max-height: 900px) {
+@media screen and (max-height: 1000px) {
     .account-content {
         margin-bottom: 250px;
     }
