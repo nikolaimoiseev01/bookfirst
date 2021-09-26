@@ -122,7 +122,7 @@
                              class="cover-wrap">
                             <a style="text-align: center;" data-effect="mfp-zoom-in" href="/{{$collection['cover_3d']}}"
                                class="image-link-zoom">
-                                <img style="width: 90%; left: 0; position: inherit;" src="/{{$collection['cover_3d']}}"
+                                <img style="max-width: 210px; padding-left: 10px; position: inherit;" src="/{{$collection['cover_3d']}}"
                                      alt="">
                             </a>
                         </div>

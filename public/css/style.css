@@ -1066,11 +1066,13 @@ form .check-block {
 
 .pass-conf-text-wrap {
     display: flex;
+    align-items: center;
     float: right;
 }
 
 .pass-conf-text-wrap svg {
     width: 20px;
+    height: 20px;
     margin-right: 5px;
 }
 
