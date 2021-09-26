@@ -78,7 +78,7 @@
                         <div class="tab-pane active" id="works">
                             @foreach($participation->participation_work as $work)
                                 <h3>{{$loop->index + 1}}. {{$work->work['title']}}</h3>
-                                <p>{{$work->work['text']}}</p>
+                                <p>{!! nl2br($work->work['text']) !!}</p>
                             @endforeach
                         </div>
 

@@ -138,6 +138,7 @@ class OwnBookController extends Controller
 
 
             $user->notify(new EmailNotification(
+                'Процесс издания книги',
                     $user['name'],
                     "Спешим сообщить, что произошла смена статуса издания Вашей книги: '" . own_book::where('id', $request->own_book_id)->value('title') . "'." .
                     "\nНа текущий момент издание имеет общий статус: '" . own_book_status::where('id', $request->own_book_status_id)->value('status_title') . "'. Всю подробную информацию об издании Вы всегда можете отслеживать на специальной странице издания книги.",
@@ -172,6 +173,7 @@ class OwnBookController extends Controller
 
 
             $user->notify(new EmailNotification(
+                    'Процесс издания книги',
                     $user['name'],
                     "Спешим сообщить, что произошла смена статуса работы по внутреннему блоку Вашей книги: '" . own_book::where('id', $request->own_book_id)->value('title') . "." .
                     "\nНа текущий момент внутренний блок имеет статус: '" . own_book_inside_status::where('id', $request->own_book_inside_status_id)->value('status_title') . "'. Всю подробную информацию об издании Вы всегда можете отслеживать на специальной странице издания книги.",
@@ -225,6 +227,7 @@ class OwnBookController extends Controller
 
 
             $user->notify(new EmailNotification(
+                    'Процесс издания книги',
                     $user['name'],
                     "Спешим сообщить, что произошла смена статуса работы с обложкой по книге: '" . own_book::where('id', $request->own_book_id)->value('title') . "." .
                     "\nНа текущий момент обложка имеет статус: '" . own_book_cover_status::where('id', $request->own_book_cover_status_id)->value('status_title') . "'. Всю подробную информацию об издании Вы всегда можете отслеживать на специальной странице издания книги.",

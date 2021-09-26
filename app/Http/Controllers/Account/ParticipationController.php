@@ -11,6 +11,7 @@ use App\Models\Participation_work;
 use App\Models\Pat_status;
 use App\Models\Printorder;
 use App\Models\User;
+use App\Models\vote;
 use App\Models\Work;
 use App\Notifications\EmailNotification;
 use App\Notifications\ParticipationChange;
@@ -55,6 +56,9 @@ class ParticipationController extends Controller
         $pat_statuses = Pat_status::orderBY('id')->get();
         $chat_id = Chat::where('user_created', Auth::user()->id)->where('collection_id', $request->collection_id)->value('id');
 //      $pre_var_chat = Chat::where('chat_status_id', '<>', 3)->where([['user_created', Auth::user()->id], ['pre_comment_flag', 1]])->first();
+        $voted_to = Participation::where('collection_id', $request->collection_id)
+            ->where('user_id', vote::where('user_id_from', Auth::user()->id)->where('collection_id', $request->collection_id)->value('user_id_to'))
+            ->first();
         return
             view('account.collections.participation.index', [
                 'col_statuses' => $col_statuses,
@@ -63,6 +67,7 @@ class ParticipationController extends Controller
                 'pat_statuses' => $pat_statuses,
                 'printorder' => $printorder,
                 'chat_id' => $chat_id,
+                'voted_to' => $voted_to,
             ]);
 
     }
@@ -168,6 +173,7 @@ class ParticipationController extends Controller
         $user = User::where('id', Auth::user()->id)->first();
 
         $user->notify(new EmailNotification(
+            'Оплата подтвердена!',
             $user['name'],
             "Отлично, вы успешно оплатили заявку в сборике: '".collection::where('id',$collection_id)->value('title').
             "'. Теперь остается ждать издания! Вся информацию по этому сборнику будет по ссылке:",

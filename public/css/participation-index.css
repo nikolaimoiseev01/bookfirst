@@ -254,6 +254,22 @@
     font-size: 21px;
 }
 
+.voting-wrap {
+    padding: 20px 30px;
+    display: flex;
+}
+
+.voting-left {
+    width:35%;
+}
+
+.voting-right {
+    padding-left: 30px;
+    display: flex;
+    width:65%;
+    flex-direction: column;
+}
+
 
 
 

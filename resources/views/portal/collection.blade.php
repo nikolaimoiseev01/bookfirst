@@ -208,7 +208,7 @@
                         </div>
                         <div class="date-block">
                             <h4>{{ Date::parse($collection['col_date2'])->format('j F') }}</h4>
-                            <p>Отправка предвариетльного варианта сборника</p>
+                            <p>Отправка предварительного варианта сборника</p>
                             <span class="question-mark tooltip"
                                   title="До 23:59 МСК указанного дня в вашем личном кабинете будет доступно скачивание предварительного экземпляра сборника, а также форма указания исправлений">
                                    <svg id="question-circle" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg"

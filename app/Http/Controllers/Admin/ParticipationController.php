@@ -48,6 +48,7 @@ class ParticipationController extends Controller
         $collection_id = Participation::where('id', $request->pat_id)->value('collection_id');
 
         $user->notify(new EmailNotification(
+                'Участие в сборинке',
             $user['name'],
             "У Вас сменился статус участия сборнике: " . collection::where('id',$collection_id)->value('title') .
             "'. Новый статус: '" . Pat_status::where('id', $request->pat_status_id)->value('pat_status_title') . "'",

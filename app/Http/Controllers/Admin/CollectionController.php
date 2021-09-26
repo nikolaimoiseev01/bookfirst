@@ -182,6 +182,7 @@ class CollectionController extends Controller
             foreach ($users as $user)
             {
                 $user->notify(new EmailNotification(
+                    'Встречайте книгу на Amazon.com!',
                         $user['name'],
                         "Сборника '" . $request->title . "' успешно появился на Amazon.com!" .
                         "Ссылка на покупку доступна на странице наших сборников:",
@@ -204,10 +205,55 @@ class CollectionController extends Controller
             foreach ($users as $user)
             {
                 $user->notify(new EmailNotification(
+                    'Процесс издания сборника',
                     $user['name'],
                     "Произошла смена этапа издания сборинка: " . $request->title .
                     "'! Сборник сменил свой статус на \"предварительная проверка\", и теперь вы можете проверить предварительный экземпляр на странице участия:",
                     "На страницу участия",
+                        route('homePortal') . "/myaccount/collections/" . $collection->id . "/participation/" . Participation::where([['user_id', $user->id],['collection_id', $collection->id]])->value('id'))
+                );
+
+                \Illuminate\Support\Facades\Notification::send($user, new UserNotification(
+                    'Статус сборника был изменен!',
+                    route('homePortal') . "/myaccount/collections/" . $collection->id . "/participation/" . Participation::where([['user_id', $user->id],['collection_id', $collection->id]])->value('id')
+                ));
+            }
+        }
+
+        if ($request->col_status_id == 3) {
+            $users_from_participation = Participation::where('collection_id', $collection->id)->get('user_id')->toArray();
+            $users = User::whereIn('id', $users_from_participation)->get();
+
+            foreach ($users as $user)
+            {
+                $user->notify(new EmailNotification(
+                        'Процесс издания сборника',
+                        $user['name'],
+                        "Произошла смена этапа издания сборинка: " . $request->title .
+                        "'! В сборнике были учтены все исправления и сейчас начинается печать экземпляров. Обычно это занимает 14 рабочих дней. Как только экземпляры будут напечатаны, Вы получите оповещние об этом по Email. Далее в личном кабинете на странице участия Вы сможете отследить свою посылку.",
+                        "На страницу участия",
+                        route('homePortal') . "/myaccount/collections/" . $collection->id . "/participation/" . Participation::where([['user_id', $user->id],['collection_id', $collection->id]])->value('id'))
+                );
+
+                \Illuminate\Support\Facades\Notification::send($user, new UserNotification(
+                    'Статус сборника был изменен!',
+                    route('homePortal') . "/myaccount/collections/" . $collection->id . "/participation/" . Participation::where([['user_id', $user->id],['collection_id', $collection->id]])->value('id')
+                ));
+            }
+        }
+
+        if ($request->col_status_id == 4) {
+            $users_from_participation = Participation::where('collection_id', $collection->id)->get('user_id')->toArray();
+            $users = User::whereIn('id', $users_from_participation)->get();
+
+            foreach ($users as $user)
+            {
+                $user->notify(new EmailNotification(
+                        'Печатные экземпляры успешно отправлены!',
+                        $user['name'],
+                        "Произошла смена этапа издания сборинка: " . $request->title .
+                        "'! Спешим сообщить, что все печатные экземпляры были успешно отправлены в указанные пункты назначения. На странице участия Вы всегда можете отследить нахождение лично Вашей посылки.",
+                        "На страницу участия",
                         route('homePortal') . "/myaccount/collections/" . $collection->id . "/participation/" . Participation::where([['user_id', $user->id],['collection_id', $collection->id]])->value('id'))
                 );
 

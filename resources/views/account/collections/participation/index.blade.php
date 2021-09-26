@@ -75,7 +75,8 @@
 
     </div>
     {{-- // Общая информация о заявке--}}
-    <a id="chat_button" style="margin-left: 30px; margin-top: 20px; width: 95%; text-align: center; max-width: 1000px;" class="button">Чат по моему изданию</a>
+    <a id="chat_button" style="margin-left: 30px; margin-top: 20px; width: 95%; text-align: center; max-width: 1000px;"
+       class="button">Чат по моему изданию</a>
     <div class="participation-wrap">
         <div id="book_chat" style="display: none; margin: 0 0 30px 0; width: 100%; max-width: 1000px;" class="chat">
             <div style="margin: 0; width: 100%; max-width: 1000px;" class="container">
@@ -254,7 +255,7 @@
 
                 @if ($participation['pat_status_id'] === 1)
                     <div class="no-access">
-                        <span style="font-size: 30px;">После создания или редактирования заявки нам необходимо ее подтвердить.
+                        <span style="font-size: 30px;">После создания или редактирования заявки нам необходимо ее подтвердить (до 3-х рабочих дней).
                             Оплата станет доступна сразу после подтверждения Вашей заявки.
                         </span>
                     </div>
@@ -488,7 +489,7 @@
                     {{$part_all_good}}
                     @endif;">
                         @if ($collection['col_status_id'] <= 2)
-                            Предварительная проверка
+                            Предварительная проверка123{{$voted_to['user_id'] ?? 0}}
                         @else
                             Предварительная проверка завершена!
                         @endif
@@ -498,7 +499,8 @@
                     <div class="no-access">
                         <span>Предварительная проверка сборника станет доступна в указанный период.
                             Все даты издания указаны на
-                            <a style="color: #a0d7cb" href="{{route('collection_page',$collection['id'])}}" class="">странице сборника</a>.
+                            <a style="color: #a0d7cb" href="{{route('collection_page',$collection['id'])}}"
+                               target="_blank" class="">странице сборника</a>.
                         </span>
                     </div>
                 @elseif ($collection['col_status_id'] === 2)
@@ -506,13 +508,14 @@
                         <div>
                             <p style="font-size: 20px;">На данный момент сборник находится на этапе предварительной
                                 проверки. Это означает, что все регистрационные
-                                номера прсвоены и блок сверстан. Сейчас необходимо скачать файл, найти свой блок и
+                                номера присвоены и блок сверстан. Сейчас необходимо скачать файл, найти свой блок и
                                 указать комментарии, что бы вы хотели исправить в своем блоке.
                                 Пожалуйста, укажите страницу исправления, а также описание того, что нужно исправить.
                             </p>
-                            <a style="display: flex; margin-top:20px;" class="button" href="{{$collection['pre_var']}}"
+                            <a style="display: flex; margin-top:20px;" class="button" href="/{{$collection['pre_var']}}"
                                download>
-                                <svg style="width:40px;" data-name="Слой 1" xmlns="http://www.w3.org/2000/svg"
+                                <svg style="height: 40px; width:40px;" data-name="Слой 1"
+                                     xmlns="http://www.w3.org/2000/svg"
                                      viewBox="0 0 404.85 511">
                                     <g id="surface1">
                                         <path
@@ -546,9 +549,10 @@
                                     href="{{route('collection_page',$collection['id'])}}" class="link">здесь</a>.
                             </p>
                             <a style="display: flex; margin-top:20px;" class="button"
-                               href="{{$collection['pre_var']}}"
+                               href="/{{$collection['pre_var']}}"
                                download>
-                                <svg style="width:40px;" data-name="Слой 1" xmlns="http://www.w3.org/2000/svg"
+                                <svg style="height: 40px; width:40px;" data-name="Слой 1"
+                                     xmlns="http://www.w3.org/2000/svg"
                                      viewBox="0 0 404.85 511">
                                     <g id="surface1">
                                         <path
@@ -595,6 +599,115 @@
         </div>
 
         {{-- // БЛОК ПРЕДВАРИТЕЛЬНОЙ ПРОВЕРКИ --}}
+
+        {{-- БЛОК ГОЛОСОВАНИЯ --}}
+        <div class="part"
+
+             style="border-left: 2px
+             @if ($collection['col_status_id'] === 1)
+             {{$part_not_available}}
+             @elseif ($collection['col_status_id'] === 2 && !isset($voted_to['user_id']))
+             {{$part_action_needed}}
+             @else
+             {{$part_all_good}}
+             @endif solid;
+                 border-right: 2px
+             @if ($collection['col_status_id'] === 1)
+             {{$part_not_available}}
+             @elseif ($collection['col_status_id'] === 2 && !isset($voted_to['user_id']))
+             {{$part_action_needed}}
+             @else
+             {{$part_all_good}}
+             @endif solid;">
+            <div style="background:
+             @if ($collection['col_status_id'] === 1)
+            {{$part_not_available}}
+            @elseif ($collection['col_status_id'] === 2 && !isset($voted_to['user_id']))
+            {{$part_action_needed}}
+            @else
+            {{$part_all_good}}
+            @endif" class="line"></div>
+            @if (!isset($voted_to['user_id']))
+                <svg class="circle_status" style="fill:
+             @if ($collection['col_status_id'] === 1)
+                {{$part_not_available}}
+                @elseif ($collection['col_status_id'] === 2 && !isset($voted_to['user_id']))
+                {{$part_action_needed}}
+                @else
+                {{$part_all_good}}
+                @endif" data-name="Слой 1"
+                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496.52 516.53">
+                    <defs>
+                        <style>.cls-1 {
+                                fill: none;
+                                stroke: #000;
+                                stroke-miterlimit: 10;
+                                stroke-width: 14px;
+                            }</style>
+                    </defs>
+                    <path
+                        d="M307,193.9a36.83,36.83,0,0,0,12.6-27.7V142.7a14.72,14.72,0,0,0,14.7-14.7V113.3a14.72,14.72,0,0,0-14.7-14.7H157.45a14.72,14.72,0,0,0-14.7,14.7V128a14.72,14.72,0,0,0,14.7,14.7v23.5a36.83,36.83,0,0,0,12.6,27.7l46.4,40.6v8l-46.4,40.6a36.83,36.83,0,0,0-12.6,27.7v23.5a14.72,14.72,0,0,0-14.7,14.7v14.7a14.72,14.72,0,0,0,14.7,14.7h162.1a14.72,14.72,0,0,0,14.7-14.7V349a14.72,14.72,0,0,0-14.7-14.7V310.8A36.83,36.83,0,0,0,307,283.1l-46.4-40.6v-8Zm-149.5-80.7h162.1v14.7H157.45Zm14.8,29.5h132.6v23.5a22.51,22.51,0,0,1-4.5,13.4H176.75a22.07,22.07,0,0,1-4.5-13.4Zm147.3,221H157.45V349h162.1ZM251,253.6l46.4,40.6a22.55,22.55,0,0,1,7.6,16.6v23.5H172.25V310.8a22,22,0,0,1,7.6-16.6l46.4-40.6a14.64,14.64,0,0,0,5-11.1v-8a14.64,14.64,0,0,0-5-11.1l-33.2-29.1h91.3l-33.2,29.1a14.74,14.74,0,0,0-5.1,11.1v8A14.22,14.22,0,0,0,251,253.6Z"
+                        transform="translate(11.27 33.78)"/>
+                    <path d="M231.15,260.6h14.7v14.7h-14.7Z" transform="translate(11.27 33.78)"/>
+                    <path d="M231.15,290.1h14.7v14.7h-14.7Z" transform="translate(11.27 33.78)"/>
+                    <path class="cls-1" d="M531.26,200.22" transform="translate(11.27 33.78)"/>
+                    <path
+                        d="M465.53,193.88C486.61,335.72,377,460.38,245.19,465.41,128.72,469.86,15.94,379.16,7,253.13-1.7,130,92.07,19.61,217.17,8.48l-19.92,32L211,51.67,266.79,8.38a17.48,17.48,0,0,0-1.88-13.73L203.27-33.78,191.78-20.46l15,15.37C76.05,11-19.5,127.2-10.71,255.29c9.81,143.09,144.82,228.23,257,227.45,89.76-.62,150.58-56.15,161.56-66.52,93.26-88.14,77-213.4,75.16-225.91Z"
+                        transform="translate(11.27 33.78)"/>
+                    <path
+                        d="M456.05,161.93l16.73-6c-2.12-5.53-4.46-11.16-7-16.58l-16.28,7.26C451.81,151.53,454,156.73,456.05,161.93Z"
+                        transform="translate(11.27 33.78)"/>
+                    <path d="M352.8,24.49c-5.47-2.71-11.16-5.31-16.73-7.58l-7,15.92c5.25,2.16,10.49,4.55,15.62,7.15Z"
+                          transform="translate(11.27 33.78)"/>
+                    <path
+                        d="M465.53,193.88l17.5-3.57c-.61-2.86-1.3-5.79-2.06-8.76A228.55,228.55,0,0,0,472.78,156l-16.73,6a231.06,231.06,0,0,1,7.54,23.83C464.3,188.51,464.94,191.22,465.53,193.88Z"
+                        transform="translate(11.27 33.78)"/>
+                    <path
+                        d="M423,103.66l14.17-10.5c-3.68-4.77-7.7-9.43-11.71-13.87L412.12,90.77C415.91,95,419.59,99.33,423,103.66Z"
+                        transform="translate(11.27 33.78)"/>
+                    <path
+                        d="M441.78,131.61l15.61-8.34c-3-5.2-6.14-10.4-9.48-15.38L433,117.31C436,122,439,126.73,441.78,131.61Z"
+                        transform="translate(11.27 33.78)"/>
+                    <path d="M318.79,10.41C312.88,8.46,307,6.73,301.06,5.32L296.6,22.1c5.46,1.41,10.92,2.93,16.5,4.77Z"
+                          transform="translate(11.27 33.78)"/>
+                    <path d="M384.35,43.23c-5-3.58-10.26-6.83-15.39-10L359.6,48c4.79,2.82,9.59,6,14.27,9.21Z"
+                          transform="translate(11.27 33.78)"/>
+                    <path d="M412.67,66.3c-4.34-4.12-9-8.24-13.71-12L387.47,67.49c4.35,3.57,8.7,7.36,12.72,11.15Z"
+                          transform="translate(11.27 33.78)"/>
+                </svg>
+
+            @else
+                <svg id="Capa_1" class="circle_status" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg"
+                     viewBox="0 0 234.15 234.15">
+                    <circle class="cls-11" cx="117.08" cy="117.08" r="114.58"/>
+                    <polyline class="cls-22" points="50.03 111.7 108.85 192.66 184.12 41.49"/>
+                </svg>
+            @endif
+            <div style="
+            @if ($collection['col_status_id'] <= 3)
+            @else
+                box-shadow: 0 0 10px 1px {{$part_all_good}}85;
+            @endif" class="container">
+                <div style="border-bottom: 1px
+                @if ($collection['col_status_id'] <= 3)
+                {{$part_not_available}}
+                @else
+                {{$part_all_good}}
+                @endif solid" class=hero>
+                    <h2 style="color:
+                    @if ($collection['col_status_id'] === 1)
+                    {{$part_not_available}}
+                    @elseif ($collection['col_status_id'] === 2 && !isset($voted_to['user_id']))
+                    {{$part_action_needed}}
+                    @else
+                    {{$part_all_good}}
+                    @endif;">Голосование в конкурсе</h2>
+                </div>
+                    @livewire('vote-block', ['collection_id' => $collection->id])
+            </div>
+        </div>
+
+        {{-- // БЛОК ГОЛОСОВАНИЯ --}}
 
         {{-- БЛОК ОТСЛЕЖИВАНИЯ ПОСЫЛКИ --}}
         <div class="part"
@@ -684,7 +797,8 @@
                     <div class="no-access">
                         <span>Отслеживание станет доступно после отправки сборника в печать.
                             Все даты издания указаны на
-                            <a style="color: #a0d7cb" href="{{route('collection_page',$collection['id'])}}" class="">странице сборника</a>.
+                            <a style="color: #a0d7cb" href="{{route('collection_page',$collection['id'])}}"
+                               target="_blank" class="">странице сборника</a>.
                         </span>
                     </div>
                 @else

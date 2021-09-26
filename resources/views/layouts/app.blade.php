@@ -328,7 +328,7 @@
         Swal.fire({
             title: event.detail.title,
             icon: event.detail.type,
-            html: event.detail.text,
+            html: "<p>" + event.detail.text + "</p>",
             showConfirmButton: false,
         })
         if (event.detail.type === 'success') {

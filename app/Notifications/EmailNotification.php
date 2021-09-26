@@ -20,12 +20,14 @@ class EmailNotification extends Notification
      *
      * @return void
      */
-    public function __construct($user_name, $email_text, $email_button_text, $email_button_link)
+    public function __construct($subject, $user_name, $email_text, $email_button_text, $email_button_link)
     {
+        $this->subject = $subject;
         $this->user_name = $user_name;
         $this->email_text = $email_text;
         $this->email_button_text = $email_button_text;
         $this->email_button_link = $email_button_link;
+
     }
 
     /**
@@ -49,6 +51,7 @@ class EmailNotification extends Notification
     {
         return (new MailMessage)
                     ->greeting('Здравствуйте, ' . $this->user_name . '!')
+                    ->subject($this->subject)
                     ->line($this->email_text)
                     ->action($this->email_button_text, url($this->email_button_link));
     }
