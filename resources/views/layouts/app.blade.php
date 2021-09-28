@@ -414,7 +414,9 @@
 
 <script>
     window.addEventListener('loader', event => {
-        $('#' + event.detail.id).toggle();
+        var button = $('#' + event.detail.id);
+        button.attr("disabled", true);
+        button.toggleClass('button--loading')
     })
 </script>
 

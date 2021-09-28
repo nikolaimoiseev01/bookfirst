@@ -18,7 +18,7 @@
             <div style="margin: 0 20px; display: none;" wire:loading wire:target="file"><p style="font-size: 22px;">Файл загружается</p></div>
         </div>
 
-    <a wire:click.prevent="read_doc" class="button" >Распознать</a>
+    <a wire:click.prevent="read_doc" id="start_doc_scan" class="button" >Распознать</a>
 
     @if (count($works) > 0)
         <h2 style="font-size: 37px; margin-top: 20px;">Вот, что мы нашли:</h2>
@@ -68,9 +68,9 @@
             @endforeach
 
         </div>
+
         <a wire:click.prevent="save_all_work()" class="button">Сохранить найденные произведения</a>
 
-        <a style="display:none;" id="back" href="{{Session('back_after_add')}}" class="fast-load">Кнопка назад</a>
     @endif
 
     <script>

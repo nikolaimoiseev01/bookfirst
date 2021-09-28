@@ -30,6 +30,10 @@ class CreateWorkFromDoc extends Component
 
     public function read_doc()
     {
+        $this->dispatchBrowserEvent('loader', [
+            'id' => 'start_doc_scan',
+        ]);
+
         if (is_null($this->file)) {
             $this->dispatchBrowserEvent('swal:modal', [
                 'type' => 'error',
@@ -37,6 +41,7 @@ class CreateWorkFromDoc extends Component
                 'text' => 'Пожалуйста, укажите файл для анализа',
             ]);
         } else {
+
             $source = storage_path('app/livewire-tmp/' . $this->file->getfilename());
             $works[] = array();
             $objReader = IOFactory::createReader('Word2007');
@@ -82,6 +87,10 @@ class CreateWorkFromDoc extends Component
             $this->dispatchBrowserEvent('works_stat');
             File::delete(storage_path('app/livewire-tmp/' . $this->file->getfilename()));
         }
+
+//        $this->dispatchBrowserEvent('loader', [
+//            'id' => 'start_doc_scan',
+//        ]);
     }
 
 
