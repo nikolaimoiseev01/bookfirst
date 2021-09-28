@@ -11,6 +11,7 @@ use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\Account\ParticipationController;
 use App\Http\Controllers\Portal\CollectionController;
 use App\Http\Controllers\Portal\PortalController;
+use App\Http\Controllers\PaymentController;
 
 // ---------  Регистрация --------- //
 Auth::routes(['verify' => true]);
@@ -47,6 +48,14 @@ Route::middleware([])->prefix('/')->group(function () {
 
 });
 // ----------------------------------------------
+
+// ---------  ОПЛАТА --------- //
+Route::match(['POST', 'GET'], '/payments/callback', [PaymentController::class, 'callback'])->name('payment.callback');
+Route::post('/payments/create', [PaymentController::class, 'create'])->name('payment.create');
+
+// ---------  // ОПЛАТА --------- //
+
+
 
 // ---------  ЛИЧНЫЙ КАБИНЕТ --------- //
 

@@ -1,4 +1,5 @@
 /node_modules
+/public/ngrok.exe
 /public/hot
 /public/admin_files
 /public/storage

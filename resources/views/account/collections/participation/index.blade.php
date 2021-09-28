@@ -267,12 +267,16 @@
                             <p>Отлично, Ваша заявка подтверждена! Для включения Вас в сборник необходимо произвести
                                 оплату.</p>
                             <form style="display:inline-block"
-                                  action="{{ route('pay_for_participation',$participation['id']) }}" method="POST"
+                                  action="{{ route('payment.create') }}" method="POST"
                                   enctype="multipart/form-data">
                                 @csrf
                                 <input value="{{$participation['id']}}" type="text" name="pat_id"
                                        style="display:none" class="form-control"
                                        id="pat_id">
+                                Сумма:
+                                <input type="number" name="amount"
+                                        class="form-control"
+                                       id="amount">
                                 <button id="btn-submit" type="submit" style="height: fit-content; max-width:250px;"
                                         class="pay-button button">
                                     Оплатить

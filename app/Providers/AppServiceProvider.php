@@ -6,6 +6,7 @@ use App\Models\Chat;
 use App\Models\Collection;
 use App\Models\own_book;
 use App\Models\Participation;
+use App\Service\PaymentService;
 use Carbon\Carbon;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
@@ -22,6 +23,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app->bind(PaymentService::class, function($app) {
+           return new PaymentService();
+        });
     }
 
     /**
