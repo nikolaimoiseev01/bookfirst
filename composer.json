@@ -25,7 +25,8 @@
         "livewire/livewire": "^2.4",
         "phpoffice/phpword": "dev-master",
         "spatie/laravel-permission": "^4.0",
-        "yoomoney/yookassa-sdk-php": "^2.1"
+        "yoomoney/yookassa-sdk-php": "^2.1",
+      "ext-curl": "*"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

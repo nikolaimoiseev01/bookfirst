@@ -267,24 +267,44 @@
                             <p>Отлично, Ваша заявка подтверждена! Для включения Вас в сборник необходимо произвести
                                 оплату.</p>
                             <form style="display:inline-block"
-                                  action="{{ route('payment.create') }}" method="POST"
+                                  action="{{ route('payment.create_part_payment', [$participation['id'], $participation['total_price']])}}" method="POST"
                                   enctype="multipart/form-data">
                                 @csrf
                                 <input value="{{$participation['id']}}" type="text" name="pat_id"
                                        style="display:none" class="form-control"
                                        id="pat_id">
-                                Сумма:
-                                <input type="number" name="amount"
-                                        class="form-control"
-                                       id="amount">
+
                                 <button id="btn-submit" type="submit" style="height: fit-content; max-width:250px;"
                                         class="pay-button button">
-                                    Оплатить
+                                    Оплатить {{$participation['total_price']}} руб.
                                 </button>
                             </form>
+
+
+{{--                            <div id="payment-form"></div>--}}
+{{--                            <span id="yookassa_token" style="display: none;" data-id="{{$yookassa_token}}"></span>--}}
+
+
+
+{{--                            <script src="https://yookassa.ru/checkout-widget/v1/checkout-widget.js"></script>--}}
+{{--                            <script>--}}
+{{--                                //Инициализация виджета. Все параметры обязательные.--}}
+{{--                                var token = $('#yookassa_token').attr('data-id');--}}
+
+{{--                                const checkout = new window.YooMoneyCheckoutWidget({--}}
+{{--                                    confirmation_token: token, //Токен, который перед проведением оплаты нужно получить от ЮKassa--}}
+{{--                                    return_url: 'https://example.com/', //Ссылка на страницу завершения оплаты, это может быть любая ваша страница--}}
+{{--                                    error_callback: function(error) {--}}
+{{--                                        console.log(error)--}}
+{{--                                    }--}}
+{{--                                });--}}
+
+{{--                                //Отображение платежной формы в контейнере--}}
+{{--                                checkout.render('payment-form');--}}
+{{--                            </script>--}}
                         </div>
 
-                        <div style="padding: 10px; width:90%;" class="participation-outputs">
+                        <div style="padding: 10px; width:50%;" class="participation-outputs">
                             <div class="prices_inputs" style="display: flex;">
                                 <div class="participation-price">
                                     <h1 style="font-size: 38px;">{{$participation['part_price']}} руб.</h1>
@@ -831,4 +851,5 @@
             });
         });
     </script>
+
 @endsection

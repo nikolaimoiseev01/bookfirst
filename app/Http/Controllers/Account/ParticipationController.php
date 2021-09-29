@@ -20,6 +20,7 @@ use App\Rules\SameParticipation;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 
 class ParticipationController extends Controller
 {
@@ -49,6 +50,30 @@ class ParticipationController extends Controller
 
     public function index(Request $request)
     {
+
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'https://api.yookassa.ru/v3/payments/');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, "{\n        \"amount\": {\n          \"value\": \"2.00\",\n          \"currency\": \"RUB\"\n        },\n        \"confirmation\": {\n          \"type\": \"embedded\"\n        },\n        \"capture\": true,\n        \"description\": \"Заказ №72\"\n      }");
+
+        $headers = array();
+        $headers[] = 'Content-Type: application/json';
+        $headers[] = 'Authorization: Basic '. base64_encode("838224:test_Ld6d87_Skm4TcGQkDiAW-V0mE3XyjrAfE3E9SK6iS0U");
+        $headers[] = 'Idempotence-Key: Basic '. uniqid('', true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+        $result = curl_exec($ch);
+        if (curl_errno($ch)) {
+            echo 'Error:' . curl_error($ch);
+        }
+        curl_close($ch);
+        $response = json_decode($result);
+        $yookassa_token = $response->confirmation->confirmation_token;
+
+
+
         $participation = Participation::where('user_id', Auth::user()->id)->where('collection_id', $request->collection_id)->first() ?? array('pat_status_id' => 0);
         $printorder = Printorder::where('id', $participation['printorder_id'] ?? 1)->first() ?? 0;
         $collection = Collection::orderBY('id')->find($request->collection_id);
@@ -68,6 +93,7 @@ class ParticipationController extends Controller
                 'printorder' => $printorder,
                 'chat_id' => $chat_id,
                 'voted_to' => $voted_to,
+                'yookassa_token' => $yookassa_token,
             ]);
 
     }
@@ -126,10 +152,10 @@ class ParticipationController extends Controller
     public function edit(Request $request)
     {
         $collection = Collection::orderBY('id')->find($request->collection_id);
-        $participation = Participation::orderBY('id')->where('id',$request->participation_id)->first();
-        $printorder = Printorder::orderBY('id')->where('id',$request->printorder_id)->first();
+        $participation = Participation::orderBY('id')->where('id', $request->participation_id)->first();
+        $printorder = Printorder::orderBY('id')->where('id', $request->printorder_id)->first();
         $user_works = Work::where('id', Auth::user()->id)->get();
-        $works_already_in  = Participation_work::where('participation_id', $request->participation_id)->get();
+        $works_already_in = Participation_work::where('participation_id', $request->participation_id)->get();
         $print_check = 3;
         return view('account.collections.participation.edit', [
             'participation' => $participation,
@@ -175,10 +201,10 @@ class ParticipationController extends Controller
         $user->notify(new EmailNotification(
             'Оплата подтвердена!',
             $user['name'],
-            "Отлично, вы успешно оплатили заявку в сборике: '".collection::where('id',$collection_id)->value('title').
+            "Отлично, вы успешно оплатили заявку в сборике: '" . collection::where('id', $collection_id)->value('title') .
             "'. Теперь остается ждать издания! Вся информацию по этому сборнику будет по ссылке:",
             "Страница сборника",
-            route('homePortal') . "/collection/".$collection_id."/participation/"));
+            route('homePortal') . "/collection/" . $collection_id . "/participation/"));
 
         return redirect()->back();
 

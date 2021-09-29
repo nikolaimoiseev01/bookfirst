@@ -51,7 +51,7 @@ Route::middleware([])->prefix('/')->group(function () {
 
 // ---------  ОПЛАТА --------- //
 Route::match(['POST', 'GET'], '/payments/callback', [PaymentController::class, 'callback'])->name('payment.callback');
-Route::post('/payments/create', [PaymentController::class, 'create'])->name('payment.create');
+Route::post('/payments/create_part_payment/part_id={participation_id}/amount={amount}', [PaymentController::class, 'create_part_payment'])->name('payment.create_part_payment');
 
 // ---------  // ОПЛАТА --------- //
 

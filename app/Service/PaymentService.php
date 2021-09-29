@@ -44,12 +44,13 @@ class PaymentService
                 ),
                 'metadata' => [
                   'transaction_id' => $options['transaction_id'],
+                  'participation_id' => $options['participation_id'],
+                  'url_redirect' => $url_redirect,
                 ],
                 'capture' => true,
                 'description' => $description,
             ),
-            uniqid('', true)
-        );
+            uniqid('', true));
 
         return $payment->getConfirmation()->getConfirmationUrl();
 
