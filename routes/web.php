@@ -105,7 +105,7 @@ Route::middleware(['verified'])->prefix('myaccount')->group(function () {
 // ---------  Панель Админа --------- //
 
 Route::middleware(['role:admin'])->prefix('admin_panel')->group(function () {
-    Route::get('/collections', [App\Http\Controllers\Admin\CollectionController::class, 'index'])->name('homeAdmin');
+    Route::get('/col', [App\Http\Controllers\Admin\CollectionController::class, 'index'])->name('homeAdmin');
     Route::get('/collections/closed', [App\Http\Controllers\Admin\CollectionController::class, 'closed_collections'])->name('closed_collections');
     Route::get('/own_books', [App\Http\Controllers\Admin\OwnBookController::class, 'index'])->name('own_books_index');
     Route::get('/own_books/closed', [App\Http\Controllers\Admin\OwnBookController::class, 'closed_own_books'])->name('closed_own_books');
