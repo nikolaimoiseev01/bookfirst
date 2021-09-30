@@ -44,7 +44,9 @@ class PaymentService
                 ),
                 'metadata' => [
                   'transaction_id' => $options['transaction_id'],
-                  'participation_id' => $options['participation_id'],
+                  'participation_id' => $options['participation_id'] ?? null,
+                  'own_book_id' => $options['own_book_id'] ?? null,
+                  'own_book_payment_type' => $options['own_book_payment_type'] ?? null,
                   'url_redirect' => $url_redirect,
                 ],
                 'capture' => true,

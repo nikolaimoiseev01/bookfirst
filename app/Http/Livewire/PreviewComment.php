@@ -123,10 +123,7 @@ class PreviewComment extends Component
     public function change_inside_status($status_id)
     {
 
-        $this->dispatchBrowserEvent('swal:confirm', [
-            'type' => 'success',
-            'title' => 'Внутренний блок утвержден!',
-        ]);
+
 
         own_book::where('id', $this->own_book_id)->update([
             'own_book_inside_status_id' => $status_id,
@@ -169,11 +166,6 @@ class PreviewComment extends Component
     public function change_cover_status($status_id)
     {
 
-
-        $this->dispatchBrowserEvent('swal:confirm', [
-            'type' => 'success',
-            'title' => 'Внутренний блок утвержден!',
-        ]);
 
         own_book::where('id', $this->own_book_id)->update([
             'own_book_cover_status_id' => $status_id,

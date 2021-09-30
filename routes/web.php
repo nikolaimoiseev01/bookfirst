@@ -52,7 +52,7 @@ Route::middleware([])->prefix('/')->group(function () {
 // ---------  ОПЛАТА --------- //
 Route::match(['POST', 'GET'], '/payments/callback', [PaymentController::class, 'callback'])->name('payment.callback');
 Route::post('/payments/create_part_payment/part_id={participation_id}/amount={amount}', [PaymentController::class, 'create_part_payment'])->name('payment.create_part_payment');
-
+Route::post('/payments/create_own_book_payment/own_book_id={own_book_id}/payment_type={payment_type}/amount={amount}', [PaymentController::class, 'create_own_book_payment'])->name('payment.create_own_book_payment');
 // ---------  // ОПЛАТА --------- //
 
 

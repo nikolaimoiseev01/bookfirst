@@ -192,7 +192,7 @@ class CreateParticipation extends Component
 
             $collection_name = Collection::where('id', $this->collection_id)->value('title');
 
-            Notification::route('telegram', '649609693')
+            Notification::route('telegram', '-506622812')
                 ->notify(new new_participation($collection_name, $this->total_price, $this->pages, $this->print_needed));
 
 

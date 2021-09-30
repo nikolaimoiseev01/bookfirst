@@ -18,6 +18,7 @@ class CreateTransactionsTable extends Migration
             $table->bigInteger('user_id');
             $table->bigInteger('participation_id')->nullable();
             $table->bigInteger('own_book_id')->nullable();
+            $table->string('own_book_payment_type')->nullable();
             $table->decimal('amount', 10, 2)->nullable();
             $table->string('description', 255)->nullable();
             $table->enum('status', ['CREATED', 'FAILED', 'CONFIRMED'])->default('CREATED');

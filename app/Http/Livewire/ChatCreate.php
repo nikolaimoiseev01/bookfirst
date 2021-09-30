@@ -85,7 +85,7 @@ class ChatCreate extends Component
 
 
         if (Auth::user()->id <> 2) {
-            Notification::route('telegram', '649609693')
+            Notification::route('telegram', '-506622812')
                 ->notify(new new_chat(Auth::user()->name, Auth::user()->surname, $this->chat_title, $this->text));
         }
 

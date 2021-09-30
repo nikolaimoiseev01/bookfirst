@@ -330,7 +330,7 @@ class CreateOwnBook extends Component
             // ------------------------------------
 
 
-            Notification::route('telegram', '649609693')
+            Notification::route('telegram', '-506622812')
                 ->notify(new new_own_book(Auth::user()->name . ' ' . Auth::user()->surname, $this->author_name, $this->book_title, $this->text_check_price + $this->text_design_price + 300, $this->cover_price, $this->print_price, $this->promo_price));
 
 
@@ -338,7 +338,7 @@ class CreateOwnBook extends Component
             session()->flash('alert_type', 'success');
             session()->flash('alert_title', 'Книга успешно создана!');
             session()->flash('alert_text', 'На этой странице отображается весь процесс издания Вашей книги: оплата, предварительные материалы, отслеживание книги после печати и т.д.');
-            return redirect('/myaccount/own_books/' . $new_own_book->id . '/book_page');
+            return redirect('/myaccount/mybooks/' . $new_own_book->id . '/book_page');
 
         }
     }

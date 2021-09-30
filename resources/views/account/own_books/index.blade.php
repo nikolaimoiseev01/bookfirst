@@ -28,8 +28,8 @@
 
             <div style="flex-wrap: wrap;" class="container">
                 <div class="img-wrap">
-                    <img style="width: 100px !important; margin-right: 20px;"
-                         src="@if($own_book->cover_3d != '') /{{$own_book->cover_3d}}@else /img/no_cover.png @endif"
+                    <img style="border-radius: 9px; width: 100px !important; margin-right: 20px;"
+                         src="@if($own_book->cover_2d != '') /{{$own_book->cover_2d}}@else /img/no_cover.png @endif"
                          alt="">
                 </div>
                 <div class="right-wrap">
@@ -37,7 +37,7 @@
                     <div style="align-items: flex-start;" class="info">
                         <p style="margin-bottom:0;"><b>Общий статус:</b> {{$own_book->own_book_status['status_title']}}</p>
                         <p style="margin-bottom:0;"><b>Статус обложки:</b> {{$own_book->own_book_cover_status['status_title']}}</p>
-                        <p><b>Статус ВБ:</b> {{$own_book->own_book_inside_status['status_title']}}</p>
+                        <p style="margin-bottom:5px;"><b>Статус ВБ:</b> {{$own_book->own_book_inside_status['status_title']}}</p>
                     </div>
                 </div>
                 <div style="flex-basis: 100%; width: 1px;" class="book-links">

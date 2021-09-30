@@ -37,6 +37,9 @@ class CreateOwnBooksTable extends Migration
             $table->bigInteger('promo_price')->nullable();
             $table->bigInteger('total_price')->nullable();
 
+            $table->dateTime('paid_at_without_print')->nullable();
+            $table->dateTime('paid_at_print_only')->nullable();
+
             $table->string('old_author_email')->nullable();
             $table->string('own_book_desc')->nullable();
             $table->string('amazon_link')->nullable();

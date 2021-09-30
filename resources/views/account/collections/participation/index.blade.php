@@ -267,7 +267,8 @@
                             <p>Отлично, Ваша заявка подтверждена! Для включения Вас в сборник необходимо произвести
                                 оплату.</p>
                             <form style="display:inline-block"
-                                  action="{{ route('payment.create_part_payment', [$participation['id'], $participation['total_price']])}}" method="POST"
+                                  action="{{ route('payment.create_part_payment', [$participation['id'], $participation['total_price']])}}"
+                                  method="POST"
                                   enctype="multipart/form-data">
                                 @csrf
                                 <input value="{{$participation['id']}}" type="text" name="pat_id"
@@ -280,23 +281,29 @@
                                 </button>
                             </form>
 
-
 {{--                            <div id="payment-form"></div>--}}
 {{--                            <span id="yookassa_token" style="display: none;" data-id="{{$yookassa_token}}"></span>--}}
-
-
-
 {{--                            <script src="https://yookassa.ru/checkout-widget/v1/checkout-widget.js"></script>--}}
 {{--                            <script>--}}
 {{--                                //Инициализация виджета. Все параметры обязательные.--}}
 {{--                                var token = $('#yookassa_token').attr('data-id');--}}
 
+{{--                                function make_redirect() {--}}
+{{--                                    @php--}}
+{{--                                        session()->flash('show_modal', 'yes');--}}
+{{--                                        session()->flash('alert_type', 'success');--}}
+{{--                                        session()->flash('alert_title', 'Оплата успешно принята!');--}}
+{{--                                    @endphp--}}
+{{--                                        return window.location.href;--}}
+{{--                                }--}}
+
 {{--                                const checkout = new window.YooMoneyCheckoutWidget({--}}
 {{--                                    confirmation_token: token, //Токен, который перед проведением оплаты нужно получить от ЮKassa--}}
-{{--                                    return_url: 'https://example.com/', //Ссылка на страницу завершения оплаты, это может быть любая ваша страница--}}
-{{--                                    error_callback: function(error) {--}}
+{{--                                    return_url: make_redirect(), //Ссылка на страницу завершения оплаты, это может быть любая ваша страница--}}
+{{--                                    error_callback: function (error) {--}}
 {{--                                        console.log(error)--}}
-{{--                                    }--}}
+{{--                                    },--}}
+
 {{--                                });--}}
 
 {{--                                //Отображение платежной формы в контейнере--}}
@@ -513,7 +520,7 @@
                     {{$part_all_good}}
                     @endif;">
                         @if ($collection['col_status_id'] <= 2)
-                            Предварительная проверка123{{$voted_to['user_id'] ?? 0}}
+                            Предварительная проверка
                         @else
                             Предварительная проверка завершена!
                         @endif
@@ -727,7 +734,7 @@
                     {{$part_all_good}}
                     @endif;">Голосование в конкурсе</h2>
                 </div>
-                    @livewire('vote-block', ['collection_id' => $collection->id])
+                @livewire('vote-block', ['collection_id' => $collection->id])
             </div>
         </div>
 

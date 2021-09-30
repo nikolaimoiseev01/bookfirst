@@ -268,10 +268,10 @@
                         <div
                             style="width:50%; flex-direction: column; display: flex; justify-content: center; text-align: center;"
                             class="payment-info">
-                            <p style="padding: 15px;">Отлично, Ваша заявка подтверждена!Для начала издания необходимо
+                            <p style="padding: 15px;">Отлично, Ваша заявка подтверждена! Для начала издания необходимо
                                 произвести оплату.</p>
                             <form style="display:inline-block"
-                                  action="{{ route('pay_for_own_book',$own_book['id']) }}" method="POST"
+                                  action="{{ route('payment.create_own_book_payment',[$own_book['id'], 'Without_Print', $own_book['total_price'] - $own_book['print_price']]) }}" method="POST"
                                   enctype="multipart/form-data">
                                 @csrf
                                 <input value="{{$own_book['id']}}" type="text" name="own_book_status_id"
@@ -279,7 +279,7 @@
                                        id="own_book_status_id">
                                 <button id="btn-submit" type="submit" style="height: fit-content; max-width:250px;"
                                         class="pay-button button">
-                                    Оплатить
+                                    Оплатить {{$own_book['total_price'] - $own_book['print_price']}} руб.
                                 </button>
                             </form>
                         </div>
@@ -922,13 +922,12 @@
                         </span>
 
                             <form style="display:inline-block"
-                                  action="{{ route('pay_for_own_book_print',$own_book['id']) }}" method="POST"
+                                  action="{{ route('payment.create_own_book_payment',[$own_book['id'], 'Print_only', $own_book['print_price']]) }}" method="POST"
                                   enctype="multipart/form-data">
                                 @csrf
-
                                 <button id="btn-submit" type="submit" style="height: fit-content; max-width:250px;"
                                         class="pay-button button">
-                                    Оплатить
+                                    Оплатить {{$own_book['print_price']}} руб.
                                 </button>
                             </form>
                             <a name="create_form" id="create_form" class="show-hide link">Изменить заказ</a>

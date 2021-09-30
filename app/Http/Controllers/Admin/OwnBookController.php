@@ -83,6 +83,7 @@ class OwnBookController extends Controller
 
 
             $user->notify(new EmailNotification(
+                'Книга появилась на Amazon.com!',
                     $user['name'],
                     "Спешим сообщить, что Ваша книга успешно появилась на Amazon.com!" .
                     "Все ссылки можно посомтреть на странице наших изданных книг:",
@@ -112,7 +113,8 @@ class OwnBookController extends Controller
 
         $this->own_book = own_book::where('id', $request->own_book_id)->first();
         $printorder = Printorder::where('own_book_id', $request->own_book_id)->first();
-        if (($printorder['track_number'] ?? 'no_print' === null && $this->own_book['own_book_status_id'] == 6 && $request->own_book_status_id == 9)) {
+
+        if (($printorder['track_number'] === null && $this->own_book['own_book_status_id'] === 6 && intval($request->own_book_status_id) === 9)) {
             session()->flash('alert_type', 'error');
             session()->flash('alert_title', 'Статус не заменен!');
             session()->flash('alert_text', 'Не могу завершить печать, когда трек номер пустой');

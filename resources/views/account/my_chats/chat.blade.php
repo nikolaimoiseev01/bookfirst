@@ -20,6 +20,10 @@
     <a href="/myaccount/collections/{{$chat['collection_id']}}/participation/{{\App\Models\Participation::where('collection_id', $chat['collection_id'])->where('user_id', Auth::user()->id)->value('id')}}" style="margin-bottom: 20px;" class="button">На страницу моего участия</a>
     @endif
 
+    @if ($chat['own_book_id'] > 0)
+        <a href="/myaccount/mybooks/{{$chat['own_book_id']}}/book_page" style="margin-bottom: 20px;" class="button">Страница издания книги</a>
+    @endif
+
     <div class="chat">
         <div class="container">
             @livewire('chat',['chat_id'=>$chat['id']])
