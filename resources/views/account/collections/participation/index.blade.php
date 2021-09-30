@@ -101,7 +101,7 @@
             <div style="box-shadow: 0 0 10px 1px {{$part_all_good}}85;" class="container">
                 <div style="border-bottom: 1px #47AF98 solid" class=hero>
                     <h2 style="color: {{$part_all_good}};">Моя заявка</h2>
-                    <a href="{{route('participation_edit', [
+                    <a style="box-shadow: none; font-size: 16px; margin-left: auto; margin-right: 25px;" href="{{route('participation_edit', [
                  'participation_id'=>$participation['id'],
                  'collection_id' => $collection['id']
                  ])
@@ -281,34 +281,34 @@
                                 </button>
                             </form>
 
-{{--                            <div id="payment-form"></div>--}}
-{{--                            <span id="yookassa_token" style="display: none;" data-id="{{$yookassa_token}}"></span>--}}
-{{--                            <script src="https://yookassa.ru/checkout-widget/v1/checkout-widget.js"></script>--}}
-{{--                            <script>--}}
-{{--                                //Инициализация виджета. Все параметры обязательные.--}}
-{{--                                var token = $('#yookassa_token').attr('data-id');--}}
+                            {{--                            <div id="payment-form"></div>--}}
+                            {{--                            <span id="yookassa_token" style="display: none;" data-id="{{$yookassa_token}}"></span>--}}
+                            {{--                            <script src="https://yookassa.ru/checkout-widget/v1/checkout-widget.js"></script>--}}
+                            {{--                            <script>--}}
+                            {{--                                //Инициализация виджета. Все параметры обязательные.--}}
+                            {{--                                var token = $('#yookassa_token').attr('data-id');--}}
 
-{{--                                function make_redirect() {--}}
-{{--                                    @php--}}
-{{--                                        session()->flash('show_modal', 'yes');--}}
-{{--                                        session()->flash('alert_type', 'success');--}}
-{{--                                        session()->flash('alert_title', 'Оплата успешно принята!');--}}
-{{--                                    @endphp--}}
-{{--                                        return window.location.href;--}}
-{{--                                }--}}
+                            {{--                                function make_redirect() {--}}
+                            {{--                                    @php--}}
+                            {{--                                        session()->flash('show_modal', 'yes');--}}
+                            {{--                                        session()->flash('alert_type', 'success');--}}
+                            {{--                                        session()->flash('alert_title', 'Оплата успешно принята!');--}}
+                            {{--                                    @endphp--}}
+                            {{--                                        return window.location.href;--}}
+                            {{--                                }--}}
 
-{{--                                const checkout = new window.YooMoneyCheckoutWidget({--}}
-{{--                                    confirmation_token: token, //Токен, который перед проведением оплаты нужно получить от ЮKassa--}}
-{{--                                    return_url: make_redirect(), //Ссылка на страницу завершения оплаты, это может быть любая ваша страница--}}
-{{--                                    error_callback: function (error) {--}}
-{{--                                        console.log(error)--}}
-{{--                                    },--}}
+                            {{--                                const checkout = new window.YooMoneyCheckoutWidget({--}}
+                            {{--                                    confirmation_token: token, //Токен, который перед проведением оплаты нужно получить от ЮKassa--}}
+                            {{--                                    return_url: make_redirect(), //Ссылка на страницу завершения оплаты, это может быть любая ваша страница--}}
+                            {{--                                    error_callback: function (error) {--}}
+                            {{--                                        console.log(error)--}}
+                            {{--                                    },--}}
 
-{{--                                });--}}
+                            {{--                                });--}}
 
-{{--                                //Отображение платежной формы в контейнере--}}
-{{--                                checkout.render('payment-form');--}}
-{{--                            </script>--}}
+                            {{--                                //Отображение платежной формы в контейнере--}}
+                            {{--                                checkout.render('payment-form');--}}
+                            {{--                            </script>--}}
                         </div>
 
                         <div style="padding: 10px; width:50%;" class="participation-outputs">
@@ -824,21 +824,26 @@
                     {{$part_all_good}}
                     @endif;">Отслеживание сборника</h2>
                 </div>
+
                 @if($collection['col_status_id'] <= 3)
                     <div class="no-access">
-                        <span>Отслеживание станет доступно после отправки сборника в печать.
+                        <span>Отслеживание станет доступно после отправки печатных экземпляров авторам.
                             Все даты издания указаны на
                             <a style="color: #a0d7cb" href="{{route('collection_page',$collection['id'])}}"
                                target="_blank" class="">странице сборника</a>.
                         </span>
                     </div>
-                @else
+                @elseif ($participation['printorder_id'] <> 0)
                     <div class="no-access">
                         <p>Сборник успешно отправлен всем авторам! Вы можете отследить свою доставку по
-                            номеру: {{$participation->printorder['track_number']}}.</p>
+                            номеру: {{$participation->printorder['track_number'] ?? "ссылка не найдена"}}.</p>
                         <a target="_blank"
-                           href="https://www.pochta.ru/tracking#{{$participation->printorder['track_number']}}"
-                           class="button">Отследить</a>
+                           href="https://www.pochta.ru/tracking#{{$participation->printorder['track_number'] ?? "ссылка не найдена"}}"
+                           class="@if ($participation->printorder['track_number'] ?? 0 <> 0) @else amazon_link_error @endif button">Отследить</a>
+                    </div>
+                @else
+                    <div class="no-access">
+                        Вы не создавали заказ печатных экземпляров.
                     </div>
                 @endif
             </div>
@@ -857,6 +862,18 @@
                 }
             });
         });
+    </script>
+
+    <script>
+        $('.amazon_link_error').on('click', function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Упс, ссылка указана неверно.',
+                icon: 'error',
+                html: '<p>Пожалуйста, напишите нам в чате (наверху этой страницы), и мы быстро решим проблему!</p>',
+                showConfirmButton: false,
+            })
+        })
     </script>
 
 @endsection

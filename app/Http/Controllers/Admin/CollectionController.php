@@ -266,7 +266,7 @@ class CollectionController extends Controller
 
         $collection->save();
         session()->flash('success', 'change_printorder');
-        session()->flash('alert_type', 'sucсess');
+        session()->flash('alert_type', 'success');
         session()->flash('alert_title', 'Сборник успешно обновлен!');
         return redirect()->back();
     }

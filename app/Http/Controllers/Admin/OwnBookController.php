@@ -35,7 +35,7 @@ class OwnBookController extends Controller
 
     public function closed_own_books()
     {
-        $own_books = own_book::orderBy('created_at')->where('own_book_status_id', 9)->paginate(5);
+        $own_books = own_book::orderBy('created_at', 'desc')->where('own_book_status_id', 9)->paginate(5);
         return view('admin.own_books.closed', [
             'own_books' => $own_books,
         ]);

@@ -258,7 +258,7 @@
         </div>
 
     </div>
-    <button type="submit" id="save_form" class="button">Отправить заявку</button>
+    <button type="submit" id="save_form" class="button">Сохранить заявку</button>
 </form>
 
 <a style="display:none;" id="go-to-part-page" class="fast-load">Главная</a>

@@ -114,7 +114,7 @@
                                 </div>
 
                                 <div class="card-footer">
-                                    <button type="submit" class="btn btn-primary">Обновить</button>
+                                    <button type="submit" class="save_collection btn btn-primary">Обновить</button>
                                 </div>
                             </form>
 

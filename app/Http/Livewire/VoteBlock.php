@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Collection;
 use App\Models\Participation;
 use App\Models\vote;
 use Illuminate\Support\Facades\Auth;
@@ -12,6 +13,7 @@ class VoteBlock extends Component
     public $vote_to;
     public $voted_to;
     public $collection_id;
+    public $collection;
     public $participants;
 
     public function render()
@@ -19,6 +21,7 @@ class VoteBlock extends Component
         return view('livewire.vote-block', [
             'participants' => $this->participants,
             'voted_to' => $this->voted_to,
+            'collection' => $this->collection,
         ]);
 
     }
@@ -26,7 +29,8 @@ class VoteBlock extends Component
     public function mount($collection_id)
     {
         $this->collection_id = $collection_id;
-        $this->participants = Participation::where('collection_id', $this->collection_id)->get();
+        $this->collection = Collection::where('id', $collection_id)->first();
+        $this->participants = Participation::where('collection_id', $this->collection_id)->where('user_id', '<>', Auth::user()->id)->get();
         $this->voted_to = Participation::where('collection_id', $this->collection_id)
             ->where('user_id', vote::where('user_id_from', Auth::user()->id)->where('collection_id', $this->collection_id)->value('user_id_to'))
             ->first();
