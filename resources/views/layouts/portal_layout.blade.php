@@ -223,7 +223,10 @@
 
 @if(Auth::user()->id ?? 0 > 0)
 @else
+
     <script>
+
+
         $(".log_check").click(function (event) {
             event.preventDefault();
             Swal.fire({

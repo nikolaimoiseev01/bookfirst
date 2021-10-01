@@ -59,7 +59,7 @@ class PortalController extends Controller
 
 
     public function own_books() {
-        $own_books = own_book::orderBY('id', 'desc')->paginate(9);
+        $own_books = own_book::where('own_book_status_id', 9)->where('promo_type', 2)->orWhere('old_author_email', "<>", "")->orderBY('id', 'desc')->paginate(9);
         return view('portal.own_books', [
             'own_books' => $own_books,
             'own_book_input_search' => 'no_search',

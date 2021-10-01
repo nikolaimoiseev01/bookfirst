@@ -50,9 +50,10 @@ class ParticipationController extends Controller
         $user->notify(new EmailNotification(
                 'Участие в сборинке',
             $user['name'],
-            "У Вас сменился статус участия сборнике: " . collection::where('id',$collection_id)->value('title') .
-            "'. Новый статус: '" . Pat_status::where('id', $request->pat_status_id)->value('pat_status_title') . "'",
-            "На страницу участия",
+            "Спешим сообщить, что статус вашего участия в сборнике '" . collection::where('id',$collection_id)->value('title') .
+            "' был изменен! На данный момент ваш статус: '" . Pat_status::where('id', $request->pat_status_id)->value('pat_status_title') . "'. " .
+                "Вся подробная информация об издании сборника и вашем процессе указана на странице участия:",
+            "Ваша страница участия",
                 route('homePortal') . "/myaccount/collections/" . $collection_id . "/participation/" . $request->pat_id)
         );
 

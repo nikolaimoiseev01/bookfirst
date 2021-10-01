@@ -222,6 +222,11 @@
 
         // Меняем цифру кол-ва экземпляров
         $("#prints-num").keyup(function get_print_val() {
+
+            if($(this).val() < {{$own_book->printorder['books_needed'] ?? 1}})
+                {
+                    $("#prints-num").val({{$own_book->printorder['books_needed'] ?? 1}})
+            }
             print_needed = $(this).val();
             calculation();
         })

@@ -12,4 +12,8 @@ class Collection extends Model
     public function col_status() {
             return $this->belongsTo(Col_status::class);
     }
+
+    public function digital_sale() {
+        return $this->belongsTo(digital_sale::class, 'id', 'bought_collection_id');
+    }
 }

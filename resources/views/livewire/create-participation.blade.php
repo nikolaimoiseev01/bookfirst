@@ -286,7 +286,11 @@
         </div>
 
     </div>
-    <button type="submit" id="save_form" class="button">Сохранить</button>
+    <button style="margin-right:20px;" type="submit" id="save_form" class="preloader_button button" >
+        <span class="button__text">Отправить заявку</span>
+    </button>
+    <button type="submit"  class="button">Сохранить</button>
+
 </form>
 
 <a style="display:none;" id="go-to-part-page" class="fast-load">Главная</a>
@@ -458,7 +462,7 @@
 
                 print_price = print_needed * (300 * print_discount);
 
-                total_price = print_needed * 300 + participation_price + check_needed
+                total_price = print_price + participation_price + check_needed
 
 
                 $('#pages').html(pages);

@@ -11,7 +11,8 @@
         <div class="col-md-12">
             <div class="mb-3 card collapsed-card">
                 <div class="bg-gradient-info card-header">
-                    <h1 style="font-size: 25px;" class="card-title">Общая информация сборника ({{$collection->col_status['col_status']}})</h1>
+                    <h1 style="font-size: 25px;" class="card-title">Общая информация сборника
+                        ({{$collection->col_status['col_status']}})</h1>
 
                     <div class="card-tools">
                         <button class="btn btn-tool" data-card-widget="collapse">
@@ -83,11 +84,13 @@
                                         <div @if ($collection['col_status_id'] <> 2) style="display:none"
                                              @endif id="preview_file" class="mb-2">
                                             Файл предварительной проверки
-                                            <input value="{{$collection['pre_var']}}" type="file" id="pre_var" name="pre_var"
+                                            <input value="{{$collection['pre_var']}}" type="file" id="pre_var"
+                                                   name="pre_var"
                                                    class="d-none custom-file-input"
                                                    aria-describedby="myInput">
                                             <label class="w-100 mb-0 position-relative custom-file-label"
-                                                  id="label_pre_var" for="pre_var">{{substr($collection['pre_var'], strrpos($collection['pre_var'], '/') + 1)}}</label>
+                                                   id="label_pre_var"
+                                                   for="pre_var">{{substr($collection['pre_var'], strrpos($collection['pre_var'], '/') + 1)}}</label>
                                         </div>
                                     </div>
 
@@ -142,7 +145,13 @@
             <div class="card mt-0 collapsed-card">
                 <div class="bg-gradient-lightblue card-header">
                     <h1 style="font-size: 25px;" class="card-title">Участники </h1>
-                    <h1 style="font-size: 25px;" class="ml-2 card-title"> (Оплатили: {{\App\Models\Participation::where([['collection_id', $collection['id']],['pat_status_id', '3']])->count()}}; Оплачивают: {{\App\Models\Participation::where([['collection_id', $collection['id']],['pat_status_id', '2']])->count()}}; Ждут апрува: {{\App\Models\Participation::where([['collection_id', $collection['id']],['pat_status_id', '1']])->count()}})</h1>
+                    <h1 style="font-size: 25px;" class="ml-2 card-title">
+                        (Оплатили: {{\App\Models\Participation::where([['collection_id', $collection['id']],['pat_status_id', '3']])->count()}}
+                        ;
+                        Оплачивают: {{\App\Models\Participation::where([['collection_id', $collection['id']],['pat_status_id', '2']])->count()}}
+                        ; Ждут
+                        апрува: {{\App\Models\Participation::where([['collection_id', $collection['id']],['pat_status_id', '1']])->count()}}
+                        )</h1>
 
                     <div class="card-tools">
                         <button class="btn btn-tool" data-card-widget="collapse">
@@ -150,69 +159,125 @@
                         </button>
                     </div>
                 </div>
-                <!-- /.card-header -->
+
                 <div class="card-body p-0" style="display: none;">
                     <div class="row">
                         <div class="col-lg-12">
 
                             <div class="card-header">
-                                <input class="form-control" id="participants_input" type="text"
-                                       placeholder="Поиск...">
+                                <ul class="nav nav-pills">
+                                    <li class="nav-item"><a class="nav-link active" href="#all_participants"
+                                                            data-toggle="tab">
+                                            Все участники
+                                        </a>
+                                    </li>
+                                    <li class="nav-item"><a class="nav-link" href="#winners"
+                                                            data-toggle="tab">Конкурс</a>
+                                    </li>
+                                </ul>
                             </div>
-                            <div class="card-body p-0">
-                                <table id="participants_table" class="table table-bordered table-hover">
-                                    <thead>
-                                    <tr>
-                                        <th>Статус</th>
-                                        <th>Автор</th>
-                                        <th>Псевдоним</th>
-                                        <th>Email</th>
-                                        <th>Страниц</th>
-                                        <th>Экземпляров</th>
-                                        <th>Промокод</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    @foreach($participations as $participation)
 
-                                        <tr onclick="document.location = '{{route('user_participation', ['participation_id' => $participation['id']])}}';"
-                                            class="row_hover
+                            <div class="card-body p-0">
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="all_participants">
+                                        <div class="p-2">
+                                            <input class="form-control" id="participants_input" type="text"
+                                                   placeholder="Поиск...">
+                                        </div>
+                                        <table id="participants_table" class="table table-bordered table-hover">
+                                            <thead>
+                                            <tr>
+                                                <th>Статус</th>
+                                                <th>Автор</th>
+                                                <th>Псевдоним</th>
+                                                <th>Email</th>
+                                                <th>Страниц</th>
+                                                <th>Экземпляров</th>
+                                                <th>Промокод</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            @foreach($participations as $participation)
+
+                                                <tr onclick="document.location = '{{route('user_participation', ['participation_id' => $participation['id']])}}';"
+                                                    class="row_hover
                                           ">
-                                            <td style="text-align: center;">
-                                                <i data-toggle="tooltip" data-placement="top"
-                                                   title="{{$participation->pat_status['pat_status_title']}}"
-                                                   class="fas question-mark
+                                                    <td style="text-align: center;">
+                                                        <i data-toggle="tooltip" data-placement="top"
+                                                           title="{{$participation->pat_status['pat_status_title']}}"
+                                                           class="fas question-mark
                                        @if ($participation['pat_status_id'] == 1) fa-glass-cheers
                                        @elseif ($participation['pat_status_id'] == 2) fa-comments-dollar
                                        @elseif ($participation['pat_status_id'] == 3) fa-check-circle
                                        @elseif ($participation['pat_status_id'] == 4) fa-comments-dollar
                                        @elseif ($participation['pat_status_id'] == 9) fa-edit
                                        @endif
-                                                       "></i>
-                                            </td>
-                                            <td style="text-align: center;">
-                                                {{$participation['name']}} {{$participation['surname']}}
-                                            </td>
-                                            <td style="text-align: center;">
-                                                {{$participation['nickname']}}
-                                            </td>
-                                            <td style="text-align: center;">
-                                                {{$participation->user['email']}}
-                                            </td>
-                                            <td style="text-align: center;">
-                                                {{$participation['pages']}}
-                                            </td>
-                                            <td style="text-align: center;">
-                                                {{$participation->printorder['books_needed'] ?? 0}}
-                                            </td>
-                                            <td style="text-align: center;">
-                                                {{$participation['promocode']}}
-                                            </td>
+                                                               "></i>
+                                                    </td>
+                                                    <td style="text-align: center;">
+                                                        {{$participation['name']}} {{$participation['surname']}}
+                                                    </td>
+                                                    <td style="text-align: center;">
+                                                        {{$participation['nickname']}}
+                                                    </td>
+                                                    <td style="text-align: center;">
+                                                        {{$participation->user['email']}}
+                                                    </td>
+                                                    <td style="text-align: center;">
+                                                        {{$participation['pages']}}
+                                                    </td>
+                                                    <td style="text-align: center;">
+                                                        {{$participation->printorder['books_needed'] ?? 0}}
+                                                    </td>
+                                                    <td style="text-align: center;">
+                                                        {{$participation['promocode']}}
+                                                    </td>
 
-                                        </tr>
-                                    @endforeach
-                                    </tbody>
-                                </table>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="tab-pane" id="winners">
+                                        <div class="p-4">
+                                            <div class="row">
+                                                <div class="border-right col-md-6">
+                                                    @foreach($winners as $winner)
+                                                        <h2 style="font-size: 30px;">{{$loop->index + 1}} место
+                                                            (голосов: {{$winner->votes_got}}):
+                                                            @if($winner->nickname <> null)
+                                                                {{$winner->nickname}}
+
+                                                            @else
+                                                                {{$winner->name}} {{$winner->surname}}
+                                                            @endif
+                                                        </h2>
+                                                    @endforeach
+                                                </div>
+                                                <div style="font-size: 20px;" class="mb-3 pl-4 col-md-6">
+                                                    @foreach($votes as $vote)
+                                                        @if($vote->user_from_nickname <> null)
+                                                            {{$vote->user_from_nickname}}
+
+                                                        @else
+                                                            {{$vote->user_from_name}} {{$vote->user_from_surname}}
+                                                        @endif
+                                                        -> за
+                                                        @if($vote->user_to_nickname <> null)
+                                                            {{$vote->user_to_nickname}}
+
+                                                        @else
+                                                            {{$vote->user_to_name}} {{$vote->user_to_surname}}
+                                                        @endif
+
+                                                    @endforeach
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
                             </div>
                             <!-- /.card-body -->
 
@@ -241,7 +306,10 @@
         <div class="col-md-12">
             <div class="card collapsed-card mt-0">
                 <div class="bg-gradient-teal card-header">
-                    <h1 style="font-size: 25px;" class="card-title">Исправления: {{$pre_comments->count()}}  <span style="@if($pre_comments->where('status_done', 0)->count() > 0)text-transform: uppercase; font-weight: 600; @endif">(нужно исправить: {{$pre_comments->where('status_done', 0)->count()}})</span></h1>
+                    <h1 style="font-size: 25px;" class="card-title">Исправления: {{$pre_comments->count()}}
+                        <span
+                            style="@if($pre_comments->where('status_done', 0)->count() > 0)text-transform: uppercase; font-weight: 600; @endif">(нужно исправить: {{$pre_comments->where('status_done', 0)->count()}})</span>
+                    </h1>
 
                     <div class="card-tools">
                         <button class="btn btn-tool" data-card-widget="collapse">

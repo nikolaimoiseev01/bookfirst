@@ -112,8 +112,16 @@
                                style="font-size: 18px; box-shadow: none; text-align: center"
                                class="@if (!$collection['amazon_link']) no_amazon @endif button">Купить
                                 на Amazon</a>
-                            <a href="" style="font-size: 18px; box-shadow: none; text-align: center" class="button">Электронная
-                                версия (100 руб.)</a>
+                            <form style="display:inline-block"
+                                  action="{{ route('payment.create_buying_collection', $collection['id'])}}"
+                                  method="POST"
+                                  enctype="multipart/form-data">
+                                @csrf
+                                <button href="{{route('my_digital_sales')}}" id="btn-submit" type="submit" style="font-size: 18px; box-shadow: none; text-align: center"
+                                        class="log_check pay-button button">
+                                    Электронная версия (100 руб.)
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>

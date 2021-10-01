@@ -72,6 +72,7 @@ class OwnBookController extends Controller
         $user = User::where('id', Auth::user()->id)->first();
 
         $user->notify(new EmailNotification(
+            'Оплата за печать подтверждена!',
                 $user['name'],
                 "Это письмо - подтверждение успешной оплаты за печать книги '" . own_book::where('id', $request->own_book_id)->value('title') . "'." .
                 "\nНа текущий момент издание имеет общий статус: '" . own_book_status::where('id', $request->own_book_status_id)->value('status_title') . "'. Всю подробную информацию об издании Вы всегда можете отслеживать на специальной странице издания книги.",

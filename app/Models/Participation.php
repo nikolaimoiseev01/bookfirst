@@ -37,4 +37,8 @@ class Participation extends Model
         return $this->belongsTo(Chat::class);
     }
 
+    public function vote() {
+        return $this->hasmany(vote::class);
+    }
+
 }

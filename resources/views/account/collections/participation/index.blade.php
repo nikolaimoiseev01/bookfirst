@@ -101,11 +101,13 @@
             <div style="box-shadow: 0 0 10px 1px {{$part_all_good}}85;" class="container">
                 <div style="border-bottom: 1px #47AF98 solid" class=hero>
                     <h2 style="color: {{$part_all_good}};">Моя заявка</h2>
-                    <a style="box-shadow: none; font-size: 16px; margin-left: auto; margin-right: 25px;" href="{{route('participation_edit', [
+                    @if ($participation['paid_at'] === null)
+                        <a style="box-shadow: none; font-size: 16px; margin-left: auto; margin-right: 25px;" href="{{route('participation_edit', [
                  'participation_id'=>$participation['id'],
                  'collection_id' => $collection['id']
                  ])
                  }}" class="button">Редактировать</a>
+                    @endif
                 </div>
                 <div class="info">
                     <div class="part_part">
@@ -125,11 +127,18 @@
                             <span><p
                                     style="margin: 0;">Печатных экземпляров: {{$participation->printorder['books_needed']}}</p></span>
                             <span><p style="margin: 0;">ФИО Адресата: {{$participation->printorder['send_to_name']}}</p></span>
-
+                            <span><p
+                                    style="margin: 0;">Адрес: {{$participation->printorder['send_to_address']}}</p></span>
                             <span><p
                                     style="margin: 0;">Телефон: {{$participation->printorder['send_to_tel']}}</p></span>
+                            @if ($collection['col_status_id'] < 3 && $participation['paid_at'] <> null)
+                                <a style="font-size: 25px;" href="#print_part" class="link">Заказать дополнительные экземпляры</a>
+                            @endif
                         @else
                             <p>Печатные эезкемпляры не требуются.</p>
+                            @if ($collection['col_status_id'] < 3 && $participation['paid_at'] <> null)
+                                <a style="font-size: 25px;" href="#print_part" class="link">Создать заказ</a>
+                            @endif
                         @endif
                     </div>
                 </div>
@@ -262,7 +271,7 @@
                 @elseif ($participation['pat_status_id'] === 2)
                     <div style="display: flex;">
                         <div
-                            style="width:50%; flex-direction: column; display: flex; justify-content: center; text-align: center;"
+                            style="width:50%; flex-direction: column; display: flex; justify-content: space-evenly; text-align: center;"
                             class="payment-info">
                             <p>Отлично, Ваша заявка подтверждена! Для включения Вас в сборник необходимо произвести
                                 оплату.</p>
@@ -316,7 +325,7 @@
                                 <div class="participation-price">
                                     <h1 style="font-size: 38px;">{{$participation['part_price']}} руб.</h1>
                                     <div class="participation-price-desc">
-                                        <p style="font-size: 23px;">За участие ({{$participation['pages']}}
+                                        <p style="font-size: 23px;">За участие <br>({{$participation['pages']}}
                                             стр.)</p>
                                     </div>
                                 </div>
@@ -330,7 +339,7 @@
                                     <div class="participation-price">
                                         <h1 style="font-size: 38px;">{{$participation['print_price']}} руб.</h1>
                                         <div class="participation-price-desc">
-                                            <p style="font-size: 23px;">За печать
+                                            <p style="font-size: 23px;">За печать<br>
                                                 ({{$participation->printorder['books_needed']}} экз.)</p>
                                         </div>
                                     </div>
@@ -526,12 +535,15 @@
                         @endif
                     </h2>
                 </div>
-                @if($collection['col_status_id'] === 1)
+                @if ($collection['col_status_id'] >= 2 && $participation['paid_at'] === null)
                     <div class="no-access">
-                        <span>Предварительная проверка сборника станет доступна в указанный период.
-                            Все даты издания указаны на
-                            <a style="color: #a0d7cb" href="{{route('collection_page',$collection['id'])}}"
-                               target="_blank" class="">странице сборника</a>.
+                        <span>Сейчас сборник проходит предварительную проверку, но из-за отствия оплаты Вы не были включены в список участников.
+                        </span>
+                    </div>
+                @elseif($collection['col_status_id'] === 1)
+                    <div class="no-access">
+                        {{App::setLocale('ru')}}
+                        <span>Предварительная проверка сборника станет доступна {{ Date::parse($collection['col_date'])->format('j F Y') }}.
                         </span>
                     </div>
                 @elseif ($collection['col_status_id'] === 2)
@@ -734,7 +746,14 @@
                     {{$part_all_good}}
                     @endif;">Голосование в конкурсе</h2>
                 </div>
-                @livewire('vote-block', ['collection_id' => $collection->id])
+                @if ($collection['col_status_id'] >= 2 && $participation['paid_at'] === null)
+                    <div class="no-access">
+                        <span>Сейчас идет голосование на лучшего автора, но из-за отствия оплаты Вы не были включены в список участников.
+                        </span>
+                    </div>
+                @else
+                    @livewire('vote-block', ['collection_id' => $collection->id])
+                @endif
             </div>
         </div>
 
@@ -755,7 +774,7 @@
              @endif
                  border-radius: 0 0 10px 10px;
 
-                 ">
+                 " id="print_part">
             <div style="background: #cbcbcb;" class="line"></div>
             @if ($collection['col_status_id'] <= 3)
                 <svg id="Слой_1" class="circle_status" style="fill: #cbcbcb;" data-name="Слой 1"
@@ -832,6 +851,25 @@
                             <a style="color: #a0d7cb" href="{{route('collection_page',$collection['id'])}}"
                                target="_blank" class="">странице сборника</a>.
                         </span>
+                        @if ($collection['col_status_id'] < 3 && $participation['paid_at'] <> null)
+                            <br>
+                            @if($participation['print_price'] > 0)
+                                <a style="box-shadow: none" name="create_form" id="create_form"
+                                   class="show-hide button">Редактировать заказ</a>
+                                <div style="display: none" id="block_create_form" class="create_form">
+                                    @livewire('collection-printorder-form', ['participation' => $participation,
+                                    'form_type' => 'edit'])
+                                </div>
+                            @elseif($participation['print_price'] === 0)
+                                <a style="box-shadow: none" name="create_form" id="create_form"
+                                   class="show-hide button">Создать заказ</a>
+                                <div style="display: none" id="block_create_form" class="create_form">
+                                    @livewire('collection-printorder-form', ['participation' => $participation,
+                                    'form_type'
+                                    => 'create'])
+                                </div>
+                            @endif
+                        @endif
                     </div>
                 @elseif ($participation['printorder_id'] <> 0)
                     <div class="no-access">

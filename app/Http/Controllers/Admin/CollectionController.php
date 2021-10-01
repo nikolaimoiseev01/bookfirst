@@ -9,6 +9,7 @@ use App\Models\Participation;
 use App\Models\preview_comment;
 use App\Models\Printorder;
 use App\Models\User;
+use App\Models\vote;
 use App\Notifications\EmailNotification;
 use App\Notifications\UserNotification;
 use Illuminate\Notifications\Notification;
@@ -124,13 +125,49 @@ class CollectionController extends Controller
         $collection_title = DB::table('collections')->where('id', $collection->id)->value('title');
         $printorders = PrintOrder::orderBy('id', 'desc')->where('collection_id', $collection->id)->get();
         $pre_comments = preview_comment::where('collection_id',$collection->id)->with('participation')->get();
+//        $votes = vote::where('collection_id', $collection->id)->with('Collection')->with('Participation')->get();
+        $votes = DB::table('votes')
+            ->Join('Participations as p1', function ($join) {
+                $join->on('p1.user_id', '=', 'votes.user_id_from');
+                $join->on('p1.collection_id', '=', 'votes.collection_id');
+            })
+            ->Join('Participations as p2', function ($join) {
+                $join->on('p2.user_id', '=', 'votes.user_id_to');
+                $join->on('p2.collection_id', '=', 'votes.collection_id');
+            })
+            ->select('votes.*'
+                ,'p1.name as user_from_name'
+                ,'p1.surname as user_from_surname'
+                ,'p1.nickname as user_from_nickname'
+                ,'p2.name as user_to_name'
+                ,'p2.surname as user_to_surname'
+                ,'p2.nickname as user_to_nickname'
+            )
+            ->where('votes.collection_id', $collection->id)
+            ->get();
+
+        $winners = DB::table('votes')
+            ->Join('Participations as p2', function ($join) {
+                $join->on('p2.user_id', '=', 'votes.user_id_to');
+                $join->on('p2.collection_id', '=', 'votes.collection_id');
+            })
+            ->select('p2.name', 'p2.surname', 'p2.nickname'
+               ,DB::raw('count(votes.user_id_from) AS votes_got')
+            )
+            ->where('votes.collection_id', $collection->id)
+            ->groupBy('votes.user_id_to')
+            ->orderBy('votes_got', 'desc')
+            ->get();
+
         return view('admin.collection.collection-page', [
             'collection' => $collection,
             'col_statuses' => $col_statuses,
             'participations' => $participations,
             'collection_title' => $collection_title,
             'printorders' => $printorders,
-            'pre_comments' => $pre_comments
+            'pre_comments' => $pre_comments,
+            'votes' => $votes,
+            'winners' => $winners,
         ]);
 
     }
@@ -184,7 +221,7 @@ class CollectionController extends Controller
                 $user->notify(new EmailNotification(
                     'Встречайте книгу на Amazon.com!',
                         $user['name'],
-                        "Сборника '" . $request->title . "' успешно появился на Amazon.com!" .
+                        "Сборник '" . $request->title . "' успешно появился на Amazon.com!" .
                         "Ссылка на покупку доступна на странице наших сборников:",
                         "Наши сборники",
                     route('homePortal') . "/old_collections",
@@ -207,9 +244,11 @@ class CollectionController extends Controller
                 $user->notify(new EmailNotification(
                     'Процесс издания сборника',
                     $user['name'],
-                    "Произошла смена этапа издания сборинка: " . $request->title .
-                    "'! Сборник сменил свой статус на \"предварительная проверка\", и теперь вы можете проверить предварительный экземпляр на странице участия:",
-                    "На страницу участия",
+                    "Спешим вам сообщить, что произошла смена этапа издания сборинка: " . $request->title .
+                    "'! Сборник сменил свой статус на \"предварительная проверка\", и теперь вы можете проверить предварительный экземпляр и внести правки. " .
+                    "Срок внесения изменений: до 19:59 МСК" . $collection->col_date3 . ". " .
+                    "Вся подробная информация об издании сборника и вашем процессе указана на странице участия:",
+                    "Ваша страница участия",
                         route('homePortal') . "/myaccount/collections/" . $collection->id . "/participation/" . Participation::where([['user_id', $user->id],['collection_id', $collection->id]])->value('id'))
                 );
 
@@ -229,9 +268,12 @@ class CollectionController extends Controller
                 $user->notify(new EmailNotification(
                         'Процесс издания сборника',
                         $user['name'],
-                        "Произошла смена этапа издания сборинка: " . $request->title .
-                        "'! В сборнике были учтены все исправления и сейчас начинается печать экземпляров. Обычно это занимает 14 рабочих дней. Как только экземпляры будут напечатаны, Вы получите оповещние об этом по Email. Далее в личном кабинете на странице участия Вы сможете отследить свою посылку.",
-                        "На страницу участия",
+                        "Спешим вам сообщить, что произошла смена этапа издания сборинка: " . $request->title .
+                        "'! В сборнике были учтены все исправления и сейчас начинается печать экземпляров. " .
+                        "Обычно это занимает 14 рабочих дней. Как только экземпляры будут напечатаны, Вы получите оповещние об этом по Email. "
+                        ."Далее в личном кабинете на странице участия Вы сможете отследить свою посылку." .
+                        "Вся подробная информация об издании сборника и вашем процессе указана на странице участия:",
+                        "Ваша страница участия",
                         route('homePortal') . "/myaccount/collections/" . $collection->id . "/participation/" . Participation::where([['user_id', $user->id],['collection_id', $collection->id]])->value('id'))
                 );
 

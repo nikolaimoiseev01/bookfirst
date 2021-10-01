@@ -85,6 +85,6 @@ class new_participation extends Notification
             // ->view('notification', ['url' => $url])
 
             // (Optional) Inline Buttons
-            ->button('К заявкам', route('homePortal') . "/admin_panel/new_participants");
+            ->button('К заявкам', route('homePortal') . "/admin_panel/collections/new_participants");
     }
 }

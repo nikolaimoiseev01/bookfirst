@@ -49,12 +49,6 @@ Route::middleware([])->prefix('/')->group(function () {
 });
 // ----------------------------------------------
 
-// ---------  ОПЛАТА --------- //
-Route::match(['POST', 'GET'], '/payments/callback', [PaymentController::class, 'callback'])->name('payment.callback');
-Route::post('/payments/create_part_payment/part_id={participation_id}/amount={amount}', [PaymentController::class, 'create_part_payment'])->name('payment.create_part_payment');
-Route::post('/payments/create_own_book_payment/own_book_id={own_book_id}/payment_type={payment_type}/amount={amount}', [PaymentController::class, 'create_own_book_payment'])->name('payment.create_own_book_payment');
-// ---------  // ОПЛАТА --------- //
-
 
 
 // ---------  ЛИЧНЫЙ КАБИНЕТ --------- //
@@ -100,7 +94,29 @@ Route::middleware(['verified'])->prefix('myaccount')->group(function () {
     Route::get('/chats/{chat_id}', [App\Http\Controllers\ChatController::class, 'chat'])->name('chat');
     Route::get('/chats/create/{chat_title}', [App\Http\Controllers\ChatController::class, 'create'])->name('chat_create');
     Route::get('/mysettings', [App\Http\Controllers\Account\AccountController::class, 'mysettings'])->name('mysettings');
+
+    Route::get('/my_digital_sales', function () {
+        $digital_sales = \App\Models\digital_sale::where('user_id', Auth::user()->id)->get();
+        return view('account.digital_sales', [
+            'digital_sales' => $digital_sales,
+        ]);
+    })->name('my_digital_sales');
+
+    // ---------  ОПЛАТА --------- //
+    Route::post('/payments/create_part_payment/part_id={participation_id}/amount={amount}', [PaymentController::class, 'create_part_payment'])->name('payment.create_part_payment');
+    Route::post('/payments/create_own_book_payment/own_book_id={own_book_id}/payment_type={payment_type}/amount={amount}', [PaymentController::class, 'create_own_book_payment'])->name('payment.create_own_book_payment');
+    Route::post('/payments/create_buying_collection/collection_id={collection_id}', [PaymentController::class, 'create_buying_collection'])->name('payment.create_buying_collection');
+    Route::post('/payments/create_buying_own_book/own_book_id={collection_id}', [PaymentController::class, 'create_buying_own_book'])->name('payment.create_buying_own_book');
+    // ---------  // ОПЛАТА --------- //
+
 });
+
+Route::match(['POST', 'GET'], '/payments/callback', [PaymentController::class, 'callback'])->name('payment.callback');
+
+
+// ----------------------------------------------
+
+
 
 // ---------  Панель Админа --------- //
 
@@ -135,6 +151,14 @@ Route::middleware(['role:admin'])->prefix('admin_panel')->group(function () {
     Route::post('/update_own_book_cover/{own_book_id}', [\App\Http\Controllers\Admin\OwnBookController::class, 'update_own_book_cover'])->name('update_own_book_cover');
     Route::post('/update_own_book_inside/{own_book_id}', [\App\Http\Controllers\Admin\OwnBookController::class, 'update_own_book_inside'])->name('update_own_book_inside');
     Route::post('/update_own_book_track_number/{own_book_id}', [\App\Http\Controllers\Admin\OwnBookController::class, 'update_own_book_track_number'])->name('update_own_book_track_number');
+
+    Route::get('/transactions', function () {
+        $transactions = \App\Models\Transaction::orderBy('created_at', 'desc')->get();
+        return view('admin.transactions', [
+            'transactions' => $transactions,
+        ]);
+    })->name('transactions_from_admin');
+
     Route::resource('user', \App\Http\Controllers\Admin\UserController::class);
 });
 // ----------------------------------------------

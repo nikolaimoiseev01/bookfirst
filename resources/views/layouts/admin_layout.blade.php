@@ -87,8 +87,8 @@
                             <p>
                                 Наши сборники
                                 @if ($new_participants > 0)
-                                <span class="right badge badge-danger">{{$new_participants}}</span>
-                                    @endif
+                                    <span class="right badge badge-danger">{{$new_participants}}</span>
+                                @endif
                             </p>
                         </a>
                     </li>
@@ -111,8 +111,8 @@
                             <p>
                                 Чаты
                                 @if ($new_chats > 0)
-                                <span class="right badge badge-danger">{{$new_chats}}</span>
-                                 @endif
+                                    <span class="right badge badge-danger">{{$new_chats}}</span>
+                                @endif
                             </p>
                         </a>
                     </li>
@@ -127,6 +127,35 @@
                         </a>
                     </li>
 
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-piggy-bank"></i>
+                            <p>
+                                Финансы
+                                <i style="top: .4rem;" class="fas fa-angle-left right"></i>
+
+                            </p>
+                        </a>
+                        <ul style="padding-left: 20px;" class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('transactions_from_admin') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-ruble-sign "></i>
+                                    <p>
+                                        Все транзакции
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="https://yookassa.ru/my/analytics/payments" target="_blank" class="nav-link">
+                                    <i class="nav-icon fab fa-yandex-international"></i>
+                                    <p>YooKassa</p>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
+
+
                 </ul>
             </nav>
             <!-- /.sidebar-menu -->
@@ -135,8 +164,8 @@
     </aside>
     <!-- Content Wrapper. Contains page content -->
     <div style="padding-left: 20px;padding-right: 20px;" class="fixed content-wrapper">
-        <div class="pt-3">
-        <a id="menu-trig" class="d-none justify-content-center btn btn-outline-info">Меню</a>
+        <div id="menu-trig" class="d-none pt-3">
+            <a class="justify-content-center btn btn-outline-info">Меню</a>
         </div>
         @yield('content')
     </div>
@@ -275,7 +304,7 @@
 {{-------- // МЕНЯТЬ СТАТУС КНОПКА ----------}}
 
 <script>
-        window.addEventListener('swal:modal', event => {
+    window.addEventListener('swal:modal', event => {
         Swal.fire({
             title: event.detail.title,
             icon: event.detail.type,
@@ -283,14 +312,14 @@
             showConfirmButton: false,
         })
         if (event.detail.type === 'success') {
-        $('#go-to-part-page').attr('href', event.detail.link);
-        $('#go-to-part-page').trigger('click');
-        $('#back').trigger('click');
-    }
+            $('#go-to-part-page').attr('href', event.detail.link);
+            $('#go-to-part-page').trigger('click');
+            $('#back').trigger('click');
+        }
 
     })
 
-        window.addEventListener('swal:confirm', event => {
+    window.addEventListener('swal:confirm', event => {
         Swal.fire({
             title: event.detail.title,
             showDenyButton: true,
@@ -304,7 +333,7 @@
         })
     })
 
-        window.addEventListener('swal:min', event => {
+    window.addEventListener('swal:min', event => {
         Swal.fire({
             position: 'top-end',
             title: event.detail.title,
@@ -319,8 +348,8 @@
     for (var i = 0; i < file_input.length; i++) {
         file_input[i].addEventListener('change', function () {
 
-                var fileName = document.getElementById( $(this).attr('name')).files[0].name;
-                $("#label_" + $(this).attr('name')).html(fileName);
+            var fileName = document.getElementById($(this).attr('name')).files[0].name;
+            $("#label_" + $(this).attr('name')).html(fileName);
 
         }, false);
     }
@@ -357,7 +386,9 @@
 </script>
 <script src="/admin/admin.js"></script>
 <script src="/js/sweetalert2.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
 <script>
     @if (session('success'))
     Swal.fire({

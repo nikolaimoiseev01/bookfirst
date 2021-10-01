@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Enums\PaymentStatusEnum;
 use App\Models\Collection;
+use App\Models\digital_sale;
 use App\Models\own_book;
 use App\Models\Participation;
+use App\Models\Printorder;
 use App\Models\Transaction;
 use App\Models\User;
 use App\Notifications\EmailNotification;
@@ -28,7 +30,7 @@ class PaymentController extends Controller
     public function create_part_payment($participation_id, $amount, PaymentService $service)
     {
 
-        $description = "Оплата участия в '" . Collection::where('id', Participation::where('id', $participation_id)->value('collection_id'))->value('title') . "'";
+        $description = "Оплата участия в сборнике '" . Collection::where('id', Participation::where('id', $participation_id)->value('collection_id'))->value('title') . "'";
         $url_redirect = url()->previous();
 
         // Записываем данные транзакции
@@ -42,6 +44,7 @@ class PaymentController extends Controller
         if ($transaction) {
             $link = $service->createPayment($amount, $description, $url_redirect, [
                 'transaction_id' => $transaction->id,
+                'user_id' => Auth::user()->id,
                 'participation_id' => $participation_id,
                 'own_book_id' => null,
                 'url_redirect' => $url_redirect
@@ -65,7 +68,7 @@ class PaymentController extends Controller
         };
 
 
-        $description = "Оплата " . $own_book_payment_text . "книги '" . $own_book['title'] . "'";
+        $description = "Оплата " . $own_book_payment_text . " книги '" . $own_book['title'] . "'";
         $url_redirect = url()->previous();
 
         // Записываем данные транзакции
@@ -80,6 +83,7 @@ class PaymentController extends Controller
         if ($transaction) {
             $link = $service->createPayment($amount, $description, $url_redirect, [
                 'transaction_id' => $transaction->id,
+                'user_id' => Auth::user()->id,
                 'participation_id' => null,
                 'own_book_id' => $own_book['id'],
                 'own_book_payment_type' => $payment_type,
@@ -94,6 +98,69 @@ class PaymentController extends Controller
     }
 
 
+    public function create_buying_collection($collection_id, PaymentService $service)
+    {
+
+        $collection = Collection::where('id', $collection_id)->first();
+
+        $description = "Покупка электронного варианта сборника '" . $collection['title'] . "'";
+        $url_redirect = route('my_digital_sales');
+
+        // Записываем данные транзакции
+        $transaction = new Transaction();
+        $transaction->user_id = Auth::user()->id;
+        $transaction->amount = 100;
+        $transaction->bought_collection_id = $collection_id;
+        $transaction->description = $description;
+        $transaction->save();
+
+        if ($transaction) {
+            $link = $service->createPayment(100, $description, $url_redirect, [
+                'user_id' => Auth::user()->id,
+                'transaction_id' => $transaction->id,
+                'bought_collection_id' => $collection_id,
+                'own_book_id' => null,
+                'url_redirect' => $url_redirect
+            ]);
+
+            if (isset($link)) {
+                return redirect()->away($link);
+            }
+        }
+    }
+
+    public function create_buying_own_book($own_book_id, PaymentService $service)
+    {
+
+        $own_book = own_book::where('id', $own_book_id)->first();
+
+        $description = "Покупка электронного варианта книги '" . $own_book['title'] . "'";
+        $url_redirect = route('my_digital_sales');
+
+        // Записываем данные транзакции
+        $transaction = new Transaction();
+        $transaction->user_id = Auth::user()->id;
+        $transaction->amount = 100;
+        $transaction->bought_own_book_id = $own_book_id;
+        $transaction->description = $description;
+        $transaction->save();
+
+        if ($transaction) {
+            $link = $service->createPayment(100, $description, $url_redirect, [
+                'user_id' => Auth::user()->id,
+                'transaction_id' => $transaction->id,
+                'bought_own_book_id' => $own_book_id,
+                'own_book_id' => null,
+                'url_redirect' => $url_redirect
+            ]);
+
+            if (isset($link)) {
+                return redirect()->away($link);
+            }
+        }
+    }
+
+
     public function callback(Request $request, PaymentService $service)
     {
 
@@ -104,16 +171,16 @@ class PaymentController extends Controller
         $requestBody = json_decode($source, true);
         $notification = $requestBody['object'];
 
+//        Log::info($requestBody);
+
         if (isset($notification['status']) && $notification['status'] === 'succeeded') { // Если операция прошла успешно
             if ((bool)$notification['paid'] === true) { // Если оплата успшена
                 $metadata = $notification['metadata'];
+
                 if (isset($metadata['transaction_id'])) { // Если есть transaction_id
 
                     // Общая информация о транзакции
                     $transactionId = (int)$metadata['transaction_id'];
-                    // Меняем статус имеющейся транзакции
-                    Transaction::where('id', $transactionId)
-                        ->update(array('status' => PaymentStatusEnum::CONFIRMED));
                     // -----------------------------------------------------------------
 
                     // Участник оплатил сборник -------------------------------------------------------------------------------------------------
@@ -137,8 +204,9 @@ class PaymentController extends Controller
                                 'Оплата подтверждена!',
                                 $user['name'],
                                 "Отлично, вы успешно оплатили заявку в сборике: '" . $Collection['title'] .
-                                "'. Теперь остается ждать издания! Вся информацию по этому сборнику будет по ссылке:",
-                                "Страница сборника",
+                                "'. Следующий этап (предварительная проверка сборника) будет доступен" . $Collection['col_date2'] . "!" .
+                                "Вся подробная информация об издании сборника и вашем процессе указана на странице участия:",
+                                "Ваша страница участия",
                                 $metadata['url_redirect']));
 
                             // Посылаем Telegram уведомление нам
@@ -152,6 +220,101 @@ class PaymentController extends Controller
                         }
                     }
                     // --------------------------------------------------------------------------------------------------------------------------------
+
+                    // Участник создал/отредактировал print_order -------------------------------------------------------------------------------------------------
+                    if ((int)$metadata['col_adit_print_needed'] > 0) { // Это доплата за печатные экземпляры
+
+                        $Participation = Participation::where('id', (int)$metadata['participation_id'])->first();
+                        $Collection = Collection::where('id', $Participation['collection_id'])->first();
+                        $user = User::where('id', $Participation['user_id'])->first();
+
+                        if (Transaction::where('id', $transactionId)->value('status') === 'CREATED') { // Это НОВАЯ доплата за печатные экземпляры
+
+                            if ($metadata['col_adit_print_type'] === 'create') {// Это новый заказ
+
+                                // ---- Создаем новый Заказ печатных! ---- //
+                                $new_PrintOrder = new PrintOrder();
+                                $new_PrintOrder->collection_id = $Collection['id'];
+                                $new_PrintOrder->user_id = (int)$metadata['user_id'];
+                                $new_PrintOrder->books_needed = (int)$metadata['col_adit_print_needed'];
+                                $new_PrintOrder->send_to_name = $metadata['col_adit_send_to_name'];
+                                $new_PrintOrder->send_to_tel = $metadata['col_adit_send_to_tel'];
+                                $new_PrintOrder->send_to_address = $metadata['col_adit_send_to_address'];
+                                $new_PrintOrder->save();
+                                // ----------------------------------------------------------- //
+
+                                // обновляем строчку участия
+                                Participation::where('id', (int)$metadata['participation_id'])
+                                    ->update(array(
+                                        'paid_at' => Carbon::now('Europe/Moscow')->toDateTime(),
+                                        'print_price' => $Participation['print_price'] + (int)$notification['amount']['value'],
+                                        'total_price' => $Participation['total_price'] + (int)$notification['amount']['value'],
+                                        'printorder_id' => $new_PrintOrder->id,
+                                    ));
+
+                                // Посылаем Email уведомление пользователю
+                                $user->notify(new EmailNotification(
+                                    'Оплата подтверждена!',
+                                    $user['name'],
+                                    "Отлично, вы успешно оплатили печатные экземпляры сборника '" . $Collection['title'] . "'. " .
+                                    "Вся подробная информация об издании сборника и вашем процессе указана на странице участия:",
+                                    "Ваша страница участия",
+                                    $metadata['url_redirect']));
+
+                                // Посылаем Telegram уведомление нам
+                                Notification::route('telegram', '-506622812')
+                                    ->notify(new TelegramNotification('💸 Доплатил за печатные экземпляры! 💸',
+                                        'Автор: ' . $Participation['name'] . " " . $Participation['surname'] .
+                                        "\n" . "Сборник: " . $Collection['title'] .
+                                        "\n" . "Сумма: " . (int)$notification['amount']['value'] . " руб.",
+                                        "Его страница участия",
+                                        route('user_participation', $Participation['id'])));
+
+                            }
+
+                            if ($metadata['col_adit_print_type'] === 'edit') {// Это редактирование старого заказа
+
+                                PrintOrder::where('id', $Participation['printorder_id'])
+                                    ->update(array(
+                                        'books_needed' => (int)$metadata['col_adit_print_needed'],
+                                        'send_to_name' => $metadata['col_adit_send_to_name'],
+                                        'send_to_tel' => $metadata['col_adit_send_to_tel'],
+                                        'send_to_address' => $metadata['col_adit_send_to_address'],
+                                    ));
+
+                                // обновляем строчку участия
+                                Participation::where('id', (int)$metadata['participation_id'])
+                                    ->update(array(
+                                        'paid_at' => Carbon::now('Europe/Moscow')->toDateTime(),
+                                        'print_price' => $Participation['print_price'] + (int)$notification['amount']['value'],
+                                        'total_price' => $Participation['total_price'] + (int)$notification['amount']['value'],
+                                    ));
+
+                                log::info($metadata);
+
+
+                                // Посылаем Email уведомление пользователю
+                                $user->notify(new EmailNotification(
+                                    'Оплата подтверждена!',
+                                    $user['name'],
+                                    "Отлично, вы успешно заказли дополнительные печатные экземпляры сборника '" . $Collection['title'] . "'. " .
+                                    "Вся подробная информация об издании сборника и вашем процессе указана на странице участия:",
+                                    "Ваша страница участия",
+                                    $metadata['url_redirect']));
+
+                                // Посылаем Telegram уведомление нам
+                                Notification::route('telegram', '-506622812')
+                                    ->notify(new TelegramNotification('💸 Доплатил за печатные экземпляры! 💸',
+                                        'Автор: ' . $Participation['name'] . " " . $Participation['surname'] .
+                                        "\n" . "Сборник: " . $Collection['title'] .
+                                        "\n" . "Сумма: " . (int)$notification['amount']['value'] . " руб.",
+                                        "Его страница участия",
+                                        route('user_participation', $Participation['id'])));
+
+                            }
+
+                        }
+                    }
 
 
                     // Автор оплатил все кроме печати -------------------------------------------------------------------------------------------------
@@ -222,6 +385,99 @@ class PaymentController extends Controller
                         }
                     }
                     // --------------------------------------------------------------------------------------------------------------------------------
+
+
+                    // Клиент купил электронный сбрник -------------------------------------------------------------------------------------------------
+                    if ((int)$metadata['bought_collection_id'] > 0) { // Это покупка электронного варианта
+
+                        $digital_sale = digital_sale::where('user_id', $metadata['user_id'])
+                                ->where('bought_collection_id', $metadata['bought_collection_id'])
+                                ->value('bought_collection_id') ?? 0;
+
+
+                        $collection = Collection::where('id', $metadata['bought_collection_id'])->first();
+                        $user = User::where('id', $metadata['user_id'])->first();
+
+                        if ($digital_sale === 0) { // Это НОВАЯ оплата за сборник
+
+                            // Записываем данные электронной покупки
+                            $new_digital_sale = new digital_sale();
+                            $new_digital_sale->user_id = $metadata['user_id'];
+                            $new_digital_sale->price = 100;
+                            $new_digital_sale->bought_collection_id = $metadata['bought_collection_id'];
+                            $new_digital_sale->save();
+
+                            // Посылаем Email уведомление пользователю
+                            $user->notify(new EmailNotification(
+                                'Ваш электронный вариант готов!',
+                                $user['name'],
+                                "Отлично, вы успешно оплатили электронную версию сброрника: '" . $collection['title'] .
+                                "'. Он всегда будет храниться в Вашем личном кабинете:",
+                                "Купленные книги",
+                                $metadata['url_redirect']));
+
+                            // Посылаем Telegram уведомление нам
+                            Notification::route('telegram', '-506622812')
+                                ->notify(new TelegramNotification('💸 Новая покупка сборника! 💸', "Сборник: " . $collection['title'] .
+                                    "\n" . "Сумма: 100 руб.",
+                                    "Статистика покупок",
+                                    route('user_participation', 232)));
+
+                        }
+                    }
+                    // --------------------------------------------------------------------------------------------------------------------------------
+
+
+                    // Клиент купил собственную книгу -------------------------------------------------------------------------------------------------
+                    if ((int)$metadata['bought_own_book_id'] > 0) { // Это покупка электронного варианта
+
+                        $digital_sale = digital_sale::where('user_id', $metadata['user_id'])
+                                ->where('bought_own_book_id', $metadata['bought_own_book_id'])
+                                ->value('bought_own_book_id') ?? 0;
+
+
+                        $own_book = own_book::where('id', $metadata['bought_own_book_id'])->first();
+                        $user = User::where('id', $metadata['user_id'])->first();
+
+                        if ($digital_sale === 0) { // Это НОВАЯ оплата за сборник
+
+                            // Записываем данные электронной покупки
+                            $new_digital_sale = new digital_sale();
+                            $new_digital_sale->user_id = $metadata['user_id'];
+                            $new_digital_sale->price = 100;
+                            $new_digital_sale->bought_own_book_id = $metadata['bought_own_book_id'];
+                            $new_digital_sale->save();
+
+                            // Посылаем Email уведомление пользователю
+                            $user->notify(new EmailNotification(
+                                'Ваш электронный вариант готов!',
+                                $user['name'],
+                                "Отлично, вы успешно оплатили электронную версию книги: '" . $own_book['title'] .
+                                "'. Она всегда будет храниться в Вашем личном кабинете:",
+                                "Купленные книги",
+                                $metadata['url_redirect']));
+
+                            // Посылаем Telegram уведомление нам
+                            Notification::route('telegram', '-506622812')
+                                ->notify(new TelegramNotification('💸 Новая покупка книги! 💸', "Книга: " . $own_book['title'] .
+                                    "\n" . "Сумма: 100 руб.",
+                                    "Статистика покупок",
+                                    route('user_participation', 232)));
+
+                        }
+                    }
+                    // --------------------------------------------------------------------------------------------------------------------------------
+
+
+                    // Общая информация о транзакции
+                    // Меняем статус имеющейся транзакции
+                    Transaction::where('id', $transactionId)
+                        ->update(array(
+                            'status' => PaymentStatusEnum::CONFIRMED,
+                            'payment_method' => $notification['payment_method']['title'],
+                        ));
+                    // -----------------------------------------------------------------
+
                 }
             }
         }

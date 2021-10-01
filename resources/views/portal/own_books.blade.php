@@ -111,8 +111,16 @@
                                 <a @if ($own_book['amazon_link']) target="_blank" href="{{$own_book['amazon_link']}}" @endif
                                 style="margin-right: 20px; box-shadow: none; text-align: center"
                                    class="@if (!$own_book['amazon_link']) no_amazon @endif button">Купить на Amazon.com</a>
-                                <a style="box-shadow: none; text-align: center" href="/" class="log_check button">Электронная
-                                    версия (100 руб.)</a>
+                                <form style="display:inline-block"
+                                      action="{{ route('payment.create_buying_own_book', $own_book['id'])}}"
+                                      method="POST"
+                                      enctype="multipart/form-data">
+                                    @csrf
+                                    <button href="{{route('my_digital_sales')}}" id="btn-submit" type="submit" style="font-size: 18px; box-shadow: none; text-align: center"
+                                            class="log_check pay-button button">
+                                        Электронная версия (100 руб.)
+                                    </button>
+                                </form>
                             </div>
                         </div>
 

@@ -383,7 +383,7 @@
 
                 print_price = print_needed * 300;
 
-                total_price = print_needed * 300 + participation_price + check_needed
+                total_price = print_price + participation_price + check_needed
 
 
                 $('#pages').html(pages);

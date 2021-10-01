@@ -29,7 +29,8 @@ class PaymentService
      * @throws \YooKassa\Common\Exceptions\TooManyRequestsException
      * @throws \YooKassa\Common\Exceptions\UnauthorizedException
      */
-    public function createPayment(float $amount, string $description, string $url_redirect, array $options = []) {
+    public function createPayment(float $amount, string $description, string $url_redirect, array $options = [])
+    {
 
         $client = $this->getClient();
         $payment = $client->createPayment(
@@ -43,11 +44,20 @@ class PaymentService
                     'return_url' => $url_redirect,
                 ),
                 'metadata' => [
-                  'transaction_id' => $options['transaction_id'],
-                  'participation_id' => $options['participation_id'] ?? null,
-                  'own_book_id' => $options['own_book_id'] ?? null,
-                  'own_book_payment_type' => $options['own_book_payment_type'] ?? null,
-                  'url_redirect' => $url_redirect,
+                    'user_id' => $options['user_id'],
+                    'transaction_id' => $options['transaction_id'],
+                    'participation_id' => $options['participation_id'] ?? null,
+                    'col_adit_print_needed' => $options['col_adit_print_needed'] ?? null,
+                    'col_adit_print_type' => $options['col_adit_print_type'] ?? null,
+                    'col_adit_send_to_name' => $options['col_adit_send_to_name'] ?? null,
+                    'col_adit_send_to_tel' => $options['col_adit_send_to_tel'] ?? null,
+                    'col_adit_send_to_address' => $options['col_adit_send_to_address'] ?? null,
+
+                    'own_book_id' => $options['own_book_id'] ?? null,
+                    'own_book_payment_type' => $options['own_book_payment_type'] ?? null,
+                    'bought_collection_id' => $options['bought_collection_id'] ?? null,
+                    'bought_own_book_id' => $options['bought_own_book_id'] ?? null,
+                    'url_redirect' => $url_redirect,
                 ],
                 'capture' => true,
                 'description' => $description,
