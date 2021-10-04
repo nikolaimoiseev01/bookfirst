@@ -127,11 +127,11 @@ class CollectionController extends Controller
         $pre_comments = preview_comment::where('collection_id',$collection->id)->with('participation')->get();
 //        $votes = vote::where('collection_id', $collection->id)->with('Collection')->with('Participation')->get();
         $votes = DB::table('votes')
-            ->Join('Participations as p1', function ($join) {
+            ->Join('participations as p1', function ($join) {
                 $join->on('p1.user_id', '=', 'votes.user_id_from');
                 $join->on('p1.collection_id', '=', 'votes.collection_id');
             })
-            ->Join('Participations as p2', function ($join) {
+            ->Join('participations as p2', function ($join) {
                 $join->on('p2.user_id', '=', 'votes.user_id_to');
                 $join->on('p2.collection_id', '=', 'votes.collection_id');
             })
@@ -147,7 +147,7 @@ class CollectionController extends Controller
             ->get();
 
         $winners = DB::table('votes')
-            ->Join('Participations as p2', function ($join) {
+            ->Join('participations as p2', function ($join) {
                 $join->on('p2.user_id', '=', 'votes.user_id_to');
                 $join->on('p2.collection_id', '=', 'votes.collection_id');
             })

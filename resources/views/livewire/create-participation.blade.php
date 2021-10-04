@@ -289,7 +289,6 @@
     <button style="margin-right:20px;" type="submit" id="save_form" class="preloader_button button" >
         <span class="button__text">Отправить заявку</span>
     </button>
-    <button type="submit"  class="button">Сохранить</button>
 
 </form>
 
