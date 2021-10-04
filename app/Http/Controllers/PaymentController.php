@@ -16,9 +16,11 @@ use App\Notifications\TelegramNotification;
 use App\Service\PaymentService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
+use Jenssegers\Date\Date;
 use YooKassa\Model\Notification\NotificationSucceeded;
 use YooKassa\Model\Notification\NotificationWaitingForCapture;
 use YooKassa\Model\NotificationEventType;
@@ -163,7 +165,7 @@ class PaymentController extends Controller
 
     public function callback(Request $request, PaymentService $service)
     {
-
+        App::setLocale('ru');
 //        Log::info('//////////////////////////  CALBACK STARTED //////////////////////////');
 
         // Получите данные из POST-запроса от ЮKassa
@@ -204,7 +206,7 @@ class PaymentController extends Controller
                                 'Оплата подтверждена!',
                                 $user['name'],
                                 "Отлично, вы успешно оплатили заявку в сборике: '" . $Collection['title'] .
-                                "'. Следующий этап (предварительная проверка сборника) будет доступен" . $Collection['col_date2'] . "!" .
+                                "'. Следующий этап (предварительная проверка сборника) будет доступен " . Date::parse($Collection['col_date2'])->format('j F') . "! " .
                                 "Вся подробная информация об издании сборника и вашем процессе указана на странице участия:",
                                 "Ваша страница участия",
                                 $metadata['url_redirect']));

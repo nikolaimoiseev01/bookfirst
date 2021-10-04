@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Session;
 class PortalController extends Controller
 {
     public function index() {
-        $own_books = own_book::where('own_book_status_id', 9)->where('promo_price', '>', 1000)->get();
+        $own_books = own_book::where('own_book_status_id', 9)->where('promo_price', '>', 1000)->orderBy('id')->get();
         $collections = Collection::where('col_status_id','1')->get();
         $col_statuses = Col_status::orderBY('id')->get();
         return view('portal.index', [

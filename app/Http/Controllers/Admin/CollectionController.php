@@ -14,9 +14,11 @@ use App\Notifications\EmailNotification;
 use App\Notifications\UserNotification;
 use Illuminate\Notifications\Notification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Jenssegers\Date\Date;
 
 class CollectionController extends Controller
 {
@@ -124,7 +126,7 @@ class CollectionController extends Controller
         $participations = Participation::orderBy('pat_status_id', 'asc')->where('collection_id', $collection->id)->get();
         $collection_title = DB::table('collections')->where('id', $collection->id)->value('title');
         $printorders = PrintOrder::orderBy('id', 'desc')->where('collection_id', $collection->id)->get();
-        $pre_comments = preview_comment::where('collection_id',$collection->id)->with('participation')->get();
+        $pre_comments = preview_comment::where('collection_id', $collection->id)->with('participation')->get();
 //        $votes = vote::where('collection_id', $collection->id)->with('Collection')->with('Participation')->get();
         $votes = DB::table('votes')
             ->Join('participations as p1', function ($join) {
@@ -136,12 +138,12 @@ class CollectionController extends Controller
                 $join->on('p2.collection_id', '=', 'votes.collection_id');
             })
             ->select('votes.*'
-                ,'p1.name as user_from_name'
-                ,'p1.surname as user_from_surname'
-                ,'p1.nickname as user_from_nickname'
-                ,'p2.name as user_to_name'
-                ,'p2.surname as user_to_surname'
-                ,'p2.nickname as user_to_nickname'
+                , 'p1.name as user_from_name'
+                , 'p1.surname as user_from_surname'
+                , 'p1.nickname as user_from_nickname'
+                , 'p2.name as user_to_name'
+                , 'p2.surname as user_to_surname'
+                , 'p2.nickname as user_to_nickname'
             )
             ->where('votes.collection_id', $collection->id)
             ->get();
@@ -152,7 +154,7 @@ class CollectionController extends Controller
                 $join->on('p2.collection_id', '=', 'votes.collection_id');
             })
             ->select('p2.name', 'p2.surname', 'p2.nickname'
-               ,DB::raw('count(votes.user_id_from) AS votes_got')
+                , DB::raw('count(votes.user_id_from) AS votes_got')
             )
             ->where('votes.collection_id', $collection->id)
             ->groupBy('votes.user_id_to')
@@ -181,135 +183,144 @@ class CollectionController extends Controller
      */
     public function update(Request $request, Collection $collection)
     {
-        $collection->title = $request->title;
-        $collection->col_desc = $request->col_desc;
-        $collection->col_status_id = $request->col_status_id;
-        $collection->col_date1 = $request->col_date1;
-        $collection->col_date2 = $request->col_date2;
-        $collection->col_date3 = $request->col_date3;
-        $collection->col_date4 = $request->col_date4;
-        $collection->amazon_link = $request->amazon_link;
-
-        if(!is_null($request->file('cover_2d'))) {
-            $cover_2d = 'admin_files/Collections/' . $request->title . '/' . $request->file('cover_2d')->getClientOriginalName();
-            $collection->cover_2d = $cover_2d;
-            File::delete($collection->cover_2d);
-            $request->file('cover_2d')->move(public_path('admin_files/Collections/' . $request->title . '/'), $request->file('cover_2d')->getClientOriginalName());
-        }
-        if(!is_null($request->file('cover_3d'))) {
-            $cover_3d = 'admin_files/Collections/' . $request->title . '/' . $request->file('cover_3d')->getClientOriginalName();
-            $collection->cover_3d = $cover_3d;
-            File::delete($collection->cover_3d);
-            $request->file('cover_3d')->move(public_path('admin_files/Collections/' . $request->title . '/'), $request->file('cover_3d')->getClientOriginalName());
-        }
-
-        if(!is_null($request->file('pre_var'))) {
-            $pre_var = 'admin_files/Collections/' . $request->title . '/' . $request->file('pre_var')->getClientOriginalName();
-            File::delete($collection->pre_var);
-            $collection->pre_var = $pre_var;
-            $request->file('pre_var')->move(public_path('admin_files/Collections/' . $request->title . '/'), $request->file('pre_var')->getClientOriginalName());
-        }
+        App::setLocale('ru');
 
 
-        if ($collection->amazon_link == null and $request->amazon_link <> null) {
+        if (($request->col_status_id === "2") && $collection->pre_var === null && !$request->file('pre_var')) {
+            session()->flash('success', 'change_printorder');
+            session()->flash('alert_type', 'error');
+            session()->flash('alert_title', 'Что-то пошло не так :(');
+            session()->flash('alert_text', 'Сначала нужно загрузить файл предварительного варианта!');
+        } else {
 
-            $users_from_participation = Participation::where('collection_id', $collection->id)->get('user_id')->toArray();
-            $users = User::whereIn('id', $users_from_participation)->get();
+            $collection->title = $request->title;
+            $collection->col_desc = $request->col_desc;
+            $collection->col_status_id = $request->col_status_id;
+            $collection->col_date1 = $request->col_date1;
+            $collection->col_date2 = $request->col_date2;
+            $collection->col_date3 = $request->col_date3;
+            $collection->col_date4 = $request->col_date4;
+            $collection->amazon_link = $request->amazon_link;
 
-            foreach ($users as $user)
-            {
-                $user->notify(new EmailNotification(
-                    'Встречайте книгу на Amazon.com!',
+
+            if (!is_null($request->file('cover_2d'))) {
+                $cover_2d = 'admin_files/Collections/' . $request->title . '/' . $request->file('cover_2d')->getClientOriginalName();
+                $collection->cover_2d = $cover_2d;
+                File::delete($collection->cover_2d);
+                $request->file('cover_2d')->move(public_path('admin_files/Collections/' . $request->title . '/'), $request->file('cover_2d')->getClientOriginalName());
+            }
+            if (!is_null($request->file('cover_3d'))) {
+                $cover_3d = 'admin_files/Collections/' . $request->title . '/' . $request->file('cover_3d')->getClientOriginalName();
+                $collection->cover_3d = $cover_3d;
+                File::delete($collection->cover_3d);
+                $request->file('cover_3d')->move(public_path('admin_files/Collections/' . $request->title . '/'), $request->file('cover_3d')->getClientOriginalName());
+            }
+
+            if (!is_null($request->file('pre_var'))) {
+                $pre_var = 'admin_files/Collections/' . $request->title . '/' . $request->file('pre_var')->getClientOriginalName();
+                File::delete($collection->pre_var);
+                $collection->pre_var = $pre_var;
+                $request->file('pre_var')->move(public_path('admin_files/Collections/' . $request->title . '/'), $request->file('pre_var')->getClientOriginalName());
+            }
+
+            if (Collection::where('id', $collection->id)->value('amazon_link') === null and $request->amazon_link <> null) {
+                $users_from_participation = Participation::where('collection_id', $collection->id)->get('user_id')->toArray();
+                $users = User::whereIn('id', $users_from_participation)->get();
+
+
+                foreach ($users as $user) {
+
+                    $user->notify(new EmailNotification(
+                        'Встречайте книгу на Amazon.com!',
                         $user['name'],
-                        "Сборник '" . $request->title . "' успешно появился на Amazon.com!" .
+                        "Сборник '" . $request->title . "' успешно появился на Amazon.com! " .
                         "Ссылка на покупку доступна на странице наших сборников:",
                         "Наши сборники",
-                    route('homePortal') . "/old_collections",
-                ));
+                        route('homePortal') . "/old_collections",
+                    ));
 
-                \Illuminate\Support\Facades\Notification::send($user, new UserNotification(
-                    'Сборник был размещен на Amazon.com!',
-                    route('homePortal') . "/old_collections",
-                ));
+                    \Illuminate\Support\Facades\Notification::send($user, new UserNotification(
+                        'Сборник был размещен на Amazon.com!',
+                        route('old_collections'),
+                    ));
+                }
+
             }
 
-        }
+            if ($request->col_status_id == 2) {
+                $users_from_participation = Participation::where('collection_id', $collection->id)->get('user_id')->toArray();
+                $users = User::whereIn('id', $users_from_participation)->get();
 
-        if ($request->col_status_id == 2) {
-            $users_from_participation = Participation::where('collection_id', $collection->id)->get('user_id')->toArray();
-            $users = User::whereIn('id', $users_from_participation)->get();
+                foreach ($users as $user) {
+                    $user->notify(new EmailNotification(
+                            'Процесс издания сборника',
+                            $user['name'],
+                            "Спешим вам сообщить, что произошла смена этапа издания сборинка: " . $request->title .
+                            "'! Сборник сменил свой статус на \"предварительная проверка\", и теперь вы можете проверить предварительный экземпляр и внести правки. " .
+                            "Срок внесения изменений: до " . Date::parse($collection->col_date3)->format('j F') . " (19:59 МСК). " .
+                            "Вся подробная информация об издании сборника и вашем процессе указана на странице участия:",
+                            "Ваша страница участия",
+                            route('homePortal') . "/myaccount/collections/" . $collection->id . "/participation/" . Participation::where([['user_id', $user->id], ['collection_id', $collection->id]])->value('id'))
+                    );
 
-            foreach ($users as $user)
-            {
-                $user->notify(new EmailNotification(
-                    'Процесс издания сборника',
-                    $user['name'],
-                    "Спешим вам сообщить, что произошла смена этапа издания сборинка: " . $request->title .
-                    "'! Сборник сменил свой статус на \"предварительная проверка\", и теперь вы можете проверить предварительный экземпляр и внести правки. " .
-                    "Срок внесения изменений: до 19:59 МСК" . $collection->col_date3 . ". " .
-                    "Вся подробная информация об издании сборника и вашем процессе указана на странице участия:",
-                    "Ваша страница участия",
-                        route('homePortal') . "/myaccount/collections/" . $collection->id . "/participation/" . Participation::where([['user_id', $user->id],['collection_id', $collection->id]])->value('id'))
-                );
-
-                \Illuminate\Support\Facades\Notification::send($user, new UserNotification(
-                    'Статус сборника был изменен!',
-                    route('homePortal') . "/myaccount/collections/" . $collection->id . "/participation/" . Participation::where([['user_id', $user->id],['collection_id', $collection->id]])->value('id')
-                ));
+                    \Illuminate\Support\Facades\Notification::send($user, new UserNotification(
+                        'Статус сборника был изменен!',
+                        route('homePortal') . "/myaccount/collections/" . $collection->id . "/participation/" . Participation::where([['user_id', $user->id], ['collection_id', $collection->id]])->value('id')
+                    ));
+                }
             }
-        }
 
-        if ($request->col_status_id == 3) {
-            $users_from_participation = Participation::where('collection_id', $collection->id)->get('user_id')->toArray();
-            $users = User::whereIn('id', $users_from_participation)->get();
+            if ($request->col_status_id == 3) {
+                $users_from_participation = Participation::where('collection_id', $collection->id)->get('user_id')->toArray();
+                $users = User::whereIn('id', $users_from_participation)->get();
 
-            foreach ($users as $user)
-            {
-                $user->notify(new EmailNotification(
-                        'Процесс издания сборника',
-                        $user['name'],
-                        "Спешим вам сообщить, что произошла смена этапа издания сборинка: " . $request->title .
-                        "'! В сборнике были учтены все исправления и сейчас начинается печать экземпляров. " .
-                        "Обычно это занимает 14 рабочих дней. Как только экземпляры будут напечатаны, Вы получите оповещние об этом по Email. "
-                        ."Далее в личном кабинете на странице участия Вы сможете отследить свою посылку." .
-                        "Вся подробная информация об издании сборника и вашем процессе указана на странице участия:",
-                        "Ваша страница участия",
-                        route('homePortal') . "/myaccount/collections/" . $collection->id . "/participation/" . Participation::where([['user_id', $user->id],['collection_id', $collection->id]])->value('id'))
-                );
+                foreach ($users as $user) {
+                    $user->notify(new EmailNotification(
+                            'Процесс издания сборника',
+                            $user['name'],
+                            "Спешим вам сообщить, что произошла смена этапа издания сборинка: " . $request->title .
+                            "'! В сборнике были учтены все исправления, и сейчас начинается печать экземпляров. " .
+                            "Обычно это занимает 14 рабочих дней. Как только экземпляры будут напечатаны, Вы получите оповещние об этом по Email. "
+                            . "Далее в личном кабинете на странице участия Вы сможете отследить свою посылку. " .
+                            "Вся подробная информация об издании сборника и вашем процессе указана на странице участия:",
+                            "Ваша страница участия",
+                            route('homePortal') . "/myaccount/collections/" . $collection->id . "/participation/" . Participation::where([['user_id', $user->id], ['collection_id', $collection->id]])->value('id'))
+                    );
 
-                \Illuminate\Support\Facades\Notification::send($user, new UserNotification(
-                    'Статус сборника был изменен!',
-                    route('homePortal') . "/myaccount/collections/" . $collection->id . "/participation/" . Participation::where([['user_id', $user->id],['collection_id', $collection->id]])->value('id')
-                ));
+                    \Illuminate\Support\Facades\Notification::send($user, new UserNotification(
+                        'Статус сборника был изменен!',
+                        route('homePortal') . "/myaccount/collections/" . $collection->id . "/participation/" . Participation::where([['user_id', $user->id], ['collection_id', $collection->id]])->value('id')
+                    ));
+                }
             }
-        }
 
-        if ($request->col_status_id == 4) {
-            $users_from_participation = Participation::where('collection_id', $collection->id)->get('user_id')->toArray();
-            $users = User::whereIn('id', $users_from_participation)->get();
+            if ($request->col_status_id == 9 && $request->amazon_link === null) {
+                $users_from_participation = Participation::where('collection_id', $collection->id)->get('user_id')->toArray();
+                $users = User::whereIn('id', $users_from_participation)->get();
 
-            foreach ($users as $user)
-            {
-                $user->notify(new EmailNotification(
-                        'Печатные экземпляры успешно отправлены!',
-                        $user['name'],
-                        "Произошла смена этапа издания сборинка: " . $request->title .
-                        "'! Спешим сообщить, что все печатные экземпляры были успешно отправлены в указанные пункты назначения. На странице участия Вы всегда можете отследить нахождение лично Вашей посылки.",
-                        "На страницу участия",
-                        route('homePortal') . "/myaccount/collections/" . $collection->id . "/participation/" . Participation::where([['user_id', $user->id],['collection_id', $collection->id]])->value('id'))
-                );
+                foreach ($users as $user) {
+                    $user->notify(new EmailNotification(
+                            'Печатные экземпляры успешно отправлены!',
+                            $user['name'],
+                            "Произошла смена этапа издания сборинка: " . $request->title .
+                            "'! Спешим сообщить, что все печатные экземпляры были успешно отправлены в указанные пункты назначения. На странице участия Вы всегда можете отследить нахождение лично Вашей посылки.",
+                            "На страницу участия",
+                            route('homePortal') . "/myaccount/collections/" . $collection->id . "/participation/" . Participation::where([['user_id', $user->id], ['collection_id', $collection->id]])->value('id'))
+                    );
 
-                \Illuminate\Support\Facades\Notification::send($user, new UserNotification(
-                    'Статус сборника был изменен!',
-                    route('homePortal') . "/myaccount/collections/" . $collection->id . "/participation/" . Participation::where([['user_id', $user->id],['collection_id', $collection->id]])->value('id')
-                ));
+                    \Illuminate\Support\Facades\Notification::send($user, new UserNotification(
+                        'Статус сборника был изменен!',
+                        route('homePortal') . "/myaccount/collections/" . $collection->id . "/participation/" . Participation::where([['user_id', $user->id], ['collection_id', $collection->id]])->value('id')
+                    ));
+                }
             }
-        }
 
-        $collection->save();
-        session()->flash('success', 'change_printorder');
-        session()->flash('alert_type', 'success');
-        session()->flash('alert_title', 'Сборник успешно обновлен!');
+            $collection->save();
+            session()->flash('success', 'change_printorder');
+            session()->flash('alert_type', 'success');
+            session()->flash('alert_title', 'Сборник успешно обновлен!');
+
+        }
         return redirect()->back();
     }
 
@@ -327,7 +338,7 @@ class CollectionController extends Controller
     public function change_all_preview_collection_comment_status(Request $request)
     {
         $prev_comments = preview_comment::where('collection_id', $request->collection_id)
-           ->update(['status_done' => 1]);
+            ->update(['status_done' => 1]);
 
         return redirect(url()->previous());
     }

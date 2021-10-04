@@ -16,7 +16,7 @@
             <a wire:click.prevent="MarkAsRead('{{$notification['id']}}', '{{$notification['data']['link']}}')"
                href="/myaccount/chats/1">
                 <div class="container container-hover">
-                    <div class="el-desc">
+                    <div style="color: #36356d;" class="el-desc">
                         <span>{{$notification['data']['text']}}</span>
                         Подробнее
                     </div>

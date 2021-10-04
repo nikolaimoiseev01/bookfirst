@@ -285,7 +285,7 @@
                                        id="pat_id">
 
                                 <button id="btn-submit" type="submit" style="height: fit-content; max-width:250px;"
-                                        class="pay-button button">
+                                        class="preloader_button pay-button button">
                                     Оплатить {{$participation['total_price']}} руб.
                                 </button>
                             </form>
@@ -846,10 +846,10 @@
 
                 @if($collection['col_status_id'] <= 3)
                     <div class="no-access">
-                        <span>Отслеживание станет доступно после отправки печатных экземпляров авторам.
-                            Все даты издания указаны на
-                            <a style="color: #a0d7cb" href="{{route('collection_page',$collection['id'])}}"
-                               target="_blank" class="">странице сборника</a>.
+                        <span>
+                             {{App::setLocale('ru')}}
+                            Отслеживание станет доступно после отправки печатных экземпляров авторам:
+                            {{ Date::parse($collection['col_date4'])->format('j F') }}
                         </span>
                         @if ($collection['col_status_id'] < 3 && $participation['paid_at'] <> null)
                             <br>

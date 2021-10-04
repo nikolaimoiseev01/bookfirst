@@ -64,7 +64,9 @@
 
                 </div>
             </div>
-            <a id="save_form" class="header-button-wrap  button">Оплатить дополнительные экземпляры</a>
+            <button id="save_form" class="preloader_button header-button-wrap  button" type="submit">
+                <span class="button__text">Войти</span>
+            </button>
             <a name="create_form" style="margin-left: 10px;" class="header-button-wrap  show-hide button">Отменить</a>
         </div>
     </div>
@@ -90,10 +92,9 @@
         })
 
         var print_needed = {{$participation->printorder['books_needed'] ?? 1}},
-            print_price = {{$participation['print_price'] ?? 300}},
+            print_price = @if ($participation['print_price'] === 0 || $participation['print_price'] === null) 300 @else {{$participation['print_price']}} @endif,
             print_discount = 1;
         pay_extra = 0;
-
         function calcuation() {
 
             if (print_needed <= 5) {
@@ -108,7 +109,7 @@
             ;
 
             print_price = print_needed * (300 * print_discount);
-            pay_extra = print_price - {{$participation['print_price']}};
+            pay_extra = print_price - {{$participation['print_price'] ?? 0}};
 
             $('#print_needed').html(print_needed);
             $('#print_price').html(print_price);

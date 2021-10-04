@@ -52,13 +52,9 @@ class CollectionPrintorderForm extends Component
     {
         $errors_array = [];
 
-        if ($this->print_price > 0 && (!$this->send_to_address || !$this->send_to_name || !$this->send_to_tel)) {
+
+        if (!$this->send_to_address || !$this->send_to_name || !$this->send_to_tel) {
             array_push($errors_array, 'Не вся информация о получаетеле заполнена!');
-        }
-
-
-        if ($this->form_type === 'edit' && $this->pay_extra === 0) {
-            array_push($errors_array, 'На этом этапе можно только добавить печатные экземпляры к заказу.');
         }
 
 
@@ -74,7 +70,6 @@ class CollectionPrintorderForm extends Component
 
 
         if (empty($errors_array)) {
-
             $description = "Бронирование дополнительных печатных экземпляров (" . "шт) сборника '" . $this->collection['title'] . "'";
             $url_redirect = url()->previous();
             if ($this->form_type === 'create') {
@@ -83,6 +78,7 @@ class CollectionPrintorderForm extends Component
             elseif ($this->form_type === 'edit') {
                 $amount = round(intval($this->pay_extra));
             }
+
 
 
             // Записываем данные транзакции

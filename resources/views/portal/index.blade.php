@@ -105,7 +105,7 @@
             </div>
             <div class="ex_buttons">
                 <a style="font-size: 24px;" target="_blank" href="https://www.amazon.com/s?i=stripbooks&rh=p_27%3A%26%231053%3B%26%231048%3B+%26%231055%3B%26%231077%3B%26%231088%3B%26%231074%3B%26%231072%3B%26%231103%3B+%26%231050%3B%26%231085%3B%26%231080%3B%26%231075%3B%26%231072%3B&s=relevancerank&text=%26%231053%3B%26%231048%3B+%26%231055%3B%26%231077%3B%26%231088%3B%26%231074%3B%26%231072%3B%26%231103%3B+%26%231050%3B%26%231085%3B%26%231080%3B%26%231075%3B%26%231072%3B&ref=dp_byline_sr_book_1" class="button">Купить на Amazon</a>
-                <a style="font-size: 24px;" target="_blank" href="/collections" class="button">Все наши работы</a>
+                <a style="font-size: 24px;" target="_blank" href="{{route('old_collections')}}" class="button">Все наши работы</a>
             </div>
         </div>
     </div>
@@ -172,7 +172,7 @@
             </div>
             <div class="buttons-wrap">
                 <a href="{{route('own_book_page')}}" class="button">Подробнее</a>
-                <a href="/" class="log_check button">Подать заявку</a>
+                <a href="{{route('own_book_create')}}" class="log_check button">Подать заявку</a>
             </div>
         </div>
     </div>
