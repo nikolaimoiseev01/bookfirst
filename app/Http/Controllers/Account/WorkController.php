@@ -105,7 +105,7 @@ class WorkController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param \App\Models\Work $work
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Routing\Redirector
      */
     public function update(Request $request, Work $work)
     {
@@ -113,10 +113,12 @@ class WorkController extends Controller
         $work->text = $request->text;
         $work->user_id = Auth::user()->id;
         $work->save();
-        $works = Work::where('user_id', Auth::user()->id)->get();
-        return view('account.my_works.index', [
-            'works' => $works
-        ]);
+        session()->flash('show_modal', 'yes');
+        session()->flash('alert_type', 'success');
+        session()->flash('alert_title', 'Успешно!');
+        session()->flash('alert_text', 'Произведение "' . $request->title . '" отредактировано.');
+
+        return redirect('/myaccount/work');
     }
 
     /**
