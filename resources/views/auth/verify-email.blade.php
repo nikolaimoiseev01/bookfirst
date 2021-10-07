@@ -28,7 +28,7 @@
         </div>
 
         @if (session('resent'))
-            <p style="margin-top: 15px;"><b>{{ __('Новое письмо было выслано на указанный Email!') }}</b></p>
+            <p style="margin-top: 15px;"><b>{{ __('Новое письмо было отправлено на указанный Email!') }}</b></p>
         @endif
 
     </div>

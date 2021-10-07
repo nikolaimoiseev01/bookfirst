@@ -98,8 +98,8 @@
                 </div>
                 <div id="ex_2" class="project">
                     <h2 class="ex_name">Тематические сборники</h2>
-                    <p class="ex_desc letters">Так мы часто выпускаем тематические сборники.
-                        Новогодние сборники, военные рассказы, фанфики сегодняшних писателей и т.д.
+                    <p class="ex_desc letters">Так же мы часто выпускаем тематические сборники.
+                        Новогодние сборники, военные рассказы, фанфики сегодняшних писателей
                         как нельзя лучше передают культуру современной литературы.</p>
                 </div>
             </div>
@@ -113,7 +113,7 @@
     <div class="history-block">
         <img src="/img/woman2.svg" alt="">
         <div class="history">
-            <h2 class="title">За три года работы у нас:</h2>
+            <h2 class="title">За пять лет работы у нас:</h2>
             <div class="container">
                 <div class="history-info">
                     <span class="history-number"><span class="history-number" id="counter1">0</span>+</span>

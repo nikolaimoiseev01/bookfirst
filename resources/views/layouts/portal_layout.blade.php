@@ -230,7 +230,7 @@
         $(".log_check").click(function (event) {
             event.preventDefault();
             Swal.fire({
-                html: '<p style="margin-bottom: 20px;" >Вы переходите в личный кабинет, но еще не авторизированны в системе. Для входа в личный кабинет необходимо произвести вход или зарегистрироваться, если у Вас еще нет аккаунта.</p><a style="margin-right: 10px;"  class="button" href="' + $(this).attr('href') + '">Войти</a> <a style="margin-left: 10px;"  class="button" href="{{route('register')}}">Регистрация</a>',
+                html: '<p style="margin-bottom: 20px;" >Вы переходите в личный кабинет, но еще не авторизованы в системе. Для использования личного кабинета необходимо произвести вход или зарегистрироваться, если у Вас еще нет аккаунта.</p><a style="margin-right: 10px;"  class="button" href="' + $(this).attr('href') + '">Войти</a> <a style="margin-left: 10px;"  class="button" href="{{route('register')}}">Регистрация</a>',
                 icon: 'info',
                 showConfirmButton: false,
             })
