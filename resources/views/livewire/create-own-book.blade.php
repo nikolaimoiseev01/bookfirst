@@ -1,4 +1,47 @@
 <div class="create_book_wrap">
+    <style>
+        .input-block {
+            display: flex;
+        }
+
+        .send-wrap {
+            width: 33px;
+            position: relative;
+            border: 1px #6dc4b1 solid;
+            border-left: none;
+            border-radius: 0 5px 5px 0;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+        }
+
+        .filepond--item {
+            width: calc(30% - 0.5em);
+        }
+
+        .filepond--file-status-sub {
+            font-size: 12px;
+        }
+
+        .pre_cover_files .filepond--root {
+            max-height: 200px;
+            margin-top: -76px;
+        }
+
+        .pre_cover_files .filepond--drop-label {
+            visibility: hidden;
+        }
+
+        .pre_cover_files .filepond--browser.filepond--browser {
+            visibility: hidden;
+        }
+
+        .pre_cover_files .filepond--list.filepond--list {
+            border: none;
+        }
+
+
+    </style>
     <form
         wire:submit.prevent="save_own_book(Object.fromEntries(new FormData($event.target)))"
         enctype="multipart/form-data"
@@ -27,7 +70,6 @@
                             </div>
                         </div>
                         {{----------- // БЛОК ОБЩЕЙ ИНФОРМАЦИИ -----------}}
-
 
                         {{----------- ВНУТРЕННИЙ БЛОК -----------}}
                         <div wire:ignore id='inide_block' class="ob-applic-block">
@@ -256,10 +298,10 @@
                         </div>
                         {{----------- // ВНУТРЕННИЙ БЛОК -----------}}
 
-
                         {{----------- БЛОК ОБЛОЖКИ -----------}}
-                        <div id='cover_block' class="ob-applic-block">
-                            <h2 style="    display: flex; align-items: center; justify-content: space-between;">Обложка
+                        <div wire:ignore id='cover_block' class="ob-applic-block">
+                            <h2 style="z-index: 9; position: relative; display: flex; align-items: center; justify-content: space-between;">
+                                Обложка
                                 <div style="margin-left: 10px;" class="switch-wrap">
                                     <input checked type="radio" value="cover_status_no" id="cover_status_no"
                                            name="cover_status"
@@ -277,17 +319,38 @@
                                 </div>
                             </h2>
 
-                            <div wire:ignore id="block_cover_status_yes"
+                            <div id="block_cover_status_yes"
                                  style="border-radius: 5px; border: 1px #6dc4b1 solid; width: 100%; display:none;  margin-right: 20px;"
                                  class="cover_status">
 
                                 <input accept multiple name="cover_files" class="filepond_cover" type="file"/>
                             </div>
 
-                            <textarea wire:ignore style="height: 100px; width: 100%;"
-                                      placeholder="Опишите Ваше видение обложки будущей обложки. Чем точнее описание, тем лучше."
-                                      id="block_cover_status_no" class="cover_status" name="" cols="30"
-                                      rows="10"></textarea>
+                            <div id="block_cover_status_no" class="cover_status">
+                                <div class="pre_cover_files">
+                                    <input accept multiple name="pre_cover_files" class="pre_cover_files filepond_pre_cover"
+                                           type="file"/>
+                                </div>
+                                <div wire:ignore class="pre_cover_wrap block_cover_status_no input-block">
+
+                                <textarea wire:ignore
+                                          style="border-right: none;  resize: none; border-radius: 5px 0 0 5px; height: 100px; width: 100%;"
+                                          placeholder="Опишите Ваше видение обложки будущей обложки. Чем точнее описание, тем лучше."
+                                          name="" cols="30"
+                                          id="cover_comment"
+                                          rows="10"></textarea>
+                                    <div class="send-wrap">
+                                        <span style="margin-bottom: 7px;" class="tooltip" title="Прикрепить файл">
+                                        <svg style="position: inherit;" onclick="trigger_filepond_function()"
+                                             class="attach_icon"
+                                             viewBox="0 0 268.12 494.4"><path
+                                                d="M247.2,0C173.29,0,113.14,60.13,113.14,134.06V387.87a16.39,16.39,0,1,0,32.78,0V134.06a101.28,101.28,0,0,1,202.56,0V395.73a66,66,0,0,1-65.89,65.89c-.27,0-.52.14-.79.16s-.51-.16-.79-.16a66,66,0,0,1-65.9-65.89v-157a32.09,32.09,0,1,1,64.18,0v149.1a16.39,16.39,0,0,0,32.78,0V238.77a64.87,64.87,0,1,0-129.74,0v157A98.78,98.78,0,0,0,281,494.4c.29,0,.52-.15.8-.16s.52.16.79.16a98.79,98.79,0,0,0,98.67-98.67V134.06C381.26,60.13,321.11,0,247.2,0Z"
+                                                transform="translate(-113.14 0)"/></svg>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
 
                         </div>
                         {{----------- // БЛОК ОБЛОЖКИ -----------}}
@@ -425,7 +488,8 @@
                                            type="radio">
                                     <span style="display:flex;" class="tooltip"
                                           title="Разместить в блоке 'Наши авторы'">
-                                       <svg id="question-circle" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg"
+                                       <svg onclick="trigger_filepond_function()" id="question-circle"
+                                            data-name="Capa 1" xmlns="http://www.w3.org/2000/svg"
                                             viewBox="0 0 40.12 40.12">
                                             <path
                                                 d="M19.94,12.14c1.85,0,3,1,3,2.66,0,3-5.41,3.87-5.41,7.55a2,2,0,0,0,2,2.07c2.05,0,1.8-1.51,2.54-2.6,1-1.45,5.6-3,5.6-7,0-4.36-3.89-6.19-7.86-6.19-3.77,0-7.24,2.69-7.24,5.73a1.85,1.85,0,0,0,2,1.88C17.52,16.23,16,12.14,19.94,12.14Z"/>
@@ -458,6 +522,7 @@
                         </div>
                         {{----------- // БЛОК ПРОДВИЖЕНИЯ -----------}}
 
+
                     </div>
 
                     <div wire:ignore class="participation-outputs">
@@ -466,7 +531,8 @@
                              id="no-price-wrap">
                             <p style="text-align: center; color: #4C4B46 !important;">
                                 Чтобы расчитывать цены в заявке, нужно загрузить произведения одним из способов (файлом
-                                или из нашей системы). В случае добавления файлов формата не 'Docx', необходимо вручную указать кол-во страниц после загрузки.
+                                или из нашей системы). В случае добавления файлов формата не 'Docx', необходимо вручную
+                                указать кол-во страниц после загрузки.
                             </p>
                         </div>
                         <div style="display: none;" id="price-parts-wrap">
@@ -475,7 +541,9 @@
                                 <h1>&nbsp;руб.</h1>
                                 <div class="participation-price-desc">
                                     <div>
-                                        <p>работа с макетом (</p><p id="pages">0</p><p>&nbsp;стр.)</p>
+                                        <p>работа с макетом (</p>
+                                        <p id="pages">0</p>
+                                        <p>&nbsp;стр.)</p>
                                     </div>
 
                                     <p style="display: none; line-height: 20px; font-size: 20px;" class="inside_status">
@@ -536,7 +604,9 @@
             </div>
 
         </div>
-        <button type="submit" id="save_form" class="button">Отправить заявку</button>
+        <button style="margin-right:20px;" type="submit" id="save_form" class="preloader_button button" >
+            <span class="button__text">Отправить заявку</span>
+        </button>
     </form>
 
     <a style="display:none;" class="fast-load" id="go-to-part-page">Кнопка назад</a>
@@ -613,6 +683,34 @@
             }
 
 
+            function make_pre_cover_files_after_upload() {
+                var totalFiles = $('.filepond_pre_cover .filepond--item').length;
+                var completedFiles = $('.filepond_pre_cover .filepond--item[data-filepond-item-state="processing-complete"]').length;
+                if (completedFiles === totalFiles) {
+                    pre_cover_files_paths = $("[name='pre_cover_files']");
+                    pre_cover_files_to_php = '';
+                    for (var i = 0; i < pre_cover_files_paths.length; i++) {
+                        if ($(pre_cover_files_paths[i]).val() != '') {
+                            pre_cover_files_to_php += $(pre_cover_files_paths[i]).val() + ';';
+                        }
+                    }
+                    pre_cover_files_to_php = pre_cover_files_to_php.slice(0, -1)
+                }
+
+            }
+
+            function make_pre_cover_files_after_remove() {
+                pre_cover_files_paths = $("[name='pre_cover_files']");
+                pre_cover_files_to_php = '';
+                for (var i = 0; i < pre_cover_files_paths.length; i++) {
+                    if ($(pre_cover_files_paths[i]).val() != '') {
+                        pre_cover_files_to_php += $(pre_cover_files_paths[i]).val() + ';';
+                    }
+                }
+                pre_cover_files_to_php = pre_cover_files_to_php.slice(0, -1)
+            }
+
+
             FilePond.registerPlugin(FilePondPluginFileValidateSize);
             FilePond.registerPlugin(FilePondPluginFileValidateType);
 
@@ -646,10 +744,10 @@
                     }
                 },
                 onprocessfile: (file) => {
-                    make_cover_files_after_upload();
+                    make_pre_cover_files_after_upload();
                 },
                 onremovefile: (file) => {
-                    make_cover_files_after_remove();
+                    make_pre_cover_files_after_remove();
                 },
                 maxTotalFileSize: '20MB',
                 labelMaxFileSizeExceeded: 'Размер превышен!',
@@ -659,6 +757,34 @@
                 labelMaxTotalFileSize: 'Максимум: {filesize}',
                 labelIdle: `<p>Загрузите один или несколько файлов <b>готовой обложки.</b>. </p></br><p> Можно перести файлы сюда или&nbsp;</p><a class="link">Выбрать вручную</a>`,
             });
+
+            $('.filepond_pre_cover').filepond({
+                server: {
+                    url: '/myaccount/temp-uploads/pre_cover_files',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{csrf_token()}}'
+                    }
+                },
+                onprocessfile: (file) => {
+                    make_pre_cover_files_after_upload();
+                },
+                onremovefile: (file) => {
+                    make_pre_cover_files_after_remove();
+                },
+                maxTotalFileSize: '20MB',
+                labelMaxFileSizeExceeded: 'Размер превышен!',
+                allowFileTypeValidation: false,
+                labelMaxFileSize: 'Максимальный: {filesize}',
+                labelMaxTotalFileSizeExceeded: 'Сумма размеров превышена!',
+                labelMaxTotalFileSize: 'Максимум: {filesize}',
+                labelIdle: `<span id="file_pond_button"></span>`,
+            });
+
+
+            function trigger_filepond_function() {
+                $('#file_pond_button').click();
+            }
+
             // --- // Работа с загрузкой файлов
 
 
@@ -679,6 +805,8 @@
                 cover_type = "",
                 cover_comment = null,
                 cover_files_to_php = '',
+                pre_cover_files_to_php = '',
+                pre_cover_files,
 
                 print_needed = 0,
                 tirag_coef = 0,
@@ -712,8 +840,7 @@
                     inside_status = 2;
                     $('#textcheck_needed').prop('checked', false);
                     $('#textdesign_needed').prop('checked', false);
-                }
-                else {
+                } else {
                     inside_status = 1;
                 }
                 ;
@@ -819,13 +946,12 @@
                 } else {
                     cover_price = 1500;
                     cover_status = 1;
-                    cover_comment = $('#block_cover_status_no').val();
+                    cover_comment = $('#cover_comment').val();
                     $('#cover-price-total').slideDown();
                 }
                 // --------------------------------
 
                 print_price = (pages - color_pages + (color_pages * 3)) * 0.7 * tirag_coef * cover_color_coef * cover_style_coef * pages_coef * print_needed * 2.2;
-
 
 
                 total_price = parseInt(text_design_price) + parseInt(text_check_price) + 300 + 500 + parseInt(cover_price) + parseInt(Math.round(print_price)) + parseInt(promo_price);
@@ -945,9 +1071,6 @@
             // ------------------------------------
 
             // -----------------------------// PRICES---------------------------------------------
-
-
-
 
 
             {{-------- Отмечаем обязательные поля в завимости от чекбоксов ---------}}
@@ -1179,15 +1302,12 @@
 
                     if (inside_type == 'by_system') {
                         inside_type = 'системой'
-                    }
-                    else {
+                    } else {
                         inside_type = 'файлами'
                     }
 
 
-
-
-                    @this.set("inside_type", inside_type);
+                @this.set("inside_type", inside_type);
                     if (typeof add_files_to_php != 'undefined') {
                     @this.set("work_files", add_files_to_php.slice(0, -1));
                     } else {@this.set("work_files", 0)
@@ -1199,25 +1319,26 @@
                         works_to_php += parts.pop() + ";"
                     })
 
-                    @this.set("works", works_to_php.slice(0, -1));
+                @this.set("works", works_to_php.slice(0, -1));
 
-                    @this.set("inside_status", inside_status);
+                @this.set("inside_status", inside_status);
 
-                    @this.set("text_design_price", text_design_price);
-                    @this.set("text_check_price", text_check_price);
-                    @this.set("cover_price", cover_price);
-                    @this.set("cover_status", cover_status);
-                    @this.set("pages", pages);
+                @this.set("text_design_price", text_design_price);
+                @this.set("text_check_price", text_check_price);
+                @this.set("cover_price", cover_price);
+                @this.set("cover_status", cover_status);
+                @this.set("pages", pages);
 
                     if (cover_price > 0) {
                     @this.set("cover_comment", cover_comment);
+                    @this.set("pre_cover_files", pre_cover_files_to_php);
                     } else {@this.set("cover_files", cover_files_to_php)
                     }
 
-                    @this.set("promo_type", promo_var_num);
-                    @this.set("promo_price", promo_price);
-                    @this.set("total_price", total_price);
-                    @this.set("print_price", print_price);
+                @this.set("promo_type", promo_var_num);
+                @this.set("promo_price", promo_price);
+                @this.set("total_price", total_price);
+                @this.set("print_price", print_price);
 
                     if (print_price > 0) {
                     @this.set("cover_type", cover_type);
@@ -1228,7 +1349,6 @@
                     @this.set("send_to_address", $('#send_to_address').val());
                     @this.set("send_to_tel", $('#send_to_tel').val());
                     }
-
 
 
                     Livewire.emit('save_own_book')

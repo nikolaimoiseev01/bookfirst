@@ -27,6 +27,7 @@ class CreateOwnBook extends Component
 
     public $work_files;
     public $cover_files;
+    public $pre_cover_files;
     public $works;
 
     public $author_name;
@@ -132,7 +133,6 @@ class CreateOwnBook extends Component
     public function save_own_book()
     {
 
-
         // --------- Ищем ошибки в заполнении  --------- //
         $errors_array = [];
 
@@ -199,11 +199,11 @@ class CreateOwnBook extends Component
         if (empty($errors_array)) {
 
             // ---- Сразу создаем нужные папки под книгу ---- //
-            Storage::makeDirectory('admin_files/own_books/user_id_' . Auth::user()->id . '/' . $this->book_title . '/ВЕРСТКА');
-            Storage::makeDirectory('admin_files/own_books/user_id_' . Auth::user()->id . '/' . $this->book_title . '/ОБЛОЖКА');
+            Storage::makeDirectory('admin_files/own_books/user_id_' . Auth::user()->id . '/' . $this->book_title . '/ВЕРСТКА/От автора');
+            Storage::makeDirectory('admin_files/own_books/user_id_' . Auth::user()->id . '/' . $this->book_title . '/ОБЛОЖКА/От автора');
 
-            $user_folder_inside = public_path('admin_files/own_books/user_id_' . Auth::user()->id . '/' . $this->book_title . '/ВЕРСТКА');
-            $user_folder_cover = public_path('admin_files/own_books/user_id_' . Auth::user()->id . '/' . $this->book_title . '/ОБЛОЖКА');
+            $user_folder_inside = public_path('admin_files/own_books/user_id_' . Auth::user()->id . '/' . $this->book_title . '/ВЕРСТКА/От автора');
+            $user_folder_cover = public_path('admin_files/own_books/user_id_' . Auth::user()->id . '/' . $this->book_title . '/ОБЛОЖКА/От автора');
 
             // ---- Записываем основную инфу ---- //
             $new_own_book = new own_book();
@@ -250,9 +250,9 @@ class CreateOwnBook extends Component
             if ($this->inside_type === 'файлами') {
                 $this->work_files = explode(';', $this->work_files);
                 foreach ($this->work_files as $key => $doc_path) {
-                    $extension = substr($doc_path, strpos($doc_path, ".") + 1);
+                    $file_name = substr($doc_path, strrpos($doc_path, '/' )+1);
                     $file_old_path = public_path('filepond_temp/' . $doc_path);
-                    $file_new_path = $user_folder_inside . '/ВБ_' . $this->book_title . '_' . $key . '.' . $extension;
+                    $file_new_path = $user_folder_inside . '/' . $key . '_' . $file_name;
                     File::move($file_old_path, $file_new_path);
                     $own_book_new_file = new own_book_files();
                     $own_book_new_file->own_book_id = $new_own_book->id;
@@ -278,17 +278,36 @@ class CreateOwnBook extends Component
             // ------------------------------------------------------------------------
 
 
-            // ---- Создаем файлы и складируем их в own_book_files ---- //
+            // ---- Создаем файлы готовой обложки и складируем их в own_book_files ---- //
             if ($this->cover_price === 0) {
                 $this->cover_files = explode(';', $this->cover_files);
                 foreach ($this->cover_files as $key => $doc_path) {
-                    $extension = substr($doc_path, strpos($doc_path, ".") + 1);
+                    $file_name = substr($doc_path, strrpos($doc_path, '/' )+1);
                     $file_old_path = public_path('filepond_temp/' . $doc_path);
-                    $file_new_path = $user_folder_cover . '/ОБЛ_' . $this->book_title . '_' . $key . '.' . $extension;
+                    $file_new_path = $user_folder_cover . '/' . $key . '_' . $file_name;
                     File::move($file_old_path, $file_new_path);
                     $own_book_new_file = new own_book_files();
                     $own_book_new_file->own_book_id = $new_own_book->id;
                     $own_book_new_file->file_type = 'cover';
+                    $own_book_new_file->file = substr($file_new_path, strpos($file_new_path, 'public') + 7);
+                    $own_book_new_file->save();
+                    $old_folder = substr($doc_path, 0, strpos($doc_path, '/', strpos($doc_path, '/')+1));
+                    File::deleteDirectory(public_path('filepond_temp/' . $old_folder));
+                }
+            }
+            //------------------------------------------------------------------------
+
+            // ---- Создаем файлы пре обложек и складируем их в own_book_files ---- //
+            if ($this->cover_price > 0) {
+                $this->pre_cover_files = explode(';', $this->pre_cover_files);
+                foreach ($this->pre_cover_files as $key => $doc_path) {
+                    $file_name = substr($doc_path, strrpos($doc_path, '/' )+1);
+                    $file_old_path = public_path('filepond_temp/' . $doc_path);
+                    $file_new_path = $user_folder_cover . '/' . $key . '_' . $file_name;
+                    File::move($file_old_path, $file_new_path);
+                    $own_book_new_file = new own_book_files();
+                    $own_book_new_file->own_book_id = $new_own_book->id;
+                    $own_book_new_file->file_type = 'pre_cover';
                     $own_book_new_file->file = substr($file_new_path, strpos($file_new_path, 'public') + 7);
                     $own_book_new_file->save();
                     $old_folder = substr($doc_path, 0, strpos($doc_path, '/', strpos($doc_path, '/')+1));

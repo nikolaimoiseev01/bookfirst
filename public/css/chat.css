@@ -16,6 +16,16 @@
     visibility: hidden;
 }
 
+
+.filepond--browser.filepond--browser {
+    visibility: hidden;
+}
+
+.filepond--list.filepond--list {
+    margin-top: 10px;
+    border-top: 1px #b2b2b2 solid;
+}
+
 .chat p {
     font-family: "Futura PT Light", serif;
     color: #1c1c16;
@@ -25,9 +35,6 @@
     display: inline-block;
 }
 
-.filepond--browser.filepond--browser {
-    visibility: hidden;
-}
 
 textarea, .editable_div {
     font-family: "Futura PT Light", serif;
@@ -37,10 +44,7 @@ textarea, .editable_div {
     border: 1px #6dc4b1 solid;
 }
 
-.filepond--list.filepond--list {
-    margin-top: 10px;
-    border-top: 1px #b2b2b2 solid;
-}
+
 
 
 .chat {

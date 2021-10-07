@@ -3817,7 +3817,7 @@
         labelFileRemoved: ['Removed', Type.STRING], // assistive only
         labelFileRemoveError: ['Error during remove', Type.STRING],
         labelFileProcessing: ['Загружаем', Type.STRING],
-        labelFileProcessingComplete: ['Загрузка успешна', Type.STRING],
+        labelFileProcessingComplete: ['Загружено', Type.STRING],
         labelFileProcessingAborted: ['Ошибка загрузки', Type.STRING],
         labelFileProcessingError: ['Error during upload', Type.STRING],
         labelFileProcessingRevertError: ['Error during revert', Type.STRING],
