@@ -4,7 +4,10 @@ namespace App\Http\Livewire;
 
 use App\Models\Message;
 use App\Models\message_file;
+use App\Models\Participation;
 use App\Models\User;
+use App\Notifications\EmailNotification;
+use App\Notifications\TelegramNotification;
 use App\Notifications\UserNotification;
 use http\Env\Request;
 use Illuminate\Support\Facades\Auth;
@@ -55,8 +58,6 @@ class Chat extends Component
 
     public function new_message()
     {
-
-
         // --------- Ищем ошибки в заполнении  --------- //
         $errors_array = [];
 
@@ -105,7 +106,7 @@ class Chat extends Component
                     $new_message_file->message_id = $new_message->id;
                     $new_message_file->file = $file_new_path;
                     $new_message_file->save();
-                    $old_folder = substr($file_path, 25, strpos($file_path, '/', strpos($file_path, '/')+1));
+                    $old_folder = substr($file_path, 25, strpos($file_path, '/', strpos($file_path, '/') + 1));
                     File::deleteDirectory(public_path('filepond_temp/chat_files/' . $old_folder));
                 }
             }
@@ -113,18 +114,57 @@ class Chat extends Component
             // --------- // Добавляем файлы, если есть  --------- //
 
             $this->messages = Message::where('chat_id', $this->chat_id)->get();
-            $this->text = '';
+
+
+            $user = User::where('id', $this->user_to)->first();
+            $chat = \App\Models\Chat::where('id', $this->chat_id)->first();
 
             if (Auth::user()->hasRole('admin')) {
                 if (\App\Models\Chat::where('id', $this->chat_id)->value('chat_status_id') === '1') {
                     \App\Models\Chat::where('id', $this->chat_id)->update(array('chat_status_id' => '2'));
                 }
-                $user = User::orderby('id')->where('id', $this->user_to)->get();
-                Notification::send($user, new UserNotification('У Вас новое сообщение!', '/myaccount/chats/' . $this->chat_id));
+
+
+                if ($chat->collection_id > 0) {
+                    $participation_id = Participation::where('user_id', $user['id'])->where('collection_id', $chat->collection_id)->value('id');
+                    $url_back = '/myaccount/collections/' . $chat->collection_id . '/participation/' . $participation_id;
+
+                    // Посылаем Email уведомление пользователю
+                    $user->notify(new EmailNotification(
+                        'У вас новое сообщение!',
+                        $user['name'],
+                        "Вы получили новое сообщение в чате '" . $chat->title . "'! Прочитать и ответить можно на странице Вашего участия:",
+                        "Страница участия",
+                        $url_back));
+                    Notification::send($user, new UserNotification('У Вас новое сообщение!', '/myaccount/chats/' . $this->chat_id));
+
+                }
+
+                if ($chat->own_book_id > 0) {
+                    $url_back = 'https://pervajakniga.ru/myaccount/mybooks/' . $chat->own_book_id . '/book_page';
+
+                    // Посылаем Email уведомление пользователю
+                    $user->notify(new EmailNotification(
+                        'У вас новое сообщение!',
+                        $user['name'],
+                        "Вы получили новое сообщение в чате '" . $chat->title . "'! Прочитать и ответить можно на странице Вашего издания:",
+                        "Страница издания",
+                        $url_back));
+                    Notification::send($user, new UserNotification('У Вас новое сообщение!', '/myaccount/chats/' . $this->chat_id));
+                }
+
+
             } else {
                 \App\Models\Chat::where('id', $this->chat_id)->update(array('chat_status_id' => '1'));
+                // Посылаем Telegram уведомление нам
+                Notification::route('telegram', '-506622812')
+                    ->notify(new TelegramNotification('',
+                        '💬' . $user->name . ' ' . $user->surname . ': ' . $this->text,
+                        "К чатам",
+                        route('chats')));
             }
         }
+        $this->text = '';
 
 
     }

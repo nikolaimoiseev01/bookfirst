@@ -143,7 +143,7 @@
                                     @foreach($works_already_in as $work_already_in)
                                         <div style="transition: none !important;" data-rows='{{$work_already_in->work['rows']}}'
                                              id='work_to_go_{{$work_already_in->work['id']}}' class="container">
-                                            <p>{{$work_already_in->work['title']}}</p>
+                                            <p>{{Str::limit($work_already_in->work['title'], 20, $end='...')}}</p>
                                             <div id='remove_{{$work_already_in->work['id']}}' class='remove-work-wrap'>
                                                 <a><img src='/img/cancel.svg'></a>
                                             </div>
@@ -383,6 +383,9 @@
 
                 print_price = print_needed * 300;
 
+                promo = {{\App\Models\promocode::where('promocode', $participation['promocode'])->value('discount')}};
+                participation_price = participation_price * (1-promo);
+
                 total_price = print_price + participation_price + check_needed
 
 
@@ -548,9 +551,10 @@
                 };
             }
 
-
+            @if ($participation['print_price'] > 0)
             $("#prints-num").val({{$participation->printorder['books_needed']}})
             $("#slider-nonlinear").slider("option", "values", [{{$participation->printorder['books_needed']}}]);
+            @endif
 
             $('#prints-num').keyup(delay(function (e) {
 

@@ -183,7 +183,7 @@ class CreateParticipation extends Component
             $new_chat = new Chat();
             $new_chat->user_created = Auth::user()->id;
             $new_chat->user_to = 2;
-            $new_chat->title = 'Чат: ' . Collection::where('id', $this->collection_id)->value('title');
+            $new_chat->title = 'Личный чат по сборнику: ' . Collection::where('id', $this->collection_id)->value('title');
             $new_chat->collection_id = $this->collection_id;
             $new_chat->chat_status_id = 9;
             $new_chat->save();

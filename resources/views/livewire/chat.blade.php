@@ -6,7 +6,8 @@
         @csrf
         <div class="messages">
             @if(count($messages) == 0)
-                <div style="margin:0; height: 100%; display: flex; align-items: center; justify-content: center" class="no-access">
+                <div style="margin:0; height: 100%; display: flex; align-items: center; justify-content: center"
+                     class="no-access">
                             <span>
                                 Это чат с Вашим личным менеджером по конкретно этому изданию.
                                 В нем пока нет сообщений.</br>
@@ -62,7 +63,7 @@
                           style="border-radius: 10px 0 0 10px; border-right: none;" name="chat_text" required
                           type="text"></textarea>
                 <div class="send-wrap">
-                    <span style="position: absolute; right: 28px;">
+                    <span style="display: grid; position: absolute; right: 28px;">
                         <span class="tooltip" title="Прикрепить файл">
                         <svg onclick="trigger_filepond_function()" class="attach_icon" viewBox="0 0 268.12 494.4"><path
                                 d="M247.2,0C173.29,0,113.14,60.13,113.14,134.06V387.87a16.39,16.39,0,1,0,32.78,0V134.06a101.28,101.28,0,0,1,202.56,0V395.73a66,66,0,0,1-65.89,65.89c-.27,0-.52.14-.79.16s-.51-.16-.79-.16a66,66,0,0,1-65.9-65.89v-157a32.09,32.09,0,1,1,64.18,0v149.1a16.39,16.39,0,0,0,32.78,0V238.77a64.87,64.87,0,1,0-129.74,0v157A98.78,98.78,0,0,0,281,494.4c.29,0,.52-.15.8-.16s.52.16.79.16a98.79,98.79,0,0,0,98.67-98.67V134.06C381.26,60.13,321.11,0,247.2,0Z"
@@ -70,15 +71,17 @@
                         </span>
                     </span>
                     <button id="send_message_{{$chat['id']}}" style="height: 75px;" type="submit">
-                    <span class="tooltip" title="Отправить">
-                    <svg id="Capa_1" data-name="Capa 1"
-                         xmlns="http://www.w3.org/2000/svg"
-                         viewBox="0 0 512 512">
-                        <path
-                            d="M507.61,4.39a15,15,0,0,0-16.18-3.32l-482,192.8a15,15,0,0,0-1,27.43l190.07,92.18L290.7,503.54A15,15,0,0,0,304.2,512h.53a15,15,0,0,0,13.4-9.42l192.8-482A15,15,0,0,0,507.61,4.39ZM52.09,209.12l382.63-153-228,228ZM302.88,459.91l-75-154.6,228-228Z"
-                            transform="translate(0 0)"/>
-                    </svg>
-                </span>
+                        <div style="position: relative;" class="send_mes_button">
+                            <span class="tooltip" title="Отправить">
+                                <svg id="Capa_1" data-name="Capa 1"
+                                     xmlns="http://www.w3.org/2000/svg"
+                                     viewBox="0 0 512 512">
+                                    <path
+                                        d="M507.61,4.39a15,15,0,0,0-16.18-3.32l-482,192.8a15,15,0,0,0-1,27.43l190.07,92.18L290.7,503.54A15,15,0,0,0,304.2,512h.53a15,15,0,0,0,13.4-9.42l192.8-482A15,15,0,0,0,507.61,4.39ZM52.09,209.12l382.63-153-228,228ZM302.88,459.91l-75-154.6,228-228Z"
+                                        transform="translate(0 0)"/>
+                                </svg>
+                            </span>
+                        </div>
                     </button>
                 </div>
             </div>
@@ -93,6 +96,14 @@
     </form>
 
     @section('page-js')
+
+        <script>
+            $('.send_mes_button').on('click', function () {
+                $('.send_mes_button').toggleClass('button--loading');
+                $('.send_mes_button span').toggle();
+                console.log('trigered_1')
+            })
+        </script>
         <script>
 
             function when_upload_start() {

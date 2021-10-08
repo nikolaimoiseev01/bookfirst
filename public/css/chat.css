@@ -23,7 +23,8 @@
 
 .filepond--list.filepond--list {
     margin-top: 10px;
-    border-top: 1px #b2b2b2 solid;
+    /*border-top: 1px #b2b2b2 solid;*/
+    border:none !important;
 }
 
 .chat p {
@@ -45,6 +46,37 @@ textarea, .editable_div {
 }
 
 
+
+.button--loading {
+    background: #47AF98;
+}
+
+.button--loading::after {
+    content: "";
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    top: 0;
+    left: -20px;
+     right: 0;
+    bottom: 20px;
+    margin: auto;
+    border: 4px solid transparent;
+    border-top-color: #47af98;
+    border-radius: 50%;
+    animation: button-loading-spinner 1s ease infinite;
+}
+
+
+@keyframes button-loading-spinner {
+    from {
+        transform: rotate(0turn);
+    }
+
+    to {
+        transform: rotate(1turn);
+    }
+}
 
 
 .chat {

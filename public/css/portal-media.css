@@ -2,6 +2,19 @@
     .welcome-block {
         height: auto;
     }
+
+    .ex_name {
+        font-size: 60px;
+    }
+
+}
+
+@media screen and (max-width: 1550px) {
+
+    .ex_name {
+        font-size: 3.5vw;
+    }
+
 }
 
 /*Размер основных элементов*/
@@ -10,6 +23,7 @@
         font-size: 5vw;
         line-height: 5vw;
     }
+
 }
 
 @media screen and (max-width: 1000px) {
@@ -84,20 +98,47 @@
         width: 80%
     }
 
-    .ex_name {
-        font-size: 4vw;
-    }
-
 
     .buttons-wrap .button {
         width: auto;
     }
 }
 
+@media screen and (max-width: 1350px) {
+    .covers-ex-wrap {
+        height: 276px;
+        width: 526px;
+    }
+
+    .project p {
+        font-size: 23px;
+    }
+
+    .ex_buttons a {
+        font-size: 22px !important;
+    }
+
+    .project-wrap {
+        height: 250px !important;
+    }
+}
+
+
 
 @media screen and (max-width: 1270px) {
     .participation-price-plus {
         margin: 0;
+    }
+
+    .ex_buttons a {
+        font-size: 20px !important;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+
+    .ex_buttons a {
+        font-size: 18px !important;
     }
 }
 

@@ -210,7 +210,7 @@
         </a>
 
         @role('admin')
-        <a href="/admin_panel/collections" target="_blank" class="nav-item">
+        <a href="{{route('homeAdmin')}}" target="_blank" class="nav-item">
             <svg id="Capa_1" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14.57 16.38">
                 <defs>
                     <style>.cls-1 {
