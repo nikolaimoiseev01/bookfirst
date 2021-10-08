@@ -71,7 +71,8 @@
                                                 быть добавлены в нашу систему,
                                                 а затем выбраны из этого списка.</p>
                                         @endif
-                                        <input id="work_search" placeholder="поиск..." style="height: 30px; width: 100%; margin-bottom: 14px;" type="text">
+                                        <input id="work_search" placeholder="поиск..."
+                                               style="height: 30px; width: 100%; margin-bottom: 14px;" type="text">
                                         @foreach($user_works as $work)
                                             <div id="work-container-{{$work['id']}}" class="container">
                                                 <p>{{Str::limit($work['title'], 20)}}</p>
@@ -141,7 +142,8 @@
 
                                 <div class="works-to-go">
                                     @foreach($works_already_in as $work_already_in)
-                                        <div style="transition: none !important;" data-rows='{{$work_already_in->work['rows']}}'
+                                        <div style="transition: none !important;"
+                                             data-rows='{{$work_already_in->work['rows']}}'
                                              id='work_to_go_{{$work_already_in->work['id']}}' class="container">
                                             <p>{{Str::limit($work_already_in->work['title'], 20, $end='...')}}</p>
                                             <div id='remove_{{$work_already_in->work['id']}}' class='remove-work-wrap'>
@@ -234,6 +236,7 @@
                                     </svg>
                             </span>
                         </div>
+
                     </div>
                     <div style="display: @if($participation['print_price'] > 0)block @else none @endif" id="print-price"
                          class="participation-price">
@@ -253,7 +256,11 @@
                         <h1> руб.</h1>
                         <p>Итого</p>
                     </div>
+                    @if($participation['promocode'])
+                        <p style="text-align: center" id="promo_ok"><i>Cкидка в {{$promocode}}% учтена.</i></p>
+                    @endif
                 </div>
+
             </div>
         </div>
 
@@ -298,18 +305,17 @@
             menu.addClass('is-active');
         });
 
-        $('#work_search').keyup(function() {
+        $('#work_search').keyup(function () {
             worksearch = this.value
 
-            $('.work-menu .container').each(function() {
+            $('.work-menu .container').each(function () {
                 if (worksearch != "") {
                     if ($(this).find("p:first").text().toLowerCase().indexOf(worksearch) == -1) {
                         $(this).css('display', 'none');
                     } else {
                         $(this).css('display', 'flex');
                     }
-                }
-                else {
+                } else {
                     $(this).css('display', 'flex');
                 }
             })
@@ -384,7 +390,7 @@
 
                 print_price = print_needed * 300;
 
-                promo = (100 - {{$promocode}}) / 100 ;
+                promo = (100 - {{$promocode}}) / 100;
                 participation_price = participation_price * promo;
 
                 total_price = print_price + participation_price + check_needed
@@ -412,12 +418,16 @@
 
                 console.log('--------------------------------');
 
-                $( function() {
-                    $( ".works-to-go" ).sortable({
+                $(function () {
+                    $(".works-to-go").sortable({
                         placeholder: "to-drop",
                         revert: true,
-                        start: function( event, ui ) {ui.item.addClass( "start-anim" )},
-                        stop: function( event, ui ) {ui.item.addClass( "stop-anim" )}
+                        start: function (event, ui) {
+                            ui.item.addClass("start-anim")
+                        },
+                        stop: function (event, ui) {
+                            ui.item.addClass("stop-anim")
+                        }
                     });
                 });
 
