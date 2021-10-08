@@ -266,7 +266,7 @@
 @section('page-js')
 
     <script>
-        alert(parseFloat({{$promocode}}) + 2)
+
         {{Session(['back_after_add' => \Livewire\str(Request::url())])}}
 
         function close_swal() {
@@ -384,8 +384,8 @@
 
                 print_price = print_needed * 300;
 
-                promo = parseFloat({{$promocode}});
-                participation_price = participation_price * (1-promo);
+                promo = (100 - {{$promocode}}) / 100 ;
+                participation_price = participation_price * promo;
 
                 total_price = print_price + participation_price + check_needed
 

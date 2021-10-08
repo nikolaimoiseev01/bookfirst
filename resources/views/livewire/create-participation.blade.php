@@ -378,11 +378,11 @@
 
             $('#i_have_promo_link').remove();
             $('#i_have_promo_inputs').remove();
-            $('#promo_ok').html('<i>Cкидка в ' + promo_discount * 100 + '% учтена.</i>')
+            $('#promo_ok').html('<i>Cкидка в ' + promo_discount + '% учтена.</i>')
             Swal.fire({
                 title: 'Промокод успешно учтен!',
                 icon: 'success',
-                html: '<p>Ваша скидка на участие составляет: ' + promo_discount * 100 + '%</p>',
+                html: '<p>Ваша скидка на участие составляет: ' + promo_discount + '%</p>',
                 showConfirmButton: false,
             })
 
@@ -447,7 +447,9 @@
                 }
                 ;
 
-                participation_price = participation_price * (1 - promo_discount)
+                promo = (100 - promo_discount) / 100 ;
+
+                participation_price = participation_price * promo;
 
                 if ($("#prints-needed").prop("checked") === false) {
                     print_needed = 0;
