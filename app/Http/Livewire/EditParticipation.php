@@ -6,6 +6,7 @@ use App\Models\Collection;
 use App\Models\Participation;
 use App\Models\Participation_work;
 use App\Models\Printorder;
+use App\Models\promocode;
 use App\Models\Work;
 use App\Rules\SameParticipation;
 use Illuminate\Support\Facades\Auth;
@@ -33,6 +34,8 @@ class EditParticipation extends Component
     public $send_to_address;
     public $errors = [];
 
+    public $promocode;
+
 
     public $part_price;
     public $print_price;
@@ -59,6 +62,7 @@ class EditParticipation extends Component
             'user_works' => $user_works,
             'works_already_in' => $works_already_in,
             'printorder' => $printorder,
+            'promocode' => $this->promocode,
         ]);
     }
 
@@ -78,6 +82,8 @@ class EditParticipation extends Component
         $this->send_to_name = $printorder->send_to_name ?? '';
         $this->send_to_address = $printorder->send_to_address ?? '';
         $this->send_to_tel = $printorder->send_to_tel ?? '';
+
+        $this->promocode = promocode::where('promocode', $participation['promocode'])->value('discount');
 
 
     }

@@ -197,7 +197,7 @@ a:hover {
 input {
     font-family: "Futura PT Light", serif;
     font-size: 20px;
-    padding: 2px;
+    padding: 2px 2px 2px 10px;
     border-radius: 5px;
     border: 1px #6dc4b1 solid;
 }
