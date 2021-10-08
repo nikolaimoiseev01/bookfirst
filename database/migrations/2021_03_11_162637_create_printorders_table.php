@@ -25,7 +25,7 @@ class CreatePrintordersTable extends Migration
             $table->string('send_to_country')-> nullable();
             $table->string('send_to_city')-> nullable();
             $table->string('send_to_address')-> nullable();
-            $table->timestamps('paid_at')-> nullable();
+            $table->timestamp('paid_at')-> nullable();
             $table->bigInteger('send_to_index')-> nullable();
             $table->bigInteger('track_number')-> nullable();
             $table->timestamps();

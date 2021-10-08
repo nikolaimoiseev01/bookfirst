@@ -126,11 +126,11 @@
                         <h2>Печатные экземпляры:</h2>
                         @if($own_book['print_price'] ?? 0 > 0)
                             <span><p
-                                    style="margin: 0;">Печатных экземпляров: {{$own_book->printorder['books_needed']}}</p></span>
+                                    style="margin: 0;">Печатных экземпляров: {{$own_book->Printorder['books_needed']}}</p></span>
                             <span><p
-                                    style="margin: 0;">ФИО Адресата: {{$own_book->printorder['send_to_name']}}</p></span>
+                                    style="margin: 0;">ФИО Адресата: {{$own_book->Printorder['send_to_name']}}</p></span>
 
-                            <span><p style="margin: 0;">Телефон: {{$own_book->printorder['send_to_tel']}}</p></span>
+                            <span><p style="margin: 0;">Телефон: {{$own_book->Printorder['send_to_tel']}}</p></span>
                         @else
                             <p>Печатные эезкемпляры не требуются.</p>
                             <a href="#part_print" class="link">Создать заказ</a>
@@ -349,7 +349,7 @@
                                             руб.</h1>
                                         <div class="participation-price-desc">
                                             <p style="color: #dfdfdf !important; font-size: 23px;">За печать
-                                                ({{$own_book->printorder['books_needed']}} экз.)</p>
+                                                ({{$own_book->Printorder['books_needed']}} экз.)</p>
                                         </div>
                                     </div>
                                 @endif
@@ -431,7 +431,7 @@
                                             руб.</h1>
                                         <div class="participation-price-desc">
                                             <p style="    color: #dfdfdf !important; font-size: 23px;">За печать
-                                                ({{$own_book->printorder['books_needed']}} экз.)</p>
+                                                ({{$own_book->Printorder['books_needed']}} экз.)</p>
                                         </div>
                                     </div>
                                 @endif
@@ -952,7 +952,7 @@
                         </span>
                             <br>
                             <a target="_blank" class="button"
-                               href="https://www.pochta.ru/tracking#{{$own_book->printorder['track_number']}}">Отследить
+                               href="https://www.pochta.ru/tracking#{{$own_book->Printorder['track_number']}}">Отследить
                                 книгу</a>
                         </div>
                     @endif

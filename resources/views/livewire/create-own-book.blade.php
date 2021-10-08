@@ -40,6 +40,15 @@
             border: none;
         }
 
+        .pre_cover_wrap textarea, .pre_cover_wrap div {
+            border: none;
+        }
+
+        .pre_cover_wrap {
+            border-radius: 5px;
+            border: 1px #6dc4b1 solid;
+        }
+
 
     </style>
     <form
@@ -448,7 +457,7 @@
                                 <div style="flex-direction: row;     align-items: center;"
                                      class="participation-inputs-row">
                                     <div class="input-group">
-                                        <p>Фио получателя</p>
+                                        <p>ФИО получателя</p>
                                         <input wire:model="send_to_name" type="text"
                                                value="{{ Auth::user()->surname}} {{ Auth::user()->name}}"
                                                name="send_to_name" id="send_to_name">
