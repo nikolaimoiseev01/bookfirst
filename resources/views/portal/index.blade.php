@@ -137,11 +137,11 @@
             <img src="/img/Ellipse 96.svg" alt="">
             <h2>Идет прием заявок</h2>
         </div>
-
+        {{App::setLocale('ru')}}
         @foreach($collections as $collection)
             <div class="container">
                 <div class="label-wrap">
-                    <div class="label"><div>Заявки до:</div><div>{{$collection['col_date1']}}</div></div>
+                    <div class="label"><div>Заявки до:</div><div>{{ Date::parse($collection['col_date1'])->format('j F') }}</div></div>
                 </div>
                 <div class="cover-wrap">
                     <img src="{{$collection['cover_3d']}}" alt="">

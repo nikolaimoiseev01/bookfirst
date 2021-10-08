@@ -57,9 +57,9 @@ textarea, .editable_div {
     width: 16px;
     height: 16px;
     top: 0;
-    left: -20px;
-     right: 0;
-    bottom: 20px;
+    left: 0;
+    right: 0;
+    bottom: 0;
     margin: auto;
     border: 4px solid transparent;
     border-top-color: #47af98;

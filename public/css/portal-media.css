@@ -211,10 +211,19 @@
         margin-left: 30px;
         margin-top: 20px;
     }
-
-
 }
 
+
+@media screen and (max-width: 1050px) {
+
+    .dates-wrap {
+        flex-wrap: wrap;
+    }
+
+    .dates-wrap div:nth-child(2), .dates-wrap div:nth-child(4) {
+        border: none;
+    }
+}
 
 @media screen and (max-width: 1000px) {
     .menu {
@@ -526,6 +535,28 @@
 
     .footer-company-info, .footer-socials, .footer-questions {
         margin: 5px;
+    }
+
+    .date-block {
+        width: 100%;
+    }
+
+    .dates-wrap {
+        flex-direction: column;
+    }
+
+    .dates-wrap div {
+        border: none;
+        border-bottom:  1px #E0E0E0 solid !important;
+    }
+
+    .dates-wrap div:nth-child(4) {
+        border: none !important;
+    }
+
+    .date-block .question-mark {
+        position: inherit !important;
+        margin-top:10px;
     }
 
     /*.label {*/

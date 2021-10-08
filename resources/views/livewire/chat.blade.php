@@ -72,7 +72,7 @@
                     </span>
                     <button id="send_message_{{$chat['id']}}" style="height: 75px;" type="submit">
                         <div style="position: relative;" class="send_mes_button">
-                            <span class="tooltip" title="Отправить">
+                            <span id="send_env" class="tooltip" title="Отправить">
                                 <svg id="Capa_1" data-name="Capa 1"
                                      xmlns="http://www.w3.org/2000/svg"
                                      viewBox="0 0 512 512">
@@ -81,6 +81,7 @@
                                         transform="translate(0 0)"/>
                                 </svg>
                             </span>
+                            <span style="display: none;" id="send_preloader" class="button--loading"></span>
                         </div>
                     </button>
                 </div>
@@ -99,9 +100,9 @@
 
         <script>
             $('.send_mes_button').on('click', function () {
-                $('.send_mes_button').toggleClass('button--loading');
-                $('.send_mes_button span').toggle();
-                console.log('trigered_1')
+                $('#send_preloader').show();
+                $('#send_env').css('opacity', 0);
+                $('.send-wrap button').prop("disabled",true);
             })
         </script>
         <script>

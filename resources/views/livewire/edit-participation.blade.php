@@ -383,7 +383,7 @@
 
                 print_price = print_needed * 300;
 
-                promo = {{\App\Models\promocode::where('promocode', $participation['promocode'])->value('discount')}};
+                promo = parseFloat({{(float)\App\Models\promocode::where('promocode', $participation['promocode'])->value('discount')}});
                 participation_price = participation_price * (1-promo);
 
                 total_price = print_price + participation_price + check_needed

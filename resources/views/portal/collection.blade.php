@@ -346,11 +346,7 @@
         calculation()
 
         $('.number-input').keyup(function () {
-            if ($('#print_needed_input').val() === '') {
-                $('#print_needed_input').val(0)
-            }
             calculation()
-
         })
 
         $('select, input').on('change', function () {

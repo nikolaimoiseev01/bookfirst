@@ -23,11 +23,11 @@
     }
 
     .participation-inputs {
-        width: 100%;
+        width: 100% !important;
     }
 
     .participation-outputs {
-        width: 100%;
+        width: 100% !important;;
     }
 
     .work-menu svg {

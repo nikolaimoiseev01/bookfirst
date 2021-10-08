@@ -198,9 +198,9 @@
                         <div style="margin-bottom: 0; flex-direction: row;     align-items: center;"
                              class="participation-inputs-row">
                             <div style="margin-bottom: 0;" class="input-group">
-                                <p>Фио получателя</p>
+                                <p>ФИО получателя</p>
                                 <input wire:model="send_to_name" type="text"
-                                       value="{{ Auth::user()->surname}} {{ Auth::user()->name}}" placeholder="Фио"
+                                       value="{{ Auth::user()->surname}} {{ Auth::user()->name}}" placeholder="ФИО"
                                        name="send_to_name" id="send_to_name">
                             </div>
                             <div style="margin-bottom: 0;" class="input-group">
