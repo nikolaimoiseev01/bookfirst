@@ -62,7 +62,7 @@ class EditParticipation extends Component
             'user_works' => $user_works,
             'works_already_in' => $works_already_in,
             'printorder' => $printorder,
-            'promocode' => $this->promocode,
+            'promocode' => strval($this->promocode),
         ]);
     }
 
