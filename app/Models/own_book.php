@@ -33,8 +33,8 @@ class own_book extends Model
         return $this->hasMany(own_book_files::class);
     }
 
-    public function printorder() {
-        return $this->hasOne(printorder::class);
+    public function Printorder() {
+        return $this->hasOne(Printorder::class);
     }
 
 }
