@@ -61,7 +61,7 @@ class OwnBookController extends Controller
 
     public function pay_for_own_book_print(Request $request)
     {
-        printorder::where('own_book_id', $request->own_book_id)->update(array(
+        Printorder::where('own_book_id', $request->own_book_id)->update(array(
             'paid_at' => Carbon::now()
         ));
         own_book::where('id', $request->own_book_id)->update(array(

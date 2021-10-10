@@ -298,7 +298,7 @@ class CreateOwnBook extends Component
             //------------------------------------------------------------------------
 
             // ---- Создаем файлы пре обложек и складируем их в own_book_files ---- //
-            if ($this->cover_price > 0) {
+            if ($this->cover_price > 0 && $this->pre_cover_files <> '') {
                 $this->pre_cover_files = explode(';', $this->pre_cover_files);
                 foreach ($this->pre_cover_files as $key => $doc_path) {
                     $file_name = substr($doc_path, strrpos($doc_path, '/' )+1);

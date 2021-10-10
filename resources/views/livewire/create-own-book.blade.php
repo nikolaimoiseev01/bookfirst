@@ -297,7 +297,7 @@
 
                             <div style="margin-top: 10px; display: none" id="check_needed"
                                  class="inside_status check-block">
-                                <label for="textcheck_needed"><p style="margin:0;">Провера правописания</p></label>
+                                <label for="textcheck_needed"><p style="margin:0;">Проверка правописания</p></label>
                                 <input style="margin-left: 0;" id="textcheck_needed" type="checkbox">
 
                                 <label for="textdesign_needed"><p style="margin:0;">Дизайн текста</p></label>
@@ -344,7 +344,7 @@
 
                                 <textarea wire:ignore
                                           style="border-right: none;  resize: none; border-radius: 5px 0 0 5px; height: 100px; width: 100%;"
-                                          placeholder="Опишите Ваше видение обложки будущей обложки. Чем точнее описание, тем лучше."
+                                          placeholder="Здесь необходимо описать Ваше видение будущей обложки. Любые наработки можно также прикрепить файлами. Чем точнее будет описание, тем лучше будут работы дизайнера :)"
                                           name="" cols="30"
                                           id="cover_comment"
                                           rows="10"></textarea>
@@ -376,7 +376,7 @@
                             <div wire:ignore style="margin-top: 10px; display: none" class="prints-needed ptint-block">
 
                                 <div style="margin-bottom: 7px;">
-                                    <p>Стиль обложки:</p>
+                                    <p>Материял обложки:</p>
                                     <div style="margin-left: 10px;" class="switch-wrap">
                                         <input checked type="radio" value="cover_style_soft" id="cover_style_soft"
                                                name="cover_style">
@@ -393,7 +393,7 @@
                                 </div>
 
                                 <div>
-                                    <p>Цветность обложки:</p>
+                                    <p>Цвет обложки:</p>
                                     <div style="margin-left: 10px;" class="switch-wrap">
                                         <input checked type="radio" value="cover_color_yes" id="cover_color_yes"
                                                name="cover_color">
@@ -544,24 +544,22 @@
                                 указать кол-во страниц после загрузки.
                             </p>
                         </div>
-                        <div style="display: none;" id="price-parts-wrap">
+                        <div style="display: flex; flex-direction: column; display: none;" id="price-parts-wrap">
                             <div class="participation-price">
                                 <h1 id="layout_work_price_price">300</h1>
                                 <h1>&nbsp;руб.</h1>
                                 <div class="participation-price-desc">
                                     <div>
-                                        <p>работа с макетом (</p>
-                                        <p id="pages">0</p>
-                                        <p>&nbsp;стр.)</p>
+                                        <p>работа с макетом (<span id="pages">>0</span><span>&nbsp;стр.)</span></p>
                                     </div>
 
                                     <p style="display: none; line-height: 20px; font-size: 20px;" class="inside_status">
                                         <i>Включая:</i></p>
                                     <p style="display: none; line-height: 20px; font-size: 20px; margin-right: auto;"
-                                       class="inside_status"><i>Проверка
+                                       class="inside_status"><i>проверка
                                             правописания: <span id="text_check_price">123</span> руб.</i></p>
                                     <p style="display: none; line-height: 25px; font-size: 20px; margin-right: auto;"
-                                       class="inside_status"><i>Дизайн
+                                       class="inside_status"><i>дизайн
                                             текста: <span id="text_design_price">123</span> руб.</i></p>
 
                                 </div>
@@ -579,7 +577,7 @@
                                 <h1>&nbsp;руб.</h1>
                                 <div class="participation-price-desc">
                                     <div></div>
-                                    <p>За печать (<span id="print_needed">1</span>&nbsp;экз.)</p></div>
+                                    <p>за печать (<span id="print_needed">1</span>&nbsp;экз.)</p></div>
                             </div>
 
                             <div id="cover-price-total" class="cover-needed participation-price">
@@ -596,7 +594,7 @@
                                 <h1> руб.</h1>
                                 <div class="participation-price-desc">
                                     <div></div>
-                                    <p>Продвижение (вар.:&nbsp;<span id="promo_var_num"></span>)</p></div>
+                                    <p>продвижение (вар.:&nbsp;<span id="promo_var_num"></span>)</p></div>
                             </div>
 
                         </div>
@@ -742,7 +740,7 @@
                 labelMaxFileSize: 'Максимальный: {filesize}',
                 labelMaxTotalFileSizeExceeded: 'Сумма размеров превышена!',
                 labelMaxTotalFileSize: 'Максимум: {filesize}',
-                labelIdle: `<p class="input_file_text_1" style="line-height: 28px;">Загрузите один или несколько файлов <b>внутреннего блока.</b></p></br><p class="input_file_text_1" style="line-height: 28px;"> Можно перести файлы сюда или&nbsp;</p><a style="line-height: 28px;" class="link">Выбрать вручную</a></br><p class="input_file_text_1" style="font-size: 22px; line-height: 25px; color: #ff5b5b;"><i>В файлах 'docx' мы попробуем определить кол-во страниц автоматически.</i></p>`,
+                labelIdle: `<p class="input_file_text_1" style="line-height: 28px;">Загрузите один или несколько файлов <b>внутреннего блока.</b></p></br><p class="input_file_text_1" style="line-height: 28px;"> Можно перести файлы сюда или&nbsp;</p><a style="line-height: 28px;" class="link">Выбрать вручную</a></br><p class="input_file_text_1" style="font-size: 22px; line-height: 25px; color: #ff5b5b;"><i>В файлах 'docx' мы попробуем определить кол-во страниц автоматически. <br>В сллучае ошибки необходимо указать кол-во вручную.</i></p>`,
             });
 
             $('.filepond_cover').filepond({
@@ -764,7 +762,7 @@
                 labelMaxFileSize: 'Максимальный: {filesize}',
                 labelMaxTotalFileSizeExceeded: 'Сумма размеров превышена!',
                 labelMaxTotalFileSize: 'Максимум: {filesize}',
-                labelIdle: `<p>Загрузите один или несколько файлов <b>готовой обложки.</b>. </p></br><p> Можно перести файлы сюда или&nbsp;</p><a class="link">Выбрать вручную</a>`,
+                labelIdle: `<p>Загрузите один или несколько файлов <b>готовой обложки</b>. </p></br><p> Можно перести файлы сюда или&nbsp;</p><a class="link">Выбрать вручную</a>`,
             });
 
             $('.filepond_pre_cover').filepond({
@@ -990,13 +988,13 @@
 
                 // Скрываем и показываем цены
                 if (parseInt(pages) > 0) {
-                    $('#price-parts-wrap').show();
+                    $('#price-parts-wrap').css('display', 'flex');
                     $('#price-total-wrap').show();
                     $('#no-price-wrap').hide();
                 } else {
                     pages = 0;
                     $('#no-price-wrap').show();
-                    $('#price-parts-wrap').hide();
+                    $('#price-parts-wrap').css('display', 'none');
                     $('#price-total-wrap').hide();
                 }
 
