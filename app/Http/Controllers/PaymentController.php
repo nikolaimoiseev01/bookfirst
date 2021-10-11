@@ -347,6 +347,11 @@ class PaymentController extends Controller
                                     'own_book_status_id' => 3
                                 ));
 
+                                own_book::where('id', $request->own_book_id)->update(array(
+                                    'inside_deadline' => Carbon::now()->addDays(11)->toDate(),
+                                    'cover_deadline' => Carbon::now()->addDays(11)->toDate(),
+                                ));
+
                             // Посылаем Email уведомление пользователю
                             $user->notify(new EmailNotification(
                                 'Оплата подтверждена!',

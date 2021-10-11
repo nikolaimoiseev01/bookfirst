@@ -115,22 +115,43 @@
                 <div class="info">
                     <div class="part_part">
                         <h2>Участие:</h2>
-                        <span><p style="margin: 0;">Автор: <i>{{$own_book['author']}}</i></p></span>
-                        <span><p style="margin: 0;">Название: <i>{{$own_book['title']}}</i></p></span>
+                        <span><p style="margin: 0;">Автор: <i>{{$own_book['author']}};</i></p></span>
+                        <span><p style="margin: 0;">Название: <i>{{$own_book['title']}};</i></p></span>
                         @if($own_book['nickname'] <> "")
-                            <span><p style="margin: 0;">Псевдоним: <i>{{$own_book['nickname']}}</i></p></span>
+                            <span><p style="margin: 0;">Псевдоним: <i>{{$own_book['nickname']}};</i></p></span>
                         @endif
-                        <span><p style="margin: 0;">Страниц: <i>{{$own_book['pages']}}</i></p></span>
+                        <span><p style="margin: 0;">Страниц: <i>{{$own_book['pages']}};</i></p></span>
+                        @if($own_book['promo_price'] > 0)
+                            <span><p style="margin: 0;">Продвижение: <i>Вариант {{$own_book['promo_type']}};</i></p></span>
+                        @endif
+                        <p style="margin: 0;">Необходимо:</p>
+                        <ul>
+                            @if($own_book['text_design_price'] > 0)
+                                <li>- <p style="margin: 0;"> <i>Оформление текста</i></p></li>
+                            @endif
+                                @if($own_book['text_check_price'] > 0)
+                                    <li>- <p style="margin: 0;"> <i>Проверка орфографии</i></p></li>
+                                @endif
+                                @if($own_book['cover_price'] > 0)
+                                    <li>- <p style="margin: 0;"> <i>Создание обложки</i></p></li>
+                                @endif
+                        </ul>
+
+                        @if($own_book['price'] > 0)
+                            <span><p style="margin: 0;">Продвижение: <i>Вариант {{$own_book['promo_type']}}</i></p></span>
+                        @endif
                     </div>
                     <div class="print_part">
                         <h2>Печатные экземпляры:</h2>
                         @if($own_book['print_price'] ?? 0 > 0)
                             <span><p
-                                    style="margin: 0;">Тираж: {{$own_book->Printorder['books_needed']}}</p></span>
+                                    style="margin: 0;">ФИО Адресата: {{$own_book->Printorder['send_to_name']}};</p></span><br>
                             <span><p
-                                    style="margin: 0;">ФИО Адресата: {{$own_book->Printorder['send_to_name']}}</p></span>
+                                    style="margin: 0;">Адрес: {{$own_book->Printorder['send_to_address']}};</p></span><br>
+                            <span><p
+                                    style="margin: 0;">Тираж: {{$own_book->Printorder['books_needed']}};</p></span><br>
 
-                            <span><p style="margin: 0;">Телефон: {{$own_book->Printorder['send_to_tel']}}</p></span>
+                            <span><p style="margin: 0;">Телефон: {{$own_book->Printorder['send_to_tel']}};</p></span><br>
                         @else
                             <p>Печатные эезкемпляры не требуются.</p>
                             <a href="#part_print" class="link">Создать заказ</a>

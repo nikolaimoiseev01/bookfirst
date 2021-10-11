@@ -123,18 +123,6 @@ class OwnBookController extends Controller
                 'own_book_status_id' => $request->own_book_status_id,
             ));
 
-            if ($this->own_book['own_book_cover_status_id'] === 1) {
-                own_book::where('id', $request->own_book_id)->update(array(
-                    'cover_deadline' => Carbon::now()->addDays(11)->toDate(),
-                ));
-            }
-
-
-            if ($this->own_book['own_book_inside_status_id'] === 1) {
-                own_book::where('id', $request->own_book_id)->update(array(
-                    'inside_deadline' => Carbon::now()->addDays(11)->toDate(),
-                ));
-            }
 
             $user = User::where('id', $request->user_id)->first();
 
