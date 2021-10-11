@@ -50,6 +50,8 @@ class AppServiceProvider extends ServiceProvider
                 ->orwhere('own_book_status_id', 5)
                 ->orwhere('own_book_inside_status_id', 1)
                 ->orwhere('own_book_cover_status_id', 1)
+                ->orwhere('own_book_inside_status_id', 3)
+                ->orwhere('own_book_cover_status_id', 3)
                 ->count();
             //...with this variable
             $view->with([

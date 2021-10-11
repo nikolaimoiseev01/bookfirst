@@ -85,7 +85,7 @@
                                 <div style="font-size: 18px;" class="
                                 @if ($own_book->own_book_status_id < 3)
                                     bg-gradient-gray
-                                @elseif ($own_book['own_book_inside_status_id'] === 1)
+                                @elseif ($own_book['own_book_inside_status_id'] === 1 || $own_book['own_book_inside_status_id'] === 3)
                                     bg-gradient-danger
                                 @else
                                     bg-gradient-success
@@ -101,7 +101,7 @@
                                 <div style="font-size: 18px;" class="p-2
                                 @if ($own_book->own_book_status_id < 3)
                                     bg-gradient-gray
-                                @elseif ($own_book['own_book_cover_status_id'] === 1)
+                                @elseif ($own_book['own_book_cover_status_id'] === 1 || $own_book['own_book_cover_status_id'] === 3)
                                     bg-gradient-danger
                                 @else
                                     bg-gradient-success

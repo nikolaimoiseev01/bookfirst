@@ -361,7 +361,7 @@ class OwnBookController extends Controller
         if (!is_null($request->file('inside_file'))) {
             $file_new_path = $user_folder . 'ВБ_Main_' . $own_book['title'] . '.' . $request->file('inside_file')->getClientOriginalExtension();
             own_book::where('id', $request->own_book_id)->update(array(
-                'inside_file' => substr($file_new_path, strpos($file_new_path, 'public') + 7),
+                'inside_file' => $file_new_path,
             ));
             File::delete($own_book->inside_file);
             $request->file('inside_file')->move($user_folder, 'ВБ_Main_' . $own_book['title'] . '.' . $request->file('inside_file')->getClientOriginalExtension());
@@ -381,7 +381,7 @@ class OwnBookController extends Controller
         if (!is_null($request->file('cover_2d'))) {
             $file_new_path = $user_folder . 'Cover_2d' . '.' . $request->file('cover_2d')->getClientOriginalExtension();
             own_book::where('id', $request->own_book_id)->update(array(
-                'cover_2d' => substr($file_new_path, strpos($file_new_path, 'public') + 7),
+                'cover_2d' => $file_new_path,
             ));
             File::delete($own_book->cover_2d);
             $request->file('cover_2d')->move($user_folder, 'Cover_2d' . '.' . $request->file('cover_2d')->getClientOriginalExtension());
@@ -391,7 +391,7 @@ class OwnBookController extends Controller
 
             $file_new_path = $user_folder . 'Cover_3d' . '.' . $request->file('cover_3d')->getClientOriginalExtension();
             own_book::where('id', $request->own_book_id)->update(array(
-                'cover_3d' => substr($file_new_path, strpos($file_new_path, 'public') + 7),
+                'cover_3d' => $file_new_path,
             ));
             File::delete($own_book->cover_3d);
             $request->file('cover_3d')->move($user_folder, 'Cover_3d' . '.' . $request->file('cover_3d')->getClientOriginalExtension());
