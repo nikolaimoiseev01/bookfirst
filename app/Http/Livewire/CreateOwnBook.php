@@ -202,8 +202,8 @@ class CreateOwnBook extends Component
             Storage::makeDirectory('admin_files/own_books/user_id_' . Auth::user()->id . '/' . $this->book_title . '/ВЕРСТКА/От автора');
             Storage::makeDirectory('admin_files/own_books/user_id_' . Auth::user()->id . '/' . $this->book_title . '/ОБЛОЖКА/От автора');
 
-            $user_folder_inside = 'admin_files/own_books/user_id_' . Auth::user()->id . '/' . $this->book_title . '/ВЕРСТКА/От автора';
-            $user_folder_cover = 'admin_files/own_books/user_id_' . Auth::user()->id . '/' . $this->book_title . '/ОБЛОЖКА/От автора';
+            $user_folder_inside = public_path('admin_files/own_books/user_id_' . Auth::user()->id . '/' . $this->book_title . '/ВЕРСТКА/От автора');
+            $user_folder_cover = public_path('admin_files/own_books/user_id_' . Auth::user()->id . '/' . $this->book_title . '/ОБЛОЖКА/От автора');
 
             // ---- Записываем основную инфу ---- //
             $new_own_book = new own_book();
@@ -227,7 +227,7 @@ class CreateOwnBook extends Component
             $new_own_book->total_price = $this->total_price;
 
             // Делаем шаблон внутреннего блока
-            $inside_file_path = 'admin_files/own_books/user_id_' . Auth::user()->id . '/' . $this->book_title . '/ВЕРСТКА' . '/ВБ_Main_' . $this->book_title . '.pdf';
+            $inside_file_path = public_path('admin_files/own_books/user_id_' . Auth::user()->id . '/' . $this->book_title . '/ВЕРСТКА') . '/ВБ_Main_' . $this->book_title . '.pdf';
             $new_own_book->inside_file = substr($inside_file_path, strpos($inside_file_path, 'public') + 7);
             // ----------------------------
 
@@ -251,7 +251,7 @@ class CreateOwnBook extends Component
                 $this->work_files = explode(';', $this->work_files);
                 foreach ($this->work_files as $key => $doc_path) {
                     $file_name = substr($doc_path, strrpos($doc_path, '/' )+1);
-                    $file_old_path = 'filepond_temp/' . $doc_path;
+                    $file_old_path = public_path('filepond_temp/' . $doc_path);
                     $file_new_path = $user_folder_inside . '/' . $key . '_' . $file_name;
                     File::move($file_old_path, $file_new_path);
                     $own_book_new_file = new own_book_files();
