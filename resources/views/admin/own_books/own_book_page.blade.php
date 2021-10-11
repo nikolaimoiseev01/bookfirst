@@ -533,7 +533,7 @@
 
                                     @if ($own_book['cover_comment'])
                                         <h3 class="mb-2 d-inline">Необходимо создание обложки</h3>
-                                        <h4 class="mt-2">Пожаления автора:</h4>
+                                        <h4 class="mt-2">Пожелания автора:</h4>
                                         <div class="mt-2 mb-4 p-2 border">
                                             {{$own_book['cover_comment']}}
                                         </div>

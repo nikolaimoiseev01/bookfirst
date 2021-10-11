@@ -126,7 +126,7 @@
                         <h2>Печатные экземпляры:</h2>
                         @if($own_book['print_price'] ?? 0 > 0)
                             <span><p
-                                    style="margin: 0;">Печатных экземпляров: {{$own_book->Printorder['books_needed']}}</p></span>
+                                    style="margin: 0;">Тираж: {{$own_book->Printorder['books_needed']}}</p></span>
                             <span><p
                                     style="margin: 0;">ФИО Адресата: {{$own_book->Printorder['send_to_name']}}</p></span>
 
@@ -260,7 +260,7 @@
                 @if ($own_book['own_book_status_id'] === 1)
                     <div class="no-access">
                         <span style="font-size: 30px;">После создания или редактирования заявки нам необходимо ее подтвердить.
-                            Оплата станет доступна сразу после подтверждения Вашей заявки.
+                            После подтверждения (до 3-х рабочих дней) оплата станет доступна.
                         </span>
                     </div>
                 @elseif ($own_book['own_book_status_id'] === 2)
@@ -300,13 +300,13 @@
                                                     <i>Включая:</i></p>
                                                 @if($own_book['text_check_price'] > 0)
                                                     <p style="    margin: auto; line-height: 20px; font-size: 20px; margin-right: auto;"
-                                                       class="inside_status"><i>Проверка
+                                                       class="inside_status"><i>проверка
                                                             правописания: {{$own_book['text_check_price']}} руб.</i></p>
                                                 @endif
                                                 @if($own_book['text_design_price'] > 0)
                                                     <p style="line-height: 25px; font-size: 20px; margin-right: auto;"
                                                        class="inside_status">
-                                                        <i>Дизайн {{$own_book['text_design_price']}} руб.</i></p>
+                                                        <i>дизайн текста {{$own_book['text_design_price']}} руб.</i></p>
                                                 @endif
                                             </div>
                                         @endif
@@ -339,7 +339,7 @@
                                         <h1> руб.</h1>
                                         <div class="participation-price-desc">
                                             <div></div>
-                                            <p>Продвижение (вар.:&nbsp;<span id="promo_var_num"></span>)</p></div>
+                                            <p>продвижение (вар.:&nbsp;<span id="promo_var_num">{{$own_book['promo_type']}}</span>)</p></div>
                                     </div>
                                 @endif
 
@@ -348,7 +348,7 @@
                                         <h1 style="color: #dfdfdf !important; font-size: 38px;">{{$own_book['print_price']}}
                                             руб.</h1>
                                         <div class="participation-price-desc">
-                                            <p style="color: #dfdfdf !important; font-size: 23px;">За печать
+                                            <p style="color: #dfdfdf !important; font-size: 23px;">за печать
                                                 ({{$own_book->Printorder['books_needed']}} экз.)</p>
                                         </div>
                                     </div>
@@ -609,7 +609,7 @@
                     @if($own_book['own_book_status_id'] < 3)
                         <div class="no-access">
                             <span>
-                                Предварительная проверка внутреннего блока будет доступна после его создания или проверки в случае, если он уже готов от автора.
+                                Предварительная проверка внутреннего блока будет доступна после его создания или нашего подтверждения (в случае, если он уже готов от автора).
                             </span>
                         </div>
                     @elseif ($own_book['own_book_status_id'] == 3 & $own_book['own_book_inside_status_id'] < 2)
@@ -913,7 +913,7 @@
                 @if($own_book['print_price'])
                     @if ($own_book['own_book_status_id'] < 4)
                         <div class="no-access">
-                        <span>У Вас предусмотрена печать, но процесс оплаты и непосредственной печати будет доступен только после утверждения внутреннего блока и обложки.
+                        <span>В вашем издании включены печатные экземпляры, но процесс оплаты и печати будет доступен только после утверждения внутреннего блока и обложки.
                         </span>
                         </div>
                     @elseif ($own_book['own_book_status_id'] === 4)

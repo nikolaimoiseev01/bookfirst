@@ -173,6 +173,21 @@ class PaymentController extends Controller
         $requestBody = json_decode($source, true);
         $notification = $requestBody['object'];
 
+
+        // Общая информация о транзакции
+        // Добавляем ID от YOOKASSA
+        $metadata = $notification['metadata'];
+        $transactionId = (int)$metadata['transaction_id'];
+        if (Transaction::where('id', $transactionId)->value('yoo_id') === null) {
+
+            Transaction::where('id', $transactionId)
+                ->update(array(
+                    'yoo_id' => $notification['payment_method']['id'],
+                ));
+
+        }
+        // -----------------------------------------------------------------
+
 //        Log::info($requestBody);
 
         if (isset($notification['status']) && $notification['status'] === 'succeeded') { // Если операция прошла успешно
@@ -345,7 +360,7 @@ class PaymentController extends Controller
                             Notification::route('telegram', '-506622812')
                                 ->notify(new TelegramNotification('💸 Новая оплата по книге! 💸', 'Автор: ' . $own_book['author'] . "(юзер: " . $user['name'] . " " . $user['surname'] .
                                     "\n" . "Книга: " . $own_book['title'] .
-                                    "\n" . "Сумма: " . ($own_book['total_price'] - $own_book['print_price']) . " руб. (печать у него на " . $own_book['print_price'] . " руб.",
+                                    "\n" . "Сумма: " . ($own_book['total_price'] - $own_book['print_price']) . " руб. (печать у него на " . $own_book['print_price'] . " руб.)",
                                     "Его страница издания",
                                     route('own_books_page', $own_book['id'])));
                         }
@@ -470,13 +485,12 @@ class PaymentController extends Controller
                     }
                     // --------------------------------------------------------------------------------------------------------------------------------
 
-
                     // Общая информация о транзакции
                     // Меняем статус имеющейся транзакции
                     Transaction::where('id', $transactionId)
                         ->update(array(
                             'status' => PaymentStatusEnum::CONFIRMED,
-                            'payment_method' => $notification['payment_method']['title'],
+                            'payment_method' => $notification['payment_method']['type'],
                         ));
                     // -----------------------------------------------------------------
 
