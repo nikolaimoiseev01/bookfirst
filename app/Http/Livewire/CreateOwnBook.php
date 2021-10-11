@@ -228,7 +228,7 @@ class CreateOwnBook extends Component
 
             // Делаем шаблон внутреннего блока
             $inside_file_path = 'admin_files/own_books/user_id_' . Auth::user()->id . '/' . $this->book_title . '/ВЕРСТКА' . '/ВБ_Main_' . $this->book_title . '.pdf';
-            $new_own_book->inside_file = substr($inside_file_path, strpos($inside_file_path, 'public') + 7);
+            $new_own_book->inside_file = $inside_file_path;
             // ----------------------------
 
             $new_own_book->save();

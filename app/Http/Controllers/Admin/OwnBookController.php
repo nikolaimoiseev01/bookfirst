@@ -153,7 +153,7 @@ class OwnBookController extends Controller
         session()->flash('success', 'change_printorder');
         $own_book = own_book::where('id', $request->own_book_id)->first();
 
-        if ($_SERVER["DOCUMENT_ROOT"] . file_exists($own_book['inside_file'])) {
+        if (file_exists($own_book['inside_file'])) {
 
             own_book::where('id', $request->own_book_id)->update(array(
                 'own_book_inside_status_id' => $request->own_book_inside_status_id,

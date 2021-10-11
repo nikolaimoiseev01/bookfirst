@@ -368,7 +368,7 @@
                                         </div>
                                     @else
                                         <h3>Готовый внутренний блок:</h3>
-                                        @if($_SERVER["DOCUMENT_ROOT"] . file_exists($own_book['inside_file']))
+                                        @if(file_exists($own_book['inside_file']))
 
                                             <h3 style="font-size: 23px; color: #14b514">Файл верстки успешно найден в
                                                 папке книги, супер!)</h3>
