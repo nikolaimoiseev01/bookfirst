@@ -124,6 +124,7 @@
                         @if($own_book['promo_price'] > 0)
                             <span><p style="margin: 0;">Продвижение: <i>Вариант {{$own_book['promo_type']}};</i></p></span>
                         @endif
+                        @if($own_book['text_design_price'] > 0 || $own_book['text_check_price'] > 0 || $own_book['cover_price'] > 0)
                         <p style="margin: 0;">Необходимо:</p>
                         <ul>
                             @if($own_book['text_design_price'] > 0)
@@ -136,6 +137,7 @@
                                     <li>- <p style="margin: 0;"> <i>Создание обложки</i></p></li>
                                 @endif
                         </ul>
+                        @endif
 
                         @if($own_book['price'] > 0)
                             <span><p style="margin: 0;">Продвижение: <i>Вариант {{$own_book['promo_type']}}</i></p></span>
