@@ -344,13 +344,11 @@ class PaymentController extends Controller
                             own_book::where('id', (int)$metadata['own_book_id'])
                                 ->update(array(
                                     'paid_at_without_print' => Carbon::now('Europe/Moscow')->toDateTime(),
-                                    'own_book_status_id' => 3
-                                ));
-
-                                own_book::where('id', $request->own_book_id)->update(array(
+                                    'own_book_status_id' => 3,
                                     'inside_deadline' => Carbon::now()->addDays(11)->toDate(),
                                     'cover_deadline' => Carbon::now()->addDays(11)->toDate(),
                                 ));
+
 
                             // Посылаем Email уведомление пользователю
                             $user->notify(new EmailNotification(

@@ -374,8 +374,7 @@
                                                 папке книги, супер!)</h3>
                                         @else
                                             <h3 style="font-size: 23px; color: red">!!ОСТОРОЖНО!! Я не могу найти PDF
-                                                файл внутреннего блока! Ищу файл: ВБ_Main_{{$own_book['title']}}
-                                                .pdf</h3>
+                                                файл внутреннего блока! Ищу файл: {{$own_book['inside_file']}}</h3>
                                         @endif
                                     @endif
                                 </div>

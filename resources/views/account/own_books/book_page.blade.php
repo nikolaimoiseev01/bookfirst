@@ -585,7 +585,7 @@
             @elseif  ($own_book['own_book_status_id'] > 3)
                 box-shadow: 0 0 10px 1px {{$part_all_good}}85;
             @endif" class="container">
-
+                {{App::setLocale('ru')}}
                 <div style="justify-content: space-between; border-bottom: 1px
                 @if ($own_book['own_book_status_id']< 3 || $own_book['own_book_inside_status_id'] < 2 & $own_book['own_book_cover_status_id'] < 2
             || $own_book['own_book_inside_status_id'] < 2 & $own_book['own_book_cover_status_id'] === 4 || $own_book['own_book_inside_status_id'] === 4 & $own_book['own_book_cover_status_id'] < 2)
@@ -638,7 +638,7 @@
                     @elseif ($own_book['own_book_status_id'] == 3 & $own_book['own_book_inside_status_id'] < 2)
                         <div class="no-access">
                             <span>
-                                На данный момент идет работа над внутренним блоком. Предварительный вариант появится здесь до {{$own_book['inside_deadline']}}
+                                На данный момент идет работа над внутренним блоком. Предварительный вариант появится здесь до {{ Date::parse($own_book['inside_deadline'])->format('j F Y') }}
                             </span>
                         </div>
                     @elseif ($own_book['own_book_inside_status_id'] >= 2)
@@ -734,7 +734,7 @@
                     @elseif ($own_book['own_book_status_id'] == 3 & $own_book['own_book_cover_status_id'] < 2)
                         <div class="no-access">
                             <span>
-                                На данный момент идет работа над обложкой. Предварительный вариант появится здесь до {{$own_book['cover_deadline']}}
+                                На данный момент идет работа над обложкой. Предварительный вариант появится здесь до {{ Date::parse($own_book['cover_deadline'])->format('j F Y') }}
                             </span>
                         </div>
                     @elseif ($own_book['own_book_cover_status_id'] >= 2)
