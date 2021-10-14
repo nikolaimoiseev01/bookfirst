@@ -27,29 +27,29 @@
 
                         <div class="tab-pane active" id="info">
                             <div class="row align-items-start">
-                                <div class="col-6">
+                                <div >
                                     <table class="table table-bordered">
                                         <tbody>
                                         <tr>
-                                            <td style="font-weight: bold">Фио</td>
+                                            <td scope="col"  style="font-weight: bold">Фио</td>
                                             <td>
                                                 {{$user['name']}} {{$user['surname']}}
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td style="font-weight: bold">Псевдоним</td>
+                                            <td scope="col"  style="font-weight: bold">Псевдоним</td>
                                             <td>
                                                 {{$user['nickname']}}
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td style="font-weight: bold">Email</td>
+                                            <td scope="col"  style="font-weight: bold">Email</td>
                                             <td>
                                                 {{$user['email']}}
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td style="font-weight: bold">Аккаунт создан</td>
+                                            <td scope="col"  style="font-weight: bold">Аккаунт создан</td>
                                             <td>
                                                 {{$user['created_at']}}
                                             </td>
