@@ -15,6 +15,93 @@ input[type=number]::-webkit-outer-spin-button {
     opacity: .5;
     transition: all .2s;
 }
+table {
+    border: 1px solid #ccc;
+    border-collapse: collapse;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    table-layout: fixed;
+}
+
+table caption {
+    font-size: 1.5em;
+    margin: .5em 0 .75em;
+}
+
+table tr {
+    background-color: #f8f8f87a;
+    border: 1px solid #ddd;
+    padding: .35em;
+}
+
+table th,
+table td {
+    padding: .625em;
+    text-align: center;
+}
+
+table th {
+    font-size: .85em;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+}
+
+
+@media screen and (max-width: 600px) {
+    table {
+        border: 0;
+    }
+
+
+    table thead {
+        border: none;
+        clip: rect(0 0 0 0);
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        padding: 0;
+        position: absolute;
+        width: 1px;
+    }
+
+    table tr {
+        border-bottom: 3px solid #ddd;
+        display: block;
+        margin-bottom: .625em;
+    }
+
+    table td {
+        border-bottom: 1px solid #ddd;
+
+        display: flex;
+        justify-content: space-between;
+        /*font-size: .8em;*/
+        text-align: right !important;
+    }
+
+    table td::before {
+        /*
+        * aria-label has no advantage, it won't be read inside a table
+        content: attr(aria-label);
+        */
+        content: attr(data-label);
+        float: left;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    table td:last-child {
+        border-bottom: 0;
+    }
+}
+
+
+.card-body.p-0 .table tbody>tr>td:first-of-type, .card-body.p-0 .table tbody>tr>th:first-of-type, .card-body.p-0 .table tfoot>tr>td:first-of-type, .card-body.p-0 .table tfoot>tr>th:first-of-type, .card-body.p-0 .table thead>tr>td:first-of-type, .card-body.p-0 .table thead>tr>th:first-of-type {
+    padding: .75rem !important;
+}
+
+
 
 @media (max-width: 991.98px) {
     .content-wrapper {
@@ -22,6 +109,44 @@ input[type=number]::-webkit-outer-spin-button {
     }
 
     .card {
+        margin: 20px auto !important;
+    }
+
+    .container-fluid a {
+    }
+
+    .container-fluid .row.mb-2 {
+        justify-content: center !important;
+        align-items: center !important;
+        font-size: 30px;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .ml-3.btn.btn-outline-secondary, .ml-3.btn.btn-outline-info {
+        margin: 5px auto !important;
+    }
+
+    .container-fluid .row.mb-2 .d-flex {
+        text-align: center;
+    }
+
+    .container-fluid .mb-3.mt-4.btn.btn-outline-primary.btn-block {
+        font-size: 17px !important;
+        margin: 5px auto !important;
+    }
+
+    .container-fluid .mb-3.mt-4.btn.btn-outline-primary.btn-block span {
+        font-size: 20px !important;
+    }
+
+    .container-fluid .row.mb-2 h1 {
+        font-size: 38px;
+        margin-bottom: 15px !important;
+    }
+
+    .container-fluid .d-flex h1 {
+        font-size: 38px;
         margin: auto !important;
     }
 }

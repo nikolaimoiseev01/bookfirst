@@ -4,7 +4,9 @@
     <!-- Content Header (Page header) -->
     <div class="content-header">
         <div class="container-fluid">
-            <h1 class="m-0">Наши чаты</h1>
+            <div class="d-flex">
+                <h1 class="m-0">Наши чаты</h1>
+            </div>
 
         </div><!-- /.container-fluid -->
     </div>
@@ -14,6 +16,7 @@
             cursor: pointer;
         }
     </style>
+
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
@@ -25,11 +28,11 @@
                     <table id="participants_table" class="table table-bordered table-hover">
                         <thead>
                         <tr>
-                            <th style="text-align: center;">Автор</th>
-                            <th style="text-align: center;">Тема</th>
-                            <th style="text-align: center;">Статус</th>
-                            <th style="text-align: center;">Последнее сообщение</th>
-                            <th style="text-align: center;">Последнее изменение</th>
+                            <th scope="col" style="text-align: center;">Автор</th>
+                            <th scope="col" style="text-align: center;">Тема</th>
+                            <th scope="col" style="text-align: center;">Статус</th>
+                            <th scope="col" style="text-align: center;">Последнее сообщение</th>
+                            <th scope="col" style="text-align: center;">Последнее изменение</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -52,7 +55,7 @@
                                     '{{route('admin_chat', $chat['id'])}}'
                                 @endif +
                                     '';">
-                                <td style="text-align: center;">
+                                <td scope="row" data-label="Автор" style="text-align: center;">
                                     @if ($chat['user_created'] <> 2)
                                         <a href="{{route('user_page', $chat['user_created'])}}">{{\App\Models\User::where('id', $chat['user_created'])->value('name')}} {{\App\Models\User::where('id', $chat['user_created'])->value('surname')}}</a>
                                     @else
@@ -60,18 +63,18 @@
                                     @endif
 
                                 </td>
-                                <td style="text-align: center;">
+                                <td data-label="Тема" style="text-align: center;">
                                     {{$chat['title']}}
                                 </td>
-                                <td style="text-align: center;">
+                                <td data-label="Статус" style="text-align: center;">
                                     {{$chat->chat_status['status']}}
                                 </td>
 
-                                <td style="text-align: center;">
+                                <td data-label="Last sms" style="text-align: center;">
                                     {{\Illuminate\Support\Str::substr($chat->message->last()['text'] ?? '',0,100)}}
                                 </td>
 
-                                <td style="text-align: center;">
+                                <td data-label="Update" style="text-align: center;">
                                     {{\Illuminate\Support\Str::substr($chat['updated_at'],0,16)}}
                                 </td>
 

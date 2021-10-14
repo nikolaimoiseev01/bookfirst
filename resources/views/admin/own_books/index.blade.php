@@ -118,7 +118,7 @@
                                 <div class="row">
                                     <div class="col-sm-4 border-right">
                                         <div class="description-block">
-                                            <a href="{{route('collection.edit', $own_book->id)}}">Печать:</a><br>
+                                            <a style="display: inline-block;" href="{{route('collection.edit', $own_book->id)}}">Печать:</a><br>
                                             <span style="font-size:20px;"
                                                   class="badge">
                                                 @if ($own_book->print_price > 0) Да
@@ -131,7 +131,7 @@
                                     <div
                                         class="col-sm-4 border-right">
                                         <div class="description-block">
-                                            <a href="{{route('collection.edit', $own_book->id)}}">Продвижение:</a> <br>
+                                            <a style="display: inline-block;" href="{{route('collection.edit', $own_book->id)}}">Продвижение:</a> <br>
                                             <span style="font-size:20px;"
                                                   class="badge">
                                                 @if ($own_book->promo_price > 0) Да
@@ -143,7 +143,7 @@
                                     <!-- /.col -->
                                     <div class="col-sm-4">
                                         <div class="description-block">
-                                            <a href="{{route('collection.edit', $own_book->id)}}">Профит</a> <br>
+                                            <a style="display: inline-block;" href="{{route('collection.edit', $own_book->id)}}">Профит</a> <br>
                                             <span style="font-size:20px;"
                                                   class="badge">{{number_format($own_book->total_price, 0, ',', ' ')}} руб.</span>
                                         </div>

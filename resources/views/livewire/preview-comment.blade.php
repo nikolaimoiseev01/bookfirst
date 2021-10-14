@@ -68,7 +68,7 @@
     @if ($preview_comment_type == 'own_book')
         @if ($comment_type === 'inside')
             <div style="display: flex; text-align: end; padding: 15px 0 0 0; justify-content: space-between;">
-                <a wire:click.prevent="change_inside_status(3)" class="button">Все изменения указаны</a>
+                <a wire:click.prevent="change_inside_status(3)" class="button">Отправить на исправление</a>
                 <a wire:click.prevent="change_inside_status(4)" style="margin-left: 16px;" href="" class="button">Утвердить
                     макет</a>
             </div>
@@ -76,7 +76,7 @@
 
         @if ($comment_type === 'cover')
             <div style="display: flex; text-align: end; padding: 15px 0 0 0; justify-content: space-between;">
-                <a wire:click.prevent="change_cover_status(3)" class="button">Все изменения указаны</a>
+                <a wire:click.prevent="change_cover_status(3)" class="button">Отправить на исправление</a>
                 <a wire:click.prevent="change_cover_status(4)" style="margin-left: 16px;" href="" class="button">Утвердить
                     обложку</a>
             </div>

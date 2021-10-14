@@ -101,6 +101,8 @@
                         >
                     </div>
 
+
+
                     <div style="padding-bottom:20px;" class="password input">
                         <p>Подтвердите пароль</p>
                         <div class="pass-conf-text-wrap">
@@ -128,7 +130,19 @@
                                autocomplete="new-password"
                         >
                     </div>
+{{--                    @if ($errors->has('g-recaptcha-response'))--}}
 
+{{--                    @endif--}}
+
+                    {!! NoCaptcha::renderJs() !!}
+                    <style>
+                        #rc-anchor-container {
+                            border: 1px solid red !important;
+                        }
+                    </style>
+                    <div style="margin-bottom:20px;">
+                        {!! NoCaptcha::display() !!}
+                    </div>
 
                     <button id="form_register" class="preloader_button button" >
                         <span class="button__text">Зарегистрироваться</span>
@@ -145,7 +159,7 @@
 
 @section('page-js')
 
-{{--    {!! NoCaptcha::renderJs() !!}--}}
+
 
     <script>
         $('.password').on("input", function() {

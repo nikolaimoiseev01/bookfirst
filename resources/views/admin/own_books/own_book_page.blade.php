@@ -30,14 +30,14 @@
                     <div class="d-flex align-items-center">
                         <h4 class="m-0">Статус общий:
                             <i @if($own_book['own_book_status_id'] == 1 || $own_book['own_book_status_id'] == 5)
-                               style="color: #f74e4e;"
+                               style="display: inline-block; color: #f74e4e;"
                                @elseif($own_book['own_book_status_id'] == 3)
-                               style="color: #f39405;"
+                               style="display: inline-block; color: #f39405;"
                                @endif
                                id="change_book_status_text">{{$own_book->own_book_status['status_title']}}</i>
                         </h4>
                         <div style="display: none" id="change_book_status_form_wrap">
-                            <form class="d-flex ml-3" style=" align-items: center;"
+                            <form class="d-flex ml-3" style="align-items: center;"
                                   action="{{ route('change_book_status',$own_book['id']) }}" method="POST"
                                   enctype="multipart/form-data"
                             >

@@ -136,6 +136,7 @@
       <path value="$PROJECT_DIR$/vendor/yoomoney/yookassa-sdk-php" />
       <path value="$PROJECT_DIR$/vendor/symfony/polyfill-php81" />
       <path value="$PROJECT_DIR$/vendor/kesmenenver/servicelayer" />
+      <path value="$PROJECT_DIR$/vendor/anhskohbo/no-captcha" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.3" />

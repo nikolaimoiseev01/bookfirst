@@ -123,87 +123,128 @@ class PreviewComment extends Component
     public function change_inside_status($status_id)
     {
 
+        $errors_array = [];
+
+        $prev_comments_cnt = preview_comment::where('own_book_id', $this->own_book_id)->where('own_book_comment_type', 'inside')->where('status_done', 0)->count();
+
+        if ($prev_comments_cnt === 0) {
+            array_push($errors_array, 'Сначала добавьте исправления (необходимо ввести страницу и текст в форму, затем нажать на конверт справа)');
+        }
+
+        if (!empty($errors_array)) {
+            $this->dispatchBrowserEvent('swal:modal', [
+                'type' => 'error',
+                'title' => 'Что-то пошло не так!',
+                'text' => implode("<br>", $errors_array),
+            ]);
+        }
+
+        // --------- //Ищем ошибки в заполнении  --------- //
 
 
-        own_book::where('id', $this->own_book_id)->update([
-            'own_book_inside_status_id' => $status_id,
-        ]);
+        if (empty($errors_array)) {
 
-        $cover_status = own_book::where('id', $this->own_book_id)->value('own_book_cover_status_id');
-        $print_price = own_book::where('id', $this->own_book_id)->value('print_price');
-        $total_status_needed = 3;
+            own_book::where('id', $this->own_book_id)->update([
+                'own_book_inside_status_id' => $status_id,
+            ]);
 
-        if ($status_id === 4) {
-            if ($cover_status === 4 & $print_price > 0) {
-                $total_status_needed = 4;
-                $alert_text = 'Поздравляем! Внутренний блок и обложка были утверждены! Далее в блоке "Печать" необходимо оплатить финальную стоимость печати, чтобы начать печать.';
-            } elseif ($cover_status === 4 & !($print_price > 0)) {
-                $total_status_needed = 9;
-                $alert_text = 'Внутренний блок был утвержден! Так как обложка была тоже утверждена, а печать не требуется, мы поздравляем Вас с окончанием процесса издания!';
-            } else {
-                $total_status_needed = 3;
-                $alert_text = 'Внутренний блок был утвержден!';
+            $cover_status = own_book::where('id', $this->own_book_id)->value('own_book_cover_status_id');
+            $print_price = own_book::where('id', $this->own_book_id)->value('print_price');
+            $total_status_needed = 3;
+
+            if ($status_id === 4) {
+                if ($cover_status === 4 & $print_price > 0) {
+                    $total_status_needed = 4;
+                    $alert_text = 'Поздравляем! Внутренний блок и обложка были утверждены! Далее в блоке "Печать" необходимо оплатить финальную стоимость печати, чтобы начать печать.';
+                } elseif ($cover_status === 4 & !($print_price > 0)) {
+                    $total_status_needed = 9;
+                    $alert_text = 'Внутренний блок был утвержден! Так как обложка была тоже утверждена, а печать не требуется, мы поздравляем Вас с окончанием процесса издания!';
+                } else {
+                    $total_status_needed = 3;
+                    $alert_text = 'Внутренний блок был утвержден!';
+                }
             }
+
+            own_book::where('id', $this->own_book_id)->update([
+                'own_book_status_id' => $total_status_needed,
+            ]);
+
+
+            session()->flash('success', 'success');
+            session()->flash('alert_text', 'Статус изменен!');
+            if ($status_id === 3) {
+                session()->flash('alert_text', 'Отлично! Мы уже начали вносить указанные изменения. Срок исправления - 5 дней. Как только закончим, Вы получите оповещение, и внутренний блок снова можно будет проверить на этой странице.');
+            } elseif ($status_id === 4) {
+                session()->flash('alert_text', $alert_text);
+            }
+            return redirect()->to(url()->previous());
+
+
         }
-
-        own_book::where('id', $this->own_book_id)->update([
-            'own_book_status_id' => $total_status_needed,
-        ]);
-
-
-        session()->flash('success', 'success');
-        session()->flash('alert_text','Статус изменен!');
-        if ($status_id === 3) {
-            session()->flash('alert_text', 'Отлично! Мы уже начали вносить указанные изменения. Срок исправления - 5 дней. Как только закончим, Вы получите оповещение, и внутренний блок снова можно будет проверить на этой странице.');
-        } elseif ($status_id === 4) {
-            session()->flash('alert_text', $alert_text);
-        }
-        return redirect()->to(url()->previous());
-
-
     }
 
     public function change_cover_status($status_id)
     {
 
+        $errors_array = [];
 
-        own_book::where('id', $this->own_book_id)->update([
-            'own_book_cover_status_id' => $status_id,
-        ]);
+        $prev_comments_cnt = preview_comment::where('own_book_id', $this->own_book_id)->where('own_book_comment_type', 'cover')->where('status_done', 0)->count();
+
+        if ($prev_comments_cnt === 0) {
+            array_push($errors_array, 'Сначала добавьте исправления (необходимо ввести страницу и текст в форму, затем нажать на конверт справа)');
+        }
+
+        if (!empty($errors_array)) {
+            $this->dispatchBrowserEvent('swal:modal', [
+                'type' => 'error',
+                'title' => 'Что-то пошло не так!',
+                'text' => implode("<br>", $errors_array),
+            ]);
+        }
+
+        // --------- //Ищем ошибки в заполнении  --------- //
 
 
-        $inside_status = own_book::where('id', $this->own_book_id)->value('own_book_inside_status_id');
-        $print_price = own_book::where('id', $this->own_book_id)->value('print_price');
-        $total_status_needed = 3;
+        if (empty($errors_array)) {
 
-        if ($status_id === 4) {
-            if ($inside_status === 4 & $print_price > 0) {
-                $total_status_needed = 4;
-                $alert_text = 'Поздравляем! Внутренний блок и обложка были утверждены! Далее в блоке "Печать" необходимо оплатить финальную стоимость печати, чтобы начать печать.';
-            } elseif ($inside_status === 4 & !($print_price > 0)) {
-                $total_status_needed = 9;
-                $alert_text = 'Обложка была утверждена! Так как внутренний блок был тоже утвержден, а печать не требуется, мы поздравляем Вас с окончанием процесса издания!';
-            } else {
-                $total_status_needed = 3;
-                $alert_text = 'Обложка была утверждена!';
+            own_book::where('id', $this->own_book_id)->update([
+                'own_book_cover_status_id' => $status_id,
+            ]);
+
+
+            $inside_status = own_book::where('id', $this->own_book_id)->value('own_book_inside_status_id');
+            $print_price = own_book::where('id', $this->own_book_id)->value('print_price');
+            $total_status_needed = 3;
+
+            if ($status_id === 4) {
+                if ($inside_status === 4 & $print_price > 0) {
+                    $total_status_needed = 4;
+                    $alert_text = 'Поздравляем! Внутренний блок и обложка были утверждены! Далее в блоке "Печать" необходимо оплатить финальную стоимость печати, чтобы начать печать.';
+                } elseif ($inside_status === 4 & !($print_price > 0)) {
+                    $total_status_needed = 9;
+                    $alert_text = 'Обложка была утверждена! Так как внутренний блок был тоже утвержден, а печать не требуется, мы поздравляем Вас с окончанием процесса издания!';
+                } else {
+                    $total_status_needed = 3;
+                    $alert_text = 'Обложка была утверждена!';
+                }
             }
+
+            own_book::where('id', $this->own_book_id)->update([
+                'own_book_status_id' => $total_status_needed,
+            ]);
+
+
+            session()->flash('success', 'success');
+            session()->flash('alert_text', 'Статус изменен!');
+            if ($status_id === 3) {
+                session()->flash('alert_text', 'Отлично! Мы уже начали вносить указанные изменения. Срок исправления - 5 дней. Как только закончим, Вы получите оповещение, и обложку снова можно будет проверить на этой странице.');
+            } elseif ($status_id === 4) {
+                session()->flash('alert_text', $alert_text);
+            }
+            return redirect()->to(url()->previous());
+
+
         }
-
-        own_book::where('id', $this->own_book_id)->update([
-            'own_book_status_id' => $total_status_needed,
-        ]);
-
-
-        session()->flash('success', 'success');
-        session()->flash('alert_text','Статус изменен!');
-        if ($status_id === 3) {
-            session()->flash('alert_text', 'Отлично! Мы уже начали вносить указанные изменения. Срок исправления - 5 дней. Как только закончим, Вы получите оповещение, и обложку снова можно будет проверить на этой странице.');
-        } elseif ($status_id === 4) {
-            session()->flash('alert_text', $alert_text);
-        }
-        return redirect()->to(url()->previous());
-
-
     }
 
 }

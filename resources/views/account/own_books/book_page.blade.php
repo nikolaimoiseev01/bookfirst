@@ -83,7 +83,8 @@
     </div>
     {{-- // Общая информация о книге--}}
 
-    <a id="chat_button" style="margin-left: 30px; margin-top: 20px; width: 95%; text-align: center; max-width: 1000px;" class="button">Развернуть чат</a>
+    <a id="chat_button" style="margin-left: 30px; margin-top: 20px; width: 95%; text-align: center; max-width: 1000px;"
+       class="button">Развернуть чат</a>
     <div class="participation-wrap">
 
         {{-- Чат книги --}}
@@ -122,25 +123,27 @@
                         @endif
                         <span><p style="margin: 0;">Страниц: <i>{{$own_book['pages']}};</i></p></span>
                         @if($own_book['promo_price'] > 0)
-                            <span><p style="margin: 0;">Продвижение: <i>Вариант {{$own_book['promo_type']}};</i></p></span>
+                            <span><p
+                                    style="margin: 0;">Продвижение: <i>Вариант {{$own_book['promo_type']}};</i></p></span>
                         @endif
                         @if($own_book['text_design_price'] > 0 || $own_book['text_check_price'] > 0 || $own_book['cover_price'] > 0)
-                        <p style="margin: 0;">Необходимо:</p>
-                        <ul>
-                            @if($own_book['text_design_price'] > 0)
-                                <li>- <p style="margin: 0;"> <i>Оформление текста</i></p></li>
-                            @endif
+                            <p style="margin: 0;">Необходимо:</p>
+                            <ul>
+                                @if($own_book['text_design_price'] > 0)
+                                    <li>- <p style="margin: 0;"><i>Оформление текста</i></p></li>
+                                @endif
                                 @if($own_book['text_check_price'] > 0)
-                                    <li>- <p style="margin: 0;"> <i>Проверка орфографии</i></p></li>
+                                    <li>- <p style="margin: 0;"><i>Проверка орфографии</i></p></li>
                                 @endif
                                 @if($own_book['cover_price'] > 0)
-                                    <li>- <p style="margin: 0;"> <i>Создание обложки</i></p></li>
+                                    <li>- <p style="margin: 0;"><i>Создание обложки</i></p></li>
                                 @endif
-                        </ul>
+                            </ul>
                         @endif
 
                         @if($own_book['price'] > 0)
-                            <span><p style="margin: 0;">Продвижение: <i>Вариант {{$own_book['promo_type']}}</i></p></span>
+                            <span><p
+                                    style="margin: 0;">Продвижение: <i>Вариант {{$own_book['promo_type']}}</i></p></span>
                         @endif
                     </div>
                     <div class="print_part">
@@ -149,10 +152,13 @@
                             <span><p
                                     style="margin: 0;">Тираж: {{$own_book->Printorder['books_needed']}};</p></span><br>
                             <span><p
-                                    style="margin: 0;">ФИО Адресата: {{$own_book->Printorder['send_to_name']}};</p></span><br>
+                                    style="margin: 0;">ФИО Адресата: {{$own_book->Printorder['send_to_name']}};</p></span>
+                            <br>
                             <span><p
-                                    style="margin: 0;">Адрес: {{$own_book->Printorder['send_to_address']}};</p></span><br>
-                            <span><p style="margin: 0;">Телефон: {{$own_book->Printorder['send_to_tel']}};</p></span><br>
+                                    style="margin: 0;">Адрес: {{$own_book->Printorder['send_to_address']}};</p></span>
+                            <br>
+                            <span><p style="margin: 0;">Телефон: {{$own_book->Printorder['send_to_tel']}};</p></span>
+                            <br>
                         @else
                             <p>Печатные эезкемпляры не требуются.</p>
                             <a href="#part_print" class="link">Создать заказ</a>
@@ -293,7 +299,8 @@
                             <p style="padding: 15px;">Отлично, Ваша заявка подтверждена! Для начала издания необходимо
                                 произвести оплату.</p>
                             <form style="display:inline-block"
-                                  action="{{ route('payment.create_own_book_payment',[$own_book['id'], 'Without_Print', $own_book['total_price'] - $own_book['print_price']]) }}" method="POST"
+                                  action="{{ route('payment.create_own_book_payment',[$own_book['id'], 'Without_Print', $own_book['total_price'] - $own_book['print_price']]) }}"
+                                  method="POST"
                                   enctype="multipart/form-data">
                                 @csrf
                                 <input value="{{$own_book['id']}}" type="text" name="own_book_status_id"
@@ -361,7 +368,8 @@
                                         <h1> руб.</h1>
                                         <div class="participation-price-desc">
                                             <div></div>
-                                            <p>продвижение (вар.:&nbsp;<span id="promo_var_num">{{$own_book['promo_type']}}</span>)</p></div>
+                                            <p>продвижение (вар.:&nbsp;<span
+                                                    id="promo_var_num">{{$own_book['promo_type']}}</span>)</p></div>
                                     </div>
                                 @endif
 
@@ -649,9 +657,26 @@
                                     @if ($own_book['own_book_inside_status_id'] === 2)
                                         На данный момент внутренний блок находится на этапе предварительной
                                         проверки. Это означает, что все регистрационные
-                                        номера присвоены и блок сверстан. Сейчас необходимо скачать файл и
-                                        указать комментарии, что бы вы хотели исправить в блоке.
-                                        Пожалуйста, укажите страницу и описание исправления.
+                                        номера присвоены и блок сверстан. Сейчас необходимо скачать файл проверить его.
+
+                                        <br>
+
+                                        <b><span style="color: #47af98">
+                                                Если исправления не требуются, пожалуйста, утвердите макет нажатием на кнопку "Утвердить макет"
+                                            </span>
+                                        </b>
+
+                                        <br>Если требуются, то, пожалуйста, укажите страницу и описание исправления в
+                                        форме рядом.
+
+
+                                        <br> Когда все исправления указаны, необходимо отправить макет на дальнейшее
+                                        редактирование.
+
+                                        <b>Только тогда мы начнем работу над исправлениями. Для этого нажмите "Отправить
+                                            на
+                                            исправление".
+                                        </b>
                                     @elseif ($own_book['own_book_inside_status_id'] === 3)
                                         На данный момент мы вносим указанные изменения. Как только они будут учтены,
                                         Вы получите оповещение об этом на почте и внутри нашей системы.
@@ -745,8 +770,25 @@
                                     @if ($own_book['own_book_cover_status_id'] === 2)
                                         На данный момент обложка находится на этапе предварительной
                                         проверки. Сейчас необходимо указать комментарии, что бы вы хотели исправить.
-                                        Пожалуйста, укажите Ваши комментарии в форме рядом или утвердите обложку, если
-                                        исправления не требуются.
+
+                                        <br>
+
+                                        <b><span style="color: #47af98">
+                                                Если исправления не требуются, пожалуйста, утвердите обложку нажатием на кнопку "Утвердить обложку"
+                                            </span>
+                                        </b>
+
+                                        <br>Если требуются, то, пожалуйста, укажите страницу и описание исправления в
+                                        форме рядом.
+
+
+                                        <br> Когда все исправления указаны, необходимо отправить обложку на дальнейшее
+                                        редактирование.
+
+                                        <b>Только тогда мы начнем работу над исправлениями. Для этого нажмите "Отправить
+                                            на
+                                            исправление".
+                                        </b>
                                     @elseif ($own_book['own_book_cover_status_id'] === 3)
                                         На данный момент мы вносим указанные изменения. Как только они будут учтены,
                                         Вы получите оповещение об этом на почте и внутри нашей системы.
@@ -943,7 +985,8 @@
                         </span>
 
                             <form style="display:inline-block"
-                                  action="{{ route('payment.create_own_book_payment',[$own_book['id'], 'Print_only', $own_book['print_price']]) }}" method="POST"
+                                  action="{{ route('payment.create_own_book_payment',[$own_book['id'], 'Print_only', $own_book['print_price']]) }}"
+                                  method="POST"
                                   enctype="multipart/form-data">
                                 @csrf
                                 <button id="btn-submit" type="submit" style="height: fit-content; max-width:250px;"

@@ -54,6 +54,7 @@ class RegisterController extends Controller
             'surname' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'g-recaptcha-response' => 'required|captcha'
         ], [
             'name.required' => 'Пожалуйста, введите имя',
             'surname.required' => 'Пожалуйста, введите фамилию',

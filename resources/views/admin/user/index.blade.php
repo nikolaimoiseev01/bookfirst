@@ -5,9 +5,7 @@
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
-                <div class="col-sm-6">
                     <h1 class="m-0">Наши пользователи</h1>
-                </div><!-- /.col -->
             </div><!-- /.row -->
 
         </div><!-- /.container-fluid -->
@@ -33,19 +31,19 @@
                     <table id="users_input" class="table table-hover projects">
                         <thead>
                         <tr>
-                            <th style="text-align: center;width:1%;">
+                            <th scope="col" style="text-align: center;width:1%;">
                                 ID
                             </th>
-                            <th style="text-align: center;">
+                            <th scope="col" style="text-align: center;">
                                 ФИО
                             </th>
-                            <th style="text-align: center;">
+                            <th scope="col" style="text-align: center;">
                                 Псевдоним
                             </th>
-                            <th style="text-align: center;">
+                            <th scope="col" style="text-align: center;">
                                 Email
                             </th>
-                            <th style="text-align: center;">
+                            <th scope="col" style="text-align: center;">
                                 Работ загружено
                             </th>
 
@@ -56,20 +54,20 @@
                         @foreach($users as $user)
 
                             <tr class="row_hover" onclick="document.location = '{{route('user_page', $user['id'])}}';">
-                                <td style="text-align: center;">
+                                <td scope="row" data-label="ID" style="text-align: center;">
                                     {{$user['id']}}
                                 </td>
-                                <td style="text-align: center;">
+                                <td data-label="ФИО" style="text-align: center;">
                                     {{$user['name']}} {{$user['surname']}}
                                 </td>
-                                <td style="text-align: center;">
+                                <td data-label="Псевдоним" style="text-align: center;">
                                     {{$user['nickname']}}
                                 </td>
-                                <td style="text-align: center;">
+                                <td data-label="Email" style="text-align: center;">
                                     {{$user['email']}}
                                 </td>
 
-                                <td style="text-align: center;">
+                                <td data-label="Работ загружено" style="text-align: center;">
                                     {{count($user->work)}}
                                 </td>
                             </tr>
