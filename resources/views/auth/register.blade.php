@@ -145,6 +145,7 @@
 
 @section('page-js')
 
+{{--    {!! NoCaptcha::renderJs() !!}--}}
 
     <script>
         $('.password').on("input", function() {

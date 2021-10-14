@@ -3,7 +3,7 @@
     <div class="comments-wrap">
         @if (count($comments) == 0)
             <p style="height: 100%; display: flex; align-items: center; justify-content: center; color: #bcbcbc; font-size: 30px;">
-                Вы еще не указывали исправлений
+                Вы еще не указывали исправления
             </p>
         @endif
         <div class="messages">

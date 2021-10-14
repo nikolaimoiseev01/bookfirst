@@ -155,11 +155,14 @@ class Chat extends Component
 
 
             } else {
+
+                $user_from = User::where('id', $this->user_from)->first();
+
                 \App\Models\Chat::where('id', $this->chat_id)->update(array('chat_status_id' => '1'));
                 // Посылаем Telegram уведомление нам
                 Notification::route('telegram', '-506622812')
                     ->notify(new TelegramNotification('',
-                        '💬' . $user->name . ' ' . $user->surname . ': ' . $this->text,
+                        '💬' . $user_from['name'] . ' ' . $user_from['surname'] . ': ' . $this->text,
                         "К чатам",
                         route('chats')));
             }

@@ -361,7 +361,7 @@ class PaymentController extends Controller
 
                             // Посылаем Telegram уведомление нам
                             Notification::route('telegram', '-506622812')
-                                ->notify(new TelegramNotification('💸 Новая оплата по книге! 💸', 'Автор: ' . $own_book['author'] . "(юзер: " . $user['name'] . " " . $user['surname'] .
+                                ->notify(new TelegramNotification('💸 Новая оплата по книге! 💸', 'Автор: ' . $own_book['author'] . "(юзер: " . $user['name'] . " " . $user['surname'] . ")" .
                                     "\n" . "Книга: " . $own_book['title'] .
                                     "\n" . "Сумма: " . ($own_book['total_price'] - $own_book['print_price']) . " руб. (печать у него на " . $own_book['print_price'] . " руб.)",
                                     "Его страница издания",

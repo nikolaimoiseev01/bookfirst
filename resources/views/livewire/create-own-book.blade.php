@@ -411,7 +411,7 @@
 
 
                                 <div style="margin-top: 7px; margin-bottom: 7px;">
-                                    <p>Цветность блока:</p>
+                                    <p>Цвет блока:</p>
                                     <div style="margin-left: 10px;" class="switch-wrap">
                                         <input checked type="radio" class="show-hide" value="inside_color_no"
                                                id="inside_color_no"
@@ -897,10 +897,10 @@
                     tirag_coef = 0.9
                 }
 
-                if (print_needed < 100) {
+                if (pages < 100) {
                     pages_coef = 1.8
                 } else {
-                    pages_coef = 1
+                    pages_coef = 1.2
                 }
 
 
