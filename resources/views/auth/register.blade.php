@@ -151,7 +151,7 @@
 
 {{--                    @endif--}}
 
-                    {!! NoCaptcha::renderJs() !!}
+                    {!! NoCaptcha::renderJs('', false) !!}
                     <style>
                         #rc-anchor-container {
                             border: 1px solid red !important;
