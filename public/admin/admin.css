@@ -87,6 +87,7 @@ table th {
         */
         content: attr(data-label);
         float: left;
+        text-align: initial;
         font-weight: bold;
         text-transform: uppercase;
     }

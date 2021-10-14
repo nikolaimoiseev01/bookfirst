@@ -28,7 +28,7 @@
                 </div>
                 <div class="card-body">
                     <div class="d-flex align-items-center">
-                        <h4 class="m-0">Статус общий:
+                        <h4 style="display: flow-root !important;" class="m-0">Статус общий:
                             <i @if($own_book['own_book_status_id'] == 1 || $own_book['own_book_status_id'] == 5)
                                style="display: inline-block; color: #f74e4e;"
                                @elseif($own_book['own_book_status_id'] == 3)

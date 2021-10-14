@@ -1,5 +1,22 @@
 @extends('layouts.portal_layout')
 
+@section('page-style')
+    <style>
+        .captcha-wrap {
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 1000px) {
+            .captcha-wrap {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+
+    </style>
+@endsection
+
 @section('content')
     <div style="
     display: flex;
@@ -140,7 +157,7 @@
                             border: 1px solid red !important;
                         }
                     </style>
-                    <div style="margin-bottom:20px;">
+                    <div class="captcha-wrap" >
                         {!! NoCaptcha::display() !!}
                     </div>
 

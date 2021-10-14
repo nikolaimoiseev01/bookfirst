@@ -29,14 +29,14 @@
                     <table id="participants_table" class="table table-bordered table-hover">
                         <thead>
                         <tr>
-                            <th style="text-align: center;">id</th>
-                            <th style="text-align: center;">Пользователь</th>
-                            <th style="text-align: center;">Сумма</th>
-                            <th style="text-align: center;">Статус</th>
-                            <th style="text-align: center;">Назначение</th>
-                            <th style="text-align: center;">Метод оплаты</th>
-                            <th style="text-align: center;">Последнее изменение</th>
-                            <th style="width:15%; text-align: center;">Yokassa_id</th>
+                            <th scope="col" style="text-align: center;">id</th>
+                            <th scope="col" style="text-align: center;">Пользователь</th>
+                            <th scope="col" style="text-align: center;">Сумма</th>
+                            <th scope="col" style="text-align: center;">Статус</th>
+                            <th scope="col" style="text-align: center;">Назначение</th>
+                            <th scope="col" style="text-align: center;">Метод оплаты</th>
+                            <th scope="col" style="text-align: center;">Последнее изменение</th>
+                            <th scope="col" style="width:15%; text-align: center;">Yokassa_id</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -44,17 +44,17 @@
                         @foreach($transactions as $transaction)
 
                             <tr>
-                                <td style="text-align: center;">
+                                <td scope="row" data-label="id" style="text-align: center;">
                                     {{$transaction['id']}}
                                 </td>
-                                <td style="text-align: center;">
+                                <td data-label="Пользователь" style="text-align: center;">
                                     <a href="{{route('user_page', $transaction['user_id'])}}">{{$transaction->user['name']}} {{$transaction->user['surname']}}</a>
                                 </td>
-                                <td style="text-align: center;">
+                                <td data-label="Сумма" style="text-align: center;">
                                     {{round($transaction['amount'])}} руб.
                                 </td>
 
-                                <td style="
+                                <td data-label="Статус" style="
                                     color:
                                 @if($transaction['status'] === 'CONFIRMED') #09c73a
                                 @elseif($transaction['status'] === 'CREATED') #ff2929
@@ -63,7 +63,7 @@
                                     {{$transaction['status']}}
                                 </td>
 
-                                <td style="text-align: center;">
+                                <td data-label="Назначение" style="text-align: center;">
                                     @if ($transaction['participation_id'] > 0)
                                         <a href="{{route('user_participation', $transaction['participation_id'])}}">
                                             {{$transaction['description']}}
@@ -82,14 +82,14 @@
                                     @endif
 
                                 </td>
-                                <td style="text-align: center;">
+                                <td data-label="Метод оплаты" style="text-align: center;">
                                     {{$transaction['payment_method']}}
                                 </td>
-                                <td style="text-align: center;">
+                                <td data-label="Последнее изменение" style="text-align: center;">
 
                                     {{ Date::parse($transaction['updated_at'])->format('j F, G:i') }}
                                 </td>
-                                <td style="width:15%; text-align: center;">
+                                <td data-label="Yokassa_id" style="text-align: center;">
 
                                     {{($transaction['yoo_id']) }}
                                 </td>
