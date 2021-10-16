@@ -14,6 +14,11 @@ class AdminPrintOrderTable extends Component
     Public $collection_id;
     Public $show_input = 0;
 
+
+    protected $listeners = [
+        'save_track_number'
+    ];
+
     public function render()
     {
         return view('livewire.admin-print-order-table', [
@@ -44,9 +49,7 @@ class AdminPrintOrderTable extends Component
     public function save_track_number($print_order_id)
     {
 
-        if(
-            $this->track_number[$print_order_id]=== ''
-        )
+        if($this->track_number[$print_order_id] === '' || $this->track_number[$print_order_id] === null)
         {
            $this->dispatchBrowserEvent('swal:modal', [
                 'type' => 'error',

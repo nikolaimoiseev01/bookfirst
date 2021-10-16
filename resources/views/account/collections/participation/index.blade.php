@@ -670,7 +670,7 @@
             @else
             {{$part_all_good}}
             @endif" class="line"></div>
-            @if (!isset($voted_to['user_id']))
+            @if ($collection['col_status_id'] <= 2 && !isset($voted_to['user_id']))
                 <svg class="circle_status" style="fill:
              @if ($collection['col_status_id'] === 1)
                 {{$part_not_available}}
@@ -755,7 +755,7 @@
                     <div class="no-access">
                         {{App::setLocale('ru')}}
                         <p>Голосование окончено.
-                            Результаты будут опубликованы в нашей <a href="" class="link">группе ВК</a> {{ Date::parse($collection['col_date3'])->addDays(3)->format('j F Y') }}
+                            Результаты будут опубликованы в нашей <a href="https://vk.com/yourfirstbook" target="_blank" class="link">группе ВК</a> {{ Date::parse($collection['col_date3'])->addDays(3)->format('j F Y') }}
                         </p>
                     </div>
                 @else
