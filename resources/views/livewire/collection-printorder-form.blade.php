@@ -65,7 +65,7 @@
                 </div>
             </div>
             <button id="save_form" class="preloader_button header-button-wrap  button" type="submit">
-                <span class="button__text">Войти</span>
+                <span class="button__text">Оплатить</span>
             </button>
             <a name="create_form" style="margin-left: 10px;" class="header-button-wrap  show-hide button">Отменить</a>
         </div>

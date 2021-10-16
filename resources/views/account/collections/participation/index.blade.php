@@ -751,7 +751,15 @@
                         <span>Сейчас идет голосование на лучшего автора, но из-за отствия оплаты Вы не были включены в список участников.
                         </span>
                     </div>
+                @elseif ($collection['col_status_id'] >= 3 && $participation['paid_at'] <> null)
+                    <div class="no-access">
+                        {{App::setLocale('ru')}}
+                        <p>Голосование окончено.
+                            Результаты будут опубликованы в нашей <a href="" class="link">группе ВК</a> {{ Date::parse($collection['col_date3'])->addDays(3)->format('j F Y') }}
+                        </p>
+                    </div>
                 @else
+
                     @livewire('vote-block', ['collection_id' => $collection->id])
                 @endif
             </div>
