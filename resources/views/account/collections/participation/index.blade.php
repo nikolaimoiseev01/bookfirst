@@ -543,7 +543,7 @@
                 @elseif($collection['col_status_id'] === 1)
                     <div class="no-access">
                         {{App::setLocale('ru')}}
-                        <span>Предварительная проверка сборника станет доступна {{ Date::parse($collection['col_date'])->format('j F Y') }}.
+                        <span>Предварительная проверка сборника станет доступна {{ Date::parse($collection['col_date2'])->format('j F Y') }}.
                         </span>
                     </div>
                 @elseif ($collection['col_status_id'] === 2)
