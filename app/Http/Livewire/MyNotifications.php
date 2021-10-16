@@ -24,7 +24,7 @@ class MyNotifications extends Component
         Auth::user()->unreadNotifications()->update(['read_at' => now()]);
         session()->flash('success', 'success');
         session()->flash('alert_title', 'Отлично!');
-        session()->flash('alert_text', 'Все оповещения успешно прочитаны!');
+        session()->flash('alert_text', 'Все оповещения прочитаны!');
         return redirect()->to(url()->previous());
     }
 
