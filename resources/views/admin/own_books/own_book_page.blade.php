@@ -382,8 +382,21 @@
 
 
                             <div class="mt-3 d-flex justify-content-between align-items-end mb-3">
-                                <h3 class="m-0 d-inline">Исправления:</h3> <a class="float-right" href="">Отменить
-                                    все выполненными</a>
+                                <h3 class="m-0 d-inline">Исправления:</h3>
+                                <form
+                                    class="d-flex flex-column justify-content-center align-items-center"
+                                    style=" align-items: center;"
+                                    action="{{ route('change_all_preview_comment_status',[$own_book['id'], 'inside']) }}"
+                                    method="POST"
+                                    enctype="multipart/form-data"
+                                >
+                                    @csrf
+                                    <button class="float-right border-0 " type="submit"
+                                            style="background: #fff0; color: #34b734 !important;">Отметить
+                                        все
+                                        выполненными
+                                    </button>
+                                </form>
                             </div>
                             <table id="participants_table" class="table table-bordered">
                                 <thead>

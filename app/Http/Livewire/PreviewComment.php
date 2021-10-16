@@ -6,6 +6,7 @@ use App\Models\Message;
 use App\Models\own_book;
 use App\Models\Participation;
 use App\Models\preview_comment;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Livewire\Component;
@@ -128,7 +129,7 @@ class PreviewComment extends Component
         $prev_comments_cnt = preview_comment::where('own_book_id', $this->own_book_id)->where('own_book_comment_type', 'inside')->where('status_done', 0)->count();
 
         if ($prev_comments_cnt === 0) {
-            array_push($errors_array, 'Сначала добавьте исправления (необходимо ввести страницу и текст в форму, затем нажать на конверт справа)');
+            array_push($errors_array, 'Сначала добавьте исправления (необходимо ввести страницу и текст в форму, затем нажать на "самолетик" справа)');
         }
 
         if (!empty($errors_array)) {
@@ -146,6 +147,7 @@ class PreviewComment extends Component
 
             own_book::where('id', $this->own_book_id)->update([
                 'own_book_inside_status_id' => $status_id,
+                'inside_deadline' => Carbon::now()->addDays(5)->toDate(),
             ]);
 
             $cover_status = own_book::where('id', $this->own_book_id)->value('own_book_cover_status_id');
@@ -191,7 +193,7 @@ class PreviewComment extends Component
         $prev_comments_cnt = preview_comment::where('own_book_id', $this->own_book_id)->where('own_book_comment_type', 'cover')->where('status_done', 0)->count();
 
         if ($prev_comments_cnt === 0) {
-            array_push($errors_array, 'Сначала добавьте исправления (необходимо ввести страницу и текст в форму, затем нажать на конверт справа)');
+            array_push($errors_array, 'Сначала добавьте исправления (необходимо ввести страницу и текст в форму, затем нажать на "самолетик" справа)');
         }
 
         if (!empty($errors_array)) {
@@ -209,6 +211,7 @@ class PreviewComment extends Component
 
             own_book::where('id', $this->own_book_id)->update([
                 'own_book_cover_status_id' => $status_id,
+                'cover_deadline' => Carbon::now()->addDays(5)->toDate(),
             ]);
 
 

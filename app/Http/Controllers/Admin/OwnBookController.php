@@ -99,7 +99,7 @@ class OwnBookController extends Controller
         }
 
 
-            session()->flash('alert_type', 'sucсess');
+            session()->flash('alert_type', 'success');
             session()->flash('alert_title', 'Ссылка успешно добавлена!');
 
         return redirect()->back();
@@ -140,7 +140,7 @@ class OwnBookController extends Controller
                     'Смена статуса издания книги!',
                     route('book_page', $this->own_book['id']))
             );
-            session()->flash('alert_type', 'sucсess');
+            session()->flash('alert_type', 'success');
             session()->flash('alert_title', 'Статус успешно изменен!');
         }
 
