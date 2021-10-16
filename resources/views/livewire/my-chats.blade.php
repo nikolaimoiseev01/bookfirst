@@ -2,15 +2,21 @@
     <div class="element-wrap">
         @foreach($chats as $chat)
 
-                <div style="padding:15px;position:relative" class="container-hover container">
-                    <div class="el-desc">
-                        <span>{{Str::limit($chat['title'], 30)}}</span>
-                        <p>Статус: {{$chat->chat_status['status']}}</p>
-                        <p>Создан: {{\Illuminate\Support\Str::substr($chat['created_at'],0,10)}}</p>
-                    </div>
-                    <a style="position:absolute; width:100%; top: 0; left: 0; height: 100%; text-decoration: none;" class="fast-load" href="{{route('chat',$chat['id'])}}"></a>
-                    @if ($chat['chat_status_id'] != 3)
-                        <div wire:click.prevent="delete_confirm({{$chat['id']}})"  class="el-button-wrap">
+            <div style="box-shadow:
+                 @if($chat['chat_status_id'] === '1' || $chat['chat_status_id'] === '4')
+                 0 0 10px 1px rgba(217, 186, 19, 0.25);
+                 @elseif($chat['chat_status_id'] === '2')
+                 0 0 10px 1px rgba(54, 193, 76, 0.25);
+            @endif padding:15px;position:relative" class="container-hover container">
+                <div class="el-desc">
+                    <span>{{Str::limit($chat['title'], 30)}}</span>
+                    <p>Статус: {{$chat->chat_status['status']}}</p>
+                    <p>Создан: {{\Illuminate\Support\Str::substr($chat['created_at'],0,10)}}</p>
+                </div>
+                <a style="position:absolute; width:100%; top: 0; left: 0; height: 100%; text-decoration: none;"
+                   class="fast-load" href="{{route('chat',$chat['id'])}}"></a>
+                @if ($chat['chat_status_id'] != 3)
+                    <div wire:click.prevent="delete_confirm({{$chat['id']}})" class="el-button-wrap">
                             <span class="tooltip"
                                   title="Закрыть вопрос">
                                 <svg id="#delete_chat" data-name="Слой 1"
@@ -30,9 +36,9 @@
                                         transform="translate(-40 0)"/>
                                 </svg>
                             </span>
-                        </div>
-                    @endif
-                </div>
+                    </div>
+                @endif
+            </div>
 
         @endforeach
     </div>

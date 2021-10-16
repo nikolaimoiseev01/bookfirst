@@ -1001,7 +1001,7 @@ form .check-block {
 }
 
 .container-hover:hover {
-    box-shadow: 0 0 10px 4px rgba(71, 175, 152, 0.24);
+    box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.11) !important;
     transition: all .1s;
     cursor: pointer;
     /*transform: scale(1.05);*/

@@ -301,7 +301,7 @@
                                 <input style="margin-left: 0;" id="textcheck_needed" type="checkbox">
 
                                 <label for="textdesign_needed"><p style="margin:0;">Дизайн текста</p></label>
-                                <input style="margin-left: 0;" id="textdesign_needed" type="checkbox">
+                                <input style="margin-left: 0;" checked id="textdesign_needed" type="checkbox">
                             </div>
 
                         </div>
@@ -337,7 +337,8 @@
 
                             <div id="block_cover_status_no" class="cover_status">
                                 <div class="pre_cover_files">
-                                    <input accept multiple name="pre_cover_files" class="pre_cover_files filepond_pre_cover"
+                                    <input accept multiple name="pre_cover_files"
+                                           class="pre_cover_files filepond_pre_cover"
                                            type="file"/>
                                 </div>
                                 <div wire:ignore class="pre_cover_wrap block_cover_status_no input-block">
@@ -546,8 +547,10 @@
                         </div>
                         <div style="display: flex; flex-direction: column; display: none;" id="price-parts-wrap">
                             <div class="participation-price">
-                                <h1 id="layout_work_price_price">300</h1>
-                                <h1>&nbsp;руб.</h1>
+                                <div style="display: flex">
+                                    <h1 id="layout_work_price_price">300</h1>
+                                    <h1>&nbsp;руб.</h1>
+                                </div>
                                 <div class="participation-price-desc">
                                     <div>
                                         <p>работа с макетом (<span id="pages">>0</span><span>&nbsp;стр.)</span></p>
@@ -565,24 +568,30 @@
                                 </div>
                             </div>
                             <div class="participation-price">
-                                <h1 id="participation_price">500</h1>
-                                <h1>&nbsp;руб.</h1>
+                                <div style="display: flex">
+                                    <h1 id="participation_price">500</h1>
+                                    <h1>&nbsp;руб.</h1>
+                                </div>
                                 <div class="participation-price-desc">
                                     <p>присвоение ISBN</p>
                                     </p>
                                 </div>
                             </div>
                             <div style="display: none" id="print-price" class="prints-needed participation-price">
-                                <h1 id="print_price">300</h1>
-                                <h1>&nbsp;руб.</h1>
+                                <div style="display: flex">
+                                    <h1 id="print_price">300</h1>
+                                    <h1>&nbsp;руб.</h1>
+                                </div>
                                 <div class="participation-price-desc">
                                     <div></div>
                                     <p>за печать (<span id="print_needed">1</span>&nbsp;экз.)</p></div>
                             </div>
 
                             <div id="cover-price-total" class="cover-needed participation-price">
-                                <h1 id="cover_price">1500</h1>
-                                <h1>руб.</h1>
+                                <div style="display: flex">
+                                    <h1 id="cover_price">1500</h1>
+                                    <h1>руб.</h1>
+                                </div>
                                 <div class="participation-price-desc">
                                     <div></div>
                                     <p>создание обложки</p></div>
@@ -590,8 +599,10 @@
 
 
                             <div style="display: none" id="promo-needed" class="promo-needed participation-price">
-                                <h1 id="promo_price">0</h1>
-                                <h1> руб.</h1>
+                                <div style="display: flex">
+                                    <h1 id="promo_price">0</h1>
+                                    <h1> руб.</h1>
+                                </div>
                                 <div class="participation-price-desc">
                                     <div></div>
                                     <p>продвижение (вар.:&nbsp;<span id="promo_var_num"></span>)</p></div>
@@ -601,8 +612,10 @@
 
                         <div style="display: none;" id="price-total-wrap">
                             <div class="total_price participation-price">
-                                <h1 id="total_price">800</h1>
-                                <h1>&nbsp;руб.</h1>
+                                <div style="display: flex">
+                                    <h1 id="total_price">800</h1>
+                                    <h1>&nbsp;руб.</h1>
+                                </div>
                                 <div class="participation-price-desc"><p>Итог</p></div>
                             </div>
                         </div>
@@ -611,7 +624,7 @@
             </div>
 
         </div>
-        <button style="margin-right:20px;" type="submit" id="save_form" class="preloader_button button" >
+        <button style="margin-right:20px;" type="submit" id="save_form" class="preloader_button button">
             <span class="button__text">Отправить заявку</span>
         </button>
     </form>

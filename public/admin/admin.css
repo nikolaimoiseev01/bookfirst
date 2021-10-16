@@ -15,38 +15,6 @@ input[type=number]::-webkit-outer-spin-button {
     opacity: .5;
     transition: all .2s;
 }
-table {
-    border: 1px solid #ccc;
-    border-collapse: collapse;
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    table-layout: fixed;
-}
-
-table caption {
-    font-size: 1.5em;
-    margin: .5em 0 .75em;
-}
-
-table tr {
-    background-color: #f8f8f87a;
-    border: 1px solid #ddd;
-    padding: .35em;
-}
-
-table th,
-table td {
-    padding: .625em;
-    text-align: center;
-}
-
-table th {
-    font-size: .85em;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-}
-
 
 @media screen and (max-width: 600px) {
     table {
