@@ -58,6 +58,7 @@ class Chat extends Component
 
     public function new_message()
     {
+
         // --------- Ищем ошибки в заполнении  --------- //
         $errors_array = [];
 
@@ -76,6 +77,8 @@ class Chat extends Component
         // --------- //Ищем ошибки в заполнении  --------- //
 
         if (empty($errors_array)) {
+
+
 
             $this->user_from = Auth::user()->id;
             if (\App\Models\Chat::where('id', $this->chat_id)->value('user_created') != $this->user_from) {

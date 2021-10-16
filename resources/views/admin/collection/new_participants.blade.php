@@ -31,20 +31,20 @@
                         <thead>
 
                             <tr>
-                                <th>Статус</th>
-                                <th>Время создания</th>
-                                <th>Автор</th>
-                                <th>Псевдоним</th>
-                                <th>Email</th>
-                                <th>Страниц</th>
-                                <th>Экземпляров</th>
-                                <th>Промокод</th>
+                                <th scope="col">Статус</th>
+                                <th scope="col">Время создания</th>
+                                <th scope="col">Автор</th>
+                                <th scope="col">Псевдоним</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Страниц</th>
+                                <th scope="col">Экземпляров</th>
+                                <th scope="col">Промокод</th>
                             </tr>
                         </thead>
                         <tbody>
                         @foreach($new_participations as $participation)
                         <tr class="row_hover" onclick="document.location = '{{route('user_participation', ['participation_id' => $participation['id']])}}';">
-                            <td style="text-align: center;">
+                            <td scope="row" data-label="Статус" style="text-align: center;">
                                 <i data-toggle="tooltip" data-placement="top"
                                    title="{{$participation->pat_status['pat_status_title']}}"
                                    class="fas
@@ -57,26 +57,26 @@
                                        "></i>
                             </td>
 
-                            <td style="text-align: center;">
+                            <td data-label="Время создания" style="text-align: center;">
                                 {{substr($participation['created_at'],0,16)}}
                             </td>
 
-                            <td style="text-align: center;">
+                            <td data-label="Автор" style="text-align: center;">
                                 {{$participation['name']}} {{$participation['surname']}}
                             </td>
-                            <td style="text-align: center;">
+                            <td data-label="Псевдоним" style="text-align: center;">
                                 {{$participation['nickname']}}
                             </td>
-                            <td style="text-align: center;">
+                            <td data-label="Email" style="text-align: center;">
                                 {{$participation->user['email']}}
                             </td>
-                            <td style="text-align: center;">
+                            <td data-label="Страниц" style="text-align: center;">
                                 {{$participation['pages']}}
                             </td>
-                            <td style="text-align: center;">
+                            <td data-label="Экземпляров" style="text-align: center;">
                                 {{$participation->printorder['books_needed'] ?? 'Печать не нужна'}}
                             </td>
-                            <td style="text-align: center;">
+                            <td data-label="Промокод" style="text-align: center;">
                                 {{$participation['promocode']}}
                             </td>
 

@@ -51,8 +51,8 @@
 
 .participation-outputs h1 {
     font-size: 42px;
-    display: contents;
     line-height: 35px;
+    display: flex;
 }
 
 .participation-outputs p {
@@ -199,7 +199,7 @@
     padding: 2px 20px;
     margin: 20px 20px 0 0;
     border-radius: 10px;
-    box-shadow: 0 0 5px 1px rgba(0 0 0 0.11);
+    box-shadow: 0 0 4px 2px rgb(0 0 0 / 8%);
     display: flex;
     float: left;
     align-items: center;
@@ -324,25 +324,6 @@ ul {
 li {
     list-style-type: none;
 }
-
-
-/* width */
-::-webkit-scrollbar {
-    width: 10px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-    background: #d4d4d4a1;
-    border-radius: 10px;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-    background: #47af989c;
-    border-radius: 10px;
-}
-
 
 
 

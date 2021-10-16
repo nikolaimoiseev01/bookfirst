@@ -707,6 +707,8 @@
         jq_loaded = 1;
 
         document.addEventListener('livewire:load', function () {
+            calcuation();
+
             $("#save_form").click(function (event) {
                 event.preventDefault();
                 works_to_php = '';

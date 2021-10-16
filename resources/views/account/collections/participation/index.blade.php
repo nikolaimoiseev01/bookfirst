@@ -269,9 +269,9 @@
                         </span>
                     </div>
                 @elseif ($participation['pat_status_id'] === 2)
-                    <div style="display: flex;">
+                    <div class="need_to_pay_wrap" style="display: flex;">
                         <div
-                            style="width:50%; flex-direction: column; display: flex; justify-content: space-evenly; text-align: center;"
+                            style="padding: 10px; width:50%; flex-direction: column; display: flex; justify-content: space-evenly; text-align: center;"
                             class="payment-info">
                             <p>Отлично, Ваша заявка подтверждена! Для включения Вас в сборник необходимо произвести
                                 оплату.</p>

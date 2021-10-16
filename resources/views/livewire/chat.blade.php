@@ -70,10 +70,10 @@
                                 transform="translate(-113.14 0)"/></svg>
                         </span>
                     </span>
-                    <button id="send_message_{{$chat['id']}}" style="height: 75px;" type="submit">
+                    <button style="height: 75px;" type="submit">
                         <div style="position: relative;" class="send_mes_button">
                             <span id="send_env" class="tooltip" title="Отправить">
-                                <svg id="Capa_1" data-name="Capa 1"
+                                <svg id="send_message_{{$chat['id']}}" id="Capa_1" data-name="Capa 1"
                                      xmlns="http://www.w3.org/2000/svg"
                                      viewBox="0 0 512 512">
                                     <path
@@ -183,8 +183,12 @@
         </script>
 
         <script>
+
             document.addEventListener('livewire:load', function () {
-                $("#send_message_{{$chat['id']}}").click(function (event) {
+
+
+
+                $("#send_message_{{$chat['id']}}").on('click', function (event) {
                     event.preventDefault();
                     Livewire.emit('new_message')
                 })

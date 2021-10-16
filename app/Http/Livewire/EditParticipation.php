@@ -98,7 +98,7 @@ class EditParticipation extends Component
             array_push($errors_array, 'Произведения не добавлены!');
         }
 
-        if ($this->print_price > 0 & !$this->send_to_address || !$this->send_to_name || !$this->send_to_tel) {
+        if ($this->print_price > 0 && (!$this->send_to_address || !$this->send_to_name || !$this->send_to_tel)) {
             array_push($errors_array, 'Не вся информация о получаетеле заполнена!');
         }
 

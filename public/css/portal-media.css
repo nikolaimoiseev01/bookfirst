@@ -32,6 +32,7 @@
         line-height: 50px;
     }
 
+
     h2 {
         font-size: 55px;
     }
@@ -48,6 +49,7 @@
         font-size: 18px !important;
         display: flex;
         width: fit-content;
+        justify-content: center;
         margin: auto;
     }
 }
@@ -132,6 +134,7 @@
 
     .ex_buttons a {
         font-size: 20px !important;
+        margin: 15px;
     }
 }
 
@@ -199,6 +202,10 @@
         left: 0;
         width: 100%;
 
+    }
+
+    .reviews-block {
+        margin: 70px auto 40px;
     }
 }
 
@@ -285,7 +292,7 @@
         padding-right: 0;
         justify-content: center;
         text-align: center;
-        margin-top: 70px;
+        margin-top: 40px;
         margin-bottom: 120px;
     }
 
@@ -575,6 +582,14 @@
     .participation-price-plus {
         margin: 0 20px;
     }
+
+}
+
+@media screen and (max-width: 619px) {
+
+    .project-wrap {
+        height: 320px !important;
+    }
 }
 
 @media screen and (max-width: 600px) {
@@ -592,6 +607,10 @@
 
     .col-info-block .container #own_prev {
         left: -15px !important;
+    }
+
+    .project-wrap {
+        height: 340px !important;
     }
 
 }
@@ -618,6 +637,13 @@
     }
 }
 
+@media screen and (max-width: 520px) {
+    .project-wrap {
+        height: 400px !important;
+    }
+}
+
+
 @media screen and (max-width: 500px) {
     .call-buttons {
         flex-direction: column;
@@ -638,7 +664,7 @@
 
     .ex_buttons a {
         margin: auto;
-        margin-left: 10px;
+        margin-left: 15px;
     }
 
     .prices-seperate .price-number {
@@ -668,12 +694,17 @@
         width: 100%;
     }
 }
-
+@media screen and (max-width: 425px) {
+    .project-wrap {
+        height: 440px !important;
+    }
+}
 
 @media screen and (max-width: 415px) {
     .history-number {
         font-size: 38px;
     }
+
 
     .number-desc {
         font-size: 20px;
@@ -690,6 +721,10 @@
 
     .buttons-wrap .button {
         margin: 10px 0 0 0;
+        width: 100%;
+        text-align: center;
+        align-items: center;
+        justify-content: center;
     }
 
     .account {
@@ -714,6 +749,17 @@
     }
 }
 
+@media screen and (max-width: 394px) {
+    .project-wrap {
+        height: 470px !important;
+    }
+}
+
+@media screen and (max-width: 374px) {
+    .project-wrap {
+        height: 500px !important;
+    }
+}
 
 @media screen and (max-width: 380px) {
     .slick-slide {
@@ -743,6 +789,12 @@
     }
 }
 
+@media screen and (max-width: 330px) {
+    .project-wrap {
+        height: 600px !important;
+    }
+}
+
 @media screen and (max-width: 310px) {
     .slick-slide {
         margin: 29px !important;
@@ -758,5 +810,11 @@
 
     .prices-seperate {
         flex-direction: column;
+    }
+}
+
+@media screen and (max-width: 295px) {
+    .project-wrap {
+        height: 650px !important;
     }
 }

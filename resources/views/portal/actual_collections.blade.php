@@ -107,6 +107,7 @@
         </div>
 
         <div style="margin-top: 30px; justify-content: center;" class="my-collections">
+            {{App::setLocale('ru')}}
             @foreach($collections as $collection)
 
                 <div id="collection_{{$collection['id']}}" style="margin-bottom: 50px; margin-top: -85px; padding-top: 85px;">
@@ -115,7 +116,7 @@
                         <div class="label-wrap">
                             <div class="label">
                                 <div>Заявки до:</div>
-                                <div>{{$collection['col_date1']}}</div>
+                                <div>{{ Date::parse($collection['col_date1'])->format('j F') }}</div>
                             </div>
                         </div>
                         <div style="width:550px; display: flex; align-items: center; justify-content: center;"

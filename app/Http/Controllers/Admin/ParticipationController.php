@@ -48,7 +48,7 @@ class ParticipationController extends Controller
         $collection_id = Participation::where('id', $request->pat_id)->value('collection_id');
 
         $user->notify(new EmailNotification(
-                'Участие в сборинке',
+                'Участие в сборнике',
             $user['name'],
             "Спешим сообщить, что статус вашего участия в сборнике '" . collection::where('id',$collection_id)->value('title') .
             "' был изменен! На данный момент ваш статус: '" . Pat_status::where('id', $request->pat_status_id)->value('pat_status_title') . "'. " .
@@ -58,7 +58,7 @@ class ParticipationController extends Controller
         );
 
         \Illuminate\Support\Facades\Notification::send($user, new UserNotification(
-            'Смена статуса участия в сборинке!',
+            'Смена статуса участия в сборнике!',
                 route('homePortal') . "/myaccount/collections/" . $collection_id . "/participation/" . $request->pat_id)
         );
 
