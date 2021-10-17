@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Chat;
+use App\Models\chat_status;
 use App\Models\Collection;
 use App\Models\User;
 use App\Models\Work;
@@ -42,8 +43,10 @@ class UserController extends Controller
     public function chat(Request $request) {
 
         $chat = Chat::where('id',$request->chat_id)->first();
+        $chat_statuses = chat_status::orderBy('id')->get();
         return view('admin.chat',[
-            'chat' => $chat
+            'chat' => $chat,
+            'chat_statuses' => $chat_statuses,
         ]);
     }
 

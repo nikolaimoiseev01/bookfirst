@@ -4,10 +4,10 @@
 
             <div style="box-shadow:
                  @if($chat['chat_status_id'] === '1' || $chat['chat_status_id'] === '4')
-                 0 0 10px 1px rgba(217, 186, 19, 0.25);
+                0 0 6px 4px rgb(217 186 19 / 20%)
                  @elseif($chat['chat_status_id'] === '2')
-                 0 0 10px 1px rgba(54, 193, 76, 0.25);
-            @endif padding:15px;position:relative" class="container-hover container">
+                0 0 6px 4px rgb(54 193 76 / 25%)
+            @endif; padding:15px;position:relative" class="container-hover container">
                 <div class="el-desc">
                     <span>{{Str::limit($chat['title'], 30)}}</span>
                     <p>Статус: {{$chat->chat_status['status']}}</p>

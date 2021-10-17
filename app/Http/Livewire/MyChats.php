@@ -15,13 +15,16 @@ class MyChats extends Component
     public function render()
     {
         if ($this->chat_group === 1)
-        {$chats =         $chats_check = Chat::where('chat_status_id', '<>', 3)
+        {
+            $ids = [ 4, 1, 2, 3, 9];
+            $chats = $chats_check = Chat::where('chat_status_id', '<>', 3)
             ->where(function($q) {
                 $q->where('user_to', Auth::user()->id)
                     ->orWhere('user_created', Auth::user()->id);
             })
             ->where('collection_id', null)
             ->where('own_book_id', null)
+            ->orderByRaw('FIELD (chat_status_id, ' . implode(', ', $ids) . ')')
             ->get();}
         else {$chats = Chat::where('chat_status_id', 3)
             ->where(function($q) {

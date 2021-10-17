@@ -17,6 +17,7 @@
     </style>
     {{session('show_modal')}}
     <form
+        id="chat"
         wire:submit.prevent="storeChat(Object.fromEntries(new FormData($event.target)))"
         enctype="multipart/form-data">
         <div class="chat-create-wrap">
@@ -24,7 +25,9 @@
             <p class="mb-0">Тема: </p>
             <input wire:model="chat_title" value="123" class="form-control" type="text">
             <textarea wire:model="text" id="text" type="text" placeholder="Опишите Ваш вопрос" name="text" class="form-control" id="text"></textarea>
-            <button type="submit" class="button btn btn-block bg-gradient-primary">Создать вопрос</button>
+            <button id="chat_form"  class="button btn btn-block bg-gradient-primary" >
+                <span class="button__text">Создать вопрос</span>
+            </button>
         </div>
     </form>
 

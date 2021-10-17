@@ -301,6 +301,33 @@
             }
         })
     });
+
+    $('.save_collection').on('click', function (e) {
+        e.preventDefault();
+        var form = $(this).parents('form');
+
+        Swal.fire({
+            title: "Все правильно заполнили?",
+            text: "Сохраняем сборник?",
+            showDenyButton: true,
+            showCancelButton: false,
+            confirmButtonText: `Все верно`,
+            denyButtonText: `Отменить`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                $('.book-preloader-wrap').removeClass('preloaded_loaded');
+                $('.book-preloader-wrap').css('opacity', '0');
+                $('.book-preloader-wrap').css('background', '#fdfeffcc');
+                $('.book-preloader-wrap span').html("Обновляем сборник...");
+                $('.book-preloader-wrap span').show(100);
+                window.setTimeout(function () {
+                    $('.book-preloader-wrap').css('opacity', '1');
+                }, 10);
+                form.submit();
+            }
+        })
+    });
 </script>
 {{-------- // МЕНЯТЬ СТАТУС КНОПКА ----------}}
 

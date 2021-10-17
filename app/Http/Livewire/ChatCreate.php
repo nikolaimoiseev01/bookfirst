@@ -5,7 +5,10 @@ namespace App\Http\Livewire;
 use App\Models\Chat;
 use App\Models\Message;
 use App\Models\Participation;
+use App\Models\User;
+use App\Notifications\EmailNotification;
 use App\Notifications\new_chat;
+use App\Notifications\UserNotification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Validator;
@@ -18,6 +21,8 @@ class ChatCreate extends Component
     Public $collection_id;
     Public $own_book_id;
     Public $user_to;
+
+
 
     public function render()
     {
@@ -35,6 +40,12 @@ class ChatCreate extends Component
 
     public function storeChat($formData)
     {
+
+        $this->dispatchBrowserEvent('loader', [
+            'id' => 'chat_form',
+        ]);
+
+
         $validator = Validator::make($formData, [
             'text' => 'required',
         ]);
@@ -80,6 +91,26 @@ class ChatCreate extends Component
         if ($this->collection_id > 0) {
             Participation::where('collection_id', $this->collection_id)->where('user_id', Auth::user()->id)
                 ->update(array('chat_id' => $new_chat->id));
+        }
+
+        if (Auth::user()->hasRole('admin')) {
+                $user = User::where('id', $this->user_to)->first();
+                $url_back = route('chat', $new_chat->id);
+                // Посылаем Email уведомление пользователю
+                $user->notify(new EmailNotification(
+                    'Открыто новое обсуждение!',
+                    $user['name'],
+                    "С Вами был открыт новый чат на тему '" . $new_chat->title . "'! Для того, чтобы ответить, пожалуйста, перейдите на страницу чата:",
+                    "Перейти в чат",
+                    $url_back));
+                Notification::send($user, new UserNotification('У Вас новое сообщение!', '/myaccount/chats/' . $new_chat->id));
+
+            session()->flash('show_modal', 'yes');
+            session()->flash('alert_type', 'success');
+            session()->flash('alert_title', 'Вопрос успешно создан!');
+            session()->flash('alert_text', 'Мы даже послали Email об этом автору!)');
+            return redirect()->back();
+
         }
 
 
