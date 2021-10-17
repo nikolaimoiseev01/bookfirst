@@ -416,6 +416,12 @@
         alert('#' + $(this).attr('id').split('_')[1]);
         $('#' + $(this).attr('id').split('_')[1]).submit();
     });
+
+    $('.preloader_button').on('click', function () {
+        $(this).attr("disabled", true);
+        this.classList.toggle('button--loading')
+        alert('#' + $(this).attr('id').split('_')[1]);
+    });
 </script>
 
 <script>

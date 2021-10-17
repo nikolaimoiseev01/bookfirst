@@ -46,6 +46,8 @@ class ChatCreate extends Component
         ]);
 
 
+
+
         $validator = Validator::make($formData, [
             'text' => 'required',
         ]);
@@ -105,11 +107,11 @@ class ChatCreate extends Component
                     $url_back));
                 Notification::send($user, new UserNotification('У Вас новое сообщение!', '/myaccount/chats/' . $new_chat->id));
 
-            session()->flash('show_modal', 'yes');
+            session()->flash('success', 'change_printorder');
             session()->flash('alert_type', 'success');
-            session()->flash('alert_title', 'Вопрос успешно создан!');
+            session()->flash('alert_title', 'Обсужение успешно создано!');
             session()->flash('alert_text', 'Мы даже послали Email об этом автору!)');
-            return redirect()->back();
+            return redirect(request()->header('Referer'));
 
         }
 
