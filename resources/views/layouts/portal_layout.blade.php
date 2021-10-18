@@ -64,6 +64,9 @@
 <!-- preloader -->
 
 <div class="navbar">
+    <div class="header-logo-wrap">
+        <h2>Первая Книга</h2>
+    </div>
     <div class="menu">
         <a class="menu-link" id="home" href="/">Главная</a>
         <a class="menu-link" href="{{route('old_collections')}}">Сборники</a>
