@@ -143,6 +143,7 @@
     .ex_buttons a {
         font-size: 18px !important;
     }
+
 }
 
 @media screen and (max-width: 1180px) {
@@ -700,7 +701,7 @@
     }
 }
 
-@media screen and (max-width: 415px) {
+@media screen and (max-width: 600px) {
     .history-number {
         font-size: 38px;
     }

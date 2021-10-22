@@ -222,8 +222,10 @@
                 <div wire:ignore class="participation-outputs">
                     <h2>Стоимость</h2>
                     <div class="participation-price">
-                        <h1 id="participation_price">0</h1>
-                        <h1> руб.</h1>
+                        <div style="display: flex;">
+                            <h1 id="participation_price">0</h1>
+                            <h1 style="margin-left:10px;">руб.</h1>
+                        </div>
                         <div style="position: relative;" class="participation-price-desc"><p>За участие (
                             <p id="pages">0</p>
                             <p>стр.)</p>
@@ -242,21 +244,27 @@
                         </div>
                     </div>
                     <div style="display: none" id="print-price" class="participation-price">
-                        <h1 id="print_price">300</h1>
-                        <h1> руб.</h1>
+                        <div style="display: flex;">
+                            <h1 id="print_price">300</h1>
+                            <h1 style="margin-left:10px;">руб.</h1>
+                        </div>
                         <div class="participation-price-desc"><p>За печать (
                             <p id="print_needed">1</p>
                             <p>экз.)</p></div>
                     </div>
                     <div style="display: none" id="check-price" class="participation-price">
-                        <h1 id="check_needed">0</h1>
-                        <h1> руб.</h1>
+                        <div style="display: flex;">
+                            <h1 id="check_needed">0</h1>
+                            <h1 style="margin-left:10px;">руб.</h1>
+                        </div>
                         <div class="participation-price-desc"><p>За проверку</p></div>
                     </div>
                     <div class="participation-price">
-                        <h1 id="total_price">0</h1>
-                        <h1> руб.</h1>
-                        <p>Итого</p>
+                        <div style="display: flex;">
+                            <h1 id="total_price">0</h1>
+                            <h1 style="margin-left:10px;">руб.</h1>
+                        </div>
+                        <p style="margin-top: 5px;">Итого</p>
                     </div>
 
                     <a wire:ignore id="i_have_promo_link" class="link">У меня есть промокод</a>
@@ -298,7 +306,7 @@
         </div>
 
     </div>
-    <button style="margin-right:20px;" type="submit" id="save_form" class="preloader_button button" >
+    <button style="margin-right:20px;" type="submit" id="save_form" class="preloader_button button">
         <span class="button__text">Отправить заявку</span>
     </button>
 
@@ -447,7 +455,7 @@
                 }
                 ;
 
-                promo = (100 - promo_discount) / 100 ;
+                promo = (100 - promo_discount) / 100;
 
                 participation_price = participation_price * promo;
 

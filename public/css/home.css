@@ -286,7 +286,7 @@
     width: 195px;
     text-align: center;
     padding: 3px 20px 3px 20px;
-    margin-top:20px;
+    margin: 20px auto 0 auto;
 }
 
 .label-wrap {
