@@ -66,11 +66,15 @@
                     </div>
                     <div style="padding-bottom:20px;" class="input">
                         <p>Пароль</p></br>
-                        <input id="password"
-                               type="password"
-                               name="password"
-                               placeholder="Пароль"
-                        >
+                        <div style="position:relative; align-items: center; display:flex;">
+                            <input id="password"
+                                                          type="password"
+                                                          name="password"
+                                                          placeholder="Пароль"
+                            >
+                            <i id="togglePassword" style="position: absolute; right: 15px; margin-left: 10px;" class="far fa-eye-slash"></i>
+                        </div>
+
                     </div>
 
                     <div class="check-block">
@@ -92,6 +96,22 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('page-js')
+    <script>
+        const togglePassword = document.querySelector('#togglePassword');
+        const password = document.querySelector('#password');
+
+        togglePassword.addEventListener('click', function (e) {
+            // toggle the type attribute
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            // toggle the eye / eye slash icon
+            this.classList.toggle('fa-eye-slash');
+            this.classList.toggle('fa-eye');
+        });
+    </script>
 @endsection
 
 

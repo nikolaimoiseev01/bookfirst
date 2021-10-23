@@ -308,6 +308,10 @@ h2 {
 
 }
 
+.fa-eye-slash:hover ,.fa-eye:hover {
+    cursor: pointer;
+}
+
 .page-title {
     font-size: 55px;
     text-align: center;
