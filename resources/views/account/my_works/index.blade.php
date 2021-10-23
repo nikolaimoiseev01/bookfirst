@@ -50,12 +50,12 @@
         <p>По запросу <i>"{{$work_input_search}}"</i> произведений не найдено</p>
     @endif
     <div class="element-wrap">
-
+        {{App::setLocale('ru')}}
         @foreach($works as $work)
             <div class="container">
                 <div class="el-desc">
                     <span>{{Str::limit($work['title'], 30)}}</span>
-                    <p>Опубликовано: {{\Illuminate\Support\Str::substr($work['created_at'],0,10)}}</p>
+                    <p>Опубликовано: {{ Date::parse($work['created_at'])->format('j F') }}</p>
                 </div>
 
                 <div class="el-button-wrap">

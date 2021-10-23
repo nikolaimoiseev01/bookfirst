@@ -39,6 +39,13 @@
                             Тираж сборника:&nbsp;<span>~ 100 экземпляров</span>
                         </div>
                         <div class="row">
+                            Формат:&nbsp;<span>
+                                @if(strpos($collection['title'], 'Дух') !== false)Стихи@endif
+                                    @if(strpos($collection['title'], 'Мысли') !== false)Проза@endif
+                                любой тематики
+                            </span>
+                        </div>
+                        <div class="row">
                             Обложка:&nbsp;<span>Мягкая, цветная</span>
                         </div>
                         <div class="row">
