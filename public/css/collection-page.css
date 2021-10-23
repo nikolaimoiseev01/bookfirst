@@ -315,6 +315,41 @@
     cursor: pointer;
 }
 
+#contest {
+    padding:10px 30px;
+}
+
+.contest-wrap {
+    display: flex;
+    margin-top: 20px;
+}
+
+
+.contest-wrap div:first-child{
+    width:50%;
+}
+
+.contest-wrap div:last-child{
+    width:50%;
+    margin-left: 30px;
+}
+
+@media screen and (max-width: 950px) {
+    .contest-wrap {
+        flex-direction: column;
+    }
+
+    .contest-wrap div{
+        width:100% !important;
+    }
+
+    .contest-wrap div:last-child{
+        margin-left: 0 !important;
+        margin-top: 20px;
+    }
+}
+
+
 
 .dates-wrap {
     display: flex;

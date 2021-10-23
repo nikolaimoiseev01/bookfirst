@@ -685,12 +685,15 @@
     }
 
 }
-@media screen and (max-width: 460px) {
+@media screen and (max-width: 530px) {
     .col-info-block .container .nav {
         display: flex;
         flex-direction: column;
     }
 
+}
+
+@media screen and (max-width: 460px) {
     .woman {
         width: 100%;
     }

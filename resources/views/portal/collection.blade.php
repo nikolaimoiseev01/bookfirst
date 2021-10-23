@@ -41,7 +41,7 @@
                         <div class="row">
                             Формат:&nbsp;<span>
                                 @if(strpos($collection['title'], 'Дух') !== false)Стихи@endif
-                                    @if(strpos($collection['title'], 'Мысли') !== false)Проза@endif
+                                @if(strpos($collection['title'], 'Мысли') !== false)Проза@endif
                                 любой тематики
                             </span>
                         </div>
@@ -63,10 +63,12 @@
         <div class="container">
             <div class="nav">
                 <a href="#process" class="current">Порядоя участия</a>
-                <a href="#calculator">Калькулятор</a></li>
+                <a href="#calculator">Калькулятор</a>
                 <a href="#dates">Даты издания</a>
+                <a href="#contest" style="color: #f79e9e;">Бесплатное участие!</a>
             </div>
             <div style="transition: .3s ease-in-out" class="list-wrap">
+
                 <div id="process" class="process">
                     <div class="process-slider">
                         <div class="step">
@@ -117,6 +119,31 @@
                                 использовать любую другую транспортную компанию.</p>
                         </div>
                     </div>
+                </div>
+                <div id="contest" class="hide">
+                    <h2 style="font-size: 30px; text-align: center;">Объявлен <span style="color: #47af98;"> <b>КОНКУРС</b></span> среди участников сборника!</h2>
+                    <p>Участие в данном сборнике может быть бесплатно именно для Вас! <br>
+                    <div class="contest-wrap">
+                        <div>
+
+                            <h2 style="font-size: 25px;">Правила конкурса:</h2>
+                            <p> Каждый включенный в сборник автор автоматически становится участником конкурса. (<a class="triger_process link">порядок участия</a>).
+                                В период предварительной проверки авторам предоставляется возможность проголосовать за понравившиеся произведения.
+                                Опираясь на голоса авторов, наша команда подводит итоги конкурса и объявляет победителей в <a href="https://vk.com/yourfirstbook" class="link">нашей группе ВК</a>
+                            </p>
+                        </div>
+                        <div>
+                            <h2 style="font-size: 25px;">Призы:</h2>
+
+                            <p><b style="color: #47af98">1 место:</b> Бесплатное участие, печатный экземпляр сборника и пересылка</p>
+
+                            <p><b style="color: #47af98">2 место:</b> Половина стоимости участия и 50% промокод для участия в следующем сборнике</p>
+
+                            <p><b style="color: #47af98">3 место:</b> Бесплатный печатный экземпляр и пересылка</p>
+                            </p>
+                        </div>
+                    </div>
+                    <p style="margin: 30px 0 20px 0; color: #b1b2ad;"><i>*Подробная информация о правилах полечения будет предоставлена призеру лично.</i></p>
                 </div>
                 <div id="calculator" class="hide">
 
@@ -275,6 +302,10 @@
 
         $('.triger_dates').on('click', function () {
             $('a[href$="#dates"]').trigger('click');
+        })
+
+        $('.triger_process').on('click', function () {
+            $('a[href$="#process"]').trigger('click');
         })
     </script>
 
