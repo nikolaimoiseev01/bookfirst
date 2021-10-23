@@ -15,6 +15,7 @@
                             </span>
                 </div>
             @endif
+                {{App::setLocale('ru')}}
             @foreach($messages as $message)
                 <div class="message">
                     <p style="font-size: 18px;">@if($message['user_from'] === 2)
@@ -48,7 +49,7 @@
                         @endif
 
                     </div>
-                    <p style="font-size: 17px; float:right;">{{\Illuminate\Support\Str::substr($message['created_at'],0,16)}}</p>
+                    <p style="font-size: 17px; float:right;">{{ Date::parse($message['created_at'])->addHours(3)->format('j F H:i') }} </p>
                 </div>
             @endforeach
         </div>

@@ -72,7 +72,7 @@
 
         @else
             <div style="max-width: 2000px;" class="no-books-yet">
-                <h1> Вы еще не покупали электронные версии наших книг.</h1>
+                <h1> Вы еще не покупали электронные версии наших книг</h1>
                 <a href="{{route('old_collections')}}" class="button">Сборники для покупки</a>
                 <a href="{{route('own_books_portal')}}" class="button">Книги наших авторов</a>
             </div>

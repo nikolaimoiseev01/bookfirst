@@ -251,8 +251,9 @@
 
         <div class="footer-questions">
             <div style="margin-bottom: 10px;">Остались вопросы?<br>
-                Задайте их прямо сейчас<br></div>
-            <a class="button">Вопрос-ответ</a>
+                Задайте их прямо сейчас<br>
+                main@pervajakniga.ru
+            </div>
         </div>
     </div>
 </div>
