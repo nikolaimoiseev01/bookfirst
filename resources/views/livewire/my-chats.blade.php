@@ -1,5 +1,6 @@
 <div>
     <div class="element-wrap">
+        {{App::setLocale('ru')}}
         @foreach($chats as $chat)
 
             <div style="box-shadow:
@@ -11,7 +12,7 @@
                 <div class="el-desc">
                     <span>{{Str::limit($chat['title'], 30)}}</span>
                     <p>Статус: {{$chat->chat_status['status']}}</p>
-                    <p>Создан: {{\Illuminate\Support\Str::substr($chat['created_at'],0,10)}}</p>
+                    <p>Создан: {{ Date::parse($chat['created_at'])->format('j F Y') }}</p>
                 </div>
                 <a style="position:absolute; width:100%; top: 0; left: 0; height: 100%; text-decoration: none;"
                    class="fast-load" href="{{route('chat',$chat['id'])}}"></a>

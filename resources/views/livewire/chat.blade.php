@@ -91,7 +91,7 @@
             <div class="chat-closed">
                 <p style="margin-right:20px;">Этот чат закрыт</p>
                 <a class="button" wire:click.prevent="reopenChat({{$chat['id']}})">
-                    Открыть чат заного
+                    Открыть чат заново
                 </a>
             </div>
         @endif
