@@ -8,6 +8,7 @@ use App\Models\Participation;
 use App\Models\preview_comment;
 use App\Notifications\TelegramNotification;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Validator;
