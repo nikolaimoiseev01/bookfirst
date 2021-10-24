@@ -131,7 +131,7 @@ class PreviewComment extends Component
         $prev_comments_cnt = preview_comment::where('own_book_id', $this->own_book_id)->where('own_book_comment_type', 'inside')->where('status_done', 0)->count();
 
         if ($status_id <> 4 && $prev_comments_cnt === 0) {
-            array_push($errors_array, 'Сначала добавьте исправления (необходимо ввести страницу и текст в форму, затем нажать на "самолетик" справа)');
+            array_push($errors_array, 'Сначала добавьте исправления (необходимо ввести описание в форму, затем нажать на "самолетик" справа)');
         }
 
         if (!empty($errors_array)) {
@@ -186,7 +186,7 @@ class PreviewComment extends Component
             Notification::route('telegram', '-506622812')
                 ->notify(new TelegramNotification('✍🏼 Автор послал исправления ВБ! ✍🏼',
                     "Книга: " . own_book::where('id', $this->own_book_id)->value('title') .
-                    "\nДеадлайн на исправление: " . Carbon::now()->addDays(5)->toDate(),
+                    "\nДеадлайн на исправление: " . Carbon::now()->addDays(5)->toDateString(),
                     "Его страница издания",
                     route('own_books_page', $this->own_book_id)));
 
@@ -262,7 +262,7 @@ class PreviewComment extends Component
             Notification::route('telegram', '-506622812')
                 ->notify(new TelegramNotification('✍🏼 Автор послал исправления по обложке! ✍🏼',
                     "Книга: " . own_book::where('id', $this->own_book_id)->value('title') .
-                    "\nДеадлайн на исправление: " . Carbon::now()->addDays(5)->toDate(),
+                    "\nДеадлайн на исправление: " . Carbon::now()->addDays(5)->toDateString(),
                     "Его страница издания",
                     route('own_books_page', $this->own_book_id)));
 
