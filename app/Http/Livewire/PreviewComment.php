@@ -185,7 +185,8 @@ class PreviewComment extends Component
             // Посылаем Telegram уведомление нам
             Notification::route('telegram', '-506622812')
                 ->notify(new TelegramNotification('✍🏼 Автор послал исправления ВБ! ✍🏼',
-                    "Книга: " . own_book::where('id', $this->own_book_id)->value('title'),
+                    "Книга: " . own_book::where('id', $this->own_book_id)->value('title') .
+                    "\nДеадлайн на исправление: " . Carbon::now()->addDays(5)->toDate(),
                     "Его страница издания",
                     route('own_books_page', $this->own_book_id)));
 
@@ -260,7 +261,8 @@ class PreviewComment extends Component
             // Посылаем Telegram уведомление нам
             Notification::route('telegram', '-506622812')
                 ->notify(new TelegramNotification('✍🏼 Автор послал исправления по обложке! ✍🏼',
-                    "Книга: " . own_book::where('id', $this->own_book_id)->value('title'),
+                    "Книга: " . own_book::where('id', $this->own_book_id)->value('title') .
+                    "\nДеадлайн на исправление: " . Carbon::now()->addDays(5)->toDate(),
                     "Его страница издания",
                     route('own_books_page', $this->own_book_id)));
 
