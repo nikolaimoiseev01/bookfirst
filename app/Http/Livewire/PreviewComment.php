@@ -8,7 +8,6 @@ use App\Models\Participation;
 use App\Models\preview_comment;
 use App\Notifications\TelegramNotification;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Validator;
@@ -183,13 +182,11 @@ class PreviewComment extends Component
                 session()->flash('alert_text', $alert_text);
             }
 
-            App::setLocale('ru');
-
             // Посылаем Telegram уведомление нам
             Notification::route('telegram', '-506622812')
                 ->notify(new TelegramNotification('✍🏼 Автор послал исправления ВБ! ✍🏼',
                     "Книга: " . own_book::where('id', $this->own_book_id)->value('title') .
-                    "\nДеадлайн на исправление: " . Date::parse(Carbon::now()->addDays(5)->toDate())->format('j F Y'),
+                    "\nДеадлайн на исправление: " . Carbon::now()->addDays(5)->toDateString(),
                     "Его страница издания",
                     route('own_books_page', $this->own_book_id)));
 
@@ -267,7 +264,7 @@ class PreviewComment extends Component
             Notification::route('telegram', '-506622812')
                 ->notify(new TelegramNotification('✍🏼 Автор послал исправления по обложке! ✍🏼',
                     "Книга: " . own_book::where('id', $this->own_book_id)->value('title') .
-                    "\nДеадлайн на исправление: " . Date::parse(Carbon::now()->addDays(5)->toDate())->format('j F Y'),
+                    "\nДеадлайн на исправление: " . Carbon::now()->addDays(5)->toDateString(),
                     "Его страница издания",
                     route('own_books_page', $this->own_book_id)));
 
