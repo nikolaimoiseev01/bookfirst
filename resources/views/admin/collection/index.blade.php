@@ -41,6 +41,7 @@
             @endif
             <!-- Small boxes (Stat box) -->
             <div class="row" id="collections_id">
+                {{App::setLocale('ru')}}
                 @foreach($collections as $collection)
                     <div>
                         <!-- Widget: user widget style 2 -->
@@ -63,10 +64,10 @@
                                 @if (($collection->col_status_id <> 9))
                                     Ближайший деадлайн:<br>
                                     <span style="font-size: 20px;">
-                                    @if ($collection->col_date1 > date('Y-m-d')) {{$collection->col_date1}}
-                                        @elseif ($collection->col_date2 > date('Y-m-d')) {{$collection->col_date2}}
-                                        @elseif ($collection->col_date3 > date('Y-m-d')) {{$collection->col_date3}}
-                                        @elseif ($collection->col_date4 > date('Y-m-d')) {{$collection->col_date4}}
+                                    @if ($collection->col_date1 > date('Y-m-d')) {{ Date::parse($collection->col_date1)->format('j F Y') }}
+                                        @elseif ($collection->col_date2 > date('Y-m-d')) {{ Date::parse($collection->col_date2)->format('j F Y') }}
+                                        @elseif ($collection->col_date3 > date('Y-m-d')) {{ Date::parse($collection->col_date3)->format('j F Y') }}
+                                        @elseif ($collection->col_date4 > date('Y-m-d')) {{ Date::parse($collection->col_date4)->format('j F Y') }}
                                         @endif
                                         </span>
                                 @endif
