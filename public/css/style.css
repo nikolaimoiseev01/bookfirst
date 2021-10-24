@@ -855,6 +855,7 @@ form .check-block {
 .header-logo-wrap {
     float: left;
     display: flex;
+    z-index: -1;
     align-items: center;
     margin-left: 20px;
 }
@@ -999,7 +1000,6 @@ form .check-block {
     visibility: hidden;
     top: 0;
     left: -100%;
-
     width: 200px;
     margin: 0;
     padding: 50px 0 20px 0;
