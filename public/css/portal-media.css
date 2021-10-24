@@ -697,6 +697,11 @@
     .woman {
         width: 100%;
     }
+
+    .own-examples-block {
+        margin-top: 80px !important;
+        margin-bottom: 80px;
+    }
 }
 @media screen and (max-width: 425px) {
     .project-wrap {

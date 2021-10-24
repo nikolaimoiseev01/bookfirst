@@ -6,8 +6,10 @@ use App\Models\Message;
 use App\Models\own_book;
 use App\Models\Participation;
 use App\Models\preview_comment;
+use App\Notifications\TelegramNotification;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Validator;
 use Livewire\Component;
 
@@ -179,7 +181,17 @@ class PreviewComment extends Component
             } elseif ($status_id === 4) {
                 session()->flash('alert_text', $alert_text);
             }
+
+            // Посылаем Telegram уведомление нам
+            Notification::route('telegram', '-506622812')
+                ->notify(new TelegramNotification('✍🏼 Автор послал исправления ВБ! ✍🏼',
+                    "Книга: " . own_book::where('id', $this->own_book_id)->value('title'),
+                    "Его страница издания",
+                    route('own_books_page', $this->own_book_id)));
+
+
             return redirect()->to(url()->previous());
+
 
 
         }
@@ -244,6 +256,15 @@ class PreviewComment extends Component
             } elseif ($status_id === 4) {
                 session()->flash('alert_text', $alert_text);
             }
+
+            // Посылаем Telegram уведомление нам
+            Notification::route('telegram', '-506622812')
+                ->notify(new TelegramNotification('✍🏼 Автор послал исправления по обложке! ✍🏼',
+                    "Книга: " . own_book::where('id', $this->own_book_id)->value('title'),
+                    "Его страница издания",
+                    route('own_books_page', $this->own_book_id)));
+
+
             return redirect()->to(url()->previous());
 
 

@@ -753,7 +753,7 @@
                 labelMaxFileSize: 'Максимальный: {filesize}',
                 labelMaxTotalFileSizeExceeded: 'Сумма размеров превышена!',
                 labelMaxTotalFileSize: 'Максимум: {filesize}',
-                labelIdle: `<p class="input_file_text_1" style="line-height: 28px;">Загрузите один или несколько файлов <b>внутреннего блока.</b></p></br><p class="input_file_text_1" style="line-height: 28px;"> Можно перести файлы сюда или&nbsp;</p><a style="line-height: 28px;" class="link">Выбрать вручную</a></br><p class="input_file_text_1" style="font-size: 22px; line-height: 25px; color: #ff5b5b;"><i>В файлах 'docx' мы попробуем определить кол-во страниц автоматически. <br>В сллучае ошибки необходимо указать кол-во вручную.</i></p>`,
+                labelIdle: `<p class="input_file_text_1" style="line-height: 28px;">Загрузите один или несколько файлов <b>внутреннего блока.</b></p></br><p class="input_file_text_1" style="line-height: 28px;"> Можно перести файлы сюда или&nbsp;</p><a style="line-height: 28px;" class="link">Выбрать вручную</a></br><p class="input_file_text_1" style="font-size: 22px; line-height: 25px; color: #ff5b5b;"><i>В файлах 'docx' мы попробуем определить кол-во страниц автоматически. <br>В случае ошибки необходимо указать кол-во вручную.</i></p>`,
             });
 
             $('.filepond_cover').filepond({
