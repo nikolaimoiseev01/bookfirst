@@ -34,9 +34,9 @@ input[type=number]::-webkit-outer-spin-button {
     }
 
     table tr {
-        border-bottom: 3px solid #ddd;
         display: block;
-        margin-bottom: .625em;
+        margin: 20px 10px;
+        border: 1px #88b8ff  solid;
     }
 
     table td {

@@ -231,6 +231,10 @@
     .dates-wrap div:nth-child(2), .dates-wrap div:nth-child(4) {
         border: none;
     }
+
+    #typed_hero {
+        height: 95px !important;
+    }
 }
 
 @media screen and (max-width: 1000px) {
@@ -370,6 +374,9 @@
         margin: 0 40px;
     }
 
+    #typed_hero {
+        height: 55px !important;
+    }
 }
 
 @media screen and (max-width: 900px) {
@@ -614,6 +621,7 @@
         height: 340px !important;
     }
 
+
 }
 
 
@@ -623,6 +631,10 @@
         align-items: center;
         text-align: center;
         margin: 20px 5px !important;
+    }
+
+    #typed_hero {
+        height: 75px !important;
     }
 
     .my-collections .right-wrap {
@@ -707,6 +719,10 @@
     .project-wrap {
         height: 440px !important;
     }
+
+    #typed_hero {
+        height: 105px !important;
+    }
 }
 
 @media screen and (max-width: 600px) {
@@ -762,6 +778,8 @@
     .project-wrap {
         height: 470px !important;
     }
+
+
 }
 
 @media screen and (max-width: 374px) {

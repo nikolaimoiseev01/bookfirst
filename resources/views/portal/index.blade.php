@@ -24,7 +24,12 @@
                 <p id="hero_tablet_text" style="display: none;">Независимое Издательство</p>
                 <p id="hero_name_mobile_text" style="display: none;">"Первая Книга"</p>
                 <h1>Ваш шаг в мир литературы</h1>
-                <span><i>Что разум человека может постигнуть и во что он может поверить, того он способен достичь</i></span>
+                <i>
+                <div style="height: 70px;" class="typed_hero" id="typed_hero">
+                    <span class="cursor_blinking"></span>
+                </div>
+                </i>
+
                 <div class="call-buttons">
 
                     <div class="cta-container">
@@ -256,6 +261,98 @@
     <script src="/js/anime.min.js"></script>
     <script src="/js/books-example.js"></script>
     <script src="/plugins/slick/slick.min.js"></script>
+    <script>
+        // values to keep track of the number of letters typed, which quote to use. etc. Don't change these values.
+        var i = 0,
+            a = 0,
+            isBackspacing = false,
+            isParagraph = false;
+
+        // Typerwrite text content. Use a pipe to indicate the start of the second line "|".
+        var textArray = [
+            "Хорошо унаследовать библиотеку, а еще лучше собрать свою собственную.",
+            "Что разум человека может постигнуть и во что он может поверить, того он способен достичь.",
+            "Книги – это и самолет, и поезд, и дорога. Они и пункт назначения, и путешествие. Они – это дом."
+        ];
+
+        // Speed (in milliseconds) of typing.
+        var speedForward = 40, //Typing Speed
+            speedWait = 1000, // Wait between typing and backspacing
+            speedBetweenLines = 1000, //Wait between first and second lines
+            speedBackspace = 15; //Backspace Speed
+
+        //Run the loop
+        typeWriter("typed_hero", textArray);
+
+        function typeWriter(id, ar) {
+            var element = $("#" + id),
+                aString = ar[a],
+                eHeader = element.children("span"), //Header element
+                eParagraph = element.children("p"); //Subheader element
+
+            // Determine if animation should be typing or backspacing
+            if (!isBackspacing) {
+
+                // If full string hasn't yet been typed out, continue typing
+                if (i < aString.length) {
+
+                    // If character about to be typed is a pipe, switch to second line and continue.
+                    if (aString.charAt(i) == "|") {
+                        isParagraph = true;
+                        eHeader.removeClass("cursor");
+                        eParagraph.addClass("cursor");
+                        i++;
+                        setTimeout(function(){ typeWriter(id, ar); }, speedBetweenLines);
+
+                        // If character isn't a pipe, continue typing.
+                    } else {
+                        // Type header or subheader depending on whether pipe has been detected
+                        if (!isParagraph) {
+                            eHeader.text(eHeader.text() + aString.charAt(i));
+                        } else {
+                            eParagraph.text(eParagraph.text() + aString.charAt(i));
+                        }
+                        i++;
+                        setTimeout(function(){ typeWriter(id, ar); }, speedForward);
+                    }
+
+                    // If full string has been typed, switch to backspace mode.
+                } else if (i == aString.length) {
+
+                    isBackspacing = true;
+                    setTimeout(function(){ typeWriter(id, ar); }, speedWait);
+
+                }
+
+                // If backspacing is enabled
+            } else {
+
+                // If either the header or the paragraph still has text, continue backspacing
+                if (eHeader.text().length > 0 || eParagraph.text().length > 0) {
+
+                    // If paragraph still has text, continue erasing, otherwise switch to the header.
+                    if (eParagraph.text().length > 0) {
+                        eParagraph.text(eParagraph.text().substring(0, eParagraph.text().length - 1));
+                    } else if (eHeader.text().length > 0) {
+                        eParagraph.removeClass("cursor");
+                        eHeader.addClass("cursor");
+                        eHeader.text(eHeader.text().substring(0, eHeader.text().length - 1));
+                    }
+                    setTimeout(function(){ typeWriter(id, ar); }, speedBackspace);
+
+                    // If neither head or paragraph still has text, switch to next quote in array and start typing.
+                } else {
+
+                    isBackspacing = false;
+                    i = 0;
+                    isParagraph = false;
+                    a = (a + 1) % ar.length; //Moves to next position in array, always looping back to 0
+                    setTimeout(function(){ typeWriter(id, ar); }, 50);
+
+                }
+            }
+        }
+    </script>
     <script>
         $('.own-slider').slick({
             infinite: true,

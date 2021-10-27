@@ -393,8 +393,10 @@
         </div>
 
         <div class="footer-questions">
-            <div style="margin-bottom: 10px;">Остались вопросы?</div>
-            <a class="button">Вопрос-ответ</a>
+            <div style="margin-bottom: 10px;">Остались вопросы?<br>
+                Задайте их прямо сейчас<br>
+                main@pervajakniga.ru
+            </div>
         </div>
     </div>
 </div>

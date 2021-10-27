@@ -5,7 +5,7 @@
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
-                    <h1 class="m-0">Наши пользователи</h1>
+                    <h1 class="m-0">Наши пользователи ({{count($users)}})</h1>
             </div><!-- /.row -->
 
         </div><!-- /.container-fluid -->
@@ -44,6 +44,9 @@
                                 Email
                             </th>
                             <th scope="col" style="text-align: center;">
+                                Время регистрации
+                            </th>
+                            <th scope="col" style="text-align: center;">
                                 Работ загружено
                             </th>
 
@@ -51,6 +54,7 @@
                         </tr>
                         </thead>
                         <tbody>
+                        {{App::setLocale('ru')}}
                         @foreach($users as $user)
 
                             <tr class="row_hover" onclick="document.location = '{{route('user_page', $user['id'])}}';">
@@ -65,6 +69,10 @@
                                 </td>
                                 <td data-label="Email" style="text-align: center;">
                                     {{$user['email']}}
+                                </td>
+
+                                <td data-label="Дата/время" style="text-align: center;">
+                                    {{ Date::parse($user['created_at'])->addHours(3)->format('j F H:i') }}
                                 </td>
 
                                 <td data-label="Работ загружено" style="text-align: center;">

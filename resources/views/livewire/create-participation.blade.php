@@ -306,9 +306,13 @@
         </div>
 
     </div>
-    <button style="margin-right:20px;" type="submit" id="save_form" class="preloader_button button">
-        <span class="button__text">Отправить заявку</span>
-    </button>
+    <div style="width:100%; text-align: end">
+        <button style="float: left; margin-right:20px;" type="submit" id="save_form" class="preloader_button button">
+            <span class="button__text">Отправить заявку</span>
+        </button>
+        <a href="{{route('chat_create','Проблема в заявке сборника')}}" style="font-size: 20px;" class="link"><i>Нужна помощь</i></a>
+    </div>
+
 
 </form>
 
