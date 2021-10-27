@@ -277,9 +277,9 @@
 
         // Speed (in milliseconds) of typing.
         var speedForward = 40, //Typing Speed
-            speedWait = 1000, // Wait between typing and backspacing
+            speedWait = 4000, // Wait between typing and backspacing
             speedBetweenLines = 1000, //Wait between first and second lines
-            speedBackspace = 15; //Backspace Speed
+            speedBackspace = 20; //Backspace Speed
 
         //Run the loop
         typeWriter("typed_hero", textArray);

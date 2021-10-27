@@ -393,10 +393,8 @@
         </div>
 
         <div class="footer-questions">
-            <div style="margin-bottom: 10px;">Остались вопросы?<br>
-                Задайте их прямо сейчас<br>
-                main@pervajakniga.ru
-            </div>
+            <div style="margin-bottom: 10px;">Остались вопросы?</div>
+            <a href="{{route('chat_create','Вопрос по работе с платформой')}}" class="log_check button">Задать</a>
         </div>
     </div>
 </div>
