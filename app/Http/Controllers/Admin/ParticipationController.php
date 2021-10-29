@@ -46,15 +46,16 @@ class ParticipationController extends Controller
         ));
         $user = User::where('id', $request->user_id)->first();
         $collection_id = Participation::where('id', $request->pat_id)->value('collection_id');
+        $participation = Participation::where('id', $request->pat_id)->first();
 
         $user->notify(new EmailNotification(
-                'Участие в сборнике',
+                'Требуется оплата участия',
             $user['name'],
-            "Спешим сообщить, что статус вашего участия в сборнике '" . collection::where('id',$collection_id)->value('title') .
-            "' был изменен! На данный момент ваш статус: '" . Pat_status::where('id', $request->pat_status_id)->value('pat_status_title') . "'. " .
-                "Вся подробная информация об издании сборника и вашем процессе указана на странице участия:",
-            "Ваша страница участия",
-                route('homePortal') . "/myaccount/collections/" . $collection_id . "/participation/" . $request->pat_id)
+            "Спешим сообщить, что Ваши произведения как нельзя лучше подходят для сборника '" . collection::where('id',$collection_id)->value('title') . '!' .
+            "После подтверждения оплаты (" . $participation['total_price'] . " рублей с учетом скидки) Вы будете включены в список авторов сборника и будете получать уведомления о всех этапах его публикации." .
+            "Оплата происходит в автоматическом режиме. Чтобы перейти к оплате, необходимо нажать кнопку 'оплатить' в блоке 'Оплата участия' на странице Вашего участия:",
+            "Перейти к оплате",
+                route('homePortal') . "/myaccount/collections/" . $collection_id . "/participation/" . $request->pat_id . '#payment_block')
         );
 
         \Illuminate\Support\Facades\Notification::send($user, new UserNotification(

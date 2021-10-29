@@ -164,7 +164,8 @@
              @else
              {{$part_all_good}}
              @endif solid;
-                 ">
+                 "
+             id="payment_block">
             <div style="background:
             @if ($participation['pat_status_id'] === 1)
             {{$part_not_available}}
@@ -285,7 +286,7 @@
                                        id="pat_id">
 
                                 <button id="btn-submit" type="submit" style="height: fit-content; max-width:250px;"
-                                        class="preloader_button pay-button button">
+                                        class="pay-button button">
                                     Оплатить {{$participation['total_price']}} руб.
                                 </button>
                             </form>
