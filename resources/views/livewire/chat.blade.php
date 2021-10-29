@@ -15,7 +15,7 @@
                             </span>
                 </div>
             @endif
-                {{App::setLocale('ru')}}
+            {{App::setLocale('ru')}}
             @foreach($messages as $message)
                 <div class="message">
                     <p style="font-size: 18px;">@if($message['user_from'] === 2)
@@ -55,15 +55,16 @@
         </div>
 
         @if($chat['chat_status_id'] <> 3)
-            <div class="chat_files" wire:ignore>
-                <input wire:ignore accept multiple name="chat_files" class="chat_filepond" type="file"/>
-            </div>
-            <div class="input-block">
+            <div style="z-index: 10">
+                <div class="chat_files" wire:ignore>
+                    <input wire:ignore accept multiple name="chat_files" class="chat_filepond" type="file"/>
+                </div>
+                <div class="input-block">
                 <textarea class="textarea_chat"
                           wire:model="text"
-                          style="border-radius: 10px 0 0 10px; border-right: none;" name="chat_text" required
+                          style="z-index: 10; border-radius: 10px 0 0 10px; border-right: none;" name="chat_text" required
                           type="text"></textarea>
-                <div class="send-wrap">
+                    <div class="send-wrap">
                     <span style="display: grid; position: absolute; right: 28px;">
                         <span class="tooltip" title="Прикрепить файл">
                         <svg onclick="trigger_filepond_function()" class="attach_icon" viewBox="0 0 268.12 494.4"><path
@@ -71,8 +72,8 @@
                                 transform="translate(-113.14 0)"/></svg>
                         </span>
                     </span>
-                    <button style="height: 75px;" type="submit">
-                        <div style="position: relative;" class="send_mes_button">
+                        <button style="height: 75px;" type="submit">
+                            <div style="position: relative;" class="send_mes_button">
                             <span id="send_env" class="tooltip" title="Отправить">
                                 <svg id="send_message_{{$chat['id']}}" id="Capa_1" data-name="Capa 1"
                                      xmlns="http://www.w3.org/2000/svg"
@@ -82,9 +83,10 @@
                                         transform="translate(0 0)"/>
                                 </svg>
                             </span>
-                            <span style="display: none;" id="send_preloader" class="button--loading"></span>
-                        </div>
-                    </button>
+                                <span style="display: none;" id="send_preloader" class="button--loading"></span>
+                            </div>
+                        </button>
+                    </div>
                 </div>
             </div>
         @else
@@ -103,7 +105,7 @@
             $('.send_mes_button').on('click', function () {
                 $('#send_preloader').show();
                 $('#send_env').css('opacity', 0);
-                $('.send-wrap button').prop("disabled",true);
+                $('.send-wrap button').prop("disabled", true);
             })
         </script>
         <script>
@@ -186,7 +188,6 @@
         <script>
 
             document.addEventListener('livewire:load', function () {
-
 
 
                 $("#send_message_{{$chat['id']}}").on('click', function (event) {
