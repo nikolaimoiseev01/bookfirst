@@ -81,12 +81,24 @@
                                 <p>{!! nl2br($work->work['text']) !!}</p>
                             @endforeach
                         </div>
+                        <style>
+                            @media screen and (max-width: 650px) {
+                                .info_tables {
+                                    flex-direction: column !important;
+                                }
 
+                                .info_tables .col-6{
+                                    max-width: 100% !important;
+                                    flex: inherit !important;
+                                    max-width: 100% !important;
+                                }
+                            }
+                        </style>
                         <div class="tab-pane" id="info">
                             @if($participation['pat_status_id'] > 1)
                                 <h4>Заявка была принята: {{$participation['approved_at']}}</h4>
                             @endif
-                            <div class="row align-items-start">
+                            <div class="info_tables row align-items-start">
                                 <div class="col-6">
                                     <h4>Участие</h4>
                                     <table class="table table-bordered">

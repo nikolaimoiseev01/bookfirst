@@ -192,22 +192,26 @@
                                         <table id="participants_table" class="table table-bordered table-hover">
                                             <thead>
                                             <tr>
-                                                <th>Статус</th>
-                                                <th>Автор</th>
-                                                <th>Псевдоним</th>
-                                                <th>Email</th>
-                                                <th>Страниц</th>
-                                                <th>Экземпляров</th>
-                                                <th>Промокод</th>
+                                                <th scope="col">Статус</th>
+                                                <th scope="col">Автор</th>
+                                                <th scope="col">Псевдоним</th>
+                                                <th scope="col">Email</th>
+                                                <th scope="col">Страниц</th>
+                                                <th scope="col">Экземпляров</th>
+                                                <th scope="col">Промокод</th>
+                                                <th scope="col">Общая сумма</th>
+                                                <th scope="col">Создан</th>
+                                                <th scope="col">Обновлен</th>
                                             </tr>
                                             </thead>
                                             <tbody>
+                                            {{App::setLocale('ru')}}
                                             @foreach($participations as $participation)
 
                                                 <tr onclick="document.location = '{{route('user_participation', ['participation_id' => $participation['id']])}}';"
                                                     class="row_hover
                                           ">
-                                                    <td style="text-align: center;">
+                                                    <td scope="row" data-label="Статус" style="text-align: center;">
                                                         <i data-toggle="tooltip" data-placement="top"
                                                            title="{{$participation->pat_status['pat_status_title']}}"
                                                            class="fas question-mark
@@ -219,24 +223,34 @@
                                        @endif
                                                                "></i>
                                                     </td>
-                                                    <td style="text-align: center;">
+                                                    <td data-label="Автор" style="text-align: center;">
                                                         {{$participation['name']}} {{$participation['surname']}}
                                                     </td>
-                                                    <td style="text-align: center;">
+                                                    <td data-label="Псевдоним" style="text-align: center;">
                                                         {{$participation['nickname']}}
                                                     </td>
-                                                    <td style="text-align: center;">
+                                                    <td data-label="Email" style="text-align: center;">
                                                         {{$participation->user['email']}}
                                                     </td>
-                                                    <td style="text-align: center;">
+                                                    <td data-label="Страниц" style="text-align: center;">
                                                         {{$participation['pages']}}
                                                     </td>
-                                                    <td style="text-align: center;">
+                                                    <td data-label="Экземпляров" style="text-align: center;">
                                                         {{$participation->printorder['books_needed'] ?? 0}}
                                                     </td>
-                                                    <td style="text-align: center;">
+                                                    <td data-label="Промокод" style="text-align: center;">
                                                         {{$participation['promocode']}}
                                                     </td>
+                                                    <td data-label="Общая сумма" style="text-align: center;">
+                                                        {{$participation['total_price']}} руб.
+                                                    </td>
+                                                    <td data-label="Создан" style="text-align: center;">
+                                                        {{ Date::parse($participation['created_at'])->addHours(3)->format('j F H:i') }}
+                                                    </td>
+                                                    <td data-label="ОБновлен" style="text-align: center;">
+                                                        {{ Date::parse($participation['updated_at'])->addHours(3)->format('j F H:i') }}
+                                                    </td>
+
 
                                                 </tr>
                                             @endforeach
@@ -286,7 +300,7 @@
 
                                         <!-- /.card-header -->
                                         <div class="card-body p-0">
-                                            <table style="max-width: 900px;" class="table table-bordered table-sm">
+                                            <table class="table table-bordered table-sm">
                                                 <thead>
                                                 <tr>
                                                     <th style="text-align: center">Тема</th>

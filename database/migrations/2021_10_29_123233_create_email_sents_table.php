@@ -17,7 +17,7 @@ class CreateEmailSentsTable extends Migration
             $table->id();
             $table->bigInteger('collection_id');
             $table->string('subject');
-            $table->string('email_text');
+            $table->text('email_text');
             $table->string('sent_to_user');
             $table->timestamps();
         });
