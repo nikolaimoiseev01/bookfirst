@@ -282,6 +282,33 @@
         })
     });
 
+    $('.all_participants_email').on('click', function (e) {
+        e.preventDefault();
+        var form = $(this).parents('form');
+
+        Swal.fire({
+            title: "Отправляем всем участникам!",
+            text: "Текст правильно написали?",
+            showDenyButton: true,
+            showCancelButton: false,
+            confirmButtonText: `Поехали!`,
+            denyButtonText: `Отменить`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                $('.book-preloader-wrap').removeClass('preloaded_loaded');
+                $('.book-preloader-wrap').css('opacity', '0');
+                $('.book-preloader-wrap').css('background', '#fdfeffcc');
+                $('.book-preloader-wrap span').html("Посылаем Email каждому...");
+                $('.book-preloader-wrap span').show(100);
+                window.setTimeout(function () {
+                    $('.book-preloader-wrap').css('opacity', '1');
+                }, 10);
+                form.submit();
+            }
+        })
+    });
+
     $('.save_collection').on('click', function (e) {
         e.preventDefault();
         var form = $(this).parents('form');

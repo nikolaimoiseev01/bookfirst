@@ -36,6 +36,7 @@
                         </tr>
                         </thead>
                         <tbody>
+                        {{App::setLocale('ru')}}
                         @foreach($chats as $chat)
 
                             <tr
@@ -75,7 +76,7 @@
                                 </td>
 
                                 <td data-label="Update" style="text-align: center;">
-                                    {{\Illuminate\Support\Str::substr($chat['updated_at'],0,16)}}
+                                    {{ Date::parse($chat['updated_at'])->addHours(3)->format('j F H:i') }}
                                 </td>
 
 

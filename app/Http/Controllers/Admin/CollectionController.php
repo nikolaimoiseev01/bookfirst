@@ -5,13 +5,16 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Collection;
 use App\Models\Col_status;
+use App\Models\EmailSent;
 use App\Models\Participation;
 use App\Models\preview_comment;
 use App\Models\Printorder;
 use App\Models\User;
 use App\Models\vote;
+use App\Notifications\AllParticipantsEmail;
 use App\Notifications\EmailNotification;
 use App\Notifications\UserNotification;
+use Carbon\Carbon;
 use Illuminate\Notifications\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -160,7 +163,7 @@ class CollectionController extends Controller
             ->groupBy('votes.user_id_to')
             ->orderBy('votes_got', 'desc')
             ->get();
-
+        $emails_sent = EmailSent::where('collection_id', $collection->id)->get();
         return view('admin.collection.collection-page', [
             'collection' => $collection,
             'col_statuses' => $col_statuses,
@@ -170,6 +173,7 @@ class CollectionController extends Controller
             'pre_comments' => $pre_comments,
             'votes' => $votes,
             'winners' => $winners,
+            'emails_sent' => $emails_sent,
         ]);
 
     }
@@ -333,6 +337,53 @@ class CollectionController extends Controller
     public function destroy(Collection $collection)
     {
         //
+    }
+
+    public function send_email_all_participants(Request $request)
+    {
+
+        if ($request->subject === "" || $request->email_text === null || $request->email_text === "" || $request->email_text === null) {
+            session()->flash('success', 'change_printorder');
+            session()->flash('alert_type', 'error');
+            session()->flash('alert_title', 'Что-то пошло не так :(');
+            session()->flash('alert_text', 'Не все поля заполнены :(');
+            return redirect()->back();
+        } else {
+
+
+        $users_from_participation = Participation::where('collection_id', $request->col_id)->get('user_id')->toArray();
+        $users = User::whereIn('id', $users_from_participation)->get();
+        $sent_to_users = "";
+
+        foreach ($users as $user) {
+            $sent_to_users = $sent_to_users . $user['id'] . ";";
+            $user->notify(new AllParticipantsEmail(
+                $request->subject,
+                $user['name'],
+                $request->email_text,
+                route('homePortal') . "/myaccount/collections/" . $request->col_id . "/participation/" . Participation::where([['user_id', $user->id], ['collection_id', $request->col_id]])->value('id'))
+            );
+        }
+
+
+
+        // ---- Сохраняем письмо! ---- //
+        $new_EmailSent = new EmailSent();
+        $new_EmailSent->collection_id = $request->col_id;
+        $new_EmailSent->subject = $request->subject;
+        $new_EmailSent->email_text = $request->email_text;
+        $new_EmailSent->sent_to_user = substr($sent_to_users, 0, -1);
+        $new_EmailSent->save();
+        // ---- //// Сохраняем письмо! ---- //
+
+
+        session()->flash('success', 'change_printorder');
+        session()->flash('alert_type', 'success');
+        session()->flash('alert_title', 'Успешно!');
+        session()->flash('alert_text', 'Мы послали всем участникам емейлы :)');
+
+        return redirect()->back();
+        }
     }
 
     public function change_all_preview_collection_comment_status(Request $request)

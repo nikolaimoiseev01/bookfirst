@@ -86,7 +86,8 @@
 
         {{-- БЛОК ИНФОРМАЦИИ О ЗАЯВКЕ --}}
         <div class="part"
-             style="padding-top: 25px;
+             style="z-index: 1;
+                 padding-top: 25px;
                  border-top: 2px {{$part_all_good}} solid;
                  border-left: 2px {{$part_all_good}} solid;
                  border-right: 2px {{$part_all_good}} solid;
@@ -148,7 +149,9 @@
 
         {{-- БЛОК ОПЛАТЫ--}}
         <div class="part"
-             style="border-left: 2px
+             style="margin-top: -85px;
+                 padding-top: 85px;
+                 border-left: 2px
              @if ($participation['pat_status_id'] === 1)
              {{$part_not_available}}
              @elseif ($participation['pat_status_id'] === 2)

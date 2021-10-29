@@ -136,6 +136,8 @@ Route::middleware(['role:admin'])->prefix('admin_panel')->group(function () {
 
     Route::post('/change_chat_status/{chat_id}', [\App\Http\Controllers\ChatController::class, 'change_chat_status'])->name('change_chat_status');
     Route::post('/change_user_status', [\App\Http\Controllers\Admin\ParticipationController::class, 'change_user_status'])->name('change_user_status');
+    Route::post('/send_email_all_participants', [\App\Http\Controllers\Admin\CollectionController::class, 'send_email_all_participants'])->name('send_email_all_participants');
+
 
     Route::post('/change_book_status', [\App\Http\Controllers\Admin\OwnBookController::class, 'change_book_status'])->name('change_book_status');
     Route::post('/change_amazon_link', [\App\Http\Controllers\Admin\OwnBookController::class, 'change_amazon_link'])->name('change_amazon_link');

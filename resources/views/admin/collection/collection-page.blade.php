@@ -174,6 +174,11 @@
                                     <li class="nav-item"><a class="nav-link" href="#winners"
                                                             data-toggle="tab">Конкурс</a>
                                     </li>
+
+                                    <li class="nav-item"><a class="nav-link" href="#all_emails"
+                                                            data-toggle="tab">Email всем</a>
+                                    </li>
+
                                 </ul>
                             </div>
 
@@ -277,6 +282,83 @@
                                         </div>
 
                                     </div>
+                                    <div class="p-3 tab-pane" id="all_emails">
+
+                                        <!-- /.card-header -->
+                                        <div class="card-body p-0">
+                                            <table style="max-width: 900px;" class="table table-bordered table-sm">
+                                                <thead>
+                                                <tr>
+                                                    <th style="text-align: center">Тема</th>
+                                                    <th style="text-align: center">Текст</th>
+                                                    <th style="text-align: center">Кому</th>
+                                                    <th style="text-align: center">Отправлен</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {{App::setLocale('ru')}}
+                                                @foreach($emails_sent as $email_sent)
+                                                    <tr>
+                                                        <td style="text-align: center">{{$email_sent['subject']}}</td>
+
+                                                        <td style="text-align: center">
+                                                            {{$email_sent['email_text']}}
+                                                        </td>
+
+                                                        <td style="text-align: center">
+                                                            @php
+                                                              $users_sent_to =  explode(';', $email_sent['sent_to_user']);
+                                                                foreach ($users_sent_to as $users_sent_to) {
+                                                                    $partic = \App\Models\Participation::where('collection_id', $collection['id'])->where('user_id', $users_sent_to)->first();
+                                                                    echo'
+                                                                        <a href="/admin_panel/collections/participation/' . $partic['id'] . '">' . $partic['name'] . '</a>;&nbsp
+                                                                   ';
+                                                                }
+                                                            @endphp
+                                                        </td>
+
+                                                        <td style="text-align: center">
+                                                            {{ Date::parse($email_sent['created_at'])->addHours(3)->format('j F H:i') }}
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+
+                                            <div style="display:none" class="p-3 mt-3 border chat-create-admin">
+                                                <form
+                                                    id="chat"
+                                                    enctype="multipart/form-data"
+                                                    method="post"
+                                                    action="{{route('send_email_all_participants')}}">
+                                                    @csrf
+                                                    <div class="chat-create-wrap">
+                                                        <p class="mb-0">Тема: </p>
+                                                        <input type="number" id="col_id" name="col_id" style="display: none;" value="{{$collection['id']}}">
+                                                        <input value="Процесс издания сборника" id="subject" name="subject" class="form-control" type="text">
+                                                        <textarea style="min-height: 200px; resize: none;" type="text" placeholder="ТОЛЬКО ТЕЛО ПИСЬМА! Не нужно писать приветствие и концовку, это будет автоматом!" name="email_text" class="mt-3 form-control" id="email_text"></textarea>
+                                                        <button id="chat_form" style="width:fit-content; position: relative;"  class="all_participants_email mt-3 button btn btn-block bg-gradient-primary" >
+                                                            <span class="button__text">Отправить всем участникам!</span>
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <a id="chat_add" style="width: fit-content;" class="mt-3 btn btn-outline-secondary">
+                                                <i class="mr-2 fa fa-plus"></i> Создать Email всем участникам</a>
+                                        </div>
+                                        <script>
+                                            $('#chat_add').click(function () {
+                                                $('.chat-create-admin').toggle();
+
+                                                if($('.chat-create-admin').is(":visible")) {
+                                                    $('#chat_add').html('<i class="mr-2 fa fa-times"></i> Отменить');
+                                                }
+                                                else {
+                                                    $('#chat_add').html(' <i class="mr-2 fa fa-plus"></i> Создать чат');
+                                                }
+                                            })
+                                        </script>
+                                    </div><!-- /.tab-content -->
                                 </div>
                             </div>
                             <!-- /.card-body -->

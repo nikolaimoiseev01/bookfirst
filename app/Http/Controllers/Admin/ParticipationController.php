@@ -51,9 +51,9 @@ class ParticipationController extends Controller
         $user->notify(new EmailNotification(
                 'Требуется оплата участия',
             $user['name'],
-            "Спешим сообщить, что Ваши произведения как нельзя лучше подходят для сборника '" . collection::where('id',$collection_id)->value('title') . '!' .
-            "После подтверждения оплаты (" . $participation['total_price'] . " рублей с учетом скидки) Вы будете включены в список авторов сборника и будете получать уведомления о всех этапах его публикации." .
-            "Оплата происходит в автоматическом режиме. Чтобы перейти к оплате, необходимо нажать кнопку 'оплатить' в блоке 'Оплата участия' на странице Вашего участия:",
+            "Спешим сообщить, что Ваши произведения как нельзя лучше подходят для сборника '" . collection::where('id',$collection_id)->value('title') . '! ' .
+            "Сразу после оплаты (" . $participation['total_price'] . " рублей с учетом скидки) Вы будете включены в список авторов сборника и будете получать уведомления о всех этапах его публикации. " .
+            "Оплата происходит в автоматическом режиме. Для этого необходимо нажать кнопку 'Оплатить " . $participation['total_price'] . " руб.' на странице Вашего участия:",
             "Перейти к оплате",
                 route('homePortal') . "/myaccount/collections/" . $collection_id . "/participation/" . $request->pat_id . '#payment_block')
         );
@@ -62,6 +62,11 @@ class ParticipationController extends Controller
             'Смена статуса участия в сборнике!',
                 route('homePortal') . "/myaccount/collections/" . $collection_id . "/participation/" . $request->pat_id)
         );
+
+        session()->flash('success', 'change_printorder');
+        session()->flash('alert_type', 'success');
+        session()->flash('alert_title', 'Успешно!');
+        session()->flash('alert_text', 'Статус участника изменен и мы даже послали ему Email об этом :)');
 
         return redirect()->back();
 
