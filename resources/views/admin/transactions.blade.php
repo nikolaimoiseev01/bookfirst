@@ -35,7 +35,8 @@
                             <th scope="col" style="text-align: center;">Статус</th>
                             <th scope="col" style="text-align: center;">Назначение</th>
                             <th scope="col" style="text-align: center;">Метод оплаты</th>
-                            <th scope="col" style="text-align: center;">Последнее изменение</th>
+                            <th scope="col" style="text-align: center;">Создана</th>
+                            <th scope="col" style="text-align: center;">Обновлена</th>
                             <th scope="col" style="width:15%; text-align: center;">Yokassa_id</th>
                         </tr>
                         </thead>
@@ -85,9 +86,11 @@
                                 <td data-label="Метод оплаты" style="text-align: center;">
                                     {{$transaction['payment_method']}}
                                 </td>
-                                <td data-label="Последнее изменение" style="text-align: center;">
-
-                                    {{ Date::parse($transaction['updated_at'])->format('j F, G:i') }}
+                                <td data-label="Создана" style="text-align: center;">
+                                    {{ Date::parse($transaction['created_at'])->addHours(3)->format('j F, G:i') }}
+                                </td>
+                                <td data-label="Обновлена" style="text-align: center;">
+                                    {{ Date::parse($transaction['updated_at'])->addHours(3)->format('j F, G:i') }}
                                 </td>
                                 <td data-label="Yokassa_id" style="text-align: center;">
 

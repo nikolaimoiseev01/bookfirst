@@ -32,7 +32,7 @@
 
                             <tr>
                                 <th scope="col">Статус</th>
-                                <th scope="col">Время создания</th>
+                                <th scope="col">Создана</th>
                                 <th scope="col">Автор</th>
                                 <th scope="col">Псевдоним</th>
                                 <th scope="col">Email</th>
@@ -42,6 +42,7 @@
                             </tr>
                         </thead>
                         <tbody>
+                        {{App::setLocale('ru')}}
                         @foreach($new_participations as $participation)
                         <tr class="row_hover" onclick="document.location = '{{route('user_participation', ['participation_id' => $participation['id']])}}';">
                             <td scope="row" data-label="Статус" style="text-align: center;">
@@ -57,8 +58,8 @@
                                        "></i>
                             </td>
 
-                            <td data-label="Время создания" style="text-align: center;">
-                                {{substr($participation['created_at'],0,16)}}
+                            <td data-label="Создана" style="text-align: center;">
+                                {{ Date::parse($participation['created_at'])->addHours(3)->format('j F H:i') }}
                             </td>
 
                             <td data-label="Автор" style="text-align: center;">
