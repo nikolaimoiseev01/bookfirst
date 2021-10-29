@@ -192,8 +192,16 @@ class CreateParticipation extends Component
 
             $collection_name = Collection::where('id', $this->collection_id)->value('title');
 
+            if ($this->nickname <> null && $this->nickname <> "") {
+                $author_name = $this->name . " " . $this->surname . " (" . $this->nickname. ")";
+            }
+            else {
+                $author_name = $this->name . " " . $this->surname;
+            }
+
+
             Notification::route('telegram', '-506622812')
-                ->notify(new new_participation($collection_name, $this->total_price, $this->pages, $this->print_needed));
+                ->notify(new new_participation($collection_name, $author_name, $this->total_price, $this->pages, $this->print_needed));
 
 
             session()->flash('show_modal', 'yes');

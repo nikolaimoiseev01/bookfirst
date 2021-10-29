@@ -13,6 +13,7 @@ class new_participation extends Notification
 {
 
     protected $collection_name;
+    protected $author_name;
     protected $total_price;
     protected $pages;
     protected $prints_needed;
@@ -24,9 +25,10 @@ class new_participation extends Notification
      *
      * @return void
      */
-    public function __construct($collection_name, $total_price, $pages, $prints_needed)
+    public function __construct($collection_name, $author_name, $total_price, $pages, $prints_needed)
     {
         $this->collection_name = $collection_name;
+        $this->author_name = $author_name;
         $this->total_price = $total_price;
         $this->pages = $pages;
         $this->prints_needed = $prints_needed;
@@ -76,7 +78,8 @@ class new_participation extends Notification
         return TelegramMessage::create()
             // Markdown supported.
             ->content("💥 Новая заявка в " . $this->collection_name . "! 💥" .
-                "\n\n**Страниц:** " . $this->pages . " стр." .
+                "\n\n**Автор:** " . $this->author_name .
+                "\n**Страниц:** " . $this->pages . " стр." .
                 "\n**Печать:** " . $this->prints_needed . " шт." .
                 "\n**Итого:** " . $this->total_price . " руб."
             )
