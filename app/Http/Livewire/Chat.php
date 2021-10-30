@@ -13,6 +13,7 @@ use http\Env\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Livewire\Component;
 
@@ -58,7 +59,6 @@ class Chat extends Component
 
     public function new_message()
     {
-
         // --------- Ищем ошибки в заполнении  --------- //
         $errors_array = [];
 
@@ -98,16 +98,20 @@ class Chat extends Component
             // --------- Добавляем файлы, если есть  --------- //
 
             if ($this->message_files <> null) {
-                $chat_files_folder = public_path('admin_files/chat_files');
+                $chat_files_folder = public_path('admin_files/chat_files/messageId_' . $new_message->id);
                 $this->message_files = explode(';', $this->message_files);
-                foreach ($this->message_files as $file_path) {
 
+                //Создаем папку сообщения
+                File::makeDirectory('admin_files/chat_files/messageId_' . $new_message->id, 0777, true);
+                //-----------------------
+
+                foreach ($this->message_files as $file_path) {
                     $file_old_path = $file_path;
                     $file_new_path = $chat_files_folder . '/' . substr($file_path, strrpos($file_path, '/') + 1);
                     File::move($file_old_path, $file_new_path);
                     $new_message_file = new message_file();
                     $new_message_file->message_id = $new_message->id;
-                    $new_message_file->file = $file_new_path;
+                    $new_message_file->file = 'admin_files/chat_files/messageId_' . $new_message->id . '/' . substr($file_path, strrpos($file_path, '/') + 1);
                     $new_message_file->save();
                     $old_folder = substr($file_path, 25, strpos($file_path, '/', strpos($file_path, '/') + 1));
                     File::deleteDirectory(public_path('filepond_temp/chat_files/' . $old_folder));

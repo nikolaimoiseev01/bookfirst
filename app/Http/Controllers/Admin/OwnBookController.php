@@ -325,8 +325,9 @@ function change_book_pages(Request $request)
         ));
 
         session()->flash('success', 'change_printorder');
-        session()->flash('alert_title', 'Кроме страниц поменяли еще печать!');
-        session()->flash('alert_text', 'Старая цена: ' . $old_price . ' ---> Новая цена: ' . $total_price);
+        session()->flash('alert_type', 'success');
+        session()->flash('alert_title', 'Успешно!');
+        session()->flash('alert_text', 'Кроме страниц поменяли еще печать! Старая цена: ' . $old_price . ' ---> Новая цена: ' . $total_price);
     }
 
 

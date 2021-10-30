@@ -83,6 +83,6 @@ class new_chat extends Notification
             // ->view('notification', ['url' => $url])
 
             // (Optional) Inline Buttons
-            ->button('К заявкам', "http://127.0.0.1:8000/admin_panel/new_participants");
+            ->button('К чатам', route('chats'));
     }
 }

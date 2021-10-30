@@ -25,7 +25,7 @@
                         #47AF98;
                     @else #e7b34d
                     @endif" class="message-wrap">
-                        <p>{{$message['text']}}</p>
+                        <p>{!! nl2br(e($message['text'])) !!}</p>
                         @if (count($message->message_file) > 0)
                             <div>
                                 <h2 style="font-size: 24px; margin-bottom: 0; margin-top: 10px;">Прикрепленные
