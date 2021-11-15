@@ -37,6 +37,7 @@
             </div>
             <!-- Small boxes (Stat box) -->
             <div class="row" id="collections_id">
+                {{App::setLocale('ru')}}
                 @foreach($own_books as $own_book)
                     <div>
                         <!-- Widget: user widget style 2 -->
@@ -77,10 +78,6 @@
                                     p-2 border-bottom
 ">
                                     Общий статус:&nbsp;<b>{{$own_book->own_book_status['status_title']}}</b>
-                                    @if (($own_book->own_book_status_id <> 1) & $own_book['own_book_inside_status_id'] === 1)
-                                        <i style="margin-left: 15px; float: right;">(до: {{$own_book['inside_deadline']}}
-                                            )</i>
-                                    @endif
                                 </div>
                                 <div style="font-size: 18px;" class="
                                 @if ($own_book->own_book_status_id < 3)
@@ -94,7 +91,7 @@
 ">
                                     Макет:&nbsp;<b>{{$own_book->own_book_inside_status['status_title'] ?? 'Нет информации'}}</b>
                                     @if (($own_book->own_book_status_id <> 1) & $own_book['own_book_inside_status_id'] ?? 'Нет информации' === 1)
-                                        <i style="margin-left: 15px; float: right;">(до: {{$own_book['inside_deadline']}}
+                                        <i style="margin-left: 15px; float: right;">(до: {{ Date::parse($own_book['inside_deadline'])->addHours(3)->format('j F') }}
                                             )</i>
                                     @endif
                                 </div>
@@ -109,7 +106,7 @@
                                     border-bottom">
                                     Обложка:&nbsp;<b>{{$own_book->own_book_cover_status['status_title'] ?? 'Нет информации'}}</b>
                                     @if (($own_book->own_book_status_id <> 1) & $own_book['own_book_cover_status_id'] === 1)
-                                        <i style="margin-left: 15px; float: right;">(до: {{$own_book['cover_deadline']}}
+                                        <i style="margin-left: 15px; float: right;">(до: {{ Date::parse($own_book['cover_deadline'])->addHours(3)->format('j F') }}
                                             )</i>
                                     @endif
                                 </div>

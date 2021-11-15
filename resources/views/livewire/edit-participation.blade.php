@@ -1,5 +1,5 @@
 <form
-    wire:submit.prevent="updateParticipation(Object.fromEntries(new FormData($event.target)))"
+{{--    wire:submit.prevent="updateParticipation(Object.fromEntries(new FormData($event.target)))"--}}
     enctype="multipart/form-data">
     <div class="create-participation-form">
         <div>
@@ -273,7 +273,6 @@
 @section('page-js')
 
     <script>
-
         {{Session(['back_after_add' => \Livewire\str(Request::url())])}}
 
         function close_swal() {
@@ -322,7 +321,6 @@
         })
 
 
-        if (jq_loaded != 1) {
 
 
             // -----------------------------PRICES---------------------------------------------
@@ -338,7 +336,7 @@
                 participation_price = 0,
                 print_price = 0,
                 pagtotal_pricees = 0,
-
+                promocode = {{$promocode}}
 
                 print_needed = $("#prints-num").val();
 
@@ -390,7 +388,8 @@
 
                 print_price = print_needed * 300;
 
-                promo = (100 - {{$promocode}}) / 100;
+
+                promo = (100 - promocode) / 100;
                 participation_price = participation_price * promo;
 
                 total_price = print_price + participation_price + check_needed
@@ -649,6 +648,7 @@
                     })
                     works_to_php = works_to_php.slice(0, -1)
 
+
                 @this.set("works", works_to_php);
                 @this.set("rows", rows);
                 @this.set("pages", pages);
@@ -665,9 +665,7 @@
                     Livewire.emit('updateParticipation')
                 })
             });
-        }
 
-        jq_loaded = 1;
     </script>
 @endsection
 

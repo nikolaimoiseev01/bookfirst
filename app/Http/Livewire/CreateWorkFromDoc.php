@@ -12,6 +12,7 @@ use Livewire\WithFileUploads;
 class CreateWorkFromDoc extends Component
 {
     use WithFileUploads;
+
     public $works = [];
     public $test_text;
     public $file;
@@ -39,6 +40,9 @@ class CreateWorkFromDoc extends Component
                 'type' => 'error',
                 'title' => 'Что-то пошло не так!',
                 'text' => 'Пожалуйста, укажите файл для анализа',
+            ]);
+            $this->dispatchBrowserEvent('loader', [
+                'id' => 'start_doc_scan',
             ]);
         } else {
 
@@ -94,28 +98,32 @@ class CreateWorkFromDoc extends Component
     }
 
 
-    public function edit_work($id, $title, $text) {
+    public function edit_work($id, $title, $text)
+    {
         $this->works[$id]['title'] = $title;
         $this->works[$id]['text'] = $text;
     }
 
-    public function delete_work($id) {
+    public function delete_work($id)
+    {
 
         unset($this->works[$id]);
         array_unshift($this->works);
     }
 
 
-    public function work_stat_function() {
+    public function work_stat_function()
+    {
         $work_num = 0;
         foreach ($this->works as $work) {
 
-            if ($this->works[$work_num]['title'] === '')
-            {$this->works[$work_num]['title'] = 'Название неопознано';}
+            if ($this->works[$work_num]['title'] === '') {
+                $this->works[$work_num]['title'] = 'Название неопознано';
+            }
 
-            if ($this->works[$work_num]['text'] === '')
-            {$this->works[$work_num]['text'] = 'Текст неопознано';}
-
+            if ($this->works[$work_num]['text'] === '') {
+                $this->works[$work_num]['text'] = 'Текст неопознано';
+            }
 
 
             $symbols = 0;
@@ -125,19 +133,18 @@ class CreateWorkFromDoc extends Component
             $len = mb_strlen($work['text'], 'UTF-8');
             $result = [];
             for ($i = 0; $i < $len; $i++) {
-                if(mb_substr($work['text'], $i, 1, 'UTF-8') === '<' &&
-                    mb_substr($work['text'], $i+1, 1, 'UTF-8') === 'b' &&
-                    mb_substr($work['text'], $i+2, 1, 'UTF-8') === 'r'
-                )
-                {$rows++;
-                 $i = $i + 4;
+                if (mb_substr($work['text'], $i, 1, 'UTF-8') === '<' &&
+                    mb_substr($work['text'], $i + 1, 1, 'UTF-8') === 'b' &&
+                    mb_substr($work['text'], $i + 2, 1, 'UTF-8') === 'r'
+                ) {
+                    $rows++;
+                    $i = $i + 4;
                 }
-                if($symbols_for_rows > 50)
-                {
+                if ($symbols_for_rows > 50) {
                     $rows++;
                     $symbols_for_rows = 0;
                 }
-                $symbols ++;
+                $symbols++;
             }
 
             $this->works[$work_num]['symbols'] = $symbols;
@@ -150,15 +157,17 @@ class CreateWorkFromDoc extends Component
         }
     }
 
-    public function save_all_work() {
+    public function save_all_work()
+    {
         function br2nl($str)
         {
             return preg_replace('#<br\s*/?>#i', "\n", $str);
         }
+
         foreach ($this->works as $work) {
             $new_work = new Work();
             $new_work->title = $work['title'];
-            $new_work->text = br2nl(str_replace('<br>','<br />', $work['text']));
+            $new_work->text = br2nl(str_replace('<br>', '<br />', $work['text']));
             $new_work->symbols = $work['symbols'];
             $new_work->rows = $work['rows'];
             $new_work->pages = $work['pages'];

@@ -69,13 +69,14 @@
                         </div>
 
                         <div class="tab-pane" id="works">
+                            {{App::setLocale('ru')}}
                             @if(count($user->work)>0)
                                 <h2 class="text-info mb-4">Всего у автора <b>{{count($user->work)}}</b> произведений.
                                 </h2>
                                 @foreach($user->work as $work)
 
                                     <h3>{{$loop->index + 1}}. {{$work['title']}}</h3>
-                                    <p style="color:grey">Загружено: {{$work['created_at']}}</p>
+                                    <p style="color:grey">Загружено: {{ Date::parse($work['created_at'])->addHours(3)->format('j F Y') }}</p>
                                     <p>{{$work['text']}}</p>
                                 @endforeach
                             @else

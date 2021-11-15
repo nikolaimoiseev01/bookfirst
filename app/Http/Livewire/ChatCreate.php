@@ -22,7 +22,7 @@ class ChatCreate extends Component
     Public $own_book_id;
     Public $user_to;
 
-
+    protected $listeners = ['storeChat'];
 
     public function render()
     {
@@ -47,7 +47,6 @@ class ChatCreate extends Component
 
 
 
-
         $validator = Validator::make($formData, [
             'text' => 'required',
         ]);
@@ -61,6 +60,9 @@ class ChatCreate extends Component
                 'type' => 'error',
                 'title' => 'Что-то пошло не так!',
                 'text' => implode("<br>", $errors->all()),
+            ]);
+            $this->dispatchBrowserEvent('loader', [
+                'id' => 'chat_form',
             ]);
 
             return;
