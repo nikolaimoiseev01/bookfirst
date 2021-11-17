@@ -24,7 +24,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-         $schedule->command('TaskUpdate')->everyMinute();
+         $schedule->command('TaskUpdate')->timezone('Europe/Moscow')->dailyAt('19:30');
     }
 
     /**

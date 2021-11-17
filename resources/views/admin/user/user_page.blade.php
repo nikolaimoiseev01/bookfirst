@@ -77,7 +77,7 @@
 
                                     <h3>{{$loop->index + 1}}. {{$work['title']}}</h3>
                                     <p style="color:grey">Загружено: {{ Date::parse($work['created_at'])->addHours(3)->format('j F Y') }}</p>
-                                    <p>{{$work['text']}}</p>
+                                    <p>{!! nl2br($work['text']) !!}</p>
                                 @endforeach
                             @else
                                 У автора еще нет произведений :(

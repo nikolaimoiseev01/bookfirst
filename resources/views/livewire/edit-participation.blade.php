@@ -662,7 +662,8 @@
                 @this.set("check_needed", check_needed);
                 @this.set("total_price", total_price);
 
-                    Livewire.emit('updateParticipation')
+                Livewire.emit('updateParticipation');
+
                 })
             });
 
