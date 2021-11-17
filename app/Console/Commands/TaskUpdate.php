@@ -49,8 +49,8 @@ class TaskUpdate extends Command
         $collection_dates = '';
         $col_deadline = '';
 
-        $own_book_insides = own_book::where('own_book_status_id', 3)->where('own_book_inside_status_id', 1)->get();
-        $own_book_covers = own_book::where('own_book_status_id', 3)->where('own_book_cover_status_id', 1)->get();
+        $own_book_insides = own_book::where('own_book_status_id', 3)->where('own_book_inside_status_id', 1)->orwhere('own_book_inside_status_id', 3)->get();
+        $own_book_covers = own_book::where('own_book_status_id', 3)->where('own_book_cover_status_id', 1)->orwhere('own_book_cover_status_id', 3)->get();
 
         $collections = Collection::where('col_status_id', '<', 9)->get();
 
@@ -78,8 +78,6 @@ class TaskUpdate extends Command
             $collection_dates = $collection_dates . ($key + 1) . '. ' . substr($collection['title'], 0, 20) . "...: " .
                 $col_deadline . $danger_deadline . ' \n';
         }
-
-        echo $collection_dates;
 
         // Создаем дедлайны обложек
         foreach ($own_book_covers as $key => $own_book_cover) {
