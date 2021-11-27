@@ -138,9 +138,54 @@
         </div>
     </a>
 
+    <style>
+        .dropped_menu_box {
+            left: -27px;
+            text-align:center;
+            background: #ffffff;
+            position: absolute;
+            transition: all .1s ease-in-out;
+            top: 20px;
+            z-index: 1;
+            opacity: 0;
+            padding-top: 10px;
+            visibility: hidden;
+            padding-bottom: 10px;
+        }
+
+        #collection_menu_link:hover ~ .dropped_menu_box {
+            top: 30px;
+            opacity: 1;
+            visibility: visible;
+            transition: all .1s ease-in-out;
+        }
+
+        #collection_menu_link:hover:after {
+            width: 0 !important;
+        }
+
+        #collection_menu_link:hover {
+            cursor: default;
+        }
+
+        .dropped_menu_box:hover {
+            top: 30px;
+            opacity: 1;
+            visibility: visible;
+            transition: all .1s ease-in-out;
+        }
+
+    </style>
+
     <div class="menu">
 {{--        <a class="menu-link" id="home" href="/">Главная</a>--}}
-        <a class="menu-link" href="{{route('old_collections')}}">Сборники</a>
+        <div style="position:relative;">
+            <span class="menu-link" id="collection_menu_link" style="margin-left: 0 !important;">Сборники</span>
+            <div class="dropped_menu_box">
+                <a class="menu-link" style="display: block; margin: 0 20px !important;" href="{{route('actual_collections')}}">Актуальные</a>
+                <a style="margin: 10px 20px 0 20px !important; display: block;" class="menu-link" href="{{route('old_collections')}}">Изданные</a>
+            </div>
+        </div>
         <a class="menu-link" href="/own_books">Книги авторов</a>
         <a class="menu-link" href="/about">О нас</a>
         <a class="menu-link" href="/#reviews-block">Отзывы</a>

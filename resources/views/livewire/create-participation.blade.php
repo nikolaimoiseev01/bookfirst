@@ -81,7 +81,7 @@
                                             <div id="work-container-{{$work['id']}}" class="container">
                                                 <p>{{Str::limit($work['title'], 20)}}</p>
                                                 <div class="one-work-button">
-                                                    <a class="add_remove_buttons">
+                                                    <a class=" add_remove_buttons">
                                                         <svg
                                                             id="not-in-{{$work['id']}}"
                                                             viewBox="0 0 448.13 490.8">
@@ -271,11 +271,11 @@
                     <p style="text-align: center" id="promo_ok"></p>
                     <div id="i_have_promo_inputs" style="display: none;">
                         <div style="display: flex; align-items: center;">
-                            <div style="margin-left: 20px;" class="search-bar-wrap">
+                            <div style="display:flex; align-items: center; margin-left: 20px;" class="search-bar-wrap">
                                 <input wire:model="promo_search_input" required placeholder="Промокод..."
                                        id="promo_search_input" name="promo_search_input" type="text">
 
-                                <a wire:click.prevent="check_promo" style="opacity: 1;" id="work_input_search_link">
+                                <a wire:click.prevent="check_promo" style="padding-top:4px; opacity: 1;" id="work_input_search_link">
                                     <span class="tooltip" title="Проверить">
                                     <svg width="14px" viewBox="0 0 188.9 210"><defs><style>.cls-1 {
                                                     fill: none;

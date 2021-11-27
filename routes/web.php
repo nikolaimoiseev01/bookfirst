@@ -45,6 +45,9 @@ Route::middleware([])->prefix('/')->group(function () {
     Route::get('/own_books/{own_book_input_search}', [PortalController::class, 'own_book_search'])->name('own_book_search');
 
     Route::get('/about', [PortalController::class, 'about'])->name('about');
+    Route::get('/help/account', [PortalController::class, 'help_account'])->name('help_account');
+    Route::get('/help/collection', [PortalController::class, 'help_collection'])->name('help_collection');
+    Route::get('/help/own_book', [PortalController::class, 'help_own_book'])->name('help_own_book');
 
 });
 // ----------------------------------------------
@@ -122,6 +125,7 @@ Route::match(['POST', 'GET'], '/payments/callback', [PaymentController::class, '
 
 Route::middleware(['role:admin'])->prefix('admin_panel')->group(function () {
     Route::get('/col', [App\Http\Controllers\Admin\CollectionController::class, 'index'])->name('homeAdmin');
+    Route::get('/create_col_file', [App\Http\Controllers\Admin\CollectionController::class, 'create_col_file'])->name('create_col_file');
     Route::get('/collections/closed', [App\Http\Controllers\Admin\CollectionController::class, 'closed_collections'])->name('closed_collections');
     Route::get('/own_books', [App\Http\Controllers\Admin\OwnBookController::class, 'index'])->name('own_books_index');
     Route::get('/own_books/closed', [App\Http\Controllers\Admin\OwnBookController::class, 'closed_own_books'])->name('closed_own_books');

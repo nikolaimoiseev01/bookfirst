@@ -14,6 +14,7 @@
     <div class="account-header">
         <h1>Собственные книги</h1>
         <a style="box-shadow: none;" class="fast-load button" href="{{route('own_book_create')}}">Издать новую книгу</a>
+        <a style="box-shadow: none;" class="link" href="{{route('own_book_page')}}">Расчитать стоимость издания и печати</a>
     </div>
 
     <div class="my-own-books">

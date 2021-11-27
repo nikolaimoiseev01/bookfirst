@@ -21,6 +21,18 @@ class PortalController extends Controller
         ]);
     }
 
+    public function help_account() {
+        return view('portal.help_account');
+    }
+
+    public function help_collection() {
+        return view('portal.help_collection');
+    }
+
+    public function help_own_book() {
+        return view('portal.help_own_book');
+    }
+
     public function old_collections() {
         $collections = Collection::orderBY('id', 'desc')->where('col_status_id', 9)->paginate(9);
         return view('portal.old_collections', [

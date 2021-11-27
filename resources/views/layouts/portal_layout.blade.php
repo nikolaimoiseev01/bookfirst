@@ -22,19 +22,26 @@
     <meta name="theme-color" content="#ffffff">
 
     <!-- Yandex.Metrika counter -->
-    <script type="text/javascript" >
-        (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-            m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    <script type="text/javascript">
+        (function (m, e, t, r, i, k, a) {
+            m[i] = m[i] || function () {
+                (m[i].a = m[i].a || []).push(arguments)
+            };
+            m[i].l = 1 * new Date();
+            k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
+        })
         (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
 
         ym(86096774, "init", {
-            clickmap:true,
-            trackLinks:true,
-            accurateTrackBounce:true,
-            webvisor:true
+            clickmap: true,
+            trackLinks: true,
+            accurateTrackBounce: true,
+            webvisor: true
         });
     </script>
-    <noscript><div><img src="https://mc.yandex.ru/watch/86096774" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <noscript>
+        <div><img src="https://mc.yandex.ru/watch/86096774" style="position:absolute; left:-9999px;" alt=""/></div>
+    </noscript>
     <!-- /Yandex.Metrika counter -->
 </head>
 
@@ -140,10 +147,92 @@
         </div>
     </a>
 
+    <style>
+        .dropped_menu_box, .own_dropped_menu_box {
+            left: -27px;
+            text-align:center;
+            background: #ffffff;
+            position: absolute;
+            transition: all .1s ease-in-out;
+            top: 23px;
+            z-index: 1;
+            opacity: 0;
+            padding-top: 10px;
+            visibility: hidden;
+            padding-bottom: 10px;
+        }
+
+        .dropped_menu_box {
+            left: -27px;
+        }
+
+        .own_dropped_menu_box {
+            left: 32px;
+            width:190px;
+        }
+
+        #collection_menu_link:hover ~ .dropped_menu_box {
+            top: 30px;
+            opacity: 1;
+            visibility: visible;
+            transition: all .1s ease-in-out;
+        }
+
+        #collection_menu_link:hover:after {
+            width: 0 !important;
+        }
+
+        #collection_menu_link:hover {
+            cursor: default;
+        }
+
+        .dropped_menu_box:hover {
+            top: 30px;
+            opacity: 1;
+            visibility: visible;
+            transition: all .1s ease-in-out;
+        }
+
+        #own_books_menu_link:hover ~ .own_dropped_menu_box {
+            top: 30px;
+            opacity: 1;
+            visibility: visible;
+            transition: all .1s ease-in-out;
+        }
+
+        #own_books_menu_link:hover:after {
+            width: 0 !important;
+        }
+
+        #own_books_menu_link:hover {
+            cursor: default;
+        }
+
+        .own_dropped_menu_box:hover {
+            top: 30px;
+            opacity: 1;
+            visibility: visible;
+            transition: all .1s ease-in-out;
+        }
+
+    </style>
+
     <div class="menu">
-{{--        <a class="menu-link" id="home" href="/">Главная</a>--}}
-        <a class="menu-link" href="{{route('old_collections')}}">Сборники</a>
-        <a class="menu-link" href="{{route('own_books_portal')}}">Книги авторов</a>
+        {{--        <a class="menu-link" id="home" href="/">Главная</a>--}}
+        <div style="position:relative;">
+            <span class="menu-link" id="collection_menu_link" style="margin-left: 0 !important;">Сборники</span>
+            <div class="dropped_menu_box">
+                <a class="menu-link" style="display: block; margin: 0 20px !important;" href="{{route('actual_collections')}}">Актуальные</a>
+                <a style="margin: 10px 20px 0 20px !important; display: block;" class="menu-link" href="{{route('old_collections')}}">Изданные</a>
+            </div>
+        </div>
+        <div style="position:relative;">
+            <span class="menu-link" id="own_books_menu_link">Собственные книги</span>
+            <div class="own_dropped_menu_box">
+                <a class="menu-link" style="display: inline-block; margin: 0 20px !important;" href="{{route('own_book_page')}}">Подробнее</a>
+                <a style="margin: 10px 20px 0 20px !important; display: inline-block;" class="menu-link" href="{{route('own_books_portal')}}">Изданные</a>
+            </div>
+        </div>
         <a class="menu-link" href="{{route('about')}}">О нас</a>
         <a class="menu-link" href="/#reviews-block">Отзывы</a>
         <div class="account">
@@ -268,7 +357,7 @@
         <div class="footer-questions">
             <div style="margin-bottom: 10px;">Остались вопросы?<br>
                 Задайте их прямо сейчас<br>
-                main@pervajakniga.ru
+                <a href="{{route('help_account')}}" class="button">Помощь</a>
             </div>
         </div>
     </div>

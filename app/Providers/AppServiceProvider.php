@@ -47,11 +47,21 @@ class AppServiceProvider extends ServiceProvider
             $new_participants = Participation::where('pat_status_id', 1)->count();
             $new_chats = Chat::where('chat_status_id', 1)->count();
             $own_books_alert = own_book::where('own_book_status_id', 1)
-                ->orwhere('own_book_status_id', 5)
-                ->orwhere('own_book_inside_status_id', 1)
-                ->orwhere('own_book_cover_status_id', 1)
-                ->orwhere('own_book_inside_status_id', 3)
-                ->orwhere('own_book_cover_status_id', 3)
+                ->orwhere(function($q) {
+                    $q->where('own_book_status_id', 5)
+                        ->Where('own_book_inside_status_id', 4)
+                        ->Where('own_book_cover_status_id', 4);;
+                })
+                ->orwhere(function($q) {
+                    $q->where('own_book_status_id', 3)
+                        ->Where('own_book_inside_status_id', 1)
+                        ->orWhere('own_book_inside_status_id', 3);;
+                })
+                ->orwhere(function($q) {
+                    $q->where('own_book_status_id', 3)
+                        ->Where('own_book_cover_status_id', 1)
+                        ->orWhere('own_book_cover_status_id', 3);;
+                })
                 ->count();
             //...with this variable
             $view->with([

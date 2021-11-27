@@ -7,10 +7,12 @@ use App\Models\Collection;
 use App\Models\Col_status;
 use App\Models\EmailSent;
 use App\Models\Participation;
+use App\Models\Participation_work;
 use App\Models\preview_comment;
 use App\Models\Printorder;
 use App\Models\User;
 use App\Models\vote;
+use App\Models\Work;
 use App\Notifications\AllParticipantsEmail;
 use App\Notifications\EmailNotification;
 use App\Notifications\UserNotification;
@@ -22,6 +24,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Jenssegers\Date\Date;
+use PhpOffice\PhpWord\IOFactory;
 
 class CollectionController extends Controller
 {
@@ -115,6 +118,100 @@ class CollectionController extends Controller
     public function show(Collection $collection)
     {
         //
+    }
+
+    public function create_col_file(Request $request)
+    {
+        $authors = Participation::where('collection_id', $request->col_id)->where('pat_status_id', 3)->get();
+
+
+        // Делаем стили для разных сборников
+        if (str_contains($authors[1]->collection['title'], 'Дух')) {
+            $page_size = "A5";
+            $author_name_style = array('name' => 'a_BentTitulNr', 'size' => 16, 'color' => 'F79646', 'bold' => true);
+            $work_title_style = array('name' => 'Bad Script', 'size' => 16, 'color' => 'FF0000', 'bold' => true);
+            $work_title_align = array('align' => 'left');
+            $work_text_style = array('name' => 'Ayuthaya', 'size' => 10, 'color' => '000000', 'bold' => false);
+        }
+        else {
+            $author_name_style = array('name' => 'Days', 'size' => 16, 'color' => 'F79646', 'bold' => true);
+            $work_title_style = array('name' => 'Ayuthaya', 'size' => 14, 'color' => 'FF0000', 'bold' => false, 'italic' => true);
+            $work_title_align = array('align' => 'center');
+            $work_text_style = array('name' => 'Calibri Light', 'size' => 14, 'color' => '000000', 'bold' => false);
+        }
+
+
+
+        // Creating the new document...
+        $phpWord = new \PhpOffice\PhpWord\PhpWord();
+
+        foreach ($authors as $author) {
+
+            // Создаем новый раздел для автора
+
+            $PidPageSettings = array(
+                'marginTop'   => 1000,
+                "paperSize" => $page_size
+
+            );
+
+            $section = $phpWord->addSection($PidPageSettings);
+            $header = $section->addHeader();
+
+
+            $phpWord->setDefaultParagraphStyle(
+                array(
+                    'spaceAfter' => \PhpOffice\PhpWord\Shared\Converter::pointToTwip(0),
+                    'spacing' => 120,
+                    'lineHeight' => 1,
+                )
+            );
+
+            // Пишем имя автора
+            $section->addText(
+                $author['name'] . ' ' . $author['surname'],
+                $author_name_style,
+                ['align' => 'center']
+            );
+
+            // Делаем отступ от автора
+            $section->addText(' ',
+                array('name' => 'Calibri', 'size' => 5, 'color' => '000000', 'bold' => false)
+            );
+
+            // Пишем имя автора в колонтитул
+            $footer = $section->addFooter();
+            $footer->addText(
+                $author['name'] . ' ' . $author['surname'],
+                array('name' => 'Bad Script', 'size' => 14, 'color' => '000000', 'bold' => true)
+            );
+
+
+            $author_works = Participation_work::where('participation_id', $author['id'])->get();
+
+            foreach ($author_works as $author_work) {
+
+                $work = Work::where('id', $author_work['work_id'])->first();
+                // Пишем название
+                $section->addText($work['title'],
+                    $work_title_style,
+                    $work_title_align
+                );
+
+                $work_text = str_replace("\n", '<w:br/>', $work['text']);
+
+                // Пишем текст работы
+                $section->addText(
+                    $work_text,
+                    $work_text_style
+                );
+            }
+        }
+
+        // Saving the document as HTML file...
+        $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
+        $objWriter->save('collection_temp_created.docx');
+        return redirect('collection_temp_created.docx');
     }
 
     /**

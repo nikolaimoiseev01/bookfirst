@@ -98,7 +98,6 @@ class CreateParticipation extends Component
     public function storeParticipation()
     {
 
-
         $errors_array = [];
 
         $is_same_part = Participation::where('user_id', Auth::user()->id)->Where('collection_id', $this->collection_id)->value('user_id');
@@ -126,6 +125,9 @@ class CreateParticipation extends Component
 
 
         if (empty($errors_array)) {
+            $this->dispatchBrowserEvent('loader', [
+                'id' => 'save_form',
+            ]);
 
             // ---- Создаем новый Заказ печатных! ---- //
             if ($this->print_price > 0) {

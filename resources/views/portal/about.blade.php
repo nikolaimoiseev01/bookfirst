@@ -41,7 +41,7 @@
 
 
 
-@section('page-title') Наши сборники @endsection
+@section('page-title') О нас @endsection
 
 
 

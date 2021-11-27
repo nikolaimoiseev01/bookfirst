@@ -178,7 +178,20 @@
                                     <li class="nav-item"><a class="nav-link" href="#all_emails"
                                                             data-toggle="tab">Email всем</a>
                                     </li>
-
+                                    <li class="ml-auto nav-item">
+                                        <form
+                                            id="chat"
+                                            enctype="multipart/form-data"
+                                            method="get"
+                                            action="{{route('create_col_file')}}"
+                                            class="ml-auto">
+                                            @csrf
+                                            <input style="display: none" type="number" id="col_id" name="col_id" value="{{$collection['id']}}">
+                                                <button id="chat_form" style="width:fit-content; position: relative;"  class="button btn btn-block bg-gradient-primary" >
+                                                    <span class="button__text">Скачать верстку!</span>
+                                                </button>
+                                        </form>
+                                    </li>
                                 </ul>
                             </div>
 
