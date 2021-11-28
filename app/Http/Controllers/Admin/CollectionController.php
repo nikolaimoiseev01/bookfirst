@@ -134,6 +134,7 @@ class CollectionController extends Controller
             $work_text_style = array('name' => 'Ayuthaya', 'size' => 10, 'color' => '000000', 'bold' => false);
         }
         else {
+            $page_size = "A4";
             $author_name_style = array('name' => 'Days', 'size' => 16, 'color' => 'F79646', 'bold' => true);
             $work_title_style = array('name' => 'Ayuthaya', 'size' => 14, 'color' => 'FF0000', 'bold' => false, 'italic' => true);
             $work_title_align = array('align' => 'center');
