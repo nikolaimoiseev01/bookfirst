@@ -154,6 +154,8 @@ class CollectionController extends Controller
 
             $PidPageSettings = array(
                 'marginTop'   => 1000,
+                'footerHeight'=> \PhpOffice\PhpWord\Shared\Converter::inchToTwip(.35),
+                'marginBottom'   => 1100,
                 "paperSize" => $page_size
 
             );
@@ -170,9 +172,16 @@ class CollectionController extends Controller
                 )
             );
 
+             if ($author['nickname']) {
+                $author_name = $author['nickname'];
+            }
+             else {
+                 $author_name = $author['name'] . ' ' . $author['surname'];
+             }
+
             // Пишем имя автора
             $section->addText(
-                $author['name'] . ' ' . $author['surname'],
+                $author_name,
                 $author_name_style,
                 ['align' => 'center']
             );
@@ -185,7 +194,7 @@ class CollectionController extends Controller
             // Пишем имя автора в колонтитул
             $footer = $section->addFooter();
             $footer->addText(
-                $author['name'] . ' ' . $author['surname'],
+                $author_name,
                 $author_name_footer_style
             );
 
