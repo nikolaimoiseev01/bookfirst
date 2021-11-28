@@ -129,6 +129,7 @@ class CollectionController extends Controller
         if (str_contains($authors[1]->collection['title'], 'Дух')) {
             $page_size = "A5";
             $author_name_style = array('name' => 'a_BentTitulNr', 'size' => 16, 'color' => 'F79646', 'bold' => true);
+            $author_name_footer_style = array('name' => 'Bad Script', 'size' => 14, 'color' => '000000', 'bold' => true);
             $work_title_style = array('name' => 'Bad Script', 'size' => 16, 'color' => 'FF0000', 'bold' => true);
             $work_title_align = array('align' => 'left');
             $work_text_style = array('name' => 'Ayuthaya', 'size' => 10, 'color' => '000000', 'bold' => false);
@@ -136,6 +137,7 @@ class CollectionController extends Controller
         else {
             $page_size = "A4";
             $author_name_style = array('name' => 'Days', 'size' => 16, 'color' => 'F79646', 'bold' => true);
+            $author_name_footer_style = array('name' => 'Accuratist', 'size' => 14, 'color' => '000000', 'bold' => false);
             $work_title_style = array('name' => 'Ayuthaya', 'size' => 14, 'color' => 'FF0000', 'bold' => false, 'italic' => true);
             $work_title_align = array('align' => 'center');
             $work_text_style = array('name' => 'Calibri Light', 'size' => 14, 'color' => '000000', 'bold' => false);
@@ -184,7 +186,7 @@ class CollectionController extends Controller
             $footer = $section->addFooter();
             $footer->addText(
                 $author['name'] . ' ' . $author['surname'],
-                array('name' => 'Bad Script', 'size' => 14, 'color' => '000000', 'bold' => true)
+                $author_name_footer_style
             );
 
 
@@ -199,7 +201,9 @@ class CollectionController extends Controller
                     $work_title_align
                 );
 
-                $work_text = str_replace("\n", '<w:br/>', $work['text']);
+                $work_text = str_replace("\n", '<w:br/>', htmlspecialchars($work['text']));
+
+                \PhpOffice\PhpWord\Settings::setOutputEscapingEnabled(false);
 
                 // Пишем текст работы
                 $section->addText(
