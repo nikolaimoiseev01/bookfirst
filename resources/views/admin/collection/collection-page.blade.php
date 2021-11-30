@@ -301,7 +301,7 @@
                                                         @else
                                                             {{$vote->user_to_name}} {{$vote->user_to_surname}}
                                                         @endif
-
+                                                    <br>
                                                     @endforeach
                                                 </div>
 

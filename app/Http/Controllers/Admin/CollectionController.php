@@ -133,8 +133,7 @@ class CollectionController extends Controller
             $work_title_style = array('name' => 'Bad Script', 'size' => 16, 'color' => 'FF0000', 'bold' => true);
             $work_title_align = array('align' => 'left');
             $work_text_style = array('name' => 'Ayuthaya', 'size' => 10, 'color' => '000000', 'bold' => false);
-        }
-        else {
+        } else {
             $page_size = "A4";
             $author_name_style = array('name' => 'Days', 'size' => 16, 'color' => 'F79646', 'bold' => true);
             $author_name_footer_style = array('name' => 'Accuratist', 'size' => 14, 'color' => '000000', 'bold' => false);
@@ -143,6 +142,12 @@ class CollectionController extends Controller
             $work_text_style = array('name' => 'Calibri Light', 'size' => 14, 'color' => '000000', 'bold' => false);
         }
 
+        $PidPageSettings = array(
+            'marginTop' => 1000,
+            'footerHeight' => \PhpOffice\PhpWord\Shared\Converter::inchToTwip(.35),
+            'marginBottom' => 1100,
+            "paperSize" => $page_size
+        );
 
 
         // Creating the new document...
@@ -152,13 +157,6 @@ class CollectionController extends Controller
 
             // Создаем новый раздел для автора
 
-            $PidPageSettings = array(
-                'marginTop'   => 1000,
-                'footerHeight'=> \PhpOffice\PhpWord\Shared\Converter::inchToTwip(.35),
-                'marginBottom'   => 1100,
-                "paperSize" => $page_size
-
-            );
 
             $section = $phpWord->addSection($PidPageSettings);
             $header = $section->addHeader();
@@ -172,12 +170,11 @@ class CollectionController extends Controller
                 )
             );
 
-             if ($author['nickname']) {
+            if ($author['nickname']) {
                 $author_name = $author['nickname'];
+            } else {
+                $author_name = $author['name'] . ' ' . $author['surname'];
             }
-             else {
-                 $author_name = $author['name'] . ' ' . $author['surname'];
-             }
 
             // Пишем имя автора
             $section->addText(
@@ -220,6 +217,23 @@ class CollectionController extends Controller
                     $work_text_style
                 );
             }
+        }
+
+
+        // Создаем контактную информацию авторов
+
+        $section = $phpWord->addSection($PidPageSettings);
+        $table = $section->addTable();
+
+        foreach ($authors as $author) {
+            if ($author['nickname']) {
+                $author_name = $author['nickname'];
+            } else {
+                $author_name = $author['name'] . ' ' . $author['surname'];
+            }
+            $table->addRow();
+            $table->addCell(1750)->addText($author_name);
+            $table->addCell(1750)->addText($author->user['email']);
         }
 
         // Saving the document as HTML file...
@@ -462,38 +476,37 @@ class CollectionController extends Controller
         } else {
 
 
-        $users_from_participation = Participation::where('collection_id', $request->col_id)->get('user_id')->toArray();
-        $users = User::whereIn('id', $users_from_participation)->get();
-        $sent_to_users = "";
+            $users_from_participation = Participation::where('collection_id', $request->col_id)->get('user_id')->toArray();
+            $users = User::whereIn('id', $users_from_participation)->get();
+            $sent_to_users = "";
 
-        foreach ($users as $user) {
-            $sent_to_users = $sent_to_users . $user['id'] . ";";
-            $user->notify(new AllParticipantsEmail(
-                $request->subject,
-                $user['name'],
-                $request->email_text,
-                route('homePortal') . "/myaccount/collections/" . $request->col_id . "/participation/" . Participation::where([['user_id', $user->id], ['collection_id', $request->col_id]])->value('id'))
-            );
-        }
-
-
-
-        // ---- Сохраняем письмо! ---- //
-        $new_EmailSent = new EmailSent();
-        $new_EmailSent->collection_id = $request->col_id;
-        $new_EmailSent->subject = $request->subject;
-        $new_EmailSent->email_text = $request->email_text;
-        $new_EmailSent->sent_to_user = substr($sent_to_users, 0, -1);
-        $new_EmailSent->save();
-        // ---- //// Сохраняем письмо! ---- //
+            foreach ($users as $user) {
+                $sent_to_users = $sent_to_users . $user['id'] . ";";
+                $user->notify(new AllParticipantsEmail(
+                        $request->subject,
+                        $user['name'],
+                        $request->email_text,
+                        route('homePortal') . "/myaccount/collections/" . $request->col_id . "/participation/" . Participation::where([['user_id', $user->id], ['collection_id', $request->col_id]])->value('id'))
+                );
+            }
 
 
-        session()->flash('success', 'change_printorder');
-        session()->flash('alert_type', 'success');
-        session()->flash('alert_title', 'Успешно!');
-        session()->flash('alert_text', 'Мы послали всем участникам емейлы :)');
+            // ---- Сохраняем письмо! ---- //
+            $new_EmailSent = new EmailSent();
+            $new_EmailSent->collection_id = $request->col_id;
+            $new_EmailSent->subject = $request->subject;
+            $new_EmailSent->email_text = $request->email_text;
+            $new_EmailSent->sent_to_user = substr($sent_to_users, 0, -1);
+            $new_EmailSent->save();
+            // ---- //// Сохраняем письмо! ---- //
 
-        return redirect()->back();
+
+            session()->flash('success', 'change_printorder');
+            session()->flash('alert_type', 'success');
+            session()->flash('alert_title', 'Успешно!');
+            session()->flash('alert_text', 'Мы послали всем участникам емейлы :)');
+
+            return redirect()->back();
         }
     }
 

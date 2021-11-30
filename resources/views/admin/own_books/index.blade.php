@@ -36,12 +36,21 @@
                 {{ $own_books->links() }}
             </div>
             <!-- Small boxes (Stat box) -->
-            <div class="row" id="collections_id">
+            <div style="align-items: center;" class="row" id="collections_id">
+                <style>
+                    @media screen and (max-width: 800px) {
+
+                        .media-card {
+                            width: inherit !important;
+                        }
+
+                    }
+                </style>
                 {{App::setLocale('ru')}}
                 @foreach($own_books as $own_book)
                     <div>
                         <!-- Widget: user widget style 2 -->
-                        <div class="card mb-5 mr-5 card-widget widget-user-2">
+                        <div style="width:450px;" class="media-card card mb-5 mr-5 card-widget widget-user-2">
                             <!-- Add the bg color to the header using any of the bg-* classes -->
                             <div
                                 class="widget-user-header bg-gradient-lightblue">

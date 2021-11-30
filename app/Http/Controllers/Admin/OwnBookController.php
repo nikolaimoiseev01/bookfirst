@@ -27,7 +27,7 @@ class OwnBookController extends Controller
 
     public function index()
     {
-        $own_books = own_book::orderBy('id', 'desc')->where('own_book_status_id', '<>', 9)->paginate(5);
+        $own_books = own_book::orderBy('id', 'desc')->where('own_book_status_id', '<>', 9)->paginate(10);
         return view('admin.own_books.index', [
             'own_books' => $own_books,
         ]);
@@ -47,8 +47,8 @@ class OwnBookController extends Controller
         $this->own_book = own_book::where('id', $request->own_book_id)->with('printorder')->with('own_books_works')->with('own_book_files')->first();
         $inside_files = own_book_files::where('file_type', 'inside')->where('own_book_id', $request->own_book_id)->get();
         $cover_files = own_book_files::where('file_type', 'cover')->where('own_book_id', $request->own_book_id)->get();
-        $prev_comments_inside = preview_comment::where('own_book_id', $request->own_book_id)->where('own_book_comment_type', 'inside')->get();
-        $prev_comments_cover = preview_comment::where('own_book_id', $request->own_book_id)->where('own_book_comment_type', 'cover')->get();
+        $prev_comments_inside = preview_comment::where('own_book_id', $request->own_book_id)->where('own_book_comment_type', 'inside')->orderBy('id', 'asc')->get();
+        $prev_comments_cover = preview_comment::where('own_book_id', $request->own_book_id)->where('own_book_comment_type', 'cover')->orderBy('id', 'asc')->get();
         $own_book_statuses = own_book_status::orderby('id')->get();
         $own_book_inside_statuses = own_book_inside_status::orderby('id')->get();
         $own_book_cover_statuses = own_book_cover_status::orderby('id')->get();
