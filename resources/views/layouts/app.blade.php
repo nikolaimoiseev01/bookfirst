@@ -438,8 +438,12 @@
         </div>
 
         <div class="footer-questions">
-            <div style="margin-bottom: 10px;">Остались вопросы?</div>
-            <a href="{{route('chat_create','Вопрос по работе с платформой')}}" class="log_check button">Задать</a>
+            <div style="display: flex; flex-direction: column;">
+                <span style="margin-bottom: 10px;">Остались вопросы?<br>
+                Задайте их прямо сейчас
+                </span>
+                <a href="{{route('help_account')}}" class="button">Помощь</a>
+            </div>
         </div>
     </div>
 </div>

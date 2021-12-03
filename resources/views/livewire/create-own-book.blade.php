@@ -628,7 +628,7 @@
             <button style="float: left; margin-right:20px;" type="submit" id="save_form" class="preloader_button button">
                 <span class="button__text">Отправить заявку</span>
             </button>
-            <a href="{{route('chat_create','Проблема заявки на издание книги')}}" style="font-size: 20px;" class="link"><i>Нужна помощь</i></a>
+            <a href="{{route('help_own_book')}}" style="font-size: 20px;" class="link"><i>Нужна помощь</i></a>
         </div>
 
 

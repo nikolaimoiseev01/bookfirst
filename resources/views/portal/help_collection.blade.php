@@ -70,7 +70,7 @@
                 <div class="nav">
                     <a href="{{route('help_account')}}">Личный кабинет</a>
                     <a href="#collections" class="current">Участие в сборнках</a>
-{{--                    <a href="{{route('help_own_book')}}">Издание собственной книги</a>--}}
+                    <a href="{{route('help_own_book')}}">Издание собственной книги</a>
                 </div>
                 <div style="transition: .3s ease-in-out" class="list-wrap">
 

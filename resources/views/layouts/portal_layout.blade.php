@@ -150,7 +150,7 @@
     <style>
         .dropped_menu_box, .own_dropped_menu_box {
             left: -27px;
-            text-align:center;
+            text-align: center;
             background: #ffffff;
             position: absolute;
             transition: all .1s ease-in-out;
@@ -168,7 +168,7 @@
 
         .own_dropped_menu_box {
             left: 32px;
-            width:190px;
+            width: 190px;
         }
 
         #collection_menu_link:hover ~ .dropped_menu_box {
@@ -222,15 +222,19 @@
         <div style="position:relative;">
             <span class="menu-link" id="collection_menu_link" style="margin-left: 0 !important;">Сборники</span>
             <div class="dropped_menu_box">
-                <a class="menu-link" style="display: block; margin: 0 20px !important;" href="{{route('actual_collections')}}">Актуальные</a>
-                <a style="margin: 10px 20px 0 20px !important; display: block;" class="menu-link" href="{{route('old_collections')}}">Изданные</a>
+                <a class="menu-link" style="display: block; margin: 0 20px !important;"
+                   href="{{route('actual_collections')}}">Актуальные</a>
+                <a style="margin: 10px 20px 0 20px !important; display: block;" class="menu-link"
+                   href="{{route('old_collections')}}">Изданные</a>
             </div>
         </div>
         <div style="position:relative;">
             <span class="menu-link" id="own_books_menu_link">Собственные книги</span>
             <div class="own_dropped_menu_box">
-                <a class="menu-link" style="display: inline-block; margin: 0 20px !important;" href="{{route('own_book_page')}}">Подробнее</a>
-                <a style="margin: 10px 20px 0 20px !important; display: inline-block;" class="menu-link" href="{{route('own_books_portal')}}">Изданные</a>
+                <a class="menu-link" style="display: inline-block; margin: 0 20px !important;"
+                   href="{{route('own_book_page')}}">Подробнее</a>
+                <a style="margin: 10px 20px 0 20px !important; display: inline-block;" class="menu-link"
+                   href="{{route('own_books_portal')}}">Изданные</a>
             </div>
         </div>
         <a class="menu-link" href="{{route('about')}}">О нас</a>
@@ -355,8 +359,10 @@
         </div>
 
         <div class="footer-questions">
-            <div style="margin-bottom: 10px;">Остались вопросы?<br>
-                Задайте их прямо сейчас<br>
+            <div style="display: flex; flex-direction: column;">
+                <span style="margin-bottom: 10px;">Остались вопросы?<br>
+                Задайте их прямо сейчас
+                </span>
                 <a href="{{route('help_account')}}" class="button">Помощь</a>
             </div>
         </div>
