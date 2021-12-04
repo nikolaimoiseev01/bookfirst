@@ -7,6 +7,7 @@ use App\Models\Work;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 
 class WorkController extends Controller
 {
@@ -17,31 +18,22 @@ class WorkController extends Controller
      */
     public function index()
     {
-        $works = Work::where('user_id', Auth::user()->id)
-            ->orderBy('created_at', 'desc')
-            ->paginate(15);
+        $page_type = 'no_search';
         session(['previous-url' => request()->url()]);
         return view('account.my_works.index', [
-            'works' => $works,
+            'page_type' => 'no_search',
             'work_input_search' => 'no_search',
         ]);
     }
 
-    public function work_search($work_input_search)
+    public function index_search($work_input_search)
     {
-//        dd($work_input_search);
-        $works = Work::where('user_id', Auth::user()->id)
-            ->where('title', 'like', '%' . $work_input_search . '%')
-            ->orWhere('text', 'like', '%' . $work_input_search . '%')
-            ->orderBy('created_at', 'desc')
-            ->paginate(15);
         session(['previous-url' => request()->url()]);
         return view('account.my_works.index', [
-            'works' => $works,
             'work_input_search' => $work_input_search,
+            'page_type' => 'search',
         ]);
     }
-
 
 
     /**
@@ -109,16 +101,40 @@ class WorkController extends Controller
      */
     public function update(Request $request, Work $work)
     {
-        $work->title = $request->title;
-        $work->text = $request->text;
-        $work->user_id = Auth::user()->id;
-        $work->save();
-        session()->flash('show_modal', 'yes');
-        session()->flash('alert_type', 'success');
-        session()->flash('alert_title', 'Успешно!');
-        session()->flash('alert_text', 'Произведение "' . $request->title . '" отредактировано.');
 
-        return redirect('/myaccount/work');
+
+        // --------- Ищем ошибки в заполнении  --------- //
+        $errors_array = [];
+
+        if ($request->title == null || $request->text == null) {
+            array_push($errors_array, 'Не все поля заполнены!');
+        }
+
+
+        if (!empty($errors_array)) {
+            session()->flash('show_modal', 'yes');
+            session()->flash('alert_type', 'error');
+            session()->flash('alert_title', 'Ошибка!');
+            session()->flash('alert_text', 'Не все поля заполнены!');
+
+            return redirect()->back();
+        }
+
+        // --------- //Ищем ошибки в заполнении  --------- //
+
+
+        if (empty($errors_array)) {
+            $work->title = $request->title;
+            $work->text = $request->text;
+            $work->user_id = Auth::user()->id;
+            $work->save();
+            session()->flash('show_modal', 'yes');
+            session()->flash('alert_type', 'success');
+            session()->flash('alert_title', 'Успешно!');
+            session()->flash('alert_text', 'Произведение "' . $request->title . '" отредактировано.');
+
+            return redirect('/myaccount/work');
+        }
     }
 
     /**

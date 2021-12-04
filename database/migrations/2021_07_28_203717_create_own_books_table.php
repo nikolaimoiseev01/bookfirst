@@ -25,7 +25,7 @@ class CreateOwnBooksTable extends Migration
             $table->bigInteger('pages');
             $table->bigInteger('color_pages');
             $table->string('inside_type');
-            $table->string('cover_comment')->nullable();
+            $table->text('cover_comment')->nullable();
             $table->bigInteger('promo_type')->nullable();
 
 

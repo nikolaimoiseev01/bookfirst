@@ -173,9 +173,8 @@ class CreateOwnBook extends Component
         if ($this->cover_price > 0 & ($this->cover_comment === null || $this->cover_comment === "")) {
             array_push($errors_array, 'Введите комментарий по обложке!');
         }
-
         if ($this->cover_price === 0 & ($this->cover_files === null || $this->cover_files === "")) {
-            array_push($errors_array, 'Загрузить файлы обложки!');
+            array_push($errors_array, 'Загрузите файлы обложки!');
         }
 
         if ($this->pages <= 30) {
@@ -257,7 +256,7 @@ class CreateOwnBook extends Component
                     $own_book_new_file = new own_book_files();
                     $own_book_new_file->own_book_id = $new_own_book->id;
                     $own_book_new_file->file_type = 'inside';
-                    $own_book_new_file->file = substr($file_new_path, strpos($file_new_path, 'public') + 7);
+                    $own_book_new_file->file = substr($file_new_path, strpos($file_new_path, 'public'));
                     $own_book_new_file->save();
                     $old_folder = substr($doc_path, 0, strpos($doc_path, '/', strpos($doc_path, '/')+1));
                     File::deleteDirectory(public_path('filepond_temp/' . $old_folder));
@@ -289,7 +288,7 @@ class CreateOwnBook extends Component
                     $own_book_new_file = new own_book_files();
                     $own_book_new_file->own_book_id = $new_own_book->id;
                     $own_book_new_file->file_type = 'cover';
-                    $own_book_new_file->file = substr($file_new_path, strpos($file_new_path, 'public') + 7);
+                    $own_book_new_file->file = substr($file_new_path, strpos($file_new_path, 'public'));
                     $own_book_new_file->save();
                     $old_folder = substr($doc_path, 0, strpos($doc_path, '/', strpos($doc_path, '/')+1));
                     File::deleteDirectory(public_path('filepond_temp/' . $old_folder));
@@ -308,7 +307,7 @@ class CreateOwnBook extends Component
                     $own_book_new_file = new own_book_files();
                     $own_book_new_file->own_book_id = $new_own_book->id;
                     $own_book_new_file->file_type = 'pre_cover';
-                    $own_book_new_file->file = substr($file_new_path, strpos($file_new_path, 'public') + 7);
+                    $own_book_new_file->file = substr($file_new_path, strpos($file_new_path, 'public'));
                     $own_book_new_file->save();
                     $old_folder = substr($doc_path, 0, strpos($doc_path, '/', strpos($doc_path, '/')+1));
                     File::deleteDirectory(public_path('filepond_temp/' . $old_folder));

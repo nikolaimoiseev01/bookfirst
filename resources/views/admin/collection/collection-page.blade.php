@@ -101,6 +101,7 @@
                                     </div>
 
                                     <div class="mb-3 col-md-2">
+                                        {{App::setLocale('ru')}}
                                         <div class="mb-2 date">Конец приема заявок <input
                                                 value="{{$collection['col_date1']}}" name="col_date1" class="datepicker"
                                                 id="datepicker1"/></div>
@@ -114,6 +115,32 @@
                                                                                name="col_date4" class="datepicker"
                                                                                id="datepicker4"/></div>
                                     </div>
+
+                                    <script>
+
+                                        function check_cur_date () {
+                                            date_1 = $('#datepicker1').val()
+                                            date_2 = $('#datepicker2').val()
+                                            date_3 = $('#datepicker3').val()
+                                            date_4 = $('#datepicker4').val()
+                                        }
+
+                                        function take_cur_date(id) {
+                                            cur_date_before =  $('#datepicker_').val()
+                                        }
+
+                                        check_cur_date();
+
+                                        $('.datepicker').on('change', function() {
+                                            cur_date = $(this).val();
+                                            id = $(this).attr('id').slice(-1);
+
+
+                                            if (cur_date != date_1) {
+
+                                            }
+                                        })
+                                    </script>
                                 </div>
 
                                 <div class="card-footer">

@@ -480,6 +480,7 @@
     window.addEventListener('swal:confirm', event => {
         Swal.fire({
             title: event.detail.title,
+            icon:'warning',
             showDenyButton: true,
             showCancelButton: false,
             confirmButtonText: `Все верно`,

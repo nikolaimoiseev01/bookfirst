@@ -13,7 +13,8 @@
         </span>
 
         <span class="tooltip" title="Несколько произведений сразу">
-        <a style="box-shadow: none;" href="{{route('create_from_doc')}}" onclick="make_session()" class="fast-load button">Добавить файлом</a>
+        <a style="box-shadow: none;" href="{{route('create_from_doc')}}" onclick="make_session()"
+           class="fast-load button">Добавить файлом</a>
         </span>
 
         <div class="search-bar-wrap">
@@ -46,44 +47,16 @@
     </div>
 @endsection
 @section('content')
-    @if ($work_input_search <> 'no_search' & count($works) == 0)
-        <p>По запросу <i>"{{$work_input_search}}"</i> произведений не найдено</p>
+    @if($page_type == 'no_search')
+        @livewire('my-works', ['page_type' => 'no_search', 'work_input_text' => ''])
+    @else
+        @livewire('my-works', ['page_type' => 'search', 'work_input_text' => $work_input_search])
     @endif
-    <div class="element-wrap">
-        {{App::setLocale('ru')}}
-        @foreach($works as $work)
-            <div class="container">
-                <div class="el-desc">
-                    <span>{{Str::limit($work['title'], 30)}}</span>
-                    <p>Опубликовано: {{ Date::parse($work['created_at'])->format('j F') }}</p>
-                </div>
-
-                <div class="el-button-wrap">
-                    <a href="{{route('work.edit', $work->id)}}">
-                         <span class="tooltip" title="Редактировать">
-                           <svg id="Слой_1" data-name="Слой 1" xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 401 398.98">
-                            <path
-                                d="M370.11,251.91a10,10,0,0,0-10,10v88.68a30,30,0,0,1-30,30H49.93a30,30,0,0,1-30-30V90.32a30,30,0,0,1,30-30h88.68a10,10,0,1,0,0-20H49.93A50,50,0,0,0,0,90.32V350.57A50,50,0,0,0,49.93,400.5H330.16a50,50,0,0,0,49.93-49.93V261.89A10,10,0,0,0,370.11,251.91Z"
-                                transform="translate(0 -1.52)"/>
-                            <path
-                                d="M376.14,14.68a45,45,0,0,0-63.56,0L134.41,192.86a10,10,0,0,0-2.57,4.39l-23.43,84.59a10,10,0,0,0,12.29,12.3l84.59-23.44a10,10,0,0,0,4.4-2.56L387.86,90a45,45,0,0,0,0-63.56Zm-220,184.67L302,53.52l47,47L203.19,246.38Zm-9.4,18.85,37.58,37.58-52,14.39Zm227-142.36-10.6,10.59-47-47,10.6-10.59a25,25,0,0,1,35.3,0l11.73,11.71A25,25,0,0,1,373.74,75.84Z"
-                                transform="translate(0 -1.52)"/>
-                        </svg>
-                       </span>
-
-                    </a>
-                </div>
-            </div>
-        @endforeach
-
-
-    </div>
-    {{ $works->links() }}
-
 @endsection
 
 @section('page-js')
     {{Session(['back_after_add' => \Livewire\str(Request::url())])}}
+
+
 
 @endsection

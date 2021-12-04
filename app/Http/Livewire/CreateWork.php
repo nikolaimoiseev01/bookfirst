@@ -58,6 +58,7 @@ class CreateWork extends Component
         $new_work->symbols = $this->symbols;
         $new_work->rows = $this->rows;
         $new_work->pages = $this->pages;
+        $new_work->upload_type = 'вручную';
         $new_work->user_id = Auth::user()->id;
         $new_work->save();
 

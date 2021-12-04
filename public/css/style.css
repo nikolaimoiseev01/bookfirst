@@ -787,6 +787,7 @@ form .check-block {
     content: attr(title);
     text-decoration: none;
     padding: 5px 10px;
+    visibility: hidden;
     left: 50%;
     z-index: -5;
     -webkit-transform: translateX(-50%);
@@ -803,6 +804,7 @@ form .check-block {
     opacity: 1;
     transition: .3s;
     z-index: 9999999999;
+    visibility:inherit;
 }
 
 

@@ -171,6 +171,7 @@ class CreateWorkFromDoc extends Component
             $new_work->symbols = $work['symbols'];
             $new_work->rows = $work['rows'];
             $new_work->pages = $work['pages'];
+            $new_work->upload_type = 'из документа';
             $new_work->user_id = Auth::user()->id;
             $new_work->save();
         }

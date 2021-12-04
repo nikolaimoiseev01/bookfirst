@@ -15,7 +15,7 @@
 
                         <span style="font-size: 18px;">кем создан:
                             @if ($own_book['user_id'])
-                            <a style="color: #a8fffb"  href="{{route('user_page', $own_book['user_id'])}}" >
+                                <a style="color: #a8fffb" href="{{route('user_page', $own_book['user_id'])}}">
                                 <i>{{$own_book->user['name']}}{{$own_book->user['surname']}}</i>
                             </a>
                             @else
@@ -350,33 +350,55 @@
                                     @if ($own_book['inside_type'] == 'файлами')
                                         <h3>Автор загрузил файлы:</h3>
                                         @foreach($inside_files as $file)
-                                            <h3 style="font-size: 1.3em">{{$loop->index + 1}}. {{$file['file']}}</h3>
+                                            <h3 style="font-size: 1.3em">{{$loop->index + 1}}. <a
+                                                    href="/{{$file['file']}}">{{substr($file['file'], strrpos($file['file'], '/', -10) + 1, 200) }}</a>
+                                            </h3>
                                         @endforeach
                                     @endif
                                 </div>
                                 <div class="border-left pl-2 col-sm-6">
+                                    <h3>Готовый внутренний блок:</h3>
 
-                                    @if ($own_book['own_book_inside_status_id'] == 9)
-                                        <div class="align-items-center d-flex">
-                                            <h3 style="margin-bottom: 0; font-size: 28px; color: #14b514">Готовые файлы
-                                                от автора лежат в его папке :)</h3>
-                                            <button id="chat_add"
-                                                    style="height: 30px; border-radius: 10px; width: fit-content;"
-                                                    class="ml-3 d-flex align-items-center btn btn-outline-danger btn-block btn-flat">
-                                                Отправить на доработку
-                                            </button>
+                                    <form action="{{ route('update_own_book_inside',$own_book['id']) }}"
+                                          method="post"
+                                          enctype="multipart/form-data">
+                                        @csrf
+                                        <div class="d-flex">
+                                            <input type="file" name="inside_file"
+                                                   class="d-none form-control custom-file-input" id="inside_file"
+                                                   aria-describedby="myInput">
+
+                                            <label id="label_inside_file"
+                                                   class="position-relative form-control custom-file-label"
+                                                   for="inside_file"
+                                            >
+                                                @if(file_exists($own_book['inside_file']))
+                                                    {{substr($own_book['inside_file'], strrpos($own_book['inside_file'], '/') + 1)}}
+                                                @else
+                                                    Файл еще не загружен!
+                                                @endif
+                                            </label>
+                                            <a style="height: 38px;display: flex; flex-direction: column; padding: 5px;"
+                                               href="/{{$own_book['inside_file']}}" class="btn btn-app">
+                                                <i style="font-size: 15px" class="fas fa-download"></i>
+                                                Скачать
+                                            </a>
                                         </div>
-                                    @else
-                                        <h3>Готовый внутренний блок:</h3>
-                                        @if(file_exists($own_book['inside_file']))
+                                        <div class="align-items-center d-flex">
+                                            <button type="submit" class="btn btn-primary">Обновить</button>
+                                            @if(file_exists($own_book['inside_file']))
+                                                <p class="mb-0 ml-3">
+                                                    {{App::setLocale('ru')}}
 
-                                            <h3 style="font-size: 23px; color: #14b514">Файл верстки успешно найден в
-                                                папке книги, супер!)</h3>
-                                        @else
-                                            <h3 style="font-size: 23px; color: red">!!ОСТОРОЖНО!! Я не могу найти PDF
-                                                файл внутреннего блока! Ищу файл: {{$own_book['inside_file']}}</h3>
-                                        @endif
-                                    @endif
+                                                    <b>Последнее
+                                                        сохранение:</b> {{ Date::parse(date("d-M-Y H:i", filemtime($own_book['inside_file'])))->addHours(3)->format('j F Y | H:i') }}
+                                                    <br>
+                                                    @endif
+                                                </p>
+
+
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
 
@@ -484,7 +506,7 @@
                                     <div class="tab-content" id="nav-tabContent">
                                         <div class="tab-pane fade show active" id="nav-2d" role="tabpanel"
                                              aria-labelledby="nav-2d-tab">
-                                            @if ($own_book['cover_2d'] === '')
+                                            @if (!$own_book['cover_2d'])
                                                 <p class="m-3"><b>2d вариант не загружен!</b></p>
                                             @else
                                                 <img class="m-2" style="width: 200px;" src="/{{$own_book['cover_2d']}}"
@@ -526,123 +548,123 @@
                                                for="cover_3d">
                                             {{substr($own_book['cover_3d'], strrpos($own_book['cover_3d'], '/') + 1)}}
                                         </label>
+
                                         <button type="submit" class="btn btn-primary">Обновить</button>
                                     </form>
                                 </div>
                                 <div class="col-sm-9 pl-3">
+                                    <div class="pb-2" style="border-bottom: 1px solid #dee2e6;">
+                                        <h3 class="m-0 d-inline">Автор загрузил файлы обложки:</h3>
+                                        @foreach($cover_files as $file)
+                                            <h3 style="font-size: 1.3em">{{$loop->index + 1}}. <a
+                                                    href="/{{$file['file']}}">{{substr($file['file'], strrpos($file['file'], '/', -10) + 1, 200) }}</a>
+                                            </h3>
+                                        @endforeach
 
-                                    @if ($own_book['own_book_cover_status_id'] == 9)
-                                        <div class="align-items-center d-flex">
-                                            <h3 style="margin-bottom: 0; font-size: 28px; color: #14b514">Готовые файлы
-                                                от автора лежат в его папке :)</h3>
-                                            <button id="chat_add"
-                                                    style="height: 30px; border-radius: 10px; width: fit-content;"
-                                                    class="ml-3 d-flex align-items-center btn btn-outline-danger btn-block btn-flat">
-                                                Отправить на доработку
-                                            </button>
-                                        </div>
-                                    @endif
+                                        @if ($own_book['cover_comment'])
+                                            <h3 class="mb-2 d-inline">Комментарий</h3>
+                                            <h4 class="mt-2">Пожелания автора:</h4>
+                                            <div class="mt-2 mb-4 p-2 border">
+                                                {{$own_book['cover_comment']}}
+                                            </div>
+                                        @endif
+                                    </div>
 
-                                    @if ($own_book['cover_comment'])
-                                        <h3 class="mb-2 d-inline">Необходимо создание обложки</h3>
-                                        <h4 class="mt-2">Пожелания автора:</h4>
-                                        <div class="mt-2 mb-4 p-2 border">
-                                            {{$own_book['cover_comment']}}
-                                        </div>
-                                    @endif
+                                    <div class="pt-2">
+                                        @if ($own_book['own_book_cover_status_id'] == 3 & count($prev_comments_cover) == 0)
+                                            <h3 class="mt-3 d-inline">Исправления обложки</h3>
+                                            <h4 class="mt-2">Автор отправил на исправления, но не указал ни одного
+                                                исправления. Видимо, можно апрувить.</h4>
+                                        @endif
 
-                                    @if ($own_book['own_book_cover_status_id'] == 3 & count($prev_comments_cover) == 0)
-                                        <h3 class="m-0 d-inline">Исправления обложки</h3>
-                                        <h4 class="mt-2">Автор отправил на исправления, но не указал ни одного
-                                            исправления. Видимо, можно апрувить.</h4>
-                                    @endif
+                                        @if ( count($prev_comments_cover) == 0)
+                                            <h3 class="mt-3 d-inline">Исправления обложки</h3>
+                                            <h4 class="mt-2">Еще не было исправлений обложки</h4>
+                                        @endif
 
-                                    @if ( count($prev_comments_cover) == 0)
-                                        <h3 class="m-0 d-inline">Исправления обложки</h3>
-                                        <h4 class="mt-2">Еще не было исправлений обложки</h4>
-                                    @endif
+                                        @if (count($prev_comments_cover) > 0)
+                                            <div class="d-flex justify-content-between align-items-end mb-3">
+                                                <h3 class="m-0 d-inline">Исправления обложки</h3>
+                                                <form
+                                                    class="d-flex flex-column justify-content-center align-items-center"
+                                                    style=" align-items: center;"
+                                                    action="{{ route('change_all_preview_comment_status',[$own_book['id'], 'cover']) }}"
+                                                    method="POST"
+                                                    enctype="multipart/form-data"
+                                                >
+                                                    @csrf
+                                                    <button class="float-right border-0 " type="submit"
+                                                            style="background: #fff0; color: #34b734 !important;">
+                                                        Отметить
+                                                        все
+                                                        выполненными
+                                                    </button>
+                                                </form>
 
-                                    @if (count($prev_comments_cover) > 0)
-                                        <div class="d-flex justify-content-between align-items-end mb-3">
-                                            <h3 class="m-0 d-inline">Исправления обложки</h3>
-                                            <form
-                                                class="d-flex flex-column justify-content-center align-items-center"
-                                                style=" align-items: center;"
-                                                action="{{ route('change_all_preview_comment_status',[$own_book['id'], 'cover']) }}"
-                                                method="POST"
-                                                enctype="multipart/form-data"
-                                            >
-                                                @csrf
-                                                <button class="float-right border-0 " type="submit"
-                                                        style="background: #fff0; color: #34b734 !important;">Отметить
-                                                    все
-                                                    выполненными
-                                                </button>
-                                            </form>
-
-                                        </div>
-                                        <table id="participants_table" class="table table-bordered table-hover">
-                                            <thead>
-                                            <tr>
-                                                <th>Текст</th>
-                                                <th style="width: 1%;">Статус</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            @foreach($prev_comments_cover as $prev_comment)
+                                            </div>
+                                            <table id="participants_table" class="table table-bordered table-hover">
+                                                <thead>
                                                 <tr>
-                                                    <td style="text-align: inherit;">
-                                                        {{$prev_comment['text']}}
-                                                    </td>
-                                                    <td class="d-flex flex-column justify-content-center align-items-center"
-                                                        style="text-align: center;">
-                                                        <form
-                                                            class="d-flex flex-column justify-content-center align-items-center"
-                                                            style=" align-items: center;"
-                                                            action="{{ route('change_preview_comment_status',$prev_comment->id) }}"
-                                                            method="POST"
-                                                            enctype="multipart/form-data"
-                                                        >
-                                                            @csrf
-                                                            @if($prev_comment['status_done'] === 0)
-                                                                <svg width="25px" style="fill: red;"
-                                                                     viewBox="0 0 512 512">
-                                                                    <path
-                                                                        d="M256,512C114.84,512,0,397.16,0,256S114.84,0,256,0,512,114.84,512,256,397.16,512,256,512Zm0-475.43C135,36.57,36.57,135,36.57,256S135,475.43,256,475.43,475.43,377,475.43,256,377,36.57,256,36.57Z"
-                                                                        transform="translate(0 0)"/>
-                                                                    <path
-                                                                        d="M347.43,365.71a18.22,18.22,0,0,1-12.93-5.35L151.64,177.5a18.29,18.29,0,0,1,25.86-25.86L360.36,334.5a18.28,18.28,0,0,1-12.93,31.21Z"
-                                                                        transform="translate(0 0)"/>
-                                                                    <path
-                                                                        d="M164.57,365.71a18.28,18.28,0,0,1-12.93-31.21L334.5,151.64a18.29,18.29,0,0,1,25.86,25.86L177.5,360.36A18.22,18.22,0,0,1,164.57,365.71Z"
-                                                                        transform="translate(0 0)"/>
-                                                                </svg>
-                                                                <button class="border-0 " type="submit"
-                                                                        style="background: #fff0; color: #34b734 !important;">
-                                                                    Выполнить
-                                                                </button>
-                                                            @else
-                                                                <svg width="30px" style="fill: #34b734;"
-                                                                     viewBox="0 0 477.87 477.87">
-                                                                    <path
-                                                                        d="M238.93,0C107,0,0,107,0,238.93S107,477.87,238.93,477.87s238.94-107,238.94-238.94S370.83.14,238.93,0Zm0,443.73c-113.11,0-204.8-91.69-204.8-204.8s91.69-204.8,204.8-204.8,204.8,91.69,204.8,204.8S352,443.61,238.93,443.73Z"
-                                                                        transform="translate(0 0)"/>
-                                                                    <path
-                                                                        d="M370.05,141.53a17.09,17.09,0,0,0-23.72,0h0l-158.6,158.6-56.2-56.2A17.07,17.07,0,1,0,107,267.65l.42.41,68.27,68.27a17.07,17.07,0,0,0,24.13,0L370.47,165.66A17.07,17.07,0,0,0,370.05,141.53Z"
-                                                                        transform="translate(0 0)"/>
-                                                                </svg>
-                                                                <button class="border-0 " type="submit"
-                                                                        style="background: #fff0; color: #de6464 !important;">
-                                                                    Отменить
-                                                                </button>
-                                                            @endif
-                                                        </form>
-                                                    </td>
+                                                    <th>Текст</th>
+                                                    <th style="width: 1%;">Статус</th>
                                                 </tr>
-                                            @endforeach
-                                            </tbody>
-                                        </table>
-                                    @endif
+                                                </thead>
+                                                <tbody>
+                                                @foreach($prev_comments_cover as $prev_comment)
+                                                    <tr>
+                                                        <td style="text-align: inherit;">
+                                                            {{$prev_comment['text']}}
+                                                        </td>
+                                                        <td class="d-flex flex-column justify-content-center align-items-center"
+                                                            style="text-align: center;">
+                                                            <form
+                                                                class="d-flex flex-column justify-content-center align-items-center"
+                                                                style=" align-items: center;"
+                                                                action="{{ route('change_preview_comment_status',$prev_comment->id) }}"
+                                                                method="POST"
+                                                                enctype="multipart/form-data"
+                                                            >
+                                                                @csrf
+                                                                @if($prev_comment['status_done'] === 0)
+                                                                    <svg width="25px" style="fill: red;"
+                                                                         viewBox="0 0 512 512">
+                                                                        <path
+                                                                            d="M256,512C114.84,512,0,397.16,0,256S114.84,0,256,0,512,114.84,512,256,397.16,512,256,512Zm0-475.43C135,36.57,36.57,135,36.57,256S135,475.43,256,475.43,475.43,377,475.43,256,377,36.57,256,36.57Z"
+                                                                            transform="translate(0 0)"/>
+                                                                        <path
+                                                                            d="M347.43,365.71a18.22,18.22,0,0,1-12.93-5.35L151.64,177.5a18.29,18.29,0,0,1,25.86-25.86L360.36,334.5a18.28,18.28,0,0,1-12.93,31.21Z"
+                                                                            transform="translate(0 0)"/>
+                                                                        <path
+                                                                            d="M164.57,365.71a18.28,18.28,0,0,1-12.93-31.21L334.5,151.64a18.29,18.29,0,0,1,25.86,25.86L177.5,360.36A18.22,18.22,0,0,1,164.57,365.71Z"
+                                                                            transform="translate(0 0)"/>
+                                                                    </svg>
+                                                                    <button class="border-0 " type="submit"
+                                                                            style="background: #fff0; color: #34b734 !important;">
+                                                                        Выполнить
+                                                                    </button>
+                                                                @else
+                                                                    <svg width="30px" style="fill: #34b734;"
+                                                                         viewBox="0 0 477.87 477.87">
+                                                                        <path
+                                                                            d="M238.93,0C107,0,0,107,0,238.93S107,477.87,238.93,477.87s238.94-107,238.94-238.94S370.83.14,238.93,0Zm0,443.73c-113.11,0-204.8-91.69-204.8-204.8s91.69-204.8,204.8-204.8,204.8,91.69,204.8,204.8S352,443.61,238.93,443.73Z"
+                                                                            transform="translate(0 0)"/>
+                                                                        <path
+                                                                            d="M370.05,141.53a17.09,17.09,0,0,0-23.72,0h0l-158.6,158.6-56.2-56.2A17.07,17.07,0,1,0,107,267.65l.42.41,68.27,68.27a17.07,17.07,0,0,0,24.13,0L370.47,165.66A17.07,17.07,0,0,0,370.05,141.53Z"
+                                                                            transform="translate(0 0)"/>
+                                                                    </svg>
+                                                                    <button class="border-0 " type="submit"
+                                                                            style="background: #fff0; color: #de6464 !important;">
+                                                                        Отменить
+                                                                    </button>
+                                                                @endif
+                                                            </form>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -854,65 +876,66 @@
 
                         <div class="tab-pane" id="chat">
                             @if ($own_book['user_id'])
-                            <div class="mb-3 d-flex align-items-center">
-                                <h4 style="margin-bottom: 0 !important;" class="">Статус чата:
-                                    <i id="change_chat_status_text">{{$chat->chat_status['status']}}</i>
-                                </h4>
-                                <div style="display: none" id="change_chat_status_form_wrap">
-                                    <form class="d-flex ml-3" style=" align-items: center;"
-                                          action="{{ route('change_chat_status', $chat['id']) }}"
-                                          method="POST"
-                                          enctype="multipart/form-data"
-                                    >
-                                        @csrf
-
-                                        <select id="chat_status_id" class="form-control" name="chat_status_id">
-                                            @foreach($chat_statuses as $chat_status)
-                                                <option @if($chat['chat_status_id'] == $chat_status['id']) selected @endif value="{{$chat_status['id']}}">{{$chat_status['status']}}</option>
-                                            @endforeach
-                                        </select>
-
-                                        <button id="btn-submit" type="submit"
-                                                style="height: fit-content; max-height: 30px; max-width:150px;"
-                                                data-status-from="{{$chat->chat_status['status']}}"
-                                                class="change_status ml-3 d-flex align-items-center justify-content-center btn btn-outline-primary"
+                                <div class="mb-3 d-flex align-items-center">
+                                    <h4 style="margin-bottom: 0 !important;" class="">Статус чата:
+                                        <i id="change_chat_status_text">{{$chat->chat_status['status']}}</i>
+                                    </h4>
+                                    <div style="display: none" id="change_chat_status_form_wrap">
+                                        <form class="d-flex ml-3" style=" align-items: center;"
+                                              action="{{ route('change_chat_status', $chat['id']) }}"
+                                              method="POST"
+                                              enctype="multipart/form-data"
                                         >
-                                            Сохранить
-                                        </button>
-                                    </form>
-                            </div>
-                            <button style="border: none; width: auto; padding: 3px 10px;max-width:150px"
-                                    data-form="change_chat_status" type="button"
-                                    class="change_status_button ml-1 btn btn-outline-info btn-block btn-sm"
-                            >
-                                <i style="font-size: 20px;" class="fa fa-edit"></i>
+                                            @csrf
 
-                            </button>
+                                            <select id="chat_status_id" class="form-control" name="chat_status_id">
+                                                @foreach($chat_statuses as $chat_status)
+                                                    <option @if($chat['chat_status_id'] == $chat_status['id']) selected
+                                                            @endif value="{{$chat_status['id']}}">{{$chat_status['status']}}</option>
+                                                @endforeach
+                                            </select>
+
+                                            <button id="btn-submit" type="submit"
+                                                    style="height: fit-content; max-height: 30px; max-width:150px;"
+                                                    data-status-from="{{$chat->chat_status['status']}}"
+                                                    class="change_status ml-3 d-flex align-items-center justify-content-center btn btn-outline-primary"
+                                            >
+                                                Сохранить
+                                            </button>
+                                        </form>
+                                    </div>
+                                    <button style="border: none; width: auto; padding: 3px 10px;max-width:150px"
+                                            data-form="change_chat_status" type="button"
+                                            class="change_status_button ml-1 btn btn-outline-info btn-block btn-sm"
+                                    >
+                                        <i style="font-size: 20px;" class="fa fa-edit"></i>
+
+                                    </button>
+                                </div>
+
+                                <div style="width:100%; max-width: 2000px" class="chat">
+                                    {{-- Чат книги --}}
+                                    <div id="book_chat" style="margin: 0 0 30px 0; width: 100%; max-width: 2000px;"
+                                         class="chat">
+                                        <div style="margin: 0; width: 100%; max-width: 2000px;" class="container">
+
+                                            @livewire('chat',['chat_id'=>$chat->id])
+
+                                        </div>
+                                    </div>
+                                    {{-- // Чат книги --}}
+                                </div>
+                            @else
+                                <h2>Книга старая, опция недостпуна!</h2>
+                            @endif
                         </div>
 
-                            <div style="width:100%; max-width: 2000px" class="chat">
-                                {{-- Чат книги --}}
-                                <div id="book_chat" style="margin: 0 0 30px 0; width: 100%; max-width: 2000px;"
-                                     class="chat">
-                                    <div style="margin: 0; width: 100%; max-width: 2000px;" class="container">
 
-                                        @livewire('chat',['chat_id'=>$chat->id])
-
-                                    </div>
-                                </div>
-                                {{-- // Чат книги --}}
-                            </div>
-                        @else
-                            <h2>Книга старая, опция недостпуна!</h2>
-                        @endif
                     </div>
-
-
-                </div>
-                <!-- /.tab-content -->
-            </div><!-- /.card-body -->
-        </div>
-        <!-- /.card -->
+                    <!-- /.tab-content -->
+                </div><!-- /.card-body -->
+            </div>
+            <!-- /.card -->
         </div>
     </section>
 

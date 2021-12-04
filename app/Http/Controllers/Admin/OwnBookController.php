@@ -47,8 +47,8 @@ class OwnBookController extends Controller
         $this->own_book = own_book::where('id', $request->own_book_id)->with('printorder')->with('own_books_works')->with('own_book_files')->first();
         $inside_files = own_book_files::where('file_type', 'inside')->where('own_book_id', $request->own_book_id)->get();
         $cover_files = own_book_files::where('file_type', 'cover')->where('own_book_id', $request->own_book_id)->get();
-        $prev_comments_inside = preview_comment::where('own_book_id', $request->own_book_id)->where('own_book_comment_type', 'inside')->orderBy('id', 'asc')->get();
-        $prev_comments_cover = preview_comment::where('own_book_id', $request->own_book_id)->where('own_book_comment_type', 'cover')->orderBy('id', 'asc')->get();
+        $prev_comments_inside = preview_comment::where('own_book_id', $request->own_book_id)->where('own_book_comment_type', 'inside')->orderBy('status_done', 'asc')->get();
+        $prev_comments_cover = preview_comment::where('own_book_id', $request->own_book_id)->where('own_book_comment_type', 'cover')->orderBy('status_done', 'asc')->get();
         $own_book_statuses = own_book_status::orderby('id')->get();
         $own_book_inside_statuses = own_book_inside_status::orderby('id')->get();
         $own_book_cover_statuses = own_book_cover_status::orderby('id')->get();
@@ -155,277 +155,281 @@ class OwnBookController extends Controller
                         route('book_page', $this->own_book['id']))
                 );
             }
-        session()->flash('alert_type', 'success');
-        session()->flash('alert_title', 'Статус успешно изменен!');
+            session()->flash('alert_type', 'success');
+            session()->flash('alert_title', 'Статус успешно изменен!');
+        }
+
+        return redirect()->back();
+
     }
 
-return redirect()->back();
+    public
+    function change_book_inside_status(Request $request)
+    {
+        session()->flash('success', 'change_printorder');
+        $own_book = own_book::where('id', $request->own_book_id)->first();
 
-}
+        if (file_exists($own_book['inside_file'])) {
 
-public
-function change_book_inside_status(Request $request)
-{
-    session()->flash('success', 'change_printorder');
-    $own_book = own_book::where('id', $request->own_book_id)->first();
+            own_book::where('id', $request->own_book_id)->update(array(
+                'own_book_inside_status_id' => $request->own_book_inside_status_id,
+            ));
 
-    if (file_exists($own_book['inside_file'])) {
-
-        own_book::where('id', $request->own_book_id)->update(array(
-            'own_book_inside_status_id' => $request->own_book_inside_status_id,
-        ));
-
-        $user = User::where('id', $request->user_id)->first();
+            $user = User::where('id', $request->user_id)->first();
 
 
-        $user->notify(new EmailNotification(
-                'Процесс издания книги',
-                $user['name'],
-                "Спешим сообщить, что произошла смена статуса работы по внутреннему блоку Вашей книги: '" . own_book::where('id', $request->own_book_id)->value('title') . "." .
-                "\nНа текущий момент внутренний блок имеет статус: '" . own_book_inside_status::where('id', $request->own_book_inside_status_id)->value('status_title') . "'. Всю подробную информацию об издании Вы всегда можете отслеживать на специальной странице издания книги.",
-                "Страница издания",
-                route('book_page', $own_book['id']))
-        );
+            $user->notify(new EmailNotification(
+                    'Процесс издания книги',
+                    $user['name'],
+                    "Спешим сообщить, что произошла смена статуса работы по внутреннему блоку Вашей книги: '" . own_book::where('id', $request->own_book_id)->value('title') . "." .
+                    "\nНа текущий момент внутренний блок имеет статус: '" . own_book_inside_status::where('id', $request->own_book_inside_status_id)->value('status_title') . "'. Всю подробную информацию об издании Вы всегда можете отслеживать на специальной странице издания книги.",
+                    "Страница издания",
+                    route('book_page', $own_book['id']))
+            );
 
-        \Illuminate\Support\Facades\Notification::send($user, new UserNotification(
-                'Смена статуса внутреннего блока!',
-                route('book_page', $own_book['id']))
-        );
+            \Illuminate\Support\Facades\Notification::send($user, new UserNotification(
+                    'Смена статуса внутреннего блока!',
+                    route('book_page', $own_book['id']))
+            );
 
-        session()->flash('alert_type', 'success');
-        session()->flash('alert_title', 'Статус успешно изменен!');
-    } else {
-        session()->flash('alert_type', 'error');
-        session()->flash('alert_title', 'Статус не заменен!');
-        session()->flash('alert_text', 'Не смог найти файл внутреннего блока в папке!');
+            session()->flash('alert_type', 'success');
+            session()->flash('alert_title', 'Статус успешно изменен!');
+        } else {
+            session()->flash('alert_type', 'error');
+            session()->flash('alert_title', 'Статус не заменен!');
+            session()->flash('alert_text', 'Не смог найти файл внутреннего блока в папке!');
+        }
+
+        return redirect()->back();
+
+
     }
 
-    return redirect()->back();
-
-
-}
-
-public
-function change_book_promo_type(Request $request)
-{
-    own_book::where('id', $request->own_book_id)->update(array(
-        'promo_price' => $request->promo_type,
-    ));
-
-    session()->flash('success', 'change_printorder');
-    session()->flash('alert_type', 'success');
-    session()->flash('alert_title', 'Вид продвижения изменен!');
-    return redirect()->back();
-}
-
-
-public
-function change_book_cover_status(Request $request)
-{
-    $own_book = own_book::where('id', $request->own_book_id)->first();
-    session()->flash('success', 'change_printorder');
-
-
-    if ($own_book['cover_2d'] & $own_book['cover_3d']) {
-
+    public
+    function change_book_promo_type(Request $request)
+    {
         own_book::where('id', $request->own_book_id)->update(array(
-            'own_book_cover_status_id' => $request->own_book_cover_status_id,
-        ));
-
-        $user = User::where('id', $request->user_id)->first();
-
-
-        $user->notify(new EmailNotification(
-                'Процесс издания книги',
-                $user['name'],
-                "Спешим сообщить, что произошла смена статуса работы с обложкой по книге: '" . own_book::where('id', $request->own_book_id)->value('title') . "." .
-                "\nНа текущий момент обложка имеет статус: '" . own_book_cover_status::where('id', $request->own_book_cover_status_id)->value('status_title') . "'. Всю подробную информацию об издании Вы всегда можете отслеживать на специальной странице издания книги.",
-                "Страница издания",
-                route('book_page', $own_book['id']))
-        );
-
-        \Illuminate\Support\Facades\Notification::send($user, new UserNotification(
-                'Смена статуса работы с обложкой!',
-                route('book_page', $own_book['id']))
-        );
-
-
-        session()->flash('alert_type', 'success');
-        session()->flash('alert_title', 'Статус успешно изменен!');
-    } else {
-        session()->flash('alert_type', 'error');
-        session()->flash('alert_title', 'Статус не заменен!');
-        session()->flash('alert_text', 'С файлами обложек что-то не так!');
-    }
-
-    return redirect()->back();
-
-}
-
-public
-function change_book_pages(Request $request)
-{
-    $own_book = own_book::where('id', $request->own_book_id)->first();
-
-    own_book::where('id', $request->own_book_id)->update(array(
-        'pages' => $request->own_book_pages,
-        'color_pages' => $request->own_book_color_pages,
-    ));
-
-    if ($own_book['print_price'] > 0) {
-        $pages = $request->own_book_pages;
-        $old_price = $own_book['print_price'];
-
-        if ($own_book['color_pages'] > 0) {
-            $color_pages = $request->own_book_color_pages;
-        } else {
-            $color_pages = 0;
-        }
-
-
-        if ($own_book->printorder['books_needed'] < 10) {
-            $tirag_coef = 1;
-        } else if ($own_book->printorder['books_needed'] < 50) {
-            $tirag_coef = 0.95;
-        } else {
-            $tirag_coef = 0.9;
-        }
-
-
-        if ($own_book->printorder['cover_color'] === 1) {
-            $cover_color_coef = 1;
-        } elseif ($own_book->printorder['cover_color'] === 0) {
-            $cover_color_coef = 0.7;
-        }
-
-
-        if ($own_book->printorder['cover_type'] === 'hard') {
-            $cover_style_coef = 2.1;
-        } else {
-            $cover_style_coef = 1;
-        }
-
-        if ($own_book->printorder['books_needed'] < 100) {
-            $pages_coef = 1.8;
-        } else {
-            $pages_coef = 1;
-        }
-
-        $print_needed = $own_book->printorder['books_needed'];
-
-
-        $total_price = round(($pages - $color_pages + ($color_pages * 3)) * 0.7 * $tirag_coef * $cover_color_coef * $cover_style_coef * $pages_coef * $print_needed * 2.2);
-
-        own_book::where('id', $request->own_book_id)->update(array(
-            'print_price' => $total_price,
-        ));
-
-        printorder::where('own_book_id', $request->own_book_id)->update(array(
-            'color_pages' => $color_pages,
+            'promo_price' => $request->promo_type,
         ));
 
         session()->flash('success', 'change_printorder');
         session()->flash('alert_type', 'success');
-        session()->flash('alert_title', 'Успешно!');
-        session()->flash('alert_text', 'Кроме страниц поменяли еще печать! Старая цена: ' . $old_price . ' ---> Новая цена: ' . $total_price);
+        session()->flash('alert_title', 'Вид продвижения изменен!');
+        return redirect()->back();
     }
 
 
-    return redirect()->back();
-}
+    public
+    function change_book_cover_status(Request $request)
+    {
+        $own_book = own_book::where('id', $request->own_book_id)->first();
+        session()->flash('success', 'change_printorder');
 
 
-public
-function update_own_book_track_number(Request $request)
-{
+        if ($own_book['cover_2d'] & $own_book['cover_3d']) {
 
-    session()->flash('success', 'change_printorder');
-    $own_book = own_book::where('id', $request->own_book_id)->first();
+            own_book::where('id', $request->own_book_id)->update(array(
+                'own_book_cover_status_id' => $request->own_book_cover_status_id,
+            ));
 
-    Printorder::where('own_book_id', $request->own_book_id)->update(array(
-        'track_number' => $request->track_number,
-    ));
-
-    session()->flash('alert_type', 'success');
-    session()->flash('alert_title', 'Трак номер установлен!');
-
-    return redirect()->back();
-
-}
-
-public
-function change_preview_comment_status(Request $request)
-{
-    $cur_status = preview_comment::where('id', $request->preview_comment_id)->value('status_done');
-    $next_status = abs($cur_status - 1);
-    preview_comment::where('id', $request->preview_comment_id)->update(array(
-        'status_done' => $next_status,
-    ));
-
-    return redirect()->back();
-
-}
-
-public
-function change_all_preview_comment_status(Request $request)
-{
-    $prev_comments = preview_comment::where('own_book_id', $request->own_book_id)
-        ->where('own_book_comment_type', $request->comment_type)->update(['status_done' => 1]);
-
-    return redirect(url()->previous() . '#' . $request->comment_type);
-}
+            $user = User::where('id', $request->user_id)->first();
 
 
-public
-function update_own_book_inside(Request $request)
-{
+            $user->notify(new EmailNotification(
+                    'Процесс издания книги',
+                    $user['name'],
+                    "Спешим сообщить, что произошла смена статуса работы с обложкой по книге: '" . own_book::where('id', $request->own_book_id)->value('title') . "." .
+                    "\nНа текущий момент обложка имеет статус: '" . own_book_cover_status::where('id', $request->own_book_cover_status_id)->value('status_title') . "'. Всю подробную информацию об издании Вы всегда можете отслеживать на специальной странице издания книги.",
+                    "Страница издания",
+                    route('book_page', $own_book['id']))
+            );
 
-    $own_book = own_book::where('id', $request->own_book_id)->first();
-    $user_folder = 'admin_files/own_books/' . 'user_id_' . $own_book['user_id'] . '/' . $own_book['title'] . '/ВЕРСТКА/';
+            \Illuminate\Support\Facades\Notification::send($user, new UserNotification(
+                    'Смена статуса работы с обложкой!',
+                    route('book_page', $own_book['id']))
+            );
 
-    if (!is_null($request->file('inside_file'))) {
+
+            session()->flash('alert_type', 'success');
+            session()->flash('alert_title', 'Статус успешно изменен!');
+        } else {
+            session()->flash('alert_type', 'error');
+            session()->flash('alert_title', 'Статус не заменен!');
+            session()->flash('alert_text', 'С файлами обложек что-то не так!');
+        }
+
+        return redirect()->back();
+
+    }
+
+    public
+    function change_book_pages(Request $request)
+    {
+        $own_book = own_book::where('id', $request->own_book_id)->first();
+
+        own_book::where('id', $request->own_book_id)->update(array(
+            'pages' => $request->own_book_pages,
+            'color_pages' => $request->own_book_color_pages,
+        ));
+
+        if ($own_book['print_price'] > 0) {
+            $pages = $request->own_book_pages;
+            $old_price = $own_book['print_price'];
+
+            if ($own_book['color_pages'] > 0) {
+                $color_pages = $request->own_book_color_pages;
+            } else {
+                $color_pages = 0;
+            }
+
+
+            if ($own_book->printorder['books_needed'] < 10) {
+                $tirag_coef = 1;
+            } else if ($own_book->printorder['books_needed'] < 50) {
+                $tirag_coef = 0.95;
+            } else {
+                $tirag_coef = 0.9;
+            }
+
+
+            if ($own_book->printorder['cover_color'] === 1) {
+                $cover_color_coef = 1;
+            } elseif ($own_book->printorder['cover_color'] === 0) {
+                $cover_color_coef = 0.7;
+            }
+
+
+            if ($own_book->printorder['cover_type'] === 'hard') {
+                $cover_style_coef = 2.1;
+            } else {
+                $cover_style_coef = 1;
+            }
+
+            if ($own_book->printorder['books_needed'] < 100) {
+                $pages_coef = 1.8;
+            } else {
+                $pages_coef = 1;
+            }
+
+            $print_needed = $own_book->printorder['books_needed'];
+
+
+            $total_price = round(($pages - $color_pages + ($color_pages * 3)) * 0.7 * $tirag_coef * $cover_color_coef * $cover_style_coef * $pages_coef * $print_needed * 2.2);
+
+            own_book::where('id', $request->own_book_id)->update(array(
+                'print_price' => $total_price,
+            ));
+
+            printorder::where('own_book_id', $request->own_book_id)->update(array(
+                'color_pages' => $color_pages,
+            ));
+
+            session()->flash('success', 'change_printorder');
+            session()->flash('alert_type', 'success');
+            session()->flash('alert_title', 'Успешно!');
+            session()->flash('alert_text', 'Кроме страниц поменяли еще печать! Старая цена: ' . $old_price . ' ---> Новая цена: ' . $total_price);
+        }
+
+
+        return redirect()->back();
+    }
+
+
+    public
+    function update_own_book_track_number(Request $request)
+    {
+
+        session()->flash('success', 'change_printorder');
+        $own_book = own_book::where('id', $request->own_book_id)->first();
+
+        Printorder::where('own_book_id', $request->own_book_id)->update(array(
+            'track_number' => $request->track_number,
+        ));
+
+        session()->flash('alert_type', 'success');
+        session()->flash('alert_title', 'Трак номер установлен!');
+
+        return redirect()->back();
+
+    }
+
+    public
+    function change_preview_comment_status(Request $request)
+    {
+        $cur_status = preview_comment::where('id', $request->preview_comment_id)->value('status_done');
+        $next_status = abs($cur_status - 1);
+        preview_comment::where('id', $request->preview_comment_id)->update(array(
+            'status_done' => $next_status,
+        ));
+
+        return redirect()->back();
+
+    }
+
+    public
+    function change_all_preview_comment_status(Request $request)
+    {
+        $prev_comments = preview_comment::where('own_book_id', $request->own_book_id)
+            ->where('own_book_comment_type', $request->comment_type)->update(['status_done' => 1]);
+
+        return redirect(url()->previous() . '#' . $request->comment_type);
+    }
+
+
+    public
+    function update_own_book_inside(Request $request)
+    {
+
+        $own_book = own_book::where('id', $request->own_book_id)->first();
+        $user_folder = 'admin_files/own_books/' . 'user_id_' . $own_book['user_id'] . '/' . $own_book['title'] . '/ВЕРСТКА/';
         $file_new_path = $user_folder . 'ВБ_Main_' . $own_book['title'] . '.' . $request->file('inside_file')->getClientOriginalExtension();
+
+        if (!is_null($request->file('inside_file'))) {
+            File::delete($own_book->inside_file);
+        }
         own_book::where('id', $request->own_book_id)->update(array(
             'inside_file' => $file_new_path,
         ));
-        File::delete($own_book->inside_file);
         $request->file('inside_file')->move($user_folder, 'ВБ_Main_' . $own_book['title'] . '.' . $request->file('inside_file')->getClientOriginalExtension());
+
+        session()->flash('success', 'change_printorder');
+        session()->flash('alert_type', 'success');
+        session()->flash('alert_title', 'Файл внутреннего блока обновлен!');
+
+        return redirect()->back();
+
     }
 
-    return redirect()->back();
-
-}
-
-public
-function update_own_book_cover(Request $request)
-{
+    public
+    function update_own_book_cover(Request $request)
+    {
 
 
-    $own_book = own_book::where('id', $request->own_book_id)->first();
-    $user_folder = $cover_2d = 'admin_files/own_books/' . 'user_id_' . $own_book['user_id'] . '/' . $own_book['title'] . '/ОБЛОЖКА/';
+        $own_book = own_book::where('id', $request->own_book_id)->first();
+        $user_folder = $cover_2d = 'admin_files/own_books/' . 'user_id_' . $own_book['user_id'] . '/' . $own_book['title'] . '/ОБЛОЖКА/';
 
-    if (!is_null($request->file('cover_2d'))) {
-        $file_new_path = $user_folder . 'Cover_2d' . '.' . $request->file('cover_2d')->getClientOriginalExtension();
-        own_book::where('id', $request->own_book_id)->update(array(
-            'cover_2d' => $file_new_path,
-        ));
-        File::delete($own_book->cover_2d);
-        $request->file('cover_2d')->move($user_folder, 'Cover_2d' . '.' . $request->file('cover_2d')->getClientOriginalExtension());
+        if (!is_null($request->file('cover_2d'))) {
+            $file_new_path = $user_folder . 'Cover_2d' . '.' . $request->file('cover_2d')->getClientOriginalExtension();
+            own_book::where('id', $request->own_book_id)->update(array(
+                'cover_2d' => $file_new_path,
+            ));
+            File::delete($own_book->cover_2d);
+            $request->file('cover_2d')->move($user_folder, 'Cover_2d' . '.' . $request->file('cover_2d')->getClientOriginalExtension());
+        }
+
+        if (!is_null($request->file('cover_3d'))) {
+
+            $file_new_path = $user_folder . 'Cover_3d' . '.' . $request->file('cover_3d')->getClientOriginalExtension();
+            own_book::where('id', $request->own_book_id)->update(array(
+                'cover_3d' => $file_new_path,
+            ));
+            File::delete($own_book->cover_3d);
+            $request->file('cover_3d')->move($user_folder, 'Cover_3d' . '.' . $request->file('cover_3d')->getClientOriginalExtension());
+        }
+
+        return redirect()->back();
+
     }
-
-    if (!is_null($request->file('cover_3d'))) {
-
-        $file_new_path = $user_folder . 'Cover_3d' . '.' . $request->file('cover_3d')->getClientOriginalExtension();
-        own_book::where('id', $request->own_book_id)->update(array(
-            'cover_3d' => $file_new_path,
-        ));
-        File::delete($own_book->cover_3d);
-        $request->file('cover_3d')->move($user_folder, 'Cover_3d' . '.' . $request->file('cover_3d')->getClientOriginalExtension());
-    }
-
-    return redirect()->back();
-
-}
 
 
 }

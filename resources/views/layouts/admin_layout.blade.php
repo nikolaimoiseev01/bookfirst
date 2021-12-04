@@ -216,7 +216,10 @@
     $('.datepicker').each(function () {
         $(this).datepicker({
             uiLibrary: 'bootstrap4',
-            format: 'yyyy-mm-dd'
+            format: 'yyyy-mm-dd',
+            onSelect: function(dateText) {
+                console.log("Selected date: " + dateText + "; input's current value: " + this.value);
+            }
         });
     });
 </script>

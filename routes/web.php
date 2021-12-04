@@ -89,7 +89,7 @@ Route::middleware(['verified'])->prefix('myaccount')->group(function () {
     Route::post('temp-uploads/{file_source}',[\App\Http\Controllers\UploadController::class, 'store']);
 
     Route::resource('work', \App\Http\Controllers\Account\WorkController::class,);
-    Route::get('/work/search/{work_input_search}', [App\Http\Controllers\Account\WorkController::class, 'work_search'])->name('work_search');
+    Route::get('/work/search/{work_input_search}', [App\Http\Controllers\Account\WorkController::class, 'index_search'])->name('work_search');
     Route::get('/myawards', [App\Http\Controllers\Account\AccountController::class, 'myawards'])->name('myawards');
     Route::get('/mynotifications', [App\Http\Controllers\Account\AccountController::class, 'mynotifications'])->name('mynotifications');
     Route::get('/chats', [App\Http\Controllers\ChatController::class, 'index'])->name('all_chats');

@@ -268,7 +268,7 @@
                             </div>
 
                             <div style="display: flex; align-items: center; margin-top: 10px;">
-                                <p>Макет полностью готов?</p>
+                                <p>Макет полностью готов к изданию?</p>
                                 <div style="margin-left: 10px;" class="switch-wrap">
                                     <input checked type="radio" id="inside_status_yes" name="inside_status"
                                            class="up-down">
@@ -301,7 +301,7 @@
                                 <input style="margin-left: 0;" id="textcheck_needed" type="checkbox">
 
                                 <label for="textdesign_needed"><p style="margin:0;">Дизайн текста</p></label>
-                                <input style="margin-left: 0;" checked id="textdesign_needed" type="checkbox">
+                                <input style="margin-left: 0;" id="textdesign_needed" type="checkbox">
                             </div>
 
                         </div>
@@ -625,7 +625,8 @@
 
         </div>
         <div style="width:100%; text-align: end">
-            <button style="float: left; margin-right:20px;" type="submit" id="save_form" class="preloader_button button">
+            <button style="float: left; margin-right:20px;" type="submit" id="save_form"
+                    class="button">
                 <span class="button__text">Отправить заявку</span>
             </button>
             <a href="{{route('help_own_book')}}" style="font-size: 20px;" class="link"><i>Нужна помощь</i></a>
@@ -737,7 +738,7 @@
 
 
             FilePond.registerPlugin(FilePondPluginFileValidateSize);
-            FilePond.registerPlugin(FilePondPluginFileValidateType);
+            // FilePond.registerPlugin(FilePondPluginFileValidateType);
 
             $('.filepond_inside').filepond({
                 server: {
@@ -753,7 +754,6 @@
                     calculate_after_remove();
                 },
                 maxTotalFileSize: '20MB',
-                allowFileTypeValidation: false,
                 labelMaxFileSizeExceeded: 'Размер превышен!',
                 labelMaxFileSize: 'Максимальный: {filesize}',
                 labelMaxTotalFileSizeExceeded: 'Сумма размеров превышена!',
@@ -769,10 +769,10 @@
                     }
                 },
                 onprocessfile: (file) => {
-                    make_pre_cover_files_after_upload();
+                    make_cover_files_after_upload();
                 },
                 onremovefile: (file) => {
-                    make_pre_cover_files_after_remove();
+                    make_cover_files_after_remove();
                 },
                 maxTotalFileSize: '20MB',
                 labelMaxFileSizeExceeded: 'Размер превышен!',
@@ -823,7 +823,7 @@
                 pages = 0,
                 pages_from_doc = 0,
 
-                inside_status = 2,
+                inside_status = 9,
                 cover_status = 1,
 
                 cover_color = 0,
@@ -862,7 +862,7 @@
 
                 // Убираем чекбоксы с помощи по макету, если макет готов
                 if ($('#inside_status_yes').prop('checked')) {
-                    inside_status = 2;
+                    inside_status = 9;
                     $('#textcheck_needed').prop('checked', false);
                     $('#textdesign_needed').prop('checked', false);
                 } else {
@@ -1323,61 +1323,76 @@
             document.addEventListener('livewire:load', function () {
                 $("#save_form").click(function (event) {
                     event.preventDefault();
-                    inside_type = $('input[name=upload_type]:checked').val();
 
-                    if (inside_type == 'by_system') {
-                        inside_type = 'системой'
-                    } else {
-                        inside_type = 'файлами'
-                    }
+                    Swal.fire({
+                        title: 'Проверка',
+                        html: '<p>Все поля заполнены верно?</p>',
+                        icon: 'warning',
+                        showDenyButton: true,
+                        showCancelButton: false,
+                        confirmButtonText: `Да, отправить заявку!`,
+                        denyButtonText: `Назад`,
+                    }).then((result) => {
+                        if (result.isConfirmed) {
 
 
-                @this.set("inside_type", inside_type);
-                    if (typeof add_files_to_php != 'undefined') {
-                    @this.set("work_files", add_files_to_php.slice(0, -1));
-                    } else {@this.set("work_files", 0)
-                    }
+                            inside_type = $('input[name=upload_type]:checked').val();
 
-                    works_to_php = '';
-                    $('.works-to-go .container').each(function () {
-                        parts = $(this).attr("id").split('_');
-                        works_to_php += parts.pop() + ";"
+                            if (inside_type == 'by_system') {
+                                inside_type = 'системой'
+                            } else {
+                                inside_type = 'файлами'
+                            }
+
+
+                        @this.set("inside_type", inside_type);
+                            if (typeof add_files_to_php != 'undefined') {
+                            @this.set("work_files", add_files_to_php.slice(0, -1));
+                            } else {@this.set("work_files", 0)
+                            }
+
+                            works_to_php = '';
+                            $('.works-to-go .container').each(function () {
+                                parts = $(this).attr("id").split('_');
+                                works_to_php += parts.pop() + ";"
+                            })
+
+                        @this.set("works", works_to_php.slice(0, -1));
+
+                        @this.set("inside_status", inside_status);
+
+                        @this.set("text_design_price", text_design_price);
+                        @this.set("text_check_price", text_check_price);
+                        @this.set("cover_price", cover_price);
+                        @this.set("cover_status", cover_status);
+                        @this.set("pages", pages);
+
+
+                            if (cover_price > 0) {
+                            @this.set("cover_comment", cover_comment);
+                            @this.set("pre_cover_files", pre_cover_files_to_php);
+                            } else {@this.set("cover_files", cover_files_to_php)
+                            }
+
+                        @this.set("promo_type", promo_var_num);
+                        @this.set("promo_price", promo_price);
+                        @this.set("total_price", total_price);
+                        @this.set("print_price", print_price);
+
+                            if (print_price > 0) {
+                            @this.set("cover_type", cover_type);
+                            @this.set("cover_color", cover_color);
+                            @this.set("color_pages", color_pages);
+                            @this.set("books_needed", print_needed);
+                            @this.set("send_to_name", $('#send_to_name').val());
+                            @this.set("send_to_address", $('#send_to_address').val());
+                            @this.set("send_to_tel", $('#send_to_tel').val());
+                            }
+
+
+                            Livewire.emit('save_own_book')
+                        }
                     })
-
-                @this.set("works", works_to_php.slice(0, -1));
-
-                @this.set("inside_status", inside_status);
-
-                @this.set("text_design_price", text_design_price);
-                @this.set("text_check_price", text_check_price);
-                @this.set("cover_price", cover_price);
-                @this.set("cover_status", cover_status);
-                @this.set("pages", pages);
-
-                    if (cover_price > 0) {
-                    @this.set("cover_comment", cover_comment);
-                    @this.set("pre_cover_files", pre_cover_files_to_php);
-                    } else {@this.set("cover_files", cover_files_to_php)
-                    }
-
-                @this.set("promo_type", promo_var_num);
-                @this.set("promo_price", promo_price);
-                @this.set("total_price", total_price);
-                @this.set("print_price", print_price);
-
-                    if (print_price > 0) {
-                    @this.set("cover_type", cover_type);
-                    @this.set("cover_color", cover_color);
-                    @this.set("color_pages", color_pages);
-                    @this.set("books_needed", print_needed);
-                    @this.set("send_to_name", $('#send_to_name').val());
-                    @this.set("send_to_address", $('#send_to_address').val());
-                    @this.set("send_to_tel", $('#send_to_tel').val());
-                    }
-
-
-                    Livewire.emit('save_own_book')
-
                 });
             })
 

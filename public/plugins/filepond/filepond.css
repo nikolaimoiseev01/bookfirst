@@ -322,7 +322,7 @@
     color: #ffffff
 }
 .filepond--file-status .filepond--file-status-sub {
-    font-size: 0.625em;
+    font-size: 0.825em;
     opacity: 0.5;
     transition: opacity 0.25s ease-in-out;
 }
