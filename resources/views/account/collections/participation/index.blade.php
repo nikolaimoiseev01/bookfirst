@@ -133,7 +133,8 @@
                             <span><p
                                     style="margin: 0;">Телефон: {{$participation->printorder['send_to_tel']}}</p></span>
                             @if ($collection['col_status_id'] < 3 && $participation['paid_at'] <> null)
-                                <a style="font-size: 25px;" href="#print_part" class="link">Заказать дополнительные экземпляры</a>
+                                <a style="font-size: 25px;" href="#print_part" class="link">Заказать дополнительные
+                                    экземпляры</a>
                             @endif
                         @else
                             <p>Печатные эезкемпляры не требуются.</p>
@@ -592,7 +593,8 @@
                         <div>
                             {{App::setLocale('ru')}}
                             <p style="font-size: 20px;">На данный момент предварительная проверка сборника завершена.
-                                Сборник уже находится в печати и скоро будет отправлен авторам. Предварительная дата отправки: {{ Date::parse($collection['col_date4'])->format('j F Y') }}.
+                                Сборник уже находится в печати и скоро будет отправлен авторам. Предварительная дата
+                                отправки: {{ Date::parse($collection['col_date4'])->format('j F Y') }}.
                             </p>
                             <a style="display: flex; margin-top:20px;" class="button"
                                href="/{{$collection['pre_var']}}"
@@ -758,7 +760,9 @@
                     <div class="no-access">
                         {{App::setLocale('ru')}}
                         <p>Голосование окончено.
-                            Результаты будут опубликованы в нашей <a href="https://vk.com/yourfirstbook" target="_blank" class="link">группе ВК</a> {{ Date::parse($collection['col_date3'])->addDays(3)->format('j F Y') }}
+                            Результаты будут опубликованы в нашей <a href="https://vk.com/yourfirstbook" target="_blank"
+                                                                     class="link">группе
+                                ВК</a> {{ Date::parse($collection['col_date3'])->addDays(3)->format('j F Y') }}
                         </p>
                     </div>
                 @else
@@ -902,7 +906,12 @@
     </div>
 
     <script>
+        $('#book_chat').show();
+        document.getElementById('messages').scrollTop = 9999999;
+        $('#book_chat').hide();
+
         $('#chat_button').click(function () {
+
             $('#book_chat').slideToggle(function () {
                 if ($('#book_chat').is(":visible")) {
                     $('#chat_button').html('Свернуть чат');

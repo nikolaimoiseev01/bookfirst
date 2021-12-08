@@ -18,9 +18,16 @@
 
                         <li class="nav-item"><a class="nav-link" href="#participations" data-toggle="tab">Участие в
                                 сборниках</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#own_books" data-toggle="tab">Книги автора</a></li>
                         <li class="nav-item"><a class="nav-link" href="#chats" data-toggle="tab">Чаты</a></li>
                     </ul>
                 </div><!-- /.card-header -->
+
+                <style>
+                    th {
+                        vertical-align: middle !important;
+                    }
+                </style>
 
                 <div class="card-body">
                     <div class="tab-content">
@@ -117,6 +124,36 @@
                                             </td>
 
 
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- /.tab-content -->
+
+                        <div class="tab-pane" id="own_books">
+                            <!-- /.card-header -->
+                            <div class="card-body p-0">
+                                <table style="max-width: 900px;" class="table table-hover table-bordered table-sm">
+                                    <thead>
+                                    <tr>
+                                        <th style="text-align: center">Название</th>
+                                        <th style="text-align: center">Статус</th>
+                                        <th style="text-align: center">Сумма издания</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach($user->own_book as $own_book)
+                                        <tr class="row_hover" onclick="document.location = '{{route('own_books_page', $own_book['id'])}}';">
+                                            <td style="text-align: center">{{$own_book['title']}}</td>
+
+                                            <td style="text-align: center">
+                                                {{$own_book->own_book_status['status_title']}}
+                                            </td>
+                                            <td style="text-align: center">
+                                                {{round($own_book['total_price'])}} руб.
+                                            </td>
                                         </tr>
                                     @endforeach
                                     </tbody>

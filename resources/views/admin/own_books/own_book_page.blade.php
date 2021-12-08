@@ -330,7 +330,12 @@
                         <li class="nav-item"><a class="nav-link" href="#cover" data-toggle="tab">Обложка</a></li>
                         <li class="nav-item"><a class="nav-link" href="#print" data-toggle="tab">Печать</a></li>
                         <li class="nav-item"><a class="nav-link" href="#finance" data-toggle="tab">Финансы</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#chat" data-toggle="tab">Чат по изданию</a></li>
+                        <li class="nav-item">
+                            <a @if ($chat['chat_status_id'] == 1) style="padding-right: 22px;" @endif  class="position-relative nav-link" href="#chat" data-toggle="tab">
+                                @if ($chat['chat_status_id'] == 1)<span style="right: 5px; top:11px;" class="position-absolute right badge badge-danger">!</span>@endif
+                                Чат по изданию
+                            </a>
+                        </li>
                     </ul>
                 </div><!-- /.card-header -->
 

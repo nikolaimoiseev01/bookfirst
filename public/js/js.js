@@ -206,6 +206,13 @@ $('a[href*="#"]')
 // ------ // SMOOTH SCROLLING  ------ //
 
 
+// Auto resize textarea
+function auto_grow(element) {
+    $('.input-block').css('height', "100px");
+    $('.input-block').css('height', element.scrollHeight + 2+"px");
+}
+
+
 
 
 

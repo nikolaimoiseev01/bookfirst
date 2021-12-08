@@ -187,6 +187,7 @@
 </div>
 <!-- ./wrapper -->
 
+<script src="/js/js.js"></script>
 
 <!-- Bootstrap 4 -->
 <script src="/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>

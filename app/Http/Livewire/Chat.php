@@ -187,6 +187,8 @@ class Chat extends Component
                         route('chats')));
             }
         }
+        $this->dispatchBrowserEvent('scroll_down');
+        $this->dispatchBrowserEvent('show_send_button');
         $this->text = '';
 
 

@@ -8,7 +8,7 @@
                 Страница автора: <a href="{{route('user_page', $participation['user_id'])}}"><i>{{$participation['name']}} {{$participation['surname']}}</i></a>
             </h1>
             <h1 class="mt-2">
-                В сборинке: <i>{{$participation->collection['title']}}</i>
+                В сборинке: <i><a href="{{route('collection.edit', $participation->collection['id'])}}">{{$participation->collection['title']}}</a></i>
             </h1>
             <div class="mt-2 d-flex align-items-center">
                 <h1 style="margin-bottom: 0 !important;" class="">Статус участия:
@@ -68,7 +68,12 @@
                                 для участия</a></li>
                         <li class="nav-item"><a class="test nav-link" href="#info" data-toggle="tab">Информация</a></li>
                         <li class="nav-item"><a class="nav-link" href="#finance" data-toggle="tab">Финансы</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#chat" data-toggle="tab">Чат</a></li>
+                        <li class="nav-item">
+                            <a @if ($chat['chat_status_id'] == 1) style="padding-right: 22px;" @endif  class="position-relative nav-link" href="#chat" data-toggle="tab">
+                                @if ($chat['chat_status_id'] == 1)<span style="right: 5px; top:11px;" class="position-absolute right badge badge-danger">!</span>@endif
+                                Чат
+                            </a>
+                        </li>
                     </ul>
                 </div><!-- /.card-header -->
 

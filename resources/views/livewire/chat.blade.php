@@ -4,7 +4,7 @@
         wire:submit.prevent=""
         enctype="multipart/form-data">
         @csrf
-        <div class="messages">
+        <div id="messages" class="messages">
             @if(count($messages) == 0)
                 <div style="margin:0; height: 100%; display: flex; align-items: center; justify-content: center"
                      class="no-access">
@@ -15,7 +15,7 @@
                             </span>
                 </div>
             @endif
-            {{App::setLocale('ru')}}
+                {{App::setLocale('ru')}}
             @foreach($messages as $message)
                 <div class="message">
                     <p style="font-size: 18px;">@if($message['user_from'] === 2)
@@ -59,11 +59,16 @@
                 <div class="chat_files" wire:ignore>
                     <input wire:ignore accept multiple name="chat_files" class="chat_filepond" type="file"/>
                 </div>
-                <div class="input-block">
-                <textarea class="textarea_chat"
+                <div  wire:ignore class="input-block">
+                <textarea oninput="auto_grow(this)"
+                    class="textarea_chat"
                           wire:model="text"
-                          style="z-index: 10; border-radius: 10px 0 0 10px; border-right: none;" name="chat_text" required
-                          type="text"></textarea>
+                          style="z-index: 10; border-radius: 10px 0 0 10px; border-right: none;"
+                          name="chat_text" required
+                          type="text"
+                id="chat_text"
+                ></textarea>
+
                     <div class="send-wrap">
                     <span style="display: grid; position: absolute; right: 28px;">
                         <span class="tooltip" title="Прикрепить файл">
@@ -72,7 +77,7 @@
                                 transform="translate(-113.14 0)"/></svg>
                         </span>
                     </span>
-                        <button style="height: 75px;" type="submit">
+                        <button type="submit">
                             <div style="position: relative;" class="send_mes_button">
                             <span id="send_env" class="tooltip" title="Отправить">
                                 <svg id="send_message_{{$chat['id']}}" id="Capa_1" data-name="Capa 1"
@@ -100,7 +105,6 @@
     </form>
 
     @section('page-js')
-
         <script>
             $('.send_mes_button').on('click', function () {
                 $('#send_preloader').show();
@@ -108,6 +112,15 @@
                 $('.send-wrap button').prop("disabled", true);
             })
         </script>
+
+        <script>
+            document.addEventListener('scroll_down', function scroll_down() {
+                document.getElementById('messages').scrollTop = 9999999;
+            });
+            document.getElementById('messages').scrollTop = 9999999;
+        </script>
+
+
         <script>
 
             function when_upload_start() {
@@ -180,6 +193,13 @@
 
             document.addEventListener('clear_filepond', function () {
                 $('.chat_filepond').filepond('removeFiles')
+            });
+
+            document.addEventListener('show_send_button', function () {
+                    $('#send_preloader').hide();
+                    $('#send_env').css('opacity', 1);
+                    $('.send-wrap button').prop("disabled", false);
+                $('.input-block').css('height', "100px");
             });
 
             // --- // Работа с загрузкой файлов
