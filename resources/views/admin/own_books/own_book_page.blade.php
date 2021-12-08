@@ -318,7 +318,7 @@
 
     </div>
     <!-- /.content-header -->
-
+    {{App::setLocale('ru')}}
     <!-- Main content -->
     <section class="content">
         <div class="col-md-12">
@@ -378,7 +378,8 @@
                                                     Файл еще не загружен!
                                                 @endif
                                             </label>
-                                            <a style="height: 38px;display: flex; flex-direction: column; padding: 5px;"
+                                            <a target="_blank"
+                                               style="height: 38px;display: flex; flex-direction: column; padding: 5px;"
                                                href="/{{$own_book['inside_file']}}" class="btn btn-app">
                                                 <i style="font-size: 15px" class="fas fa-download"></i>
                                                 Скачать
@@ -388,7 +389,7 @@
                                             <button type="submit" class="btn btn-primary">Обновить</button>
                                             @if(file_exists($own_book['inside_file']))
                                                 <p class="mb-0 ml-3">
-                                                    {{App::setLocale('ru')}}
+
 
                                                     <b>Последнее
                                                         сохранение:</b> {{ Date::parse(date("d-M-Y H:i", filemtime($own_book['inside_file'])))->addHours(3)->format('j F Y | H:i') }}
@@ -424,6 +425,7 @@
                                 <thead>
                                 <tr>
                                     <th style="width: 1%;">Страница</th>
+                                    <th style="width: 1%;">Создан</th>
                                     <th>Текст</th>
                                     <th style="width: 1%;">Статус</th>
                                 </tr>
@@ -433,6 +435,9 @@
                                     <tr>
                                         <td style="text-align: center;">
                                             {{$prev_comment['page']}}
+                                        </td>
+                                        <td style="text-align: center;">
+                                            {{ Date::parse($prev_comment['created_at'])->addHours(3)->format('j F H:i') }}
                                         </td>
                                         <td style="text-align:inherit">
                                             {{$prev_comment['text']}}
@@ -779,99 +784,146 @@
                             @endif
                         </div>
 
-                        <div class=" tab-pane" id="finance">
-                            <div style="max-width: 600px;">
-                                <table class="table table-bordered">
-                                    <tbody>
-                                    <tr>
-                                        <td style="font-weight: bold">ISBN</td>
-                                        <td>
-                                            500 руб.
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="font-weight: bold">Стоимость дизайна</td>
-                                        <td>
-                                            @if($own_book['text_design_price'] === 0)
-                                                не нужна
-                                            @else
-                                                {{$own_book['text_design_price']}} руб.
-                                            @endif
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="font-weight: bold">Стоимость проверки текста</td>
-                                        <td>
-                                            @if($own_book['text_check_price'] === 0)
-                                                не нужна
-                                            @else
-                                                {{$own_book['text_check_price']}} руб.
-                                            @endif
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="font-weight: bold">Стоимость обложки</td>
-                                        <td>
-                                            @if($own_book['cover_price'] === 0)
-                                                готова от автора
-                                            @else
-                                                {{$own_book['cover_price']}} руб.
-                                            @endif
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="font-weight: bold">Стоимость печати</td>
-                                        <td>
-                                            @if($own_book['print_price'] === 0)
-                                                не нужна
-                                            @else
-                                                {{$own_book['print_price']}} руб.
-                                            @endif
-                                        </td>
-                                    </tr>
+                        <div class="d-flex justify-content-around flex-wrap tab-pane" id="finance">
+                            <div>
+                                <h2>Общий расчет</h2>
+                                <div style="max-width: 600px;">
+                                    <table class="table table-bordered">
+                                        <tbody>
+                                        <tr>
+                                            <td style="font-weight: bold">ISBN</td>
+                                            <td>
+                                                500 руб.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-weight: bold">Стоимость дизайна</td>
+                                            <td>
+                                                @if($own_book['text_design_price'] === 0)
+                                                    не нужна
+                                                @else
+                                                    {{$own_book['text_design_price']}} руб.
+                                                @endif
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-weight: bold">Стоимость проверки текста</td>
+                                            <td>
+                                                @if($own_book['text_check_price'] === 0)
+                                                    не нужна
+                                                @else
+                                                    {{$own_book['text_check_price']}} руб.
+                                                @endif
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-weight: bold">Стоимость обложки</td>
+                                            <td>
+                                                @if($own_book['cover_price'] === 0)
+                                                    готова от автора
+                                                @else
+                                                    {{$own_book['cover_price']}} руб.
+                                                @endif
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-weight: bold">Стоимость печати</td>
+                                            <td>
+                                                @if($own_book['print_price'] === 0)
+                                                    не нужна
+                                                @else
+                                                    {{$own_book['print_price']}} руб.
+                                                @endif
+                                            </td>
+                                        </tr>
 
-                                    <tr>
-                                        <td style="font-weight: bold">Стоимость продвижения</td>
-                                        <td>
-                                            @if($own_book['promo_price'] === 0)
-                                                не нужна
-                                            @else
-                                                {{$own_book['promo_price']}} руб.
-                                            @endif
-                                        </td>
-                                    </tr>
+                                        <tr>
+                                            <td style="font-weight: bold">Стоимость продвижения</td>
+                                            <td>
+                                                @if($own_book['promo_price'] === 0)
+                                                    не нужна
+                                                @else
+                                                    {{$own_book['promo_price']}} руб.
+                                                @endif
+                                            </td>
+                                        </tr>
 
-                                    <tr class="bg-info">
-                                        <td style="font-weight: bold">Получили средств</td>
-                                        <td>
-                                            {{$own_book['total_price']}} руб.
-                                        </td>
-                                    </tr>
-                                    <tr class="bg-info">
-                                        <td style="font-weight: bold">Приблизительные затраты</td>
-                                        <td>
-                                            @if($own_book['print_price'] === 0)
-                                                0 руб.
-                                            @else
-                                                {{$own_book['pages'] * 4}} руб.
-                                                ({{$own_book['pages']}}
-                                                стр.; {{$own_book->printorder['books_needed'] ?? 0}}
-                                                экз.)
-                                            @endif
-                                            {{-- {{$own_book->printorder['books_needed'] * 80}} руб.--}}
-                                        </td>
-                                    </tr>
-                                    <tr style="font-size: 22px;" class="bg-success">
-                                        <td style="font-weight: bold">Итого рибыль</td>
-                                        <td>
-                                            {{$own_book['total_price'] - ($own_book['pages'] * 4)}}
-                                            руб.
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-
+                                        <tr class="bg-info">
+                                            <td style="font-weight: bold">Получили средств</td>
+                                            <td>
+                                                {{$own_book['total_price']}} руб.
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-info">
+                                            <td style="font-weight: bold">Приблизительные затраты</td>
+                                            <td>
+                                                @if($own_book['print_price'] === 0)
+                                                    0 руб.
+                                                @else
+                                                    {{$own_book['pages'] * 4}} руб.
+                                                    ({{$own_book['pages']}}
+                                                    стр.; {{$own_book->printorder['books_needed'] ?? 0}}
+                                                    экз.)
+                                                @endif
+                                                {{-- {{$own_book->printorder['books_needed'] * 80}} руб.--}}
+                                            </td>
+                                        </tr>
+                                        <tr style="font-size: 22px;" class="bg-success">
+                                            <td style="font-weight: bold">Итого рибыль</td>
+                                            <td>
+                                                {{$own_book['total_price'] - ($own_book['pages'] * 4)}}
+                                                руб.
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
+                            <div>
+                                <h2>Транзакции по этой книге</h2>
+                                <div>
+                                    <table id="participants_table" class="table table-bordered">
+                                        <thead>
+                                        <tr>
+                                            <th style="width: 1%;">Создан</th>
+                                            <th style="width: 1%;">Статус</th>
+                                            <th style="width: 1%;">Сумма</th>
+                                            <th >Описание</th>
+                                            <th style="width: 1%;">YooID</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach($transactions as $transaction)
+                                            <tr>
+                                                <td style="text-align: center;">
+                                                    {{ Date::parse($transaction['created_at'])->addHours(3)->format('j F H:i') }}
+
+                                                </td>
+                                                <td style="
+                                                    color:
+                                                @if($transaction['status'] === 'CONFIRMED') #09c73a
+                                                @elseif($transaction['status'] === 'CREATED') #ff2929
+                                                @endif;
+                                                    text-align: center;">
+                                                    {{$transaction['status']}}
+                                                </td>
+                                                <td style="text-align:inherit">
+                                                    {{$transaction['amount']}}
+                                                </td>
+                                                <td class="d-flex flex-column justify-content-center align-items-center"
+                                                    style="text-align: center;">
+                                                    {{$transaction['description']}}
+                                                </td>
+                                                <td style="text-align:inherit">
+                                                    {{$transaction['yoo_id']}}
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
                         </div>
 
                         <div class="tab-pane" id="chat">

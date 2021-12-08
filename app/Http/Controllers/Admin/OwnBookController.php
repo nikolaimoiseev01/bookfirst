@@ -13,6 +13,7 @@ use App\Models\own_book_status;
 use App\Models\own_books_works;
 use App\Models\preview_comment;
 use App\Models\Printorder;
+use App\Models\Transaction;
 use App\Models\User;
 use App\Notifications\EmailNotification;
 use App\Notifications\UserNotification;
@@ -47,13 +48,14 @@ class OwnBookController extends Controller
         $this->own_book = own_book::where('id', $request->own_book_id)->with('printorder')->with('own_books_works')->with('own_book_files')->first();
         $inside_files = own_book_files::where('file_type', 'inside')->where('own_book_id', $request->own_book_id)->get();
         $cover_files = own_book_files::where('file_type', 'cover')->where('own_book_id', $request->own_book_id)->get();
-        $prev_comments_inside = preview_comment::where('own_book_id', $request->own_book_id)->where('own_book_comment_type', 'inside')->orderBy('status_done', 'asc')->get();
-        $prev_comments_cover = preview_comment::where('own_book_id', $request->own_book_id)->where('own_book_comment_type', 'cover')->orderBy('status_done', 'asc')->get();
+        $prev_comments_inside = preview_comment::where('own_book_id', $request->own_book_id)->where('own_book_comment_type', 'inside')->orderBy('status_done', 'asc')->orderBy('created_at', 'desc')->get();
+        $prev_comments_cover = preview_comment::where('own_book_id', $request->own_book_id)->where('own_book_comment_type', 'cover')->orderBy('status_done', 'asc')->orderBy('created_at', 'desc')->get();
         $own_book_statuses = own_book_status::orderby('id')->get();
         $own_book_inside_statuses = own_book_inside_status::orderby('id')->get();
         $own_book_cover_statuses = own_book_cover_status::orderby('id')->get();
         $chat = Chat::where('own_book_id', $this->own_book['id'])->first();
         $chat_statuses = chat_status::orderBy('id')->get();
+        $transactions = Transaction::where('own_book_id', $request->own_book_id)->get();
 
         return view('admin.own_books.own_book_page', [
             'own_book' => $this->own_book,
@@ -66,6 +68,7 @@ class OwnBookController extends Controller
             'prev_comments_cover' => $prev_comments_cover,
             'chat' => $chat,
             'chat_statuses' => $chat_statuses,
+            'transactions' => $transactions,
         ]);
     }
 

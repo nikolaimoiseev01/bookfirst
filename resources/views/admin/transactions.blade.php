@@ -71,12 +71,12 @@
                                         </a>
                                     @elseif ($transaction['own_book_payment_type'] === 'Without_print')
                                         <a href="{{route('own_books_page', $transaction['own_book_id'])}}">
-                                            Оплата за макеты книги
+                                            {{$transaction['description']}}
                                         </a>
 
                                     @elseif ($transaction['own_book_payment_type'] === 'Print_only')
                                         <a href="{{route('own_books_page', $transaction['own_book_id'])}}">
-                                            Оплата за макеты книги
+                                            {{$transaction['description']}}
                                         </a>
                                     @else
                                         {{$transaction['description']}}

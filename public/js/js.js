@@ -15,23 +15,32 @@ if (location2.startsWith('/email/verify')) {
 }
 $(".menu-link").each(function () {
     var location2 = window.location.href;
-    var link = $(this).attr('href');
-    if (window.location.pathname.startsWith('/myaccount'))
-    {$('.account a').addClass('active-menu-link');}
+    var link = $(this).prop('href');
 
-    if (window.location.pathname.startsWith('/collections'))
-    { $('a[href$="our_collections"]').addClass('active-menu-link');}
-
-    if(window.location.pathname === '/')
-    {
-        $('#home').addClass('active-menu-link')
-        $('#home_mobile').addClass('active-menu-link')
+    if (location2 == link) {
+            $(this).addClass('active-menu-link');
     }
-    if (location2.startsWith(link)) {
 
-            $('#home').removeClass('active-menu-link')
-            $('#home_mobile').removeClass('active-menu-link')
-            $(this).addClass('active-menu-link');}
+    if (window.location.pathname == '/register') {
+        $('#a_modal_login').addClass('active-menu-link');
+    }
+
+    // if (window.location.pathname.startsWith('/myaccount'))
+    // {$('.account a').addClass('active-menu-link');}
+    //
+    // if (window.location.pathname.startsWith('/collections'))
+    // { $('a[href$="our_collections"]').addClass('active-menu-link');}
+    //
+    // if(window.location.pathname === '/')
+    // {
+    //     $('#home').addClass('active-menu-link')
+    //     $('#home_mobile').addClass('active-menu-link')
+    // }
+    // if (location2.startsWith(link)) {
+    //
+    //         $('#home').removeClass('active-menu-link')
+    //         $('#home_mobile').removeClass('active-menu-link')
+    //         $(this).addClass('active-menu-link');}
 });
 
 
