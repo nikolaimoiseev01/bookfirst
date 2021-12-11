@@ -782,17 +782,34 @@
                  border-bottom: 2px {{$part_not_available}} solid;
                  border-left: 2px {{$part_not_available}} solid;
                  border-right: 2px {{$part_not_available}} solid;
-             @elseif($collection['col_status_id'] === 9)
+             @elseif($collection['col_status_id'] === 9 and !$participation->printorder['paid_at'])
+                 border-bottom: 2px {{$part_action_needed}} solid;
+                 border-left: 2px {{$part_action_needed}} solid;
+                 border-right: 2px {{$part_action_needed}} solid;
+             @elseif($collection['col_status_id'] === 9 and $participation->printorder['paid_at'])
                  border-bottom: 2px {{$part_all_good}} solid;
                  border-left: 2px {{$part_all_good}} solid;
                  border-right: 2px {{$part_all_good}} solid;
              @endif
                  border-radius: 0 0 10px 10px;
-
                  " id="print_part">
-            <div style="background: #cbcbcb;" class="line"></div>
-            @if ($collection['col_status_id'] <= 3)
-                <svg id="Слой_1" class="circle_status" style="fill: #cbcbcb;" data-name="Слой 1"
+            <div style=" background:
+            @if ($collection['col_status_id'] < 4)
+            {{$part_not_available}};
+            @elseif($collection['col_status_id'] === 9 and !$participation->printorder['paid_at'])
+            {{$part_action_needed}} ;
+
+            @elseif($collection['col_status_id'] === 9 and $participation->printorder['paid_at'])
+            {{$part_all_good}};
+
+            @endif" class="line"></div>
+            @if (!$participation->printorder['paid_at'])
+                <svg id="Слой_1" class="circle_status" style="fill:
+                @if ($collection['col_status_id'] < 4){{$part_not_available}};
+                @else
+                {{$part_action_needed}} ;
+                @endif
+                    " data-name="Слой 1"
                      xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496.52 516.53">
                     <defs>
                         <style>.cls-1 {
@@ -832,7 +849,6 @@
                     <path d="M412.67,66.3c-4.34-4.12-9-8.24-13.71-12L387.47,67.49c4.35,3.57,8.7,7.36,12.72,11.15Z"
                           transform="translate(11.27 33.78)"/>
                 </svg>
-
             @else
                 <svg id="Capa_1" class="circle_status" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg"
                      viewBox="0 0 234.15 234.15">
@@ -842,7 +858,9 @@
             @endif
             <div style="
             @if ($collection['col_status_id'] <= 3)
-            @else
+            @elseif (!$participation->printorder['paid_at'])
+                box-shadow: 0 0 10px 1px {{$part_action_needed}}85;
+            @elseif (!$participation->printorder['paid_at'])
                 box-shadow: 0 0 10px 1px {{$part_all_good}}85;
             @endif" class="container">
                 <div style="border-bottom: 1px
@@ -886,13 +904,47 @@
                             @endif
                         @endif
                     </div>
-                @elseif ($participation['printorder_id'] <> 0)
+                @elseif ($participation['printorder_id'] <> 0 && $participation->printorder['paid_at'] == null)
                     <div class="no-access">
-                        <p>Сборник успешно отправлен всем авторам! Вы можете отследить свою посылку по
+                        <p>Сборник успешно отправлен всем авторам! Для того, чтобы получить посылку нужно произвести
+                            оплату за отправление.
+                            По нашим правилам оплата происходит именно в этот момент, так как стоимость мы точно
+                            фиксируем только после окончания печати.
+                            <br><b>Если оплата будет произведена
+                                позднее {{ Date::parse($collection['col_date4'])->addDays(3)->format('j F') }} нам
+                                придется заблокировать возможность получения!</b>
+                            @if ($participation->printorder['send_price'])
+                                <br> Стоимость именно вашего отправления: {{$participation->printorder['send_price']}}
+                                руб.
+                        </p>
+                        <form style="display:inline-block"
+                              action="{{ route('payment.create_send_payment', [$participation->printorder['id'], $participation->printorder['send_price']])}}"
+                              method="POST"
+                              enctype="multipart/form-data">
+                            @csrf
+                            <input value="{{$participation['id']}}" type="text" name="pat_id"
+                                   style="display:none" class="form-control"
+                                   id="pat_id">
+
+                            <button id="btn-submit" type="submit" style="height: fit-content; max-width:250px;"
+                                    class="pay-button button">
+                                Оплатить пересылку
+                            </button>
+                        </form>
+                        @else
+                            Стоимость не найдена! <a href="{{route('chat_create', 'У меня проблема с пересылкой')}}"
+                                                     class="link">У меня проблема с пересылкой</a>
+                        @endif
+                    </div>
+                @elseif ($participation['printorder_id'] <> 0 && $participation->printorder['paid_at'] <> null)
+                    <div class="no-access">
+                        <p>Сборник успешно отправлен всем авторам! Вы оплатили пересылку, поэтому можете отследить ее по
                             номеру: {{$participation->printorder['track_number'] ?? "ссылка не найдена"}}.</p>
                         <a target="_blank"
                            href="https://www.pochta.ru/tracking#{{$participation->printorder['track_number'] ?? "ссылка не найдена"}}"
                            class="@if ($participation->printorder['track_number'] ?? 0 <> 0) @else amazon_link_error @endif button">Отследить</a>
+                        <br><a href="{{route('chat_create', 'У меня проблема с пересылкой')}}" class="link">У меня
+                            проблема с пересылкой</a>
                     </div>
                 @else
                     <div class="no-access">

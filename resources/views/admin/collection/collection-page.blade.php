@@ -589,9 +589,21 @@
                     <div class="row">
                         <div class="col-lg-12">
 
-                            <div class="card-header">
+                            <div class="d-flex card-header">
                                 <input class="form-control" id="print_orders_input" type="text"
                                        placeholder="Поиск...">
+                                <form
+                                    id="chat"
+                                    enctype="multipart/form-data"
+                                    method="get"
+                                    action="{{route('download_all_prints')}}"
+                                    class="ml-3">
+                                    @csrf
+                                    <input style="display: none" type="number" id="col_id" name="col_id" value="{{$collection['id']}}">
+                                    <button id="chat_form" style="width:fit-content; position: relative;"  class="button btn btn-block bg-gradient-primary" >
+                                        <span class="button__text">Скачать таблицу печати!</span>
+                                    </button>
+                                </form>
                             </div>
                             <div class="card-body p-0">
                                 @livewire('admin-print-order-table',['collection_id'=>$collection['id']])

@@ -25,6 +25,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Jenssegers\Date\Date;
 use PhpOffice\PhpWord\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class CollectionController extends Controller
 {
@@ -119,6 +121,42 @@ class CollectionController extends Controller
     {
         //
     }
+
+    public function download_all_prints(Request $request)
+    {
+        $authors = Participation::where('collection_id', $request->col_id)->where('pat_status_id', 3)->where('printorder_id', '>', 0)->get();
+        $prints = Printorder::where('collection_id', $request->col_id)->where('paid_at','<>', null)->get();
+
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A1', 'ФИО');
+        $sheet->setCellValue('B1', 'Адрес');
+        $sheet->setCellValue('C1', 'Кол-во');
+        $sheet->setCellValue('D1', 'Трек-номер');
+
+        $spreadsheet->getActiveSheet()->getStyle("A1:D1")->getFont()->setBold( true );
+
+        foreach ($authors as $key=>$author) {
+            $print = Printorder::where('id', $author['printorder_id'])->first();
+            $sheet->setCellValue("A" . ($key+2), $print['send_to_name']);
+            $sheet->setCellValue("B" . ($key+2), $print['send_to_address'] . '; Тел.: ' . $print['send_to_tel']);
+            $sheet->setCellValue("C" . ($key+2), $print['books_needed']);
+        }
+
+        foreach(range('A','D') as $columnID) {
+            $spreadsheet->getActiveSheet()->getColumnDimension($columnID)
+                ->setAutoSize(true);
+        }
+
+
+        $writer = new Xlsx($spreadsheet);
+        $col_title = 'Печать ' . Collection::where('id',$request->col_id)->value('title');
+        $writer->save($col_title . '.xlsx');
+        return response()->download($col_title . '.xlsx')->deleteFileAfterSend(true);
+
+    }
+
 
     public function create_col_file(Request $request)
     {
@@ -238,8 +276,9 @@ class CollectionController extends Controller
 
         // Saving the document as HTML file...
         $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
-        $objWriter->save('collection_temp_created.docx');
-        return redirect('collection_temp_created.docx');
+        $col_title = Collection::where('id',$request->col_id)->value('title');
+        $objWriter->save($col_title . '.docx');
+        return response()->download($col_title . '.docx')->deleteFileAfterSend(true);
     }
 
     /**
@@ -320,7 +359,9 @@ class CollectionController extends Controller
             session()->flash('alert_type', 'error');
             session()->flash('alert_title', 'Что-то пошло не так :(');
             session()->flash('alert_text', 'Сначала нужно загрузить файл предварительного варианта!');
-        } else {
+        }
+
+        else {
 
             $collection->title = $request->title;
             $collection->col_desc = $request->col_desc;

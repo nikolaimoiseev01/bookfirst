@@ -47,6 +47,7 @@ class PaymentService
                     'user_id' => $options['user_id'],
                     'transaction_id' => $options['transaction_id'],
                     'participation_id' => $options['participation_id'] ?? null,
+                    'print_id' => $options['print_id'] ?? null,
                     'col_adit_print_needed' => $options['col_adit_print_needed'] ?? null,
                     'col_adit_print_type' => $options['col_adit_print_type'] ?? null,
                     'col_adit_send_to_name' => $options['col_adit_send_to_name'] ?? null,

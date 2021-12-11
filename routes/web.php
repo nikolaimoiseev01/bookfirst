@@ -74,8 +74,6 @@ Route::middleware(['verified'])->prefix('myaccount')->group(function () {
     Route::post('/mybooks/pay_for_own_book/{own_book_id}', [App\Http\Controllers\Account\OwnBookController::class, 'pay_for_own_book'])->name('pay_for_own_book');
     Route::post('/mybooks/pay_for_own_book_print/{own_book_id}', [App\Http\Controllers\Account\OwnBookController::class, 'pay_for_own_book_print'])->name('pay_for_own_book_print');
 
-
-
     Route::get('/work/create_from_doc', function () {
         return view('account/my_works/create_from_doc', [
         ]);
@@ -107,6 +105,7 @@ Route::middleware(['verified'])->prefix('myaccount')->group(function () {
 
     // ---------  ОПЛАТА --------- //
     Route::post('/payments/create_part_payment/part_id={participation_id}/amount={amount}', [PaymentController::class, 'create_part_payment'])->name('payment.create_part_payment');
+    Route::post('/payments/create_send_payment/print_id={print_id}/amount={amount}', [PaymentController::class, 'create_send_payment'])->name('payment.create_send_payment');
     Route::post('/payments/create_own_book_payment/own_book_id={own_book_id}/payment_type={payment_type}/amount={amount}', [PaymentController::class, 'create_own_book_payment'])->name('payment.create_own_book_payment');
     Route::post('/payments/create_buying_collection/collection_id={collection_id}', [PaymentController::class, 'create_buying_collection'])->name('payment.create_buying_collection');
     Route::post('/payments/create_buying_own_book/own_book_id={collection_id}', [PaymentController::class, 'create_buying_own_book'])->name('payment.create_buying_own_book');
@@ -126,6 +125,7 @@ Route::match(['POST', 'GET'], '/payments/callback', [PaymentController::class, '
 Route::middleware(['role:admin'])->prefix('admin_panel')->group(function () {
     Route::get('/col', [App\Http\Controllers\Admin\CollectionController::class, 'index'])->name('homeAdmin');
     Route::get('/create_col_file', [App\Http\Controllers\Admin\CollectionController::class, 'create_col_file'])->name('create_col_file');
+    Route::get('/download_all_prints', [App\Http\Controllers\Admin\CollectionController::class, 'download_all_prints'])->name('download_all_prints');
     Route::get('/collections/closed', [App\Http\Controllers\Admin\CollectionController::class, 'closed_collections'])->name('closed_collections');
     Route::get('/own_books', [App\Http\Controllers\Admin\OwnBookController::class, 'index'])->name('own_books_index');
     Route::get('/own_books/closed', [App\Http\Controllers\Admin\OwnBookController::class, 'closed_own_books'])->name('closed_own_books');

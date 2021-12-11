@@ -58,6 +58,42 @@ class PaymentController extends Controller
         }
     }
 
+
+    public function create_send_payment($print_id, $amount, PaymentService $service)
+    {
+
+        $collection_id = Printorder::where('id', $print_id)->value('collection_id');
+        $own_book_id = Printorder::where('id', $print_id)->value('own_book_id');
+
+        if ($collection_id > 0) { // Это оплата за пересылку сборника
+            $description = "Оплата пересылки сборника '" . Collection::where('id',$collection_id)->value('title') . "'";
+        }
+
+        $url_redirect = url()->previous();
+
+        // Записываем данные транзакции
+        $transaction = new Transaction();
+        $transaction->user_id = Auth::user()->id;
+        $transaction->amount = $amount;
+        $transaction->print_id = $print_id;
+        $transaction->description = $description;
+        $transaction->save();
+
+        if ($transaction) {
+            $link = $service->createPayment($amount, $description, $url_redirect, [
+                'transaction_id' => $transaction->id,
+                'user_id' => Auth::user()->id,
+                'print_id' => $print_id,
+                'own_book_id' => null,
+                'url_redirect' => $url_redirect
+            ]);
+
+            if (isset($link)) {
+                return redirect()->away($link);
+            }
+        }
+    }
+
     public function create_own_book_payment($own_book_id, $payment_type, $amount, PaymentService $service)
     {
 
@@ -165,8 +201,8 @@ class PaymentController extends Controller
 
     public function callback(Request $request, PaymentService $service)
     {
+
         App::setLocale('ru');
-//        Log::info('//////////////////////////  CALBACK STARTED //////////////////////////');
 
         // Получите данные из POST-запроса от ЮKassa
         $source = file_get_contents('php://input');
@@ -188,7 +224,7 @@ class PaymentController extends Controller
         }
         // -----------------------------------------------------------------
 
-//        Log::info($requestBody);
+
 
         if (isset($notification['status']) && $notification['status'] === 'succeeded') { // Если операция прошла успешно
             if ((bool)$notification['paid'] === true) { // Если оплата успшена
@@ -307,7 +343,7 @@ class PaymentController extends Controller
                                         'total_price' => $Participation['total_price'] + (int)$notification['amount']['value'],
                                     ));
 
-                                log::info($metadata);
+
 
 
                                 // Посылаем Email уведомление пользователю
@@ -405,6 +441,44 @@ class PaymentController extends Controller
                         }
                     }
                     // --------------------------------------------------------------------------------------------------------------------------------
+
+                    // Это оплата за пересылку -------------------------------------------------------------------------------------------------
+                    if ((int)$metadata['print_id'] > 0) { // Это оплата за пересылку
+
+                        $print_order = Printorder::where('id', (int)$metadata['print_id'])->first();
+                        $user = User::where('id', $print_order['user_id'])->first();
+                        if ($print_order['paid_at'] === null) {  // Это НОВАЯ оплата
+                            // Записываем время оплаты на строку отправления
+                            own_book::where('id', (int)$metadata['own_book_id'])
+                                ->update(array(
+                                    'paid_at_print_only' => Carbon::now('Europe/Moscow')->toDateTime(),
+                                    'own_book_status_id' => 5
+                                ));
+
+                            Printorder::where('id', (int)$metadata['print_id'])
+                                ->update(array(
+                                    'paid_at' => Carbon::now('Europe/Moscow')->toDateTime(),
+                                ));
+                            Log::info($metadata['print_id']);
+                            // Посылаем Email уведомление пользователю
+                            $user->notify(new EmailNotification(
+                                'Оплата подтверждена!',
+                                $user['name'],
+                                "Отлично, вы успешно оплатили стоимость пересылки заказанных печатных материалов!".
+                                "'. Следующие шаги Вы всегда сможете отсеживать на странице издания:",
+                                "Страница издания",
+                                $metadata['url_redirect']));
+
+                            // Посылаем Telegram уведомление нам
+                            Notification::route('telegram', '-506622812')
+                                ->notify(new TelegramNotification('💸 Новая оплата по пересылке! 💸',
+                                    "Сумма: " . ($print_order['send_price']) . " руб.",
+                                    "В админку",
+                                    route('homeAdmin')));
+                        }
+                    }
+                    // --------------------------------------------------------------------------------------------------------------------------------
+
 
 
                     // Клиент купил электронный сбрник -------------------------------------------------------------------------------------------------

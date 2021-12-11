@@ -25,6 +25,7 @@
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.2",
         "livewire/livewire": "^2.4",
+        "phpoffice/phpspreadsheet": "^1.20",
         "phpoffice/phpword": "dev-master",
         "spatie/laravel-permission": "^4.0",
         "yoomoney/yookassa-sdk-php": "^2.1"

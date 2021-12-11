@@ -59,7 +59,7 @@
                                     color:
                                 @if($transaction['status'] === 'CONFIRMED') #09c73a
                                 @elseif($transaction['status'] === 'CREATED') #ff2929
-                                    @endif;
+                                @endif;
                                     text-align: center;">
                                     {{$transaction['status']}}
                                 </td>
@@ -73,9 +73,12 @@
                                         <a href="{{route('own_books_page', $transaction['own_book_id'])}}">
                                             {{$transaction['description']}}
                                         </a>
-
                                     @elseif ($transaction['own_book_payment_type'] === 'Print_only')
                                         <a href="{{route('own_books_page', $transaction['own_book_id'])}}">
+                                            {{$transaction['description']}}
+                                        </a>
+                                    @elseif ($transaction['print_id'] > 0)
+                                        <a href="{{route('user_participation', \App\Models\Participation::where('printorder_id', $transaction['print_id'])->value('id'))}}">
                                             {{$transaction['description']}}
                                         </a>
                                     @else

@@ -35,7 +35,7 @@
                                 <p><i>доплатить: <span id="extra_pay">0</span></i></p>
                             @endif
                             <div style="margin:0;" class="participation-price-desc"><p>За печать (
-                                <p id="print_needed">1</p>
+                                <p id="print_needed">{{$participation->printorder['books_needed'] ?? 1}}</p>
                                 <p>экз.)</p></div>
                         </div>
 
