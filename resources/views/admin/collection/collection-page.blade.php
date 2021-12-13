@@ -1,5 +1,6 @@
 @extends('layouts.admin_layout')
 @section('title', 'Сборник')
+
 @section('content')
     <!-- Content Header (Page header) -->
 

@@ -15,6 +15,9 @@
             padding: 5px 10px;
         }
     </style>
+
+        <script src="/plugins/lazysizes-gh-pages/lazysizes.min.js" async=""></script>
+
 @endsection
 
 
@@ -97,7 +100,7 @@
                                 <span style="color: #1aa083;">Чтобы полностью завершить регистрацию, необходимо нажать на "Подтвердить Email" в сообщении.</span>
                             </p>
                             <div style="width:100%; margin-top:20px; text-align: center">
-                                <img class="gif" src="/img/registration.gif" alt="">
+                                <img data-src="/img/registration.gif" class="lazyload gif" alt="">
                             </div>
                         </div>
 
@@ -146,7 +149,7 @@
                                 Когда система проанализирует файл, у вас будет возможность отредактировать автоматический анализ: поменять названия, текст или удалить какие-то неверно распознанные произведения.
                             </p>
                             <div style="width:100%; margin-top:20px; text-align: center">
-                                <img class="gif" src="/img/work_from_doc.gif" alt="">
+                                <img data-src="/img/work_from_doc.gif" class="lazyload gif" alt="">
                             </div>
                         </div>
 
