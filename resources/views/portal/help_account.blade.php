@@ -100,7 +100,8 @@
                                 <span style="color: #1aa083;">Чтобы полностью завершить регистрацию, необходимо нажать на "Подтвердить Email" в сообщении.</span>
                             </p>
                             <div style="width:100%; margin-top:20px; text-align: center">
-                                <img data-src="/img/registration.gif" class="lazyload gif" alt="">
+                                <a class="link open_gif">Смотреть видео-пример</a>
+                                <img data-src="/img/registration" class="lazyload gif" alt="">
                             </div>
                         </div>
 
@@ -149,7 +150,8 @@
                                 Когда система проанализирует файл, у вас будет возможность отредактировать автоматический анализ: поменять названия, текст или удалить какие-то неверно распознанные произведения.
                             </p>
                             <div style="width:100%; margin-top:20px; text-align: center">
-                                <img data-src="/img/work_from_doc.gif" class="lazyload gif" alt="">
+                                <a class="link open_gif">Смотреть видео-пример</a>
+                                <img data-src="/img/work_from_doc" class="lazyload gif" alt="">
                             </div>
                         </div>
 
@@ -310,5 +312,14 @@
 
     </div>
 
+    <script>
+        $('.open_gif').on('click', function() {
+            cur_href = $(this).siblings().attr('data-src');
+            $(this).hide();
+            $(this).siblings().attr('data-src', cur_href + '.gif');
+            $(this).siblings().attr('src', cur_href + '.gif');
+
+        })
+    </script>
 @endsection
 
