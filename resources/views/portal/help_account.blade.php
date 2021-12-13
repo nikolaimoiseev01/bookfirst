@@ -28,6 +28,7 @@
         border-radius: 10px;
         margin: 10px auto !important;
         width:100%;
+        display: none;
         max-width: 1050px;
     }
 
@@ -183,6 +184,7 @@
         $('.open_gif').on('click', function() {
             cur_href = $(this).siblings().attr('src');
             $(this).hide();
+            $(this).siblings().show();
             $(this).siblings().attr('src', cur_href + '.gif');
 
         })
