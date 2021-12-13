@@ -16,8 +16,6 @@
         }
     </style>
 
-        <script src="/plugins/lazysizes-gh-pages/lazysizes.min.js" async=""></script>
-
 @endsection
 
 
@@ -181,9 +179,8 @@
 
     <script>
         $('.open_gif').on('click', function() {
-            cur_href = $(this).siblings().attr('data-src');
+            cur_href = $(this).siblings().attr('src');
             $(this).hide();
-            $(this).siblings().attr('data-src', cur_href + '.gif');
             $(this).siblings().attr('src', cur_href + '.gif');
 
         })

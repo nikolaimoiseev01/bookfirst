@@ -103,7 +103,8 @@
 
 
                             <div style="width:100%; margin-top:20px; text-align: center">
-                                <img class="gif" src="/img/application start.gif" alt="">
+                                <a class="link open_gif">Смотреть видео-пример</a>
+                                <img class="gif" src="/img/application start" alt="">
                             </div>
                         </div>
 
@@ -145,7 +146,8 @@
                                 а также необходимость пунктуационной и орфографической проверки (необязательно).
                             </p>
                             <div style="width:100%; margin-top:20px; text-align: center">
-                                <img class="gif" src="/img/application.gif" alt="">
+                                <a class="link open_gif">Смотреть видео-пример</a>
+                                <img class="gif" src="/img/application" alt="">
                             </div>
                         </div>
 
@@ -201,7 +203,8 @@
                             </p>
 
                             <div style="width:100%; margin-top:20px; text-align: center">
-                                <img class="gif" src="/img/make_collection_comment.gif" alt="">
+                                <a class="link open_gif">Смотреть видео-пример</a>
+                                <img class="gif" src="/img/make_collection_comment" alt="">
                             </div>
                         </div>
 
@@ -238,6 +241,15 @@
         </div>
 
     </div>
+
+    <script>
+        $('.open_gif').on('click', function() {
+            cur_href = $(this).siblings().attr('src');
+            $(this).hide();
+            $(this).siblings().attr('src', cur_href + '.gif');
+
+        })
+    </script>
 
 @endsection
 

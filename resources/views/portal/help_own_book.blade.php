@@ -102,7 +102,8 @@
 
 
                             <div style="width:100%; margin-top:20px; text-align: center">
-                                <img class="gif" src="/img/path_to_own_book.gif" alt="">
+                                <a class="link open_gif">Смотреть видео-пример</a>
+                                <img class="gif" src="/img/path_to_own_book" alt="">
                             </div>
                         </div>
 
@@ -195,7 +196,8 @@
                             </p>
 
                             <div style="width:100%; margin-top:20px; text-align: center">
-                                <img class="gif" src="/img/preview inside.gif" alt="">
+                                <a class="link open_gif">Смотреть видео-пример</a>
+                                <img class="gif" src="/img/preview inside" alt="">
                             </div>
 
                             <h2 id="app_cover" style="margin-top:-80px; padding-top: 80px; margin-bottom: 0; font-size: 25px;">II. Утвердить макет</h2>
@@ -225,6 +227,15 @@
         </div>
 
     </div>
+
+    <script>
+        $('.open_gif').on('click', function() {
+            cur_href = $(this).siblings().attr('src');
+            $(this).hide();
+            $(this).siblings().attr('src', cur_href + '.gif');
+
+        })
+    </script>
 
 @endsection
 
