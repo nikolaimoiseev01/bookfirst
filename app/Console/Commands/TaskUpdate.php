@@ -69,8 +69,8 @@ class TaskUpdate extends Command
                 $col_deadline = Date::parse($collection->col_date4)->format('j F');
             }
 
-            if (Date::parse($col_deadline)->diff(Date::now())->days < 7) {
-                $danger_deadline = " *(ДНЕЙ: " . (Date::parse($col_deadline)->diff(Date::now())->days) . ")*";
+            if (Date::parse($col_deadline)->diff(Date::now())->days < 3) {
+                $danger_deadline = " *(Дней: " . (Date::parse($col_deadline)->diff(Date::now())->days) . ")*";
             } else {
                 $danger_deadline = "";
             };
@@ -83,8 +83,8 @@ class TaskUpdate extends Command
         foreach ($own_book_covers as $key => $own_book_cover) {
             $this_deadline = Date::parse($own_book_cover['cover_deadline'])->format('j F');
 
-            if (Date::parse($own_book_cover['cover_deadline'])->diff(Date::now())->days < 7) {
-                $danger_deadline = " *(🔥 ДНЕЙ: " . (Date::parse($own_book_cover['cover_deadline'])->diff(Date::now())->days) . " 🔥)*";
+            if (Date::parse($own_book_cover['cover_deadline'])->diff(Date::now())->days < 3) {
+                $danger_deadline = " *(Дней: " . (Date::parse($own_book_cover['cover_deadline'])->diff(Date::now())->days) . " 🔥)*";
             } else {
                 $danger_deadline = "";
             };
@@ -97,8 +97,8 @@ class TaskUpdate extends Command
         // Создаем дедлайны макетов
         foreach ($own_book_insides as $key => $own_book_inside) {
             $this_deadline = Date::parse($own_book_inside['inside_deadline'])->format('j F');
-            if (Date::parse($own_book_inside['inside_deadline'])->diff(Date::now())->days < 7) {
-                $danger_deadline = " *(🔥 ДНИ: " . (Date::parse($own_book_inside['inside_deadline'])->diff(Date::now())->days) . " 🔥)*";
+            if (Date::parse($own_book_inside['inside_deadline'])->diff(Date::now())->days < 3) {
+                $danger_deadline = " *(Дней: " . (Date::parse($own_book_inside['inside_deadline'])->diff(Date::now())->days) . " 🔥)*";
             } else {
                 $danger_deadline = "";
             };
