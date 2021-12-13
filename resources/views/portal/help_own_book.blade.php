@@ -26,6 +26,7 @@
         border: 1px #47af98 solid;
         border-radius: 10px;
         margin: 10px auto !important;
+        width:100%;
         max-width: 1050px;
     }
 
