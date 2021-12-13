@@ -12,7 +12,9 @@
 @section('page-title')
     <div class="account-header">
         <h1 id="page_title">Мои вопросы</h1>
+        <a style="box-shadow: none;" href="{{route('help_account')}}" class="button fast-load">Инструкция работы с платформой</a>
         <a style="box-shadow: none;" href="{{route('chat_create','Общий вопрос')}}" class="button fast-load">Создать общий вопрос</a>
+
         <a class="link fast-load" href="{{route('archive_chats')}}">Закрытые вопросы</a>
     </div>
 @endsection

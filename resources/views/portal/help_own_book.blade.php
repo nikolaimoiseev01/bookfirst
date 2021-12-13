@@ -71,7 +71,7 @@
                     <a href="{{route('help_account')}}">Личный кабинет</a>
                     <a href="{{route('help_collection')}}">Участие в сборнках</a>
                     <a href="#own_books" class="current">Издание собственной книги</a>
-                    <a href="{{route('chat_create','Вопрос по работе с платформой')}}" style="float:right; font-size: 20px;" class="button"><i>Другой вопрос</i></a>
+                    <a href="{{route('chat_create','Вопрос по работе с платформой')}}" style="color: #2ec7a6 !important; float:right; font-size: 23px !important;" class="log_check link"><i>Другой вопрос</i></a>
                 </div>
                 <div style="transition: .3s ease-in-out" class="list-wrap">
                     <div class="own_books" id="own_books">
