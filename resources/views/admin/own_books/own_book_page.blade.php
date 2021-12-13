@@ -445,7 +445,7 @@
                                             {{ Date::parse($prev_comment['created_at'])->addHours(3)->format('j F H:i') }}
                                         </td>
                                         <td style="text-align:inherit">
-                                            {{$prev_comment['text']}}
+                                            {!! nl2br(e($prev_comment['text'])) !!}
                                         </td>
                                         <td class="d-flex flex-column justify-content-center align-items-center"
                                             style="text-align: center;">
@@ -575,7 +575,7 @@
                                             <h3 class="mb-2 d-inline">Комментарий</h3>
                                             <h4 class="mt-2">Пожелания автора:</h4>
                                             <div class="mt-2 mb-4 p-2 border">
-                                                {{$own_book['cover_comment']}}
+                                                {!! nl2br(e($own_book['cover_comment'])) !!}
                                             </div>
                                         @endif
                                     </div>
@@ -623,7 +623,7 @@
                                                 @foreach($prev_comments_cover as $prev_comment)
                                                     <tr>
                                                         <td style="text-align: inherit;">
-                                                            {{$prev_comment['text']}}
+                                                            {!! nl2br(e($prev_comment['text'])) !!}
                                                         </td>
                                                         <td class="d-flex flex-column justify-content-center align-items-center"
                                                             style="text-align: center;">
