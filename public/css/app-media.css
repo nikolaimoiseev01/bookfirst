@@ -179,7 +179,6 @@
 }
 }
 
-
 @media screen and (max-width: 720px) {
     .app_menu_text {
         display: none;
@@ -248,7 +247,7 @@
 
 @media screen and (max-width: 700px) {
     .footer-man {
-        bottom: 236px;
+        top: -218px;
     }
 
     .switch-wrap {
@@ -344,7 +343,7 @@
         margin-bottom: 200px;
     }
     .footer-man {
-        bottom: 220px;
+        top: -170px;
         width:250px;
     }
 }

@@ -4,8 +4,9 @@
     <!-- Content Header (Page header) -->
     <div class="content-header">
         <div class="container-fluid">
-            <div class="row mb-2">
+            <div class="align-items-center row mb-2">
                     <h1 class="m-0">Наши пользователи ({{count($users)}})</h1>
+                <a class="ml-3 btn btn-outline-info" href="{{route('subscribers_index')}}">Подписчики</a>
             </div><!-- /.row -->
 
         </div><!-- /.container-fluid -->

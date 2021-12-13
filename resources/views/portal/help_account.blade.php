@@ -100,7 +100,7 @@
                             </p>
                             <div style="width:100%; margin-top:20px; text-align: center">
                                 <a class="link open_gif">Смотреть видео-пример</a>
-                                <img data-src="/img/registration" class="lazyload gif" alt="">
+                                <img src="/img/registration" class="lazyload gif" alt="">
                             </div>
                         </div>
 
@@ -150,7 +150,7 @@
                             </p>
                             <div style="width:100%; margin-top:20px; text-align: center">
                                 <a class="link open_gif">Смотреть видео-пример</a>
-                                <img data-src="/img/work_from_doc" class="lazyload gif" alt="">
+                                <img src="/img/work_from_doc" class="lazyload gif" alt="">
                             </div>
                         </div>
 

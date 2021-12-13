@@ -166,5 +166,7 @@ Route::middleware(['role:admin'])->prefix('admin_panel')->group(function () {
     })->name('transactions_from_admin');
 
     Route::resource('user', \App\Http\Controllers\Admin\UserController::class);
+    Route::get('/subscribers', [App\Http\Controllers\Admin\UserController::class, 'subscribers_index'])->name('subscribers_index');
+    Route::get('/subscribers/get', [App\Http\Controllers\Admin\UserController::class, 'subscribers_download'])->name('subscribers_download');
 });
 // ----------------------------------------------

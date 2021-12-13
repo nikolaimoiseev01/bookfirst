@@ -6,9 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Models\Chat;
 use App\Models\chat_status;
 use App\Models\Collection;
+use App\Models\subscriber;
 use App\Models\User;
 use App\Models\Work;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
+use Jenssegers\Date\Date;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class UserController extends Controller
 {
@@ -29,6 +34,47 @@ class UserController extends Controller
             'chats' => $chats,
         ]);
     }
+
+    public function subscribers_index() {
+
+        $subscribers = subscriber::all();
+        return view('admin.user.subscribers_index',[
+            'subscribers' => $subscribers
+        ]);
+    }
+
+    public function subscribers_download() {
+
+        $subscribers = subscriber::all();
+
+        App::setLocale('ru');
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A1', 'Email');
+        $sheet->setCellValue('B1', 'Создан');
+
+        $spreadsheet->getActiveSheet()->getStyle("A1:D1")->getFont()->setBold( true );
+
+        foreach ($subscribers as $key=>$subscriber) {
+            $sheet->setCellValue("A" . ($key+2), $subscriber['email']);
+            $sheet->setCellValue("B" . ($key+2), Date::parse($subscriber['created_at'])->addHours(3)->format('j F H:i'));
+        }
+
+        foreach(range('A','B') as $columnID) {
+            $spreadsheet->getActiveSheet()->getColumnDimension($columnID)
+                ->setAutoSize(true);
+        }
+
+        $writer = new Xlsx($spreadsheet);
+        $file_title = 'Подписчики с сайта';
+        $writer->save($file_title . '.xlsx');
+        return response()->download($file_title . '.xlsx')->deleteFileAfterSend(true);
+
+    }
+
+
+
+
 
     public function chats() {
 

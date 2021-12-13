@@ -435,6 +435,7 @@
                     </svg>
                 </a>
             </div>
+            @livewire('subscription')
         </div>
 
         <div class="footer-questions">

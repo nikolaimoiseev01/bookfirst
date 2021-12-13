@@ -1463,12 +1463,16 @@ form .check-block {
 .footer-man {
     position: absolute;
     width: 320px;
-    bottom: 63px;
+    top: -218px;
     right: 0;
 }
 
 .footer-company-info, .footer-questions, .footer-socials {
     text-align: center;
+}
+
+.footer-socials {
+    margin:5px 0;
 }
 
 .footer-socials-icons svg {
@@ -1486,7 +1490,7 @@ form .check-block {
     transition: all .2s;
 }
 
-.footer-questions a {
+.footer-questions a, #subscribe_button {
     background: #47AF98;
     border: 1px white solid;
     color: white;
@@ -1494,7 +1498,11 @@ form .check-block {
     font-size: 20px;
 }
 
-.footer-questions a:hover {
+#subscribe_button {
+    font-size: 18px;
+}
+
+.footer-questions a:hover, #subscribe_button:hover  {
     background: white;
     border: 1px #47AF98 solid;
     color: #47AF98;

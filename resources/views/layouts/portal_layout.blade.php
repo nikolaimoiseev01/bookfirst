@@ -356,6 +356,7 @@
                     </svg>
                 </a>
             </div>
+            @livewire('subscription')
         </div>
 
         <div class="footer-questions">
@@ -369,6 +370,7 @@
     </div>
 </div>
 <a href=""></a>
+@livewireScripts
 
 <script src="/js/js.js"></script>
 <script src="/js/sweetalert2.js"></script>
@@ -392,6 +394,18 @@
                 showConfirmButton: false,
             })
         });
+    </script>
+
+
+    <script>
+        window.addEventListener('swal:modal', event => {
+            Swal.fire({
+                title: event.detail.title,
+                icon: event.detail.type,
+                html: "<p>" + event.detail.text + "</p>",
+                showConfirmButton: false,
+            })
+        })
     </script>
 
 
