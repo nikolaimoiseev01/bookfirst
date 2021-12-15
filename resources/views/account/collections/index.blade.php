@@ -17,13 +17,12 @@
 @section('content')
     <div class="account-header">
         <h1>Участие в сборниках</h1>
-
+        <a style="box-shadow: none;" href="{{route('actual_collections')}}" class="button">Актуальные сборники для участия</a>
     </div>
     <div class="my-collections">
         @if(count($participations) == 0)
             <div class="no-books-yet">
                 <h1>На данный момент у Вас нет сборников, в которых Вы учавствуете.</h1>
-                <a style="box-shadow: none;" href="{{route('actual_collections')}}" class="button">Актуальные сборники для участия</a>
             </div>
         @endif
         @foreach($participations as $participation)
