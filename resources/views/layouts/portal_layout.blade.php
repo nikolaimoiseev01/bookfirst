@@ -397,19 +397,21 @@
     </script>
 
 
-    <script>
-        window.addEventListener('swal:modal', event => {
-            Swal.fire({
-                title: event.detail.title,
-                icon: event.detail.type,
-                html: "<p>" + event.detail.text + "</p>",
-                showConfirmButton: false,
-            })
-        })
-    </script>
-
-
 @endif
+
+
+<script>
+    window.addEventListener('swal:modal', event => {
+        Swal.fire({
+            title: event.detail.title,
+            icon: event.detail.type,
+            html: "<p>" + event.detail.text + "</p>",
+            showConfirmButton: false,
+        })
+    })
+
+</script>
+
 
 <script>
     $('.preloader_button').on('click', function () {
