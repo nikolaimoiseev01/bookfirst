@@ -19,6 +19,7 @@ use App\Notifications\EmailNotification;
 use App\Notifications\UserNotification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
@@ -47,7 +48,11 @@ class OwnBookController extends Controller
     {
         $this->own_book = own_book::where('id', $request->own_book_id)->with('printorder')->with('own_books_works')->with('own_book_files')->first();
         $inside_files = own_book_files::where('file_type', 'inside')->where('own_book_id', $request->own_book_id)->get();
-        $cover_files = own_book_files::where('file_type', 'cover')->where('own_book_id', $request->own_book_id)->get();
+        $cover_files = own_book_files::where(function($q) {
+            $q->where('file_type', 'cover')
+                ->orwhere('file_type', 'pre_cover');
+        })
+        ->where('own_book_id', $request->own_book_id)->get();
         $prev_comments_inside = preview_comment::where('own_book_id', $request->own_book_id)->where('own_book_comment_type', 'inside')->orderBy('status_done', 'asc')->orderBy('created_at', 'desc')->get();
         $prev_comments_cover = preview_comment::where('own_book_id', $request->own_book_id)->where('own_book_comment_type', 'cover')->orderBy('status_done', 'asc')->orderBy('created_at', 'desc')->get();
         $own_book_statuses = own_book_status::orderby('id')->get();

@@ -331,8 +331,10 @@
                         <li class="nav-item"><a class="nav-link" href="#print" data-toggle="tab">Печать</a></li>
                         <li class="nav-item"><a class="nav-link" href="#finance" data-toggle="tab">Финансы</a></li>
                         <li class="nav-item">
-                            <a @if ($chat['chat_status_id'] == 1) style="padding-right: 22px;" @endif  class="position-relative nav-link" href="#chat" data-toggle="tab">
-                                @if ($chat['chat_status_id'] == 1)<span style="right: 5px; top:11px;" class="position-absolute right badge badge-danger">!</span>@endif
+                            <a @if ($chat['chat_status_id'] == 1) style="padding-right: 22px;"
+                               @endif  class="position-relative nav-link" href="#chat" data-toggle="tab">
+                                @if ($chat['chat_status_id'] == 1)<span style="right: 5px; top:11px;"
+                                                                        class="position-absolute right badge badge-danger">!</span>@endif
                                 Чат по изданию
                             </a>
                         </li>
@@ -570,14 +572,14 @@
                                                     href="/{{$file['file']}}">{{substr($file['file'], strrpos($file['file'], '/', -10) + 1, 200) }}</a>
                                             </h3>
                                         @endforeach
-
-                                        @if ($own_book['cover_comment'])
-                                            <h3 class="mb-2 d-inline">Комментарий</h3>
-                                            <h4 class="mt-2">Пожелания автора:</h4>
-                                            <div class="mt-2 mb-4 p-2 border">
-                                                {!! nl2br(e($own_book['cover_comment'])) !!}
-                                            </div>
-                                        @endif
+                                        <div>
+                                            @if ($own_book['cover_comment'])
+                                                <h4 class="mt-2">Пожелания автора:</h4>
+                                                <div class="mt-2 mb-4 p-2 border">
+                                                    {!! nl2br(e($own_book['cover_comment'])) !!}
+                                                </div>
+                                            @endif
+                                        </div>
                                     </div>
 
                                     <div class="pt-2">
