@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\View;
 class AccountController extends Controller
 {
     public function collections() {
-        $participations = Participation::where('user_id', Auth::user()->id)->get();
+        $participations = Participation::where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->get();
         return view('account/collections/index', [
             'participations' => $participations,
         ]);

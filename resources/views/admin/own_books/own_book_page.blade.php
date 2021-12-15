@@ -868,7 +868,7 @@
                                                     @if($own_book['print_price'] === 0)
                                                         0 руб.
                                                     @else
-                                                        {{$own_book['pages'] * 4}} руб.
+                                                        {{$own_book['pages'] * $own_book->printorder['books_needed']}} руб.
                                                         ({{$own_book['pages']}}
                                                         стр.; {{$own_book->printorder['books_needed'] ?? 0}}
                                                         экз.)
@@ -879,7 +879,7 @@
                                             <tr style="font-size: 22px;" class="bg-success">
                                                 <td style="font-weight: bold">Итого рибыль</td>
                                                 <td>
-                                                    {{$own_book['total_price'] - ($own_book['pages'] * 4)}}
+                                                    {{$own_book['total_price'] - ($own_book['pages'] * $own_book->printorder['books_needed'])}}
                                                     руб.
                                                 </td>
                                             </tr>
