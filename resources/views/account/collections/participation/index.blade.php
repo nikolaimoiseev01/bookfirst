@@ -11,6 +11,7 @@
 @section('page-title')
     <div class="account-header">
         <h1 id="participation-index-h1" style="margin-left: 30px;">Мое участие в сборнике {{$collection['title']}}</h1>
+        <a target="_blank" style="margin-left:30px;" href="{{route('help_collection')}}#application_pay" class="link">Инструкция по этой странице</a>
     </div>
 @endsection
 

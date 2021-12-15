@@ -121,7 +121,7 @@ class OwnBookController extends Controller
         $this->own_book = own_book::where('id', $request->own_book_id)->first();
         $printorder = Printorder::where('own_book_id', $request->own_book_id)->first();
 
-        if (($printorder['track_number'] === null && $this->own_book['own_book_status_id'] === 6 && intval($request->own_book_status_id) === 9)) {
+        if (($printorder['track_number'] ?? null === null && $this->own_book['own_book_status_id'] === 6 && intval($request->own_book_status_id) === 9)) {
             session()->flash('alert_type', 'error');
             session()->flash('alert_title', 'Статус не заменен!');
             session()->flash('alert_text', 'Не могу завершить печать, когда трек номер пустой');
@@ -133,12 +133,14 @@ class OwnBookController extends Controller
 
             $user = User::where('id', $request->user_id)->first();
 
-            if ($request->own_book_status_id <> 9) {
+            if ($request->own_book_status_id == 2) {
                 $user->notify(new EmailNotification(
                         'Процесс издания книги',
                         $user['name'],
-                        "Спешим сообщить, что произошла смена статуса издания Вашей книги: '" . own_book::where('id', $request->own_book_id)->value('title') . "'." .
-                        "\nНа текущий момент издание имеет общий статус: '" . own_book_status::where('id', $request->own_book_status_id)->value('status_title') . "'. Всю подробную информацию об издании Вы всегда можете отслеживать на специальной странице издания книги.",
+                        "Проверили Ваши файлы и готовы сказать, что мы с радостью можем начать процесс издания Вашей книги '" . own_book::where('id', $request->own_book_id)->value('title') . "'!" .
+                        "\nНа текущий момент издание имеет общий статус: '" . own_book_status::where('id', $request->own_book_status_id)->value('status_title') . "." .
+                        "\nТак сразу после оплаты стоимости издания мы начнём работу с макетами и пришлём первые варианты в течение 11-ти календарных дней. " .
+                        "Всю подробную информацию об издании Вы всегда можете отслеживать на специальной странице издания книги.",
                         "Страница издания",
                         route('book_page', $this->own_book['id']))
                 );
@@ -148,6 +150,8 @@ class OwnBookController extends Controller
                         route('book_page', $this->own_book['id']))
                 );
             }
+
+
             if ($request->own_book_status_id === 9) {
                 $user->notify(new EmailNotification(
                         'Процесс издания завершен!',
@@ -163,6 +167,24 @@ class OwnBookController extends Controller
                         route('book_page', $this->own_book['id']))
                 );
             }
+
+            if ($request->own_book_status_id <> 9 && $request->own_book_status_id <> 2) {
+                $user->notify(new EmailNotification(
+                        'Процесс издания книги',
+                        $user['name'],
+                        "Спешим сообщить, что произошла смена статуса издания Вашей книги: '" . own_book::where('id', $request->own_book_id)->value('title') . "'." .
+                        "\nНа текущий момент издание имеет общий статус: '" . own_book_status::where('id', $request->own_book_status_id)->value('status_title') . "'. Всю подробную информацию об издании Вы всегда можете отслеживать на специальной странице издания книги.",
+                        "Страница издания",
+                        route('book_page', $this->own_book['id']))
+                );
+
+                \Illuminate\Support\Facades\Notification::send($user, new UserNotification(
+                        'Смена статуса издания книги!',
+                        route('book_page', $this->own_book['id']))
+                );
+            }
+
+
             session()->flash('alert_type', 'success');
             session()->flash('alert_title', 'Статус успешно изменен!');
         }

@@ -9,8 +9,9 @@
 @endsection
 
 @section('page-title')
-    <div class="account-header">
+    <div style="width: 95%; max-width: 1050px;" class="account-header">
         <h1>{{$own_book['author']}}: {{$own_book['title']}}</h1>
+        <a target="_blank" style="margin-left:auto;" href="{{route('help_own_book')}}#application_pay" class="link">Инструкция по этой странице</a>
     </div>
 @endsection
 
@@ -82,7 +83,6 @@
 
     </div>
     {{-- // Общая информация о книге--}}
-
     <a id="chat_button" style="margin-left: 30px; margin-top: 20px; width: 95%; text-align: center; max-width: 1000px;"
        class="button">Развернуть чат</a>
     <div class="participation-wrap">
