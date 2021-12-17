@@ -167,7 +167,7 @@
                             </p>
 
                             <div style="width:100%; margin-top:20px; text-align: center">
-                                <img style="display: inherit !important;" class="gif" src="/img/edit_application.png" alt="">
+                                <img style="max-width: fit-content !important; display: inherit !important;" class="png gif" src="/img/edit_application.png" alt="">
                             </div>
                         </div>
 
@@ -190,7 +190,7 @@
                             </p>
 
                             <div style="width:100%; margin-top:20px; text-align: center">
-                                <img style="display: inherit !important;" class="gif" src="/img/pay_application.png" alt="">
+                                <img style="max-width: fit-content !important; display: inherit !important;" class="png gif" src="/img/pay_application.png" alt="">
                             </div>
                         </div>
 
@@ -222,7 +222,7 @@
                             </p>
 
                             <div style="width:100%; margin-top:20px; text-align: center">
-                                <img style="display: inherit !important;" class="gif" src="/img/vote.png" alt="">
+                                <img style="max-width: fit-content !important; display: inherit !important;" class="png gif" src="/img/vote.png" alt="">
                             </div>
                         </div>
 

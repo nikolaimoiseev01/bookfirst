@@ -122,7 +122,7 @@
                                 С этой страницы можно перейти на подробную индивидуальную информацию о вашем участии.
                             </p>
                             <div style="width:100%; margin-top:20px; text-align: center">
-                                <img style="display: inherit !important;" class="gif" src="/img/my_collections_page.png" alt="">
+                                <img style="max-width: fit-content !important; display: inherit !important;" class="gif" src="/img/my_collections_page.png" alt="">
                             </div>
 
                             <p>Как только вы начнете процесс издания собственной книги, в разделе "Собственные книги" сразу появятся блок с информацией о процессе.
@@ -130,7 +130,7 @@
                                 На этой странице вы сможете следить за предварительными материалами, оплачивать любую услугу, отслеживать печатные экземпляры и т.д.
                             </p>
                             <div style="width:100%; margin-top:20px; text-align: center">
-                                <img style="display: inherit !important;" class="gif" src="/img/my_books_page.png" alt="">
+                                <img style="max-width: fit-content !important; display: inherit !important;" class="gif" src="/img/my_books_page.png" alt="">
                             </div>
                         </div>
 
@@ -142,8 +142,8 @@
                             <h2 style="margin-bottom: 0; font-size: 25px;">Вручную</h2>
                             <p>Так можно загружать произведение по одному, вручную указывая название и непосредственно тело произведения.</p>
                             <div style="display: flex; flex-wrap: wrap; width:100%; margin-top:20px; text-align: center">
-                                <img style="display: inherit !important;" class="gif" src="/img/add_work_manual.png" alt="">
-                                <img style="display: inherit !important;" class="gif" src="/img/add_work_doc.png" alt="">
+                                <img style="max-width: fit-content !important; display: inherit !important;" class="gif" src="/img/add_work_manual.png" alt="">
+                                <img style="max-width: fit-content !important; display: inherit !important;" class="gif" src="/img/add_work_doc.png" alt="">
                             </div>
                             <h2 style="margin-bottom: 0; font-size: 25px;">Из файла DocX</h2>
                             <p>
