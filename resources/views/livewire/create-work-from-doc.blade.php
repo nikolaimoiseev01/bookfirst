@@ -2,7 +2,7 @@
     <h2 style="display: flex; align-items: center; font-size: 37px;">Правила:
 
 
-        <a target="_blank" style="margin-left: 20px; font-size: 18px;" href="{{route('help_account')}}#account_2" class="button">Подробная инструкция</a></h2>
+        <a target="_blank" style="padding: 1px 15px; margin-top: 5px;margin-left: 20px; font-size: 18px;" href="{{route('help_account')}}#account_2" class="button">Подробная инструкция</a></h2>
         <li style="list-style-type: disc;"><p>Файл должен содержать только произведения</p></li>
         <li style="list-style-type: disc;"><p>Файл должен быть строго формата <b>.docx</b></p></li>
         <li style="list-style-type: disc;"><p>Не нужно начинать каждое произведение с новой страницы</p></li>
