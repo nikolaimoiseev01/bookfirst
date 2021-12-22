@@ -9,9 +9,10 @@
 @endsection
 
 @section('page-title')
-    <div  style="flex-direction: column; align-items: flex-start;" class="account-header">
+    <div style="flex-direction: column; align-items: flex-start;" class="account-header">
         <h1 style="margin-left: 30px;">{{$own_book['author']}}: {{$own_book['title']}}</h1>
-        <a target="_blank" style="margin-left: 30px;" href="{{route('help_own_book')}}#application_pay" class="link">Инструкция по этой странице</a>
+        <a target="_blank" style="margin-left: 30px;" href="{{route('help_own_book')}}#application_pay" class="link">Инструкция
+            по этой странице</a>
     </div>
 @endsection
 
@@ -657,7 +658,8 @@
                                     @if ($own_book['own_book_inside_status_id'] === 2)
                                         На данный момент внутренний блок находится на этапе предварительной
                                         проверки. Это означает, что все регистрационные
-                                        номера присвоены, и блок сверстан. Сейчас необходимо скачать файл и проверить его.
+                                        номера присвоены, и блок сверстан. Сейчас необходимо скачать файл и проверить
+                                        его.
                                         <br>
 
                                         <b><span style="color: #47af98">
@@ -678,7 +680,9 @@
                                         </b>
                                     @elseif ($own_book['own_book_inside_status_id'] === 3)
                                         {{App::setLocale('ru')}}
-                                        На данный момент мы вносим указанные изменения. Срок: до {{ Date::parse($own_book['inside_deadline'])->format('j F Y') }}. Как только они будут учтены,
+                                        На данный момент мы вносим указанные изменения. Срок:
+                                        до {{ Date::parse($own_book['inside_deadline'])->format('j F Y') }}. Как только
+                                        они будут учтены,
                                         Вы получите оповещение об этом на почте и внутри нашей системы.
                                         Далее внутренний блок можно будет еще раз проверить, а затем запросить
                                         дополнительные изменения или утвердить его.
@@ -779,7 +783,8 @@
                                         </b>
 
                                         <br>Если требуются, то, пожалуйста, опишите исправления в
-                                        форме рядом. Когда все исправления указаны, необходимо отправить обложку на дальнейшее
+                                        форме рядом. Когда все исправления указаны, необходимо отправить обложку на
+                                        дальнейшее
                                         редактирование.
                                         <b>Только тогда мы начнем работу над исправлениями. Для этого нажмите "Отправить
                                             на
@@ -787,7 +792,9 @@
                                         </b>
                                     @elseif ($own_book['own_book_cover_status_id'] === 3)
                                         {{App::setLocale('ru')}}
-                                        На данный момент мы вносим указанные изменения. Срок: до {{ Date::parse($own_book['cover_deadline'])->format('j F Y') }}. Как только они будут учтены,
+                                        На данный момент мы вносим указанные изменения. Срок:
+                                        до {{ Date::parse($own_book['cover_deadline'])->format('j F Y') }}. Как только
+                                        они будут учтены,
                                         Вы получите оповещение об этом на почте и внутри нашей системы.
                                         Далее обложку можно будет еще раз проверить, а затем запросить дополнительные
                                         изменения или утвердить ее.
@@ -1004,14 +1011,49 @@
                         </div>
                     @elseif ($own_book['own_book_status_id'] === 6)
                         <div class="no-access">
-                        <span>Прямо сейчас идет печать книги. Как только экземпляры будут отправлены, Вы получите уведомление по Email.
+                        <span>Прямо сейчас идет печать книги. Обычно она занимает 11-13 рабочих дней. Как только экземпляры будут отправлены, Вы получите уведомление по Email.
                             Ссылка/номер для отслеживания будут сразу доступны в этом блоке.
                         </span>
+                        </div>
+
+                    @elseif ($own_book['own_book_status_id'] === 9 && $own_book->printorder['paid_at'] == null)
+                        <div class="no-access">
+                            <p> Поздравляем! Весь заказ печатных экземпляров был успешно отправлен!
+                                Для того, чтобы получить посылку нужно произвести оплату за отправление.
+                                По нашим правилам оплата происходит именно в этот момент, так как стоимость отправления мы точно фиксируем только после окончания печати.
+                                <br><b> Сейчас мы жестко заблокировали возможность получения экземпляров.
+                                    Для того, чтобы получить возможность забрать заказ, необходимо оплатить стоимость отправления.
+                                    Если оплата не будет произведена
+                                    до {{ Date::parse($own_book['updated_at'])->addDays(3)->format('j F') }} нам
+                                    придется окончательно отменить возможность получения и отправить заказ обратно.</b>
+                                @if ($own_book->printorder['send_price'])
+                                    <br> Стоимость именно вашего
+                                    отправления: {{$own_book->printorder['send_price']}}
+                                    руб.
+                            </p>
+                            <form style="display:inline-block"
+                                  action="{{ route('payment.create_send_payment', [$own_book->printorder['id'], $own_book->printorder['send_price']])}}"
+                                  method="POST"
+                                  enctype="multipart/form-data">
+                                @csrf
+{{--                                <input value="{{$participation['id']}}" type="text" name="pat_id"--}}
+{{--                                       style="display:none" class="form-control"--}}
+{{--                                       id="pat_id">--}}
+
+                                <button id="btn-submit" type="submit" style="height: fit-content; max-width:250px;"
+                                        class="pay-button button">
+                                    Оплатить пересылку
+                                </button>
+                            </form>
+                            @else
+                                Стоимость не найдена! <a href="{{route('chat_create', 'У меня проблема с пересылкой')}}"
+                                                         class="link">У меня проблема с пересылкой</a>
+                            @endif
                         </div>
                     @else
                         <div class="no-access">
                         <span>Поздравляем, издание и печать книги завершены!
-                            Вы всегда можете отследить посылку по ссылке ниже или по трек-номеру {{$own_book->Printorder['track_number']}} вручную на сайте Почта России.
+                            Вы всегда можете отследить посылку по ссылке ниже или по трек-номеру {{$own_book->Printorder['track_number']}} вручную на сайте Почты России.
                         </span>
                             <br>
                             <a target="_blank" class="button"

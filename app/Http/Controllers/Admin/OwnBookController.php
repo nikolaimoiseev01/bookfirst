@@ -121,10 +121,11 @@ class OwnBookController extends Controller
         $this->own_book = own_book::where('id', $request->own_book_id)->first();
         $printorder = Printorder::where('own_book_id', $request->own_book_id)->first();
 
-        if (($printorder['track_number'] ?? null === null && $this->own_book['own_book_status_id'] === 6 && intval($request->own_book_status_id) === 9)) {
+
+        if (((!$printorder['track_number'] || !$printorder['send_price']) && $this->own_book['own_book_status_id'] === 6 && intval($request->own_book_status_id) === 9)) {
             session()->flash('alert_type', 'error');
             session()->flash('alert_title', 'Статус не заменен!');
-            session()->flash('alert_text', 'Не могу завершить печать, когда трек номер пустой');
+            session()->flash('alert_text', 'Не могу завершить печать, когда трек номер или цена отправления пустые');
         } else {
             own_book::where('id', $request->own_book_id)->update(array(
                 'own_book_status_id' => $request->own_book_status_id,
@@ -133,7 +134,7 @@ class OwnBookController extends Controller
 
             $user = User::where('id', $request->user_id)->first();
 
-            if ($request->own_book_status_id == 2) {
+            if ((int)$request->own_book_status_id == 2) {
                 $user->notify(new EmailNotification(
                         'Процесс издания книги',
                         $user['name'],
@@ -152,12 +153,12 @@ class OwnBookController extends Controller
             }
 
 
-            if ($request->own_book_status_id === 9) {
+            if ((int)$request->own_book_status_id === 9) {
                 $user->notify(new EmailNotification(
                         'Процесс издания завершен!',
                         $user['name'],
-                        "С радостью сообщаем, что процесс издания Вашей книги '" . own_book::where('id', $request->own_book_id)->value('title') . "'завершен!" .
-                        "Всю подробную информацию об издании Вы всегда можете отслеживать на специальной странице издания книги. Сотрудничать с Вами было одно удовольствие и мы с радостью ждем Вас для издания следующих книг, а также для участия в наших следующих сборниках! Мы будем очень признательны, если Вы оставите отзыв о нашей деятельности в нашей группе ВК: vk.com/topic-122176261_35858257",
+                        "С радостью сообщаем, что процесс издания Вашей книги '" . own_book::where('id', $request->own_book_id)->value('title') . "' завершен! " .
+                        "Всю подробную информацию об издании Вы всегда можете отслеживать на специальной странице издания книги. Сотрудничать с Вами было одно удовольствие, и мы с радостью ждем Вас для издания следующих книг, а также для участия в наших сборниках! Мы будем очень признательны, если Вы оставите отзыв о нашей деятельности в нашей группе ВК: vk.com/topic-122176261_35858257",
                         "Страница издания",
                         route('book_page', $this->own_book['id']))
                 );
@@ -168,7 +169,7 @@ class OwnBookController extends Controller
                 );
             }
 
-            if ($request->own_book_status_id <> 9 && $request->own_book_status_id <> 2) {
+            if ((int)$request->own_book_status_id <> 9 && (int)$request->own_book_status_id <> 2) {
                 $user->notify(new EmailNotification(
                         'Процесс издания книги',
                         $user['name'],
@@ -365,8 +366,7 @@ class OwnBookController extends Controller
     }
 
 
-    public
-    function update_own_book_track_number(Request $request)
+    public function update_own_book_track_number(Request $request)
     {
 
         session()->flash('success', 'change_printorder');
@@ -380,7 +380,22 @@ class OwnBookController extends Controller
         session()->flash('alert_title', 'Трак номер установлен!');
 
         return redirect()->back();
+    }
 
+    public function update_own_book_send_price(Request $request)
+    {
+
+        session()->flash('success', 'change_printorder');
+        $own_book = own_book::where('id', $request->own_book_id)->first();
+
+        Printorder::where('own_book_id', $request->own_book_id)->update(array(
+            'send_price' => $request->send_price,
+        ));
+
+        session()->flash('alert_type', 'success');
+        session()->flash('alert_title', 'Стоимость пересылки успешно установлена!');
+
+        return redirect()->back();
     }
 
     public

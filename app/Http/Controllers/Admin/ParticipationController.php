@@ -11,6 +11,7 @@ use App\Models\Participation;
 use App\Models\Participation_work;
 use App\Models\Pat_status;
 use App\Models\PrintOrder;
+use App\Models\Transaction;
 use App\Models\User;
 use App\Notifications\EmailNotification;
 use App\Notifications\UserNotification;
@@ -91,11 +92,13 @@ class ParticipationController extends Controller
         $pat_statuses = Pat_status::orderBy('id')->get();
         $chat = Chat::where('user_created', $participation['user_id'])->where('collection_id', $participation['collection_id'])->first();
         $chat_statuses = chat_status::orderBy('id')->get();
+        $transactions = Transaction::where('participation_id', $participation_id)->get();
         return view('admin.collection.user_participation', [
             'participation' => $participation,
             'pat_statuses' => $pat_statuses,
             'chat' => $chat,
             'chat_statuses' => $chat_statuses,
+            'transactions' => $transactions,
         ]);
 
     }

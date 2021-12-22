@@ -865,16 +865,22 @@
                 box-shadow: 0 0 10px 1px {{$part_all_good}}85;
             @endif" class="container">
                 <div style="border-bottom: 1px
-                @if ($collection['col_status_id'] <= 3)
+                @if ($collection['col_status_id'] < 4)
                 {{$part_not_available}}
-                @else
+                @elseif($collection['col_status_id'] === 9 and !$participation->printorder['paid_at'])
+                {{$part_action_needed}}
+
+                @elseif($collection['col_status_id'] === 9 and $participation->printorder['paid_at'])
                 {{$part_all_good}}
-                @endif solid" class=hero>
+                @endif solid;" class=hero>
                     <h2 style="color:
-                    @if ($collection['col_status_id'] <= 3)
-                    {{$part_not_available}}
-                    @else
-                    {{$part_all_good}}
+                    @if ($collection['col_status_id'] < 4)
+                    {{$part_not_available}};
+                    @elseif($collection['col_status_id'] === 9 and !$participation->printorder['paid_at'])
+                    {{$part_action_needed}} ;
+
+                    @elseif($collection['col_status_id'] === 9 and $participation->printorder['paid_at'])
+                    {{$part_all_good}};
                     @endif;">Отслеживание сборника</h2>
                 </div>
 

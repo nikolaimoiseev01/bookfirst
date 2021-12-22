@@ -5,10 +5,12 @@
     <div class="content-header">
         <div class="container-fluid">
             <h1 class="mt-2">
-                Страница автора: <a href="{{route('user_page', $participation['user_id'])}}"><i>{{$participation['name']}} {{$participation['surname']}}</i></a>
+                Страница автора: <a
+                    href="{{route('user_page', $participation['user_id'])}}"><i>{{$participation['name']}} {{$participation['surname']}}</i></a>
             </h1>
             <h1 class="mt-2">
-                В сборинке: <i><a href="{{route('collection.edit', $participation->collection['id'])}}">{{$participation->collection['title']}}</a></i>
+                В сборинке: <i><a
+                        href="{{route('collection.edit', $participation->collection['id'])}}">{{$participation->collection['title']}}</a></i>
             </h1>
             <div class="mt-2 d-flex align-items-center">
                 <h1 style="margin-bottom: 0 !important;" class="">Статус участия:
@@ -69,8 +71,10 @@
                         <li class="nav-item"><a class="test nav-link" href="#info" data-toggle="tab">Информация</a></li>
                         <li class="nav-item"><a class="nav-link" href="#finance" data-toggle="tab">Финансы</a></li>
                         <li class="nav-item">
-                            <a @if ($chat['chat_status_id'] == 1) style="padding-right: 22px;" @endif  class="position-relative nav-link" href="#chat" data-toggle="tab">
-                                @if ($chat['chat_status_id'] == 1)<span style="right: 5px; top:11px;" class="position-absolute right badge badge-danger">!</span>@endif
+                            <a @if ($chat['chat_status_id'] == 1) style="padding-right: 22px;"
+                               @endif  class="position-relative nav-link" href="#chat" data-toggle="tab">
+                                @if ($chat['chat_status_id'] == 1)<span style="right: 5px; top:11px;"
+                                                                        class="position-absolute right badge badge-danger">!</span>@endif
                                 Чат
                             </a>
                         </li>
@@ -83,7 +87,8 @@
                         <div class="tab-pane active" id="works">
                             @foreach($participation->participation_work as $work)
                                 <h3>{{$loop->index + 1}}. {{$work->work['title']}}</h3>
-                                <p style="color:grey">Загружено {{$work->work['upload_type']}}: {{ Date::parse($work->work['created_at'])->addHours(3)->format('j F Y') }}</p>
+                                <p style="color:grey">Загружено {{$work->work['upload_type']}}
+                                    : {{ Date::parse($work->work['created_at'])->addHours(3)->format('j F Y') }}</p>
                                 <p>{!! nl2br($work->work['text']) !!}</p>
                             @endforeach
                         </div>
@@ -93,7 +98,7 @@
                                     flex-direction: column !important;
                                 }
 
-                                .info_tables .col-6{
+                                .info_tables .col-6 {
                                     max-width: 100% !important;
                                     flex: inherit !important;
                                     max-width: 100% !important;
@@ -177,48 +182,96 @@
                         </div>
 
                         <div class=" tab-pane" id="finance">
-                            <div class="m-auto col-9">
-                                <table class="table table-bordered">
-                                    <tbody>
-                                    <tr>
-                                        <td style="font-weight: bold">Стоимость участия</td>
-                                        <td>
-                                            {{$participation['part_price']}} руб.
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="font-weight: bold">Стоимость экземпляров</td>
-                                        <td>
-                                            {{$participation['print_price']}} руб.
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="font-weight: bold">Стоимость проверки</td>
-                                        <td>
-                                            {{$participation['check_price']}} руб.
-                                        </td>
-                                    </tr>
-                                    <tr class="bg-info">
-                                        <td style="font-weight: bold">Получили средств</td>
-                                        <td>
-                                            {{$participation['total_price']}} руб.
-                                        </td>
-                                    </tr>
-                                    <tr class="bg-info">
-                                        <td style="font-weight: bold">Приблизительные затраты</td>
-                                        <td>
-                                            {{$participation->printorder['books_needed'] ?? 0 * 80}} руб.
-                                        </td>
-                                    </tr>
-                                    <tr style="font-size: 22px;" class="bg-success">
-                                        <td style="font-weight: bold">Итого рибыль</td>
-                                        <td>
-                                            {{$participation['total_price'] - ($participation->printorder['books_needed'] ?? 0 * 80)}}
-                                            руб.
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
+                            <div class="d-flex justify-content-around flex-wrap">
+                                <div>
+                                    <h2>Общий расчет</h2>
+                                    <table class="table table-bordered">
+                                        <tbody>
+                                        <tr>
+                                            <td style="font-weight: bold">Стоимость участия</td>
+                                            <td>
+                                                {{$participation['part_price']}} руб.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-weight: bold">Стоимость экземпляров</td>
+                                            <td>
+                                                {{$participation['print_price']}} руб.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-weight: bold">Стоимость проверки</td>
+                                            <td>
+                                                {{$participation['check_price']}} руб.
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-info">
+                                            <td style="font-weight: bold">Получили средств</td>
+                                            <td>
+                                                {{$participation['total_price']}} руб.
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-info">
+                                            <td style="font-weight: bold">Приблизительные затраты</td>
+                                            <td>
+                                                {{$participation->printorder['books_needed'] ?? 0 * 80}} руб.
+                                            </td>
+                                        </tr>
+                                        <tr style="font-size: 22px;" class="bg-success">
+                                            <td style="font-weight: bold">Итого рибыль</td>
+                                            <td>
+                                                {{$participation['total_price'] - ($participation->printorder['books_needed'] ?? 0 * 80)}}
+                                                руб.
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div>
+                                    <h2>Транзакции по этой книге</h2>
+                                    <div>
+                                        <table id="participants_table" class="table table-bordered">
+                                            <thead>
+                                            <tr>
+                                                <th style="width: 1%;">Создан</th>
+                                                <th style="width: 1%;">Статус</th>
+                                                <th style="width: 1%;">Сумма</th>
+                                                <th>Описание</th>
+                                                <th style="width: 1%;">YooID</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            @foreach($transactions as $transaction)
+                                                <tr>
+                                                    <td style="text-align: center;">
+                                                        {{ Date::parse($transaction['created_at'])->addHours(3)->format('j F H:i') }}
+
+                                                    </td>
+                                                    <td style="
+                                                        color:
+                                                    @if($transaction['status'] === 'CONFIRMED') #09c73a
+                                                    @elseif($transaction['status'] === 'CREATED') #ff2929
+                                                    @endif;
+                                                        text-align: center;">
+                                                        {{$transaction['status']}}
+                                                    </td>
+                                                    <td style="text-align:inherit">
+                                                        {{$transaction['amount']}}
+                                                    </td>
+                                                    <td class="d-flex flex-column justify-content-center align-items-center"
+                                                        style="text-align: center;">
+                                                        {{$transaction['description']}}
+                                                    </td>
+                                                    <td style="text-align:inherit">
+                                                        {{$transaction['yoo_id']}}
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -238,7 +291,8 @@
 
                                         <select id="chat_status_id" class="form-control" name="chat_status_id">
                                             @foreach($chat_statuses as $chat_status)
-                                                <option @if($chat['chat_status_id'] == $chat_status['id']) selected @endif value="{{$chat_status['id']}}">{{$chat_status['status']}}</option>
+                                                <option @if($chat['chat_status_id'] == $chat_status['id']) selected
+                                                        @endif value="{{$chat_status['id']}}">{{$chat_status['status']}}</option>
                                             @endforeach
                                         </select>
 
@@ -261,10 +315,10 @@
                             </div>
 
 
-
                             <div style="width:100%; max-width: 2000px" class="chat">
                                 {{-- Чат книги --}}
-                                <div id="book_chat" style="margin: 0 0 30px 0; width: 100%; max-width: 2000px;" class="chat">
+                                <div id="book_chat" style="margin: 0 0 30px 0; width: 100%; max-width: 2000px;"
+                                     class="chat">
                                     <div style="margin: 0; width: 100%; max-width: 2000px;" class="container">
                                         @livewire('chat',['chat_id'=>$chat->id])
                                     </div>
@@ -282,32 +336,32 @@
         </div>
     </section>
 
-{{--    <script>--}}
-{{--        $('#change_pat_status_button').click(function () {--}}
-{{--            // alert(5);--}}
-{{--            $('#status_text').toggle();--}}
-{{--            $('#status_form').toggle();--}}
+    {{--    <script>--}}
+    {{--        $('#change_pat_status_button').click(function () {--}}
+    {{--            // alert(5);--}}
+    {{--            $('#status_text').toggle();--}}
+    {{--            $('#status_form').toggle();--}}
 
-{{--            if ($('#status_form').is(":visible")) {--}}
-{{--                $('#change_pat_status_button').html('<i class="mr-2 fa fa-times"></i> Отменить');--}}
-{{--            } else {--}}
-{{--                $('#change_pat_status_button').html('<i class="mr-2 fa fa-edit"></i>  Изменить статус');--}}
-{{--            }--}}
-{{--        })--}}
-{{--    </script>--}}
+    {{--            if ($('#status_form').is(":visible")) {--}}
+    {{--                $('#change_pat_status_button').html('<i class="mr-2 fa fa-times"></i> Отменить');--}}
+    {{--            } else {--}}
+    {{--                $('#change_pat_status_button').html('<i class="mr-2 fa fa-edit"></i>  Изменить статус');--}}
+    {{--            }--}}
+    {{--        })--}}
+    {{--    </script>--}}
 
 
-{{--    <script>--}}
-{{--        $('#chat_add').click(function () {--}}
-{{--            $('.chat-create-admin').toggle();--}}
+    {{--    <script>--}}
+    {{--        $('#chat_add').click(function () {--}}
+    {{--            $('.chat-create-admin').toggle();--}}
 
-{{--            if ($('.chat-create-admin').is(":visible")) {--}}
-{{--                $('#chat_add').html('<i class="mr-2 fa fa-times"></i> Отменить');--}}
-{{--            } else {--}}
-{{--                $('#chat_add').html(' <i class="mr-2 fa fa-plus"></i> Создать чат');--}}
-{{--            }--}}
-{{--        })--}}
-{{--    </script>--}}
+    {{--            if ($('.chat-create-admin').is(":visible")) {--}}
+    {{--                $('#chat_add').html('<i class="mr-2 fa fa-times"></i> Отменить');--}}
+    {{--            } else {--}}
+    {{--                $('#chat_add').html(' <i class="mr-2 fa fa-plus"></i> Создать чат');--}}
+    {{--            }--}}
+    {{--        })--}}
+    {{--    </script>--}}
 
 @endsection
 

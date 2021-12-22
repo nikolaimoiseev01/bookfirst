@@ -77,8 +77,16 @@
                                         <a href="{{route('own_books_page', $transaction['own_book_id'])}}">
                                             {{$transaction['description']}}
                                         </a>
-                                    @elseif ($transaction['print_id'] > 0)
+                                    @elseif ($transaction['print_id'] > 0 && $transaction['collection_id'] > 0)
                                         <a href="{{route('user_participation', \App\Models\Participation::where('printorder_id', $transaction['print_id'])->value('id'))}}">
+                                            {{$transaction['description']}}
+                                        </a>
+                                    @elseif ($transaction['print_id'] > 0 && $transaction['participation_id'] > 0)
+                                        <a href="{{route('user_participation', \App\Models\Participation::where('printorder_id', $transaction['print_id'])->value('id'))}}">
+                                            {{$transaction['description']}}
+                                        </a>
+                                    @elseif ($transaction['print_id'] > 0 && $transaction['own_book_id'] > 0)
+                                        <a href="{{route('own_books_page', $transaction['own_book_id'])}}">
                                             {{$transaction['description']}}
                                         </a>
                                     @else

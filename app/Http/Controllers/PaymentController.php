@@ -62,11 +62,16 @@ class PaymentController extends Controller
     public function create_send_payment($print_id, $amount, PaymentService $service)
     {
 
-        $collection_id = Printorder::where('id', $print_id)->value('collection_id');
-        $own_book_id = Printorder::where('id', $print_id)->value('own_book_id');
+        $collection_id = Printorder::where('id', $print_id)->value('collection_id') ?? null;
+        $participation_id = Participation::where('printorder_id', $print_id)->value('id') ?? null;
+        $own_book_id = Printorder::where('id', $print_id)->value('own_book_id') ?? null;
 
         if ($collection_id > 0) { // Это оплата за пересылку сборника
             $description = "Оплата пересылки сборника '" . Collection::where('id',$collection_id)->value('title') . "'";
+        }
+
+        if ($own_book_id > 0) { // Это оплата за пересылку книги
+            $description = "Оплата пересылки книги '" . own_book::where('id',$own_book_id)->value('title') . "'";
         }
 
         $url_redirect = url()->previous();
@@ -75,6 +80,8 @@ class PaymentController extends Controller
         $transaction = new Transaction();
         $transaction->user_id = Auth::user()->id;
         $transaction->amount = $amount;
+        $transaction->participation_id = $participation_id;
+        $transaction->own_book_id = $own_book_id;
         $transaction->print_id = $print_id;
         $transaction->description = $description;
         $transaction->save();
@@ -84,7 +91,8 @@ class PaymentController extends Controller
                 'transaction_id' => $transaction->id,
                 'user_id' => Auth::user()->id,
                 'print_id' => $print_id,
-                'own_book_id' => null,
+                'participation_id' => $collection_id,
+                'own_book_id' => $own_book_id,
                 'url_redirect' => $url_redirect
             ]);
 
@@ -236,8 +244,8 @@ class PaymentController extends Controller
                     $transactionId = (int)$metadata['transaction_id'];
                     // -----------------------------------------------------------------
 
-                    // Участник оплатил сборник -------------------------------------------------------------------------------------------------
-                    if ((int)$metadata['participation_id'] > 0) { // Это оплата за сборник
+                    // Участник оплатил участие в сборнике -------------------------------------------------------------------------------------------------
+                    if ((int)$metadata['participation_id'] > 0 && !(int)$metadata['print_id']) { // Это оплата за сборник
 
                         $Participation = Participation::where('id', (int)$metadata['participation_id'])->first();
                         $Collection = Collection::where('id', $Participation['collection_id'])->first();
@@ -449,12 +457,6 @@ class PaymentController extends Controller
                         $user = User::where('id', $print_order['user_id'])->first();
                         if ($print_order['paid_at'] === null) {  // Это НОВАЯ оплата
                             // Записываем время оплаты на строку отправления
-                            own_book::where('id', (int)$metadata['own_book_id'])
-                                ->update(array(
-                                    'paid_at_print_only' => Carbon::now('Europe/Moscow')->toDateTime(),
-                                    'own_book_status_id' => 5
-                                ));
-
                             Printorder::where('id', (int)$metadata['print_id'])
                                 ->update(array(
                                     'paid_at' => Carbon::now('Europe/Moscow')->toDateTime(),

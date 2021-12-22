@@ -785,6 +785,45 @@
 
                                         </button>
                                     </div>
+
+                                    <div class="d-flex align-items-center">
+                                        <h4 class="m-0">Стоимость пересылки: {{$own_book->printorder['send_price']}} руб.
+                                        </h4>
+                                        <div style="display: none" id="change_book_send_price_form_wrap">
+                                            <form class="d-flex ml-3" style=" align-items: center;"
+                                                  action="{{ route('update_own_book_send_price',$own_book['id']) }}"
+                                                  method="POST"
+                                                  enctype="multipart/form-data"
+                                            >
+                                                @csrf
+
+                                                <input value="{{$own_book['user_id']}}" type="text" name="user_id"
+                                                       style="display:none" class="form-control"
+                                                       id="user_id">
+
+                                                <input value="{{$own_book['id']}}" type="text" name="own_book_id"
+                                                       style="display:none" class="form-control"
+                                                       id="own_book_id">
+
+                                                <input class="form-control" name="send_price" type="text">
+
+                                                <button id="btn-submit" type="submit"
+                                                        style="height: fit-content; max-height: 30px; max-width:150px;"
+                                                        data-status-from="{{$own_book->printorder['send_price']}}"
+                                                        class="ml-3 d-flex align-items-center justify-content-center btn btn-outline-primary"
+                                                >
+                                                    Сохранить
+                                                </button>
+                                            </form>
+                                        </div>
+                                        <button style="border:none; width: auto; padding: 3px 10px; max-width:150px"
+                                                data-form="change_book_send_price" type="button"
+                                                class="change_status_button ml-1 btn btn-outline-info btn-block btn-sm"
+                                        >
+                                            <i style="font-size: 20px;" class="fa fa-edit"></i>
+
+                                        </button>
+                                    </div>
                                 </div>
                             @else
                                 <h2>Печать не нужна автору!</h2>
@@ -879,7 +918,7 @@
                                             <tr style="font-size: 22px;" class="bg-success">
                                                 <td style="font-weight: bold">Итого рибыль</td>
                                                 <td>
-                                                    {{$own_book['total_price'] - ($own_book['pages'] * $own_book->printorder['books_needed'])}}
+                                                    {{$own_book['total_price'] - ($own_book['pages'] * ($own_book->printorder['books_needed'] ?? 0))}}
                                                     руб.
                                                 </td>
                                             </tr>
