@@ -48,11 +48,11 @@ class OwnBookController extends Controller
     {
         $this->own_book = own_book::where('id', $request->own_book_id)->with('printorder')->with('own_books_works')->with('own_book_files')->first();
         $inside_files = own_book_files::where('file_type', 'inside')->where('own_book_id', $request->own_book_id)->get();
-        $cover_files = own_book_files::where(function($q) {
+        $cover_files = own_book_files::where(function ($q) {
             $q->where('file_type', 'cover')
                 ->orwhere('file_type', 'pre_cover');
         })
-        ->where('own_book_id', $request->own_book_id)->get();
+            ->where('own_book_id', $request->own_book_id)->get();
         $prev_comments_inside = preview_comment::where('own_book_id', $request->own_book_id)->where('own_book_comment_type', 'inside')->orderBy('status_done', 'asc')->orderBy('created_at', 'desc')->get();
         $prev_comments_cover = preview_comment::where('own_book_id', $request->own_book_id)->where('own_book_comment_type', 'cover')->orderBy('status_done', 'asc')->orderBy('created_at', 'desc')->get();
         $own_book_statuses = own_book_status::orderby('id')->get();
@@ -239,8 +239,17 @@ class OwnBookController extends Controller
     public
     function change_book_promo_type(Request $request)
     {
+        $promo_var = null;
+
+        if ($request->promo_type > 0) {
+            if ($request->promo_type == 500) {
+                $promo_var = 1;} else {$promo_var = 2;}
+        }
+
+
         own_book::where('id', $request->own_book_id)->update(array(
             'promo_price' => $request->promo_type,
+            'promo_type' => $promo_var,
         ));
 
         session()->flash('success', 'change_printorder');
@@ -248,6 +257,20 @@ class OwnBookController extends Controller
         session()->flash('alert_title', 'Вид продвижения изменен!');
         return redirect()->back();
     }
+
+    public function update_own_book_desc(Request $request)
+    {
+
+        own_book::where('id', $request->own_book_id)->update(array(
+            'own_book_desc' => $request->desc,
+        ));
+
+        session()->flash('success', 'change_printorder');
+        session()->flash('alert_type', 'success');
+        session()->flash('alert_title', 'Аннотация успешно изменена!');
+        return redirect()->back();
+    }
+
 
 
     public

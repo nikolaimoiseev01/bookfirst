@@ -265,7 +265,7 @@
                                     <div style="display:inline-block;">
                                         <div style="display:none;" id="block_inside_color_yes" class="color_pages">
                                             <p>, цветных страниц: </p>
-                                            <input id="color_pages" style="width: 50px; font-size: 18px; height: 30px"
+                                            <input id="color_pages_input" style="width: 50px; font-size: 18px; height: 30px"
                                                    type="number">
                                         </div>
                                     </div>
@@ -572,6 +572,9 @@
             if ($("#inside_color_yes").prop("checked") === false) {
                 color_pages = 0
             }
+            else {
+                color_pages = $('#color_pages_input').val()
+            }
 
             if ($('input[name=cover_status]:checked').val() === 'cover_status_yes') {
                 cover_price = 0;
@@ -779,7 +782,7 @@
             calculation()
         })
 
-        $('select, input').on('change', function () {
+        $('select, input').on('input', function () {
             calculation()
         })
     </script>

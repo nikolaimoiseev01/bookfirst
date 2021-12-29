@@ -104,7 +104,39 @@
         @endif
     </form>
 
+
+{{--   Смотрим на ссылки при обновлении--}}
+    <script>
+        function urlify(text) {
+            var urlRegex = /(https?:\/\/[^\s]+)/g;
+            return text.replace(urlRegex, function(url) {
+                return text.replace(urlRegex, '<a href="$1">$1</a>');
+            })
+        }
+
+        function replace_hrefs() {
+            $('.message-wrap p').each(function() {
+                var replaced_text = urlify($(this).text());
+                $(this).html(replaced_text);
+            })
+        };
+
+        $.when( replace_hrefs() ).done(function() {
+            $('.message-wrap p a').each(function() {
+                // $(this).addClass('link')
+                $(this).css('color', '#ffffff');
+                $(this).css('font-style', 'italic');
+                $(this).css('font-weight', '700');
+            })
+        });
+    </script>
+{{--   /////  Смотрим на ссылки при обновлении--}}
+
     @section('page-js')
+
+
+
+
         <script>
             $('.send_mes_button').on('click', function () {
                 $('#send_preloader').show();

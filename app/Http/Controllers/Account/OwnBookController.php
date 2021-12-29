@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Account;
 
 use App\Http\Controllers\Controller;
 use App\Models\Chat;
+use App\Models\digital_sale;
 use App\Models\own_book;
 use App\Models\own_book_status;
 use App\Models\Participation;
@@ -23,12 +24,14 @@ class OwnBookController extends Controller
         $inside_comments = preview_comment::where([['user_id', Auth::user()->id], ['own_book_id', $own_book['id']], ['own_book_comment_type', 'inside']])->get();
         $cover_comments = preview_comment::where([['user_id', Auth::user()->id], ['own_book_id', $own_book['id']], ['own_book_comment_type', 'cover']])->get();
         $chat_id = Chat::where('own_book_id', $own_book['id'])->value('id');
+        $digital_sales = digital_sale::where('bought_own_book_id', $own_book['id'])->get();
         return
             view('account.own_books.book_page', [
                 'own_book' => $own_book,
                 'inside_comments' => $inside_comments,
                 'cover_comments' => $cover_comments,
                 'chat_id' => $chat_id,
+                'digital_sales' => $digital_sales,
             ]);
     }
 

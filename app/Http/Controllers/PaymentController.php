@@ -533,6 +533,7 @@ class PaymentController extends Controller
 
 
                         $own_book = own_book::where('id', $metadata['bought_own_book_id'])->first();
+                        $author = User::where('id', $own_book['user_id'])->first();
                         $user = User::where('id', $metadata['user_id'])->first();
 
                         if ($digital_sale === 0) { // Это НОВАЯ оплата за сборник
@@ -544,7 +545,16 @@ class PaymentController extends Controller
                             $new_digital_sale->bought_own_book_id = $metadata['bought_own_book_id'];
                             $new_digital_sale->save();
 
-                            // Посылаем Email уведомление пользователю
+                            // Посылаем Email уведомление автору книги
+                            $author->notify(new EmailNotification(
+                                'Вашу книгу купили!',
+                                $author['name'],
+                                "Поздравляем! Кто-то только что купил вашу книгу: '" . $own_book['title'] .
+                                "'. Информация о том, как вывести средства всегда будет указана на странице издания:",
+                                "Страница издания",
+                                route('book_page', $own_book['id'])));
+
+                            // Посылаем Email уведомление покупателю
                             $user->notify(new EmailNotification(
                                 'Ваш электронный вариант готов!',
                                 $user['name'],

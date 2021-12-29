@@ -139,18 +139,27 @@
     </a>
 
     <style>
-        .dropped_menu_box {
+        .dropped_menu_box, .own_dropped_menu_box {
             left: -27px;
-            text-align:center;
+            text-align: center;
             background: #ffffff;
             position: absolute;
             transition: all .1s ease-in-out;
-            top: 20px;
+            top: 23px;
             z-index: 1;
             opacity: 0;
             padding-top: 10px;
             visibility: hidden;
             padding-bottom: 10px;
+        }
+
+        .dropped_menu_box {
+            left: -27px;
+        }
+
+        .own_dropped_menu_box {
+            left: 32px;
+            width: 190px;
         }
 
         #collection_menu_link:hover ~ .dropped_menu_box {
@@ -175,19 +184,51 @@
             transition: all .1s ease-in-out;
         }
 
+        #own_books_menu_link:hover ~ .own_dropped_menu_box {
+            top: 30px;
+            opacity: 1;
+            visibility: visible;
+            transition: all .1s ease-in-out;
+        }
+
+        #own_books_menu_link:hover:after {
+            width: 0 !important;
+        }
+
+        #own_books_menu_link:hover {
+            cursor: default;
+        }
+
+        .own_dropped_menu_box:hover {
+            top: 30px;
+            opacity: 1;
+            visibility: visible;
+            transition: all .1s ease-in-out;
+        }
+
     </style>
 
     <div class="menu">
-{{--        <a class="menu-link" id="home" href="/">Главная</a>--}}
+        {{--        <a class="menu-link" id="home" href="/">Главная</a>--}}
         <div style="position:relative;">
             <span class="menu-link" id="collection_menu_link" style="margin-left: 0 !important;">Сборники</span>
             <div class="dropped_menu_box">
-                <a class="menu-link" style="display: block; margin: 0 20px !important;" href="{{route('actual_collections')}}">Актуальные</a>
-                <a style="margin: 10px 20px 0 20px !important; display: block;" class="menu-link" href="{{route('old_collections')}}">Изданные</a>
+                <a class="menu-link" style="display: block; margin: 0 20px !important;"
+                   href="{{route('actual_collections')}}">Актуальные</a>
+                <a style="margin: 10px 20px 0 20px !important; display: block;" class="menu-link"
+                   href="{{route('old_collections')}}">Изданные</a>
             </div>
         </div>
-        <a class="menu-link" href="/own_books">Книги авторов</a>
-        <a class="menu-link" href="/about">О нас</a>
+        <div style="position:relative;">
+            <span class="menu-link" id="own_books_menu_link">Собственные книги</span>
+            <div class="own_dropped_menu_box">
+                <a class="menu-link" style="display: inline-block; margin: 0 20px !important;"
+                   href="{{route('own_book_page')}}">Подробнее</a>
+                <a style="margin: 10px 20px 0 20px !important; display: inline-block;" class="menu-link"
+                   href="{{route('own_books_portal')}}">Изданные</a>
+            </div>
+        </div>
+        <a class="menu-link" href="{{route('about')}}">О нас</a>
         <a class="menu-link" href="/#reviews-block">Отзывы</a>
         <div class="account">
             @guest
@@ -635,6 +676,25 @@
         });
     // -------- //SMOOTH SCROLLING
 </script>
+
+
+<script src="https://unpkg.com/magic-snowflakes/dist/snowflakes.min.js"></script>
+<script>
+    new Snowflakes({
+        color: '#5ECDEF', // Default: "#5ECDEF"
+        container: document.body, // Default: document.body
+        count: 10, // 100 snowflakes. Default: 50
+        minOpacity: 0.4, // From 0 to 1. Default: 0.6
+        maxOpacity: 0.6, // From 0 to 1. Default: 1
+        minSize: 10, // Default: 10
+        maxSize: 15, // Default: 25
+        rotation: true, // Default: true
+        speed: 1, // The property affects the speed of falling. Default: 1
+        wind: true, // Without wind. Default: true
+        zIndex: 9997 // Default: 9999
+    });
+</script>
+
 
 <script>
     // -- SWAL при полном обновлении страницы.

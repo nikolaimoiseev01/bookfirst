@@ -61,8 +61,8 @@
 @section('content')
     <div style="max-width: 1600px;" class="content">
         <h2 class="page-title">Книги наших авторов</h2>
-        <div style="text-align: center">
-            <div style="display: inline-block;" class="search-bar-wrap">
+        <div style="@if ($own_book_input_search <> 'no_search') margin-bottom: 80px; @endif text-align: center">
+            <div style=" display: inline-block;" class="search-bar-wrap">
                 <input required placeholder="Поиск..."
                        @if ($own_book_input_search <> 'no_search') value="{{$own_book_input_search}}" @else value=""
                        @endif id="own_book_input_search" name="own_book_input_search" type="text">

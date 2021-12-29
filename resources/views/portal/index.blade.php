@@ -264,7 +264,7 @@
     <script>
         // values to keep track of the number of letters typed, which quote to use. etc. Don't change these values.
         var i = 0,
-            a = 0,
+            b = 0,
             isBackspacing = false,
             isParagraph = false;
 
@@ -284,9 +284,9 @@
         //Run the loop
         typeWriter("typed_hero", textArray);
 
-        function typeWriter(id, ar) {
+        function typeWriter(id, br) {
             var element = $("#" + id),
-                aString = ar[a],
+                aString = br[b],
                 eHeader = element.children("span"), //Header element
                 eParagraph = element.children("p"); //Subheader element
 
@@ -302,7 +302,7 @@
                         eHeader.removeClass("cursor");
                         eParagraph.addClass("cursor");
                         i++;
-                        setTimeout(function(){ typeWriter(id, ar); }, speedBetweenLines);
+                        setTimeout(function(){ typeWriter(id, br); }, speedBetweenLines);
 
                         // If character isn't a pipe, continue typing.
                     } else {
@@ -313,14 +313,14 @@
                             eParagraph.text(eParagraph.text() + aString.charAt(i));
                         }
                         i++;
-                        setTimeout(function(){ typeWriter(id, ar); }, speedForward);
+                        setTimeout(function(){ typeWriter(id, br); }, speedForward);
                     }
 
                     // If full string has been typed, switch to backspace mode.
                 } else if (i == aString.length) {
 
                     isBackspacing = true;
-                    setTimeout(function(){ typeWriter(id, ar); }, speedWait);
+                    setTimeout(function(){ typeWriter(id, br); }, speedWait);
 
                 }
 
@@ -338,7 +338,7 @@
                         eHeader.addClass("cursor");
                         eHeader.text(eHeader.text().substring(0, eHeader.text().length - 1));
                     }
-                    setTimeout(function(){ typeWriter(id, ar); }, speedBackspace);
+                    setTimeout(function(){ typeWriter(id, br); }, speedBackspace);
 
                     // If neither head or paragraph still has text, switch to next quote in array and start typing.
                 } else {
@@ -346,8 +346,8 @@
                     isBackspacing = false;
                     i = 0;
                     isParagraph = false;
-                    a = (a + 1) % ar.length; //Moves to next position in array, always looping back to 0
-                    setTimeout(function(){ typeWriter(id, ar); }, 50);
+                    b = (b + 1) % br.length; //Moves to next position in array, always looping back to 0
+                    setTimeout(function(){ typeWriter(id, br); }, 50);
 
                 }
             }
