@@ -845,6 +845,16 @@
 
                                         </button>
                                     </div>
+
+                                    <h4 class="m-0">
+                                        Статус:
+                                        @if($own_book->printorder['paid_at'])
+                                            <span style="color:#00cd00;">оплачена</span>
+                                        @else
+                                            <span style="color:#e54c4c;">не оплачена</span>
+                                        @endif
+
+                                    </h4>
                                 </div>
                             @else
                                 <h2>Печать не нужна автору!</h2>
