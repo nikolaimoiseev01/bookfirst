@@ -849,9 +849,9 @@
                                     <h4 class="m-0">
                                         Статус:
                                         @if($own_book->printorder['paid_at'])
-                                            <span style="color:#00cd00;">оплачена</span>
+                                            <span style="color:#00cd00;">оплачена {{Date::parse($own_book->printorder['paid_at'])->addHours(3)->format('j F H:i')}}</span>
                                         @else
-                                            <span style="color:#e54c4c;">не оплачена</span>
+                                            <span style="color:#e54c4c;">не оплачена (ждет с {{Date::parse($own_book->printorder['updated_at'])->addHours(3)->format('j F H:i')}})</span>
                                         @endif
 
                                     </h4>
