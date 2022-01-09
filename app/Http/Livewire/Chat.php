@@ -55,6 +55,7 @@ class Chat extends Component
         $this->messages = Message::where('chat_id', $chat_id)->with('message_file')->get();
         $this->chat_id = $chat_id;
         $this->currentUrl = url()->current();
+        $this->dispatchBrowserEvent('update_hrefs');
     }
 
     public function new_message()
@@ -189,6 +190,8 @@ class Chat extends Component
         }
         $this->dispatchBrowserEvent('scroll_down');
         $this->dispatchBrowserEvent('show_send_button');
+        $this->dispatchBrowserEvent('update_hrefs');
+
         $this->text = '';
 
 

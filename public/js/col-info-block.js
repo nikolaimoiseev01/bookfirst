@@ -15,7 +15,7 @@
                 display: "none"
             });
 
-            base.$nav.on("click", "a", function () {
+            base.$nav.on("click", ".cont_nav_item", function () {
                 // Figure out current list via CSS class
                 var curList = base.$el
                         .find("a.current")
@@ -43,7 +43,7 @@
                         });
 
                         // Remove highlighting - Add to just-clicked tab
-                        base.$el.find(".nav a").removeClass("current");
+                        base.$el.find(".nav .cont_nav_item").removeClass("current");
                         $newList.addClass("current");
                     });
                 }

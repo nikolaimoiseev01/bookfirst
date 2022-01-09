@@ -130,6 +130,7 @@ button:focus-visible, button:focus {
 .message-wrap p {
     color: #fff !important;
     font-size: 20px;
+    vertical-align: middle;
 }
 
 .input-block {

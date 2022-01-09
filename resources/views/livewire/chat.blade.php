@@ -15,8 +15,10 @@
                             </span>
                 </div>
             @endif
-                {{App::setLocale('ru')}}
+
+            {{App::setLocale('ru')}}
             @foreach($messages as $message)
+
                 <div class="message">
                     <p style="font-size: 18px;">@if($message['user_from'] === 2)
                             Поддержка @else {{App\Models\User::where('id',$message['user_from'])->value('name')}}@endif</p>
@@ -32,8 +34,10 @@
                                     файлы:</h2>
                                 <div style="display: flex; flex-direction: column;">
                                     @foreach($message->message_file as $message_file)
-                                        <p><a download href="/{{$message_file['file']}}">
-                                                <svg width="15px" style="fill:#ffffff" viewBox="0 0 480 512">
+                                        <div>
+                                            <a download href="/{{$message_file['file']}}">
+
+                                                <svg width="15px" style="margin-right: 5px; fill:#ffffff" viewBox="0 0 480 512">
                                                     <path
                                                         d="M382.56,233.38A16,16,0,0,0,368,224H304V16A16,16,0,0,0,288,0H224a16,16,0,0,0-16,16V224H144a16,16,0,0,0-12,26.53l112,128a16,16,0,0,0,24.06,0l112-128A16,16,0,0,0,382.56,233.38Z"
                                                         transform="translate(-16 0)"/>
@@ -41,8 +45,12 @@
                                                         d="M432,352v96H80V352H16V480a32,32,0,0,0,32,32H464a32,32,0,0,0,32-32V352Z"
                                                         transform="translate(-16 0)"/>
                                                 </svg>
-                                            </a>{{substr($message_file['file'], strrpos($message_file['file'], '/') + 1)}}
-                                        </p>
+
+                                            </a>
+                                            <p>{{substr($message_file['file'], strrpos($message_file['file'], '/') + 1)}}
+
+                                            </p>
+                                        </div>
                                     @endforeach
                                 </div>
                             </div>
@@ -59,14 +67,14 @@
                 <div class="chat_files" wire:ignore>
                     <input wire:ignore accept multiple name="chat_files" class="chat_filepond" type="file"/>
                 </div>
-                <div  wire:ignore class="input-block">
+                <div wire:ignore class="input-block">
                 <textarea oninput="auto_grow(this)"
-                    class="textarea_chat"
+                          class="textarea_chat"
                           wire:model="text"
                           style="z-index: 10; border-radius: 10px 0 0 10px; border-right: none;"
                           name="chat_text" required
                           type="text"
-                id="chat_text"
+                          id="chat_text"
                 ></textarea>
 
                     <div class="send-wrap">
@@ -105,32 +113,42 @@
     </form>
 
 
-{{--   Смотрим на ссылки при обновлении--}}
+    {{--   Смотрим на ссылки при обновлении--}}
     <script>
-        function urlify(text) {
-            var urlRegex = /(https?:\/\/[^\s]+)/g;
-            return text.replace(urlRegex, function(url) {
-                return text.replace(urlRegex, '<a href="$1">$1</a>');
-            })
+        function update_hrefs() {
+            function urlify(text) {
+                var urlRegex = /(https?:\/\/[^\s]+)/g;
+                return text.replace(urlRegex, function (url) {
+                    return text.replace(urlRegex, '<a target="_blank" href="$1">$1</a>');
+                })
+            }
+
+            function replace_hrefs() {
+                $('.message-wrap p').each(function () {
+                    var replaced_text = urlify($(this).text());
+                    $(this).html(replaced_text);
+                })
+            };
+
+            $.when(replace_hrefs()).done(function () {
+                $('.message-wrap p a').each(function () {
+                    // $(this).addClass('link')
+                    $(this).css('color', '#ffffff');
+                    $(this).css('font-style', 'italic');
+                    $(this).css('font-weight', '700');
+                })
+            });
         }
 
-        function replace_hrefs() {
-            $('.message-wrap p').each(function() {
-                var replaced_text = urlify($(this).text());
-                $(this).html(replaced_text);
-            })
-        };
-
-        $.when( replace_hrefs() ).done(function() {
-            $('.message-wrap p a').each(function() {
-                // $(this).addClass('link')
-                $(this).css('color', '#ffffff');
-                $(this).css('font-style', 'italic');
-                $(this).css('font-weight', '700');
-            })
+        document.addEventListener('update_hrefs', function () {
+            update_hrefs()
         });
+
+
+        update_hrefs()
+
     </script>
-{{--   /////  Смотрим на ссылки при обновлении--}}
+    {{--   /////  Смотрим на ссылки при обновлении--}}
 
     @section('page-js')
 
@@ -228,9 +246,9 @@
             });
 
             document.addEventListener('show_send_button', function () {
-                    $('#send_preloader').hide();
-                    $('#send_env').css('opacity', 1);
-                    $('.send-wrap button').prop("disabled", false);
+                $('#send_preloader').hide();
+                $('#send_env').css('opacity', 1);
+                $('.send-wrap button').prop("disabled", false);
                 $('.input-block').css('height', "100px");
             });
 
@@ -240,8 +258,6 @@
         <script>
 
             document.addEventListener('livewire:load', function () {
-
-
                 $("#send_message_{{$chat['id']}}").on('click', function (event) {
                     event.preventDefault();
                     Livewire.emit('new_message')

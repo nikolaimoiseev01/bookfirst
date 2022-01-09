@@ -62,10 +62,11 @@
     <div class="col-info-block">
         <div class="container">
             <div class="nav">
-                <a href="#process" class="current">Порядоя участия</a>
-                <a href="#calculator">Калькулятор</a>
-                <a href="#dates">Даты издания</a>
-                <a href="#contest" style="color: #f79e9e;">Бесплатное участие!</a>
+                <a href="#process" class="cont_nav_item current">Порядоя участия</a>
+                <a href="#calculator" class="cont_nav_item">Калькулятор</a>
+                <a href="#dates" class="cont_nav_item">Даты издания</a>
+                <a href="#contest" class="cont_nav_item" style="color: #f79e9e;">Бесплатное участие!</a>
+                <a style="float: right;" href="{{route('help_collection')}}" target="_blank">Инструкция</a>
             </div>
             <div style="transition: .3s ease-in-out" class="list-wrap">
 
