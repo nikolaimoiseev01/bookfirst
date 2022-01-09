@@ -7,7 +7,11 @@
             <div class="card">
                 <div class="d-flex align-items-center bg-gradient-info card-header">
                     <h1 style="font-size: 25px;" class="card-title"><i>{{$user['name']}} {{$user['surname']}} @if($user['nickname'] <> '') (Псевдоним: {{$user['nickname']}}) @endif</i></h1>
+                    <a style="margin-left: auto;" href="{{route('login_as', $user['id'])}}" class="btn btn-primary"> Войти в его аккаунт</a>
                 </div>
+
+
+
                 <div class="card-header p-2">
                     <ul class="nav nav-pills">
                         <li class="nav-item"><a class="nav-link active" href="#info" data-toggle="tab">Общая
@@ -200,7 +204,7 @@
                                 </table>
 
                                 <div style="display:none" class="p-3 mt-3 border chat-create-admin">
-                                @livewire('chat-create',['chat_title' => '', 'collection_id' => 0, 'own_book_id' => 0, 'user_to' => $user->id])
+                                    @livewire('chat-create',['chat_title' => '', 'collection_id' => 0, 'own_book_id' => 0, 'user_to' => $user->id])
                                 </div>
                                 <a id="chat_add" style="width:200px;" class="mt-3 btn btn-outline-secondary">
                                     <i class="mr-2 fa fa-plus"></i> Создать чат</a>

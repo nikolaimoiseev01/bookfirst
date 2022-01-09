@@ -215,9 +215,9 @@
                                             class="ml-auto">
                                             @csrf
                                             <input style="display: none" type="number" id="col_id" name="col_id" value="{{$collection['id']}}">
-                                                <button id="chat_form" style="width:fit-content; position: relative;"  class="button btn btn-block bg-gradient-primary" >
-                                                    <span class="button__text">Скачать верстку!</span>
-                                                </button>
+                                            <button id="chat_form" style="width:fit-content; position: relative;"  class="button btn btn-block bg-gradient-primary" >
+                                                <span class="button__text">Скачать верстку!</span>
+                                            </button>
                                         </form>
                                     </li>
                                 </ul>
@@ -329,7 +329,7 @@
                                                         @else
                                                             {{$vote->user_to_name}} {{$vote->user_to_surname}}
                                                         @endif
-                                                    <br>
+                                                        <br>
                                                     @endforeach
                                                 </div>
 
@@ -362,13 +362,15 @@
 
                                                         <td style="text-align: center">
                                                             @php
-                                                              $users_sent_to =  explode(';', $email_sent['sent_to_user']);
-                                                                foreach ($users_sent_to as $users_sent_to) {
-                                                                    $partic = \App\Models\Participation::where('collection_id', $collection['id'])->where('user_id', $users_sent_to)->first();
-                                                                    echo'
-                                                                        <a href="/admin_panel/collections/participation/' . $partic['id'] . '">' . $partic['name'] . '</a>;&nbsp
-                                                                   ';
-                                                                }
+                                                                $users_sent_to =  explode(';', $email_sent['sent_to_user']);
+                                                                  foreach ($users_sent_to as $users_sent_to) {
+                                                                      $partic = \App\Models\Participation::where('collection_id', $collection['id'])->where('user_id', $users_sent_to)->first();
+                                                                      if ($partic) {
+
+                                                                      echo'
+                                                                          <a href="/admin_panel/collections/participation/' . $partic['id'] . '">' . $partic['name'] . '</a>;&nbsp
+                                                                     ';};
+                                                                  }
                                                             @endphp
                                                         </td>
 

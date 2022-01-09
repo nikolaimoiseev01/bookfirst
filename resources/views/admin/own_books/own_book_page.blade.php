@@ -1,5 +1,5 @@
 @extends('layouts.admin_layout')
-@section('title', 'Добавить книгу')
+@section('title', $own_book['title'])
 @section('content')
     <link rel="stylesheet" href="/css/chat.css">
     <!-- Content Header (Page header) -->
@@ -16,7 +16,7 @@
                         <span style="font-size: 18px;">кем создан:
                             @if ($own_book['user_id'])
                                 <a style="color: #a8fffb" href="{{route('user_page', $own_book['user_id'])}}">
-                                <i>{{$own_book->user['name']}}{{$own_book->user['surname']}}</i>
+                                <i>{{$own_book->user['name']}} {{$own_book->user['surname']}}</i>
                             </a>
                             @else
                                 старая книга, недоступно
@@ -444,7 +444,7 @@
                                             </button>
                                         </form>
                                     </div>
-                                    <table id="participants_table" class="table table-bordered">
+                                    <table id="participants_table" class="table table-striped table-bordered">
                                         <thead>
                                         <tr>
                                             <th style="width: 1%;">Страница</th>
@@ -634,7 +634,7 @@
                                                 </form>
 
                                             </div>
-                                            <table id="participants_table" class="table table-bordered table-hover">
+                                            <table id="participants_table" class="table table-striped table-bordered table-hover">
                                                 <thead>
                                                 <tr>
                                                     <th>Текст</th>
@@ -849,7 +849,7 @@
                                     <h4 class="m-0">
                                         Статус:
                                         @if($own_book->printorder['paid_at'])
-                                            <span style="color:#00cd00;">оплачена {{Date::parse($own_book->printorder['paid_at'])->addHours(3)->format('j F H:i')}}</span>
+                                            <span style="color:#00cd00;">оплачена {{Date::parse($own_book->printorder['paid_at'])->format('j F H:i')}}</span>
                                         @else
                                             <span style="color:#e54c4c;">не оплачена (ждет с {{Date::parse($own_book->printorder['updated_at'])->addHours(3)->format('j F H:i')}})</span>
                                         @endif

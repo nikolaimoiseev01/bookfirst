@@ -190,7 +190,7 @@
 
         @if($participation['print_price'] > 0)
         $("#prints-num").val({{$participation->printorder['books_needed'] ?? 1}})
-        $("#slider-nonlinear").slider("option", "values", [{{$participation->printorder['books_needed']}}]);
+        $("#slider-nonlinear").slider("option", "values", [{{$participation->printorder['books_needed'] ?? 1}}]);
         $('#print_price').html({{$participation['print_price']}});
         @endif
 
