@@ -106,7 +106,7 @@
                         <div style="width: inherit; padding-right: 30px; padding-left: 30px; " class="info-wrap">
                             <h3> {{$own_book['author']}}: "{{$own_book['title']}}"</h3><br>
 
-                            <p style="margin-top: 15px; margin-bottom: 20px;"> {{$own_book['own_book_desc']}} </p>
+                            <p style="margin-top: 15px; margin-bottom: 20px;"> {!! nl2br(e($own_book['own_book_desc'])) !!} </p>
                             <div id="buttons-wrap">
                                 <a @if ($own_book['amazon_link']) target="_blank" href="{{$own_book['amazon_link']}}" @endif
                                 style="margin-right: 20px; box-shadow: none; text-align: center"

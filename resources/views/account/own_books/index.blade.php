@@ -43,7 +43,7 @@
 
                 </div>
                 <div class="right-wrap">
-                    <h3>{{$own_book['author']}}: {{$own_book['title']}}</h3>
+                    <h3>{{$own_book['title']}}</h3>
                     <div style="align-items: flex-start;" class="info">
                         <p style="margin-bottom:0;"><b>Общий статус:</b> {{$own_book->own_book_status['status_title']}}
                         </p>
