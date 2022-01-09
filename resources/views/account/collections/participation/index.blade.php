@@ -797,14 +797,14 @@
             <div style=" background:
             @if ($collection['col_status_id'] < 4)
             {{$part_not_available}};
-            @elseif($collection['col_status_id'] === 9 and !$participation->printorder['paid_at'])
+            @elseif($collection['col_status_id'] === 9 and $participation->printorder['paid_at'] ?? null === null)
             {{$part_action_needed}} ;
 
-            @elseif($collection['col_status_id'] === 9 and $participation->printorder['paid_at'])
+            @elseif($collection['col_status_id'] === 9 and $participation->printorder['paid_at'] ?? 0 > 0)
             {{$part_all_good}};
 
             @endif" class="line"></div>
-            @if (!$participation->printorder['paid_at'])
+            @if ($participation->printorder['paid_at'] ?? 0 > 0)
                 <svg id="Слой_1" class="circle_status" style="fill:
                 @if ($collection['col_status_id'] < 4){{$part_not_available}};
                 @else
@@ -876,10 +876,10 @@
                     <h2 style="color:
                     @if ($collection['col_status_id'] < 4)
                     {{$part_not_available}};
-                    @elseif($collection['col_status_id'] === 9 and !$participation->printorder['paid_at'])
+                    @elseif($collection['col_status_id'] === 9 and $participation->printorder['paid_at'] ?? null === null)
                     {{$part_action_needed}} ;
 
-                    @elseif($collection['col_status_id'] === 9 and $participation->printorder['paid_at'])
+                    @elseif($collection['col_status_id'] === 9 and $participation->printorder['paid_at'] ?? 0 > 0)
                     {{$part_all_good}};
                     @endif;">Отслеживание сборника</h2>
                 </div>
@@ -921,11 +921,11 @@
                                 позднее {{ Date::parse($collection['col_date4'])->addDays(3)->format('j F') }} нам
                                 придется заблокировать возможность получения!</b>
                             @if ($participation->printorder['send_price'])
-                                <br> Стоимость именно вашего отправления: {{$participation->printorder['send_price']}}
+                                <br> Стоимость именно вашего отправления: {{$participation->printorder['send_price'] ?? 0}}
                                 руб.
                         </p>
                         <form style="display:inline-block"
-                              action="{{ route('payment.create_send_payment', [$participation->printorder['id'], $participation->printorder['send_price']])}}"
+                              action="{{ route('payment.create_send_payment', [$participation->printorder['id'], $participation->printorder['send_price'] ?? 0])}}"
                               method="POST"
                               enctype="multipart/form-data">
                             @csrf
