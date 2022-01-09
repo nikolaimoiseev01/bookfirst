@@ -84,16 +84,22 @@
 
     </div>
     {{-- // Общая информация о книге--}}
-    <a id="chat_button" style="margin-left: 30px; margin-top: 20px; width: 95%; text-align: center; max-width: 1000px;"
-       class="button">Развернуть чат</a>
+    @if ($chat_id > 0)
+        <a id="chat_button"
+           style="margin-left: 30px; margin-top: 20px; width: 95%; text-align: center; max-width: 1000px;"
+           class="button">Развернуть чат</a>
+    @endif
     <div class="participation-wrap">
 
+
         {{-- Чат книги --}}
-        <div id="book_chat" style="display: none; margin: 0 0 30px 0; width: 100%; max-width: 1000px;" class="chat">
-            <div style="margin: 0; width: 100%; max-width: 1000px;" class="container">
-                @livewire('chat',['chat_id'=>$chat_id])
+        @if ($chat_id > 0)
+            <div id="book_chat" style="display: none; margin: 0 0 30px 0; width: 100%; max-width: 1000px;" class="chat">
+                <div style="margin: 0; width: 100%; max-width: 1000px;" class="container">
+                    @livewire('chat',['chat_id'=>$chat_id])
+                </div>
             </div>
-        </div>
+        @endif
         {{-- // Чат книги --}}
 
         {{-- БЛОК ИНФОРМАЦИИ О ЗАЯВКЕ --}}
@@ -1198,9 +1204,12 @@
                         @else
                             <p>Количество продаж вашей книги на нашем сайте: <b>{{count($digital_sales)}} </b>на сумму
                                 <b>{{$digital_sales->sum('price')}} руб.</b></p>
-                            <p style="font-size: 18px; color: #bfbfbd;"><i>* При выводе средств мы вынуждены будем брать комиссию 15%. Это ровно то, что мы платим за получение средств от покупателей, а также за переводы авторам.</i></p>
+                            <p style="font-size: 18px; color: #bfbfbd;"><i>* При выводе средств мы вынуждены будем брать
+                                    комиссию 15%. Это ровно то, что мы платим за получение средств от покупателей, а
+                                    также за переводы авторам.</i></p>
                             <br>
-                            <a href="{{route('chat_create', 'Запрос на вывод ' . $digital_sales->sum('price') * 0.85 . ' руб. за книгу "' . $own_book['title'] . '"')}}" class="button">Вывести {{$digital_sales->sum('price') * 0.85}} руб.</a>
+                            <a href="{{route('chat_create', 'Запрос на вывод ' . $digital_sales->sum('price') * 0.85 . ' руб. за книгу "' . $own_book['title'] . '"')}}"
+                               class="button">Вывести {{$digital_sales->sum('price') * 0.85}} руб.</a>
                         @endif
                     </div>
                 @endif
