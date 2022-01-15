@@ -113,47 +113,50 @@
     </form>
 
 
-    {{--   Смотрим на ссылки при обновлении--}}
-    <script>
-        function update_hrefs() {
-            function urlify(text) {
-                var urlRegex = /(https?:\/\/[^\s]+)/g;
-                return text.replace(urlRegex, function (url) {
-                    return text.replace(urlRegex, '<a target="_blank" href="$1">$1</a>');
-                })
-            }
 
-            function replace_hrefs() {
-                $('.message-wrap p').each(function () {
-                    var replaced_text = urlify($(this).text());
-                    $(this).html(replaced_text);
-                })
-            };
-
-            $.when(replace_hrefs()).done(function () {
-                $('.message-wrap p a').each(function () {
-                    // $(this).addClass('link')
-                    $(this).css('color', '#ffffff');
-                    $(this).css('font-style', 'italic');
-                    $(this).css('font-weight', '700');
-                })
-            });
-        }
-
-        document.addEventListener('update_hrefs', function () {
-            update_hrefs()
-        });
-
-
-        update_hrefs()
-
-    </script>
-    {{--   /////  Смотрим на ссылки при обновлении--}}
 
     @section('page-js')
 
 
+        {{--   Смотрим на ссылки при обновлении--}}
+        <script>
+            function update_hrefs() {
+                function urlify(text) {
+                    var urlRegex = /(https?:\/\/[^\s]+)/g;
+                    var output = text.replace(urlRegex,
+                        '<a style="color: #ffffff; font-style: italic; font-weight: 700" target="_blank" href="$1">$1</a>');
 
+                    alert(text.match(urlRegex))
+                    return output;
+
+
+                }
+
+                $('.message-wrap').each(function () {
+                    alert($(this).html());
+                    var replaced_text = urlify($(this).html());
+                    $(this).html(replaced_text);
+                })
+
+                // $.when(replace_hrefs()).done(function () {
+                //     $('.message-wrap p a').each(function () {
+                //         // $(this).addClass('link')
+                //         // $(this).css('color', '#ffffff');
+                //         // $(this).css('font-style', 'italic');
+                //         // $(this).css('font-weight', '700');
+                //     })
+                // });
+            }
+
+            document.addEventListener('update_hrefs', function () {
+                update_hrefs()
+            });
+
+
+            update_hrefs()
+
+        </script>
+        {{--   /////  Смотрим на ссылки при обновлении--}}
 
         <script>
             $('.send_mes_button').on('click', function () {

@@ -62,7 +62,7 @@
     <div class="col-info-block">
         <div class="container">
             <div class="nav">
-                <a href="#process" class="cont_nav_item current">Порядоя участия</a>
+                <a href="#process" class="cont_nav_item current">Порядок участия</a>
                 <a href="#calculator" class="cont_nav_item">Калькулятор</a>
                 <a href="#dates" class="cont_nav_item">Даты издания</a>
                 <a href="#contest" class="cont_nav_item" style="color: #f79e9e;">Бесплатное участие!</a>
@@ -144,7 +144,7 @@
                             </p>
                         </div>
                     </div>
-                    <p style="margin: 30px 0 20px 0; color: #b1b2ad;"><i>*Подробная информация о правилах полечения будет предоставлена призеру лично.</i></p>
+                    <p style="margin: 30px 0 20px 0; color: #b1b2ad;"><i>*Подробная информация о правилах получения будет предоставлена призеру лично.</i></p>
                 </div>
                 <div id="calculator" class="hide">
 
