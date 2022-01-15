@@ -520,7 +520,6 @@
                     $('.list-wrap').css('transition', '');
                 });
 
-
             }
 
 
