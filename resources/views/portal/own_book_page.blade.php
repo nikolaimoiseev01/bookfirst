@@ -76,7 +76,7 @@
     <div class="col-info-block">
         <div class="container">
             <div class="nav">
-                <a href="#process" class="cont_nav_item current">Порядоя участия</a>
+                <a href="#process" class="cont_nav_item current">Порядок издания</a>
                 <a href="#calculator" class="cont_nav_item">Калькулятор</a>
                 <a style="float: right;" href="{{route('help_own_book')}}" target="_blank">Инструкция</a>
             </div>
