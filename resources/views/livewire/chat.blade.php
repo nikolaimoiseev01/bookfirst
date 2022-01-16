@@ -126,14 +126,14 @@
                     var output = text.replace(urlRegex,
                         '<a style="color: #ffffff; font-style: italic; font-weight: 700" target="_blank" href="$1">$1</a>');
 
-                    alert(text.match(urlRegex))
+                    // alert(text.match(urlRegex))
                     return output;
 
 
                 }
 
                 $('.message-wrap').each(function () {
-                    alert($(this).html());
+                    // alert($(this).html());
                     var replaced_text = urlify($(this).html());
                     $(this).html(replaced_text);
                 })
