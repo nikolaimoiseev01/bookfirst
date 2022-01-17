@@ -48,8 +48,8 @@ class PayReminder extends Command
         $collections_part_pay = Collection::where('col_status_id', 1)->get();
         $sent_to_users_amount = 0;
 
-        foreach ($collections_part_pay as $colletion) {
-            $users_from_participation = Participation::where('collection_id', $colletion['id'])->where('pat_status_id', 2)->get('user_id')->toArray();
+        foreach ($collections_part_pay as $collction) {
+            $users_from_participation = Participation::where('collection_id', $collction['id'])->where('pat_status_id', 2)->get('user_id')->toArray();
             $users = User::whereIn('id', $users_from_participation)->get();
             $sent_to_users = "";
 
@@ -57,18 +57,19 @@ class PayReminder extends Command
             foreach ($users as $user) {
                 $sent_to_users = $sent_to_users . $user['id'] . ";";
                 $sent_to_users_amount += 1;
+                $participation = Participation::where('collection_id', $collction['id'])->where('user_id',$user['id'])->first();
                 $user->notify(new EmailNotification(
                         'Требуется действие!',
                         $user['name'],
-                        'Остался всего один шаг для вступления в ряды авторов сборника "' . $colletion['title'] . '"! Мы с радостью готовы включить вас сразу после внесения оплаты. Сделать это можно в личном кабинете, перейдя по ссылке ниже. Если вы сталкиваетесь с какими-либо трудностями, пожалуйста, дайти нам знать в чате на странице участия.',
+                        'Остался всего один шаг для вступления в ряды авторов сборника "' . $collction['title'] . '"! Мы с радостью готовы включить вас сразу после внесения оплаты. Сделать это можно в личном кабинете, перейдя по ссылке ниже. Если вы сталкиваетесь с какими-либо трудностями, пожалуйста, дайти нам знать в чате на странице участия.',
                         'Перейти к оплате',
-                        route('homePortal') . "/myaccount/collections/" . $colletion['id'] . "/participation/" . Participation::where([['user_id', $user->id], ['collection_id', $colletion['id']]])->value('id'))
+                        route('participation_index',['participation_id'=>$participation['id'],'collection_id'=>$participation['collection_id']]))
                 );
             }
 
             // ---- Сохраняем письмо! ---- //
             $new_EmailSent = new EmailSent();
-            $new_EmailSent->collection_id = $colletion['id'];
+            $new_EmailSent->collection_id = $collction['id'];
             $new_EmailSent->subject = 'Требуется действие!';
             $new_EmailSent->email_text = 'Напоминание об оплате';
             $new_EmailSent->sent_to_user = substr($sent_to_users, 0, -1);
