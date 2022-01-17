@@ -63,7 +63,7 @@ class PayReminder extends Command
                         $user['name'],
                         'Остался всего один шаг для вступления в ряды авторов сборника "' . $collction['title'] . '"! Мы с радостью готовы включить вас сразу после внесения оплаты. Сделать это можно в личном кабинете, перейдя по ссылке ниже. Если вы сталкиваетесь с какими-либо трудностями, пожалуйста, дайти нам знать в чате на странице участия.',
                         'Перейти к оплате',
-                        route('participation_index',['participation_id'=>$participation['id'],'collection_id'=>$participation['collection_id']]))
+                        route('participation_index',['participation_id'=>$participation['id'],'collection_id'=>$participation['collection_id']]) . '#payment_block')
                 );
             }
 
