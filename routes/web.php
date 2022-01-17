@@ -157,6 +157,7 @@ Route::middleware(['role:admin'])->prefix('admin_panel')->group(function () {
     Route::post('/change_all_preview_collection_comment_status/{collection_id}', [\App\Http\Controllers\Admin\CollectionController::class, 'change_all_preview_collection_comment_status'])->name('change_all_preview_collection_comment_status');
 
     Route::post('/update_own_book_cover/{own_book_id}', [\App\Http\Controllers\Admin\OwnBookController::class, 'update_own_book_cover'])->name('update_own_book_cover');
+    Route::post('/update_own_book_prices/{own_book_id}', [\App\Http\Controllers\Admin\OwnBookController::class, 'update_own_book_prices'])->name('update_own_book_prices');
     Route::post('/update_own_book_inside/{own_book_id}', [\App\Http\Controllers\Admin\OwnBookController::class, 'update_own_book_inside'])->name('update_own_book_inside');
     Route::post('/update_own_book_track_number/{own_book_id}', [\App\Http\Controllers\Admin\OwnBookController::class, 'update_own_book_track_number'])->name('update_own_book_track_number');
     Route::post('/update_own_book_send_price/{own_book_id}', [\App\Http\Controllers\Admin\OwnBookController::class, 'update_own_book_send_price'])->name('update_own_book_send_price');

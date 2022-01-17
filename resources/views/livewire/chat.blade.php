@@ -19,7 +19,7 @@
             {{App::setLocale('ru')}}
             @foreach($messages as $message)
 
-                <div class="message">
+                <div wire:ignore class="message">
                     <p style="font-size: 18px;">@if($message['user_from'] === 2)
                             Поддержка @else {{App\Models\User::where('id',$message['user_from'])->value('name')}}@endif</p>
                     <div style="background:
@@ -111,52 +111,33 @@
             </div>
         @endif
     </form>
+    {{--   Смотрим на ссылки при обновлении--}}
+    <script>
+        function update_hrefs() {
+            $('.message-wrap').each(function () {
+                // alert($(this).html());
+                var urlRegex = /(https?:\/\/[^\s]+)/g;
+                var found_link = $(this).text().match(urlRegex);
 
+                var replaced_text = $(this).html().replace(found_link,
+                    '<a style="color: #ffffff; font-style: italic; font-weight: 700" target="_blank" href="' + found_link + '">' + found_link + '</a>');
+
+                $(this).html(replaced_text);
+            })
+        }
+
+
+        update_hrefs();
+
+    </script>
+    {{--   /////  Смотрим на ссылки при обновлении--}}
 
 
 
     @section('page-js')
 
 
-        {{--   Смотрим на ссылки при обновлении--}}
-        <script>
-            function update_hrefs() {
-                function urlify(text) {
-                    var urlRegex = /(https?:\/\/[^\s]+)/g;
-                    var output = text.replace(urlRegex,
-                        '<a style="color: #ffffff; font-style: italic; font-weight: 700" target="_blank" href="$1">$1</a>');
 
-                    // alert(text.match(urlRegex))
-                    return output;
-
-
-                }
-
-                $('.message-wrap').each(function () {
-                    // alert($(this).html());
-                    var replaced_text = urlify($(this).html());
-                    $(this).html(replaced_text);
-                })
-
-                // $.when(replace_hrefs()).done(function () {
-                //     $('.message-wrap p a').each(function () {
-                //         // $(this).addClass('link')
-                //         // $(this).css('color', '#ffffff');
-                //         // $(this).css('font-style', 'italic');
-                //         // $(this).css('font-weight', '700');
-                //     })
-                // });
-            }
-
-            document.addEventListener('update_hrefs', function () {
-                update_hrefs()
-            });
-
-
-            update_hrefs()
-
-        </script>
-        {{--   /////  Смотрим на ссылки при обновлении--}}
 
         <script>
             $('.send_mes_button').on('click', function () {

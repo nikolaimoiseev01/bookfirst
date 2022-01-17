@@ -500,4 +500,40 @@ class OwnBookController extends Controller
     }
 
 
+    public
+    function update_own_book_prices(Request $request)
+    {
+        session()->flash('success', 'change_printorder');
+        $own_book = own_book::where('id', $request->own_book_id)->first();
+
+        if ($request->text_check_price === null || $request->text_design_price === null || $request->cover_price === null || $request->print_price === null || $request->promo_price === null) {
+            session()->flash('alert_type', 'error');
+            session()->flash('alert_title', 'Ошибка!');
+            session()->flash('alert_text', 'Не все цены заполнены!');
+        }
+        else {
+
+            own_book::where('id', $request->own_book_id)->update(array(
+                'text_check_price' => intval($request->text_check_price),
+                'text_design_price' => intval($request->text_design_price),
+                'inside_price' => intval($request->text_check_price) + intval($request->text_design_price),
+                'cover_price' => intval($request->cover_price),
+                'print_price' => intval($request->print_price),
+                'promo_price' => intval($request->promo_price),
+                'total_price' => intval($request->text_check_price) + intval($request->text_design_price) + intval($request->cover_price) + intval($request->print_price) + intval($request->promo_price),
+            ));
+            session()->flash('success', 'change_printorder');
+            session()->flash('alert_type', 'success');
+            session()->flash('alert_title', 'Все цены были успешно изменены!');
+        }
+
+
+
+
+
+        return redirect()->back();
+
+    }
+
+
 }

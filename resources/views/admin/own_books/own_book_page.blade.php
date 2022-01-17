@@ -413,18 +413,19 @@
 
                             <div class="border-top mt-3 pt-3 row">
                                 <div class="border-right pr-3 col-sm-6">
-                                        <h3>Аннотация книги</h3>
-                                        <form action="{{ route('update_own_book_desc',$own_book['id']) }}"
-                                              method="post"
-                                              enctype="multipart/form-data">
-                                            @csrf
-                                            <textarea style="font-size: 20px; min-height: 150px" type="text" name="desc"
-                                                      class="mb-3 form-control" id="desc"
-                                                      aria-describedby="myInput">@if($own_book['own_book_desc']) {{$own_book['own_book_desc']}} @else Еще не загружена @endif</textarea>
+                                    <h3>Аннотация книги</h3>
+                                    <form action="{{ route('update_own_book_desc',$own_book['id']) }}"
+                                          method="post"
+                                          enctype="multipart/form-data">
+                                        @csrf
+                                        <textarea style="font-size: 20px; min-height: 150px" type="text" name="desc"
+                                                  class="mb-3 form-control" id="desc"
+                                                  aria-describedby="myInput">@if($own_book['own_book_desc']) {{$own_book['own_book_desc']}} @else
+                                                Еще не загружена @endif</textarea>
 
-                                            <button type="submit" class="btn btn-primary">Сохранить</button>
+                                        <button type="submit" class="btn btn-primary">Сохранить</button>
 
-                                        </form>
+                                    </form>
                                 </div>
                                 <div class="pr-2 col-sm-6">
                                     <div class="mt-3 d-flex justify-content-between align-items-end mb-3">
@@ -634,7 +635,8 @@
                                                 </form>
 
                                             </div>
-                                            <table id="participants_table" class="table table-striped table-bordered table-hover">
+                                            <table id="participants_table"
+                                                   class="table table-striped table-bordered table-hover">
                                                 <thead>
                                                 <tr>
                                                     <th>Текст</th>
@@ -849,7 +851,8 @@
                                     <h4 class="m-0">
                                         Статус:
                                         @if($own_book->printorder['paid_at'])
-                                            <span style="color:#00cd00;">оплачена {{Date::parse($own_book->printorder['paid_at'])->format('j F H:i')}}</span>
+                                            <span
+                                                style="color:#00cd00;">оплачена {{Date::parse($own_book->printorder['paid_at'])->format('j F H:i')}}</span>
                                         @else
                                             <span style="color:#e54c4c;">не оплачена (ждет с {{Date::parse($own_book->printorder['updated_at'])->addHours(3)->format('j F H:i')}})</span>
                                         @endif
@@ -864,7 +867,41 @@
                         <div class=" tab-pane" id="finance">
                             <div class="d-flex justify-content-around flex-wrap">
                                 <div>
-                                    <h2>Общий расчет</h2>
+                                    <div class="justify-content-between d-flex">
+                                        <h2>Общий расчет</h2>
+
+                                        <div class="d-flex">
+                                            <a class="m-0 p-0 d-flex align-items-center btn">
+                                                <i id="change_finance_show" style="font-size: 22px;"
+                                                   class="fas fa-edit"></i>
+                                            </a>
+
+                                            <a id="change_finance_save" style="display: none !important;"
+                                               class="m-0 p-0 d-flex align-items-center btn">
+                                                <i style="font-size: 25px;"
+                                                   class="fas fa-save"></i>
+                                            </a>
+
+                                            <a href="{{route('own_book_page')}}" target="_blank" id="change_finance_calc" style="display: none !important;"
+                                               class="ml-3 p-0 d-flex align-items-center btn">
+                                                <i style="font-size: 20px;"
+                                                   class="fas fa-calculator"></i>
+                                            </a>
+
+                                            <a id="change_finance_hide" style="display: none !important;"
+                                               class="ml-3 p-0 d-flex align-items-center btn">
+                                                <i style="font-size: 27px;"
+                                                   class="fas fa-times"></i>
+                                            </a>
+
+
+                                        </div>
+                                    </div>
+                                    <style>
+                                        .change_finance_block {
+                                            display: none;
+                                        }
+                                    </style>
                                     <div style="max-width: 600px;">
                                         <table class="table table-bordered">
                                             <tbody>
@@ -874,86 +911,130 @@
                                                     500 руб.
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td style="font-weight: bold">Стоимость дизайна</td>
-                                                <td>
-                                                    @if($own_book['text_design_price'] === 0)
-                                                        не нужна
-                                                    @else
-                                                        {{$own_book['text_design_price']}} руб.
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td style="font-weight: bold">Стоимость проверки текста</td>
-                                                <td>
-                                                    @if($own_book['text_check_price'] === 0)
-                                                        не нужна
-                                                    @else
-                                                        {{$own_book['text_check_price']}} руб.
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td style="font-weight: bold">Стоимость обложки</td>
-                                                <td>
-                                                    @if($own_book['cover_price'] === 0)
-                                                        готова от автора
-                                                    @else
-                                                        {{$own_book['cover_price']}} руб.
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td style="font-weight: bold">Стоимость печати</td>
-                                                <td>
-                                                    @if($own_book['print_price'] === 0)
-                                                        не нужна
-                                                    @else
-                                                        {{$own_book['print_price']}} руб.
-                                                    @endif
-                                                </td>
-                                            </tr>
+                                            <form id="save_own_book_prices"
+                                                  action="{{ route('update_own_book_prices',$own_book['id']) }}"
+                                                  method="POST"
+                                                  enctype="multipart/form-data"
+                                            >
+                                                @csrf
+                                                <tr>
+                                                    <td style="font-weight: bold">Стоимость дизайна</td>
+                                                    <td>
+                                                        <div class="change_finance_text">
+                                                            @if($own_book['text_design_price'] === 0)
+                                                                не нужна
+                                                            @else
+                                                                {{$own_book['text_design_price']}} руб.
+                                                            @endif
 
-                                            <tr>
-                                                <td style="font-weight: bold">Стоимость продвижения</td>
-                                                <td>
-                                                    @if($own_book['promo_price'] === 0)
-                                                        не нужна
-                                                    @else
-                                                        {{$own_book['promo_price']}} руб.
-                                                    @endif
-                                                </td>
-                                            </tr>
+                                                        </div>
+                                                        <input type="number"
+                                                               value="{{$own_book['text_design_price']}}"
+                                                               id="text_design_price"
+                                                               name="text_design_price"
+                                                               class="form-control change_finance_block">
+                                                    </td>
 
-                                            <tr class="bg-info">
-                                                <td style="font-weight: bold">Получили средств</td>
-                                                <td>
-                                                    {{$own_book['total_price']}} руб.
-                                                </td>
-                                            </tr>
-                                            <tr class="bg-info">
-                                                <td style="font-weight: bold">Приблизительные затраты</td>
-                                                <td>
-                                                    @if($own_book['print_price'] === 0)
-                                                        0 руб.
-                                                    @else
-                                                        {{$own_book['pages'] * $own_book->printorder['books_needed']}}
+                                                </tr>
+                                                <tr>
+                                                    <td style="font-weight: bold">Стоимость проверки текста</td>
+                                                    <td>
+                                                        <div class="change_finance_text">
+                                                            @if($own_book['text_check_price'] === 0)
+                                                                не нужна
+                                                            @else
+                                                                {{$own_book['text_check_price']}} руб.
+                                                            @endif
+                                                        </div>
+                                                        <input type="number"
+                                                               value="{{$own_book['text_check_price']}}"
+                                                               id="text_check_price"
+                                                               name="text_check_price"
+                                                               class="form-control change_finance_block">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="font-weight: bold">Стоимость обложки</td>
+                                                    <td>
+                                                        <div class="change_finance_text">
+                                                            @if($own_book['cover_price'] === 0)
+                                                                готова от автора
+                                                            @else
+                                                                {{$own_book['cover_price']}} руб.
+                                                            @endif
+                                                        </div>
+                                                        <input type="number"
+                                                               value="{{$own_book['cover_price']}}"
+                                                               id="cover_price"
+                                                               name="cover_price"
+                                                               class="form-control change_finance_block">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="font-weight: bold">Стоимость печати</td>
+                                                    <td>
+                                                        <div class="change_finance_text">
+                                                            @if($own_book['print_price'] === 0)
+                                                                не нужна
+                                                            @else
+                                                                {{$own_book['print_price']}} руб.
+                                                            @endif
+                                                        </div>
+                                                        <input type="number"
+                                                               value="{{$own_book['print_price']}}"
+                                                               id="print_price"
+                                                               name="print_price"
+                                                               class="form-control change_finance_block">
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td style="font-weight: bold">Стоимость продвижения</td>
+                                                    <td>
+                                                        <div class="change_finance_text">
+                                                            @if($own_book['promo_price'] === 0)
+                                                                не нужна
+                                                            @else
+                                                                {{$own_book['promo_price']}} руб.
+                                                            @endif
+                                                        </div>
+                                                        <input type="number"
+                                                               value="{{$own_book['promo_price']}}"
+                                                               id="promo_price"
+                                                               name="promo_price"
+                                                               class="form-control change_finance_block">
+                                                    </td>
+                                                </tr>
+
+                                                <tr class="bg-info">
+                                                    <td style="font-weight: bold">ИТОГО</td>
+                                                    <td>
+                                                        {{$own_book['total_price']}} руб.
+                                                    </td>
+                                                </tr>
+                                                <tr class="bg-info">
+                                                    <td style="font-weight: bold">Приблизительные затраты</td>
+                                                    <td>
+                                                        @if($own_book['print_price'] === 0)
+                                                            0 руб.
+                                                        @else
+                                                            {{$own_book['pages'] * $own_book->printorder['books_needed']}}
+                                                            руб.
+                                                            ({{$own_book['pages']}}
+                                                            стр.; {{$own_book->printorder['books_needed'] ?? 0}}
+                                                            экз.)
+                                                        @endif
+                                                        {{-- {{$own_book->printorder['books_needed'] * 80}} руб.--}}
+                                                    </td>
+                                                </tr>
+                                                <tr style="font-size: 22px;" class="bg-success">
+                                                    <td style="font-weight: bold">Итого рибыль</td>
+                                                    <td>
+                                                        {{$own_book['total_price'] - ($own_book['pages'] * ($own_book->printorder['books_needed'] ?? 0))}}
                                                         руб.
-                                                        ({{$own_book['pages']}}
-                                                        стр.; {{$own_book->printorder['books_needed'] ?? 0}}
-                                                        экз.)
-                                                    @endif
-                                                    {{-- {{$own_book->printorder['books_needed'] * 80}} руб.--}}
-                                                </td>
-                                            </tr>
-                                            <tr style="font-size: 22px;" class="bg-success">
-                                                <td style="font-weight: bold">Итого рибыль</td>
-                                                <td>
-                                                    {{$own_book['total_price'] - ($own_book['pages'] * ($own_book->printorder['books_needed'] ?? 0))}}
-                                                    руб.
-                                                </td>
-                                            </tr>
+                                                    </td>
+                                                </tr>
+                                            </form>
                                             </tbody>
                                         </table>
                                     </div>
@@ -1070,7 +1151,46 @@
             <!-- /.card -->
         </div>
     </section>
+    <script>
+        $('#change_finance_show').on('click', function () {
 
+            $(this).hide();
+
+            $('.change_finance_text').each(function () {
+                $(this).hide();
+            })
+
+            $('.change_finance_block').each(function () {
+                $(this).show();
+            })
+
+            $('#change_finance_hide').show();
+            $('#change_finance_save').show();
+            $('#change_finance_calc').show();
+        })
+
+        $('#change_finance_hide').on('click', function () {
+            $(this).attr('style', 'display: none !important');
+            $('#change_finance_save').attr('style', 'display: none !important');
+            $('#change_finance_calc').attr('style', 'display: none !important');
+
+            $('.change_finance_text').each(function () {
+                $(this).show();
+            })
+
+            $('.change_finance_block').each(function () {
+                $(this).hide();
+            })
+
+            $('#change_finance_show').show();
+        })
+
+
+        $('#change_finance_save').on('click', function () {
+            $('#save_own_book_prices').submit();
+        })
+
+    </script>
 @endsection
 
 
