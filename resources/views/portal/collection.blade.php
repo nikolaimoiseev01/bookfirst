@@ -40,9 +40,12 @@
                         </div>
                         <div class="row">
                             Формат:&nbsp;<span>
-                                @if(strpos($collection['title'], 'Дух') !== false)Стихи@endif
-                                @if(strpos($collection['title'], 'Мысли') !== false)Проза@endif
+                                @if(strpos($collection['title'], 'Дух') !== false)Стихи
+                                @elseif(strpos($collection['title'], 'Мысли') !== false)Проза
+                                @elseif(strpos($collection['title'], 'Гарри Поттер') !== false)Проза/стихи
+                                @else
                                 любой тематики
+                                @endif
                             </span>
                         </div>
                         <div class="row">
