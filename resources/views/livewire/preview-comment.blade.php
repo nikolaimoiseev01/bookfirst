@@ -49,7 +49,7 @@
                     @endif
                         border-right: none;"
                     placeholder="Описание исправления" name="text" required type="text"></textarea>
-                <div class="send-wrap">
+                <div style="height: auto !important;" class="send-wrap">
                     <button style="height: 60px;" type="submit">
                     <span class="tooltip" title="Отправить">
                     <svg id="Capa_1" data-name="Capa 1"

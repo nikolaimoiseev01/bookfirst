@@ -126,6 +126,9 @@
             })
         }
 
+        document.addEventListener('update_hrefs', function scroll_down() {
+            update_hrefs();
+        });
 
         update_hrefs();
 
