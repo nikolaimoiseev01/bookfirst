@@ -30,7 +30,7 @@ class VoteBlock extends Component
     {
         $this->collection_id = $collection_id;
         $this->collection = Collection::where('id', $collection_id)->first();
-        $this->participants = Participation::where('collection_id', $this->collection_id)->where('user_id', '<>', Auth::user()->id)->get();
+        $this->participants = Participation::where('collection_id', $this->collection_id)->where('pat_status_id', 3)->where('user_id', '<>', Auth::user()->id)->get();
         $this->voted_to = Participation::where('collection_id', $this->collection_id)
             ->where('user_id', vote::where('user_id_from', Auth::user()->id)->where('collection_id', $this->collection_id)->value('user_id_to'))
             ->first();

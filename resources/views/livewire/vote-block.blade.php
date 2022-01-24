@@ -30,7 +30,7 @@
                 <h2>Выберите лучшего автора:</h2>
 
 
-                <div style="    height: 100%; overflow: auto; padding-bottom: 10px;">
+                <div style="margin-bottom: 20px; max-height: 450px; height: 100%; overflow: auto; padding-bottom: 10px;">
                     @foreach($participants as $participant)
                         <div style="margin-top: 10px;" class="check-block">
                             <label for="vote_for_{{$participant['user_id']}}">

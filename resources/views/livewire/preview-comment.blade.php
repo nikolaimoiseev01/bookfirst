@@ -33,7 +33,7 @@
             wire:submit.prevent="add_preview_comment(Object.fromEntries(new FormData($event.target)))"
             enctype="multipart/form-data">
             @csrf
-            <div style="margin-top: 10px; " class="input-block">
+            <div style="align-items: flex-end !important; margin-top: 10px; " class="input-block">
                 @if ($comment_type === 'inside')
                     <input
                         style="text-align: center; max-width: 60px;height: 60px;border-radius: 10px 0 0 10px; border-right:none;"
