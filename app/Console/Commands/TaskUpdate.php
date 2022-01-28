@@ -75,8 +75,10 @@ class TaskUpdate extends Command
                 $danger_deadline = "";
             };
 
-            $collection_dates = $collection_dates . ($key + 1) . '. ' . substr($collection['title'], 0, 20) . "...: " .
-                $col_deadline . $danger_deadline . ' \n';
+
+
+            $collection_dates = $collection_dates . ($key + 1) . '. ' . $collection['title'] . ": " . $collection->col_status['col_status'] . " до " .
+                "*" . $col_deadline . "*" . $danger_deadline . ' \n\n';
         }
 
         // Создаем дедлайны обложек
@@ -112,13 +114,14 @@ class TaskUpdate extends Command
         $url_back = route('homeAdmin');
         $url_back = "vk.com";
 
+
         // Посылаем Telegram уведомление нам
         Notification::route('telegram', '-506622812')
             ->notify(new TelegramNotification('🗓 *Наши дедлайны* 🗓',
-                "*Обложки*" . "\n" . implode("\n", explode('\n', substr($own_book_insides_dates, 0, -2))) .
+                "*Обложки*" . "\n" . implode("\n", explode('\n', substr($own_book_cover_dates, 0, -2))) .
                 "\n\n" . "*Макеты* " . "\n" . implode("\n", explode('\n', substr($own_book_insides_dates, 0, -2))) .
                 "\n\n" . "*Сборники* " . "\n" . implode("\n", explode('\n', substr($collection_dates, 0, -2))),
                 "Админка",
-                $url_back));
+                "vk.com"));
     }
 }
