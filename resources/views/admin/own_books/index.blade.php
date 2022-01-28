@@ -79,6 +79,8 @@
                                 <div style="font-size: 18px;" class="
                                 @if ($own_book->own_book_status_id === 1 || $own_book->own_book_status_id === 5)
                                     bg-gradient-danger
+                                @elseif ($own_book->own_book_status_id === 6)
+                                    bg-gradient-indigo
                                 @elseif ($own_book->own_book_status_id < 7)
                                     bg-gradient-warning
                                 @else
