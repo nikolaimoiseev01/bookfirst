@@ -722,21 +722,11 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td style="font-weight: bold">Фио адресата</td>
+                                            <td style="font-weight: bold">Отправить на адрес</td>
                                             <td>
-                                                {{$own_book->printorder['send_to_name']}}
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="font-weight: bold">Адрес</td>
-                                            <td>
-                                                {{$own_book->printorder['send_to_address']}}
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="font-weight: bold">Телефон</td>
-                                            <td>
-                                                {{$own_book->printorder['send_to_tel']}}
+                                                ФИО: {{$own_book->printorder['send_to_name']}}<br>
+                                                Адрес: {{$own_book->printorder['send_to_address']}} <br>
+                                                Телефон: {{$own_book->printorder['send_to_tel']}}
                                             </td>
                                         </tr>
                                         <tr>
