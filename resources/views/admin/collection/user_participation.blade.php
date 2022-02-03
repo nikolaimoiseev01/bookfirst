@@ -152,6 +152,12 @@
                                     <table class="table table-bordered">
                                         <tbody>
                                         <tr>
+                                            <td style="font-weight: bold">ID Printorder</td>
+                                            <td>
+                                                {{$participation->printorder['id'] ?? 'Нет печати'}}
+                                            </td>
+                                        </tr>
+                                        <tr>
                                             <td style="font-weight: bold">Экземпляров</td>
                                             <td>
                                                 {{$participation->printorder['books_needed'] ?? 'Нет печати'}}

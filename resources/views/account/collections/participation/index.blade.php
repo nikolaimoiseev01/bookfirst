@@ -797,14 +797,14 @@
             <div style=" background:
             @if ($collection['col_status_id'] < 4)
             {{$part_not_available}};
-            @elseif($collection['col_status_id'] === 9 and $participation->printorder['paid_at'] ?? null === null)
-            {{$part_action_needed}} ;
+            @elseif($collection['col_status_id'] === 9 and $participation->printorder['paid_at'] ?? null <> null)
+            {{$part_all_good}} ;
 
-            @elseif($collection['col_status_id'] === 9 and $participation->printorder['paid_at'] ?? 0 > 0)
-            {{$part_all_good}};
+            @elseif($collection['col_status_id'] === 9 and $participation->printorder['paid_at'] ?? null == null)
+            {{$part_action_needed}};
 
             @endif" class="line"></div>
-            @if ($participation->printorder['paid_at'] ?? 0 > 0)
+            @if (!$participation->printorder['paid_at'] ?? null)
                 <svg id="Слой_1" class="circle_status" style="fill:
                 @if ($collection['col_status_id'] < 4){{$part_not_available}};
                 @else
@@ -876,11 +876,11 @@
                     <h2 style="color:
                     @if ($collection['col_status_id'] < 4)
                     {{$part_not_available}};
-                    @elseif($collection['col_status_id'] === 9 and $participation->printorder['paid_at'] ?? null === null)
-                    {{$part_action_needed}} ;
+                    @elseif($collection['col_status_id'] === 9 and $participation->printorder['paid_at'] ?? null <> null)
+                    {{$part_all_good}} ;
 
-                    @elseif($collection['col_status_id'] === 9 and $participation->printorder['paid_at'] ?? 0 > 0)
-                    {{$part_all_good}};
+                    @elseif($collection['col_status_id'] === 9 and $participation->printorder['paid_at'] ?? null == null)
+                    {{$part_action_needed}};
                     @endif;">Отслеживание сборника</h2>
                 </div>
 

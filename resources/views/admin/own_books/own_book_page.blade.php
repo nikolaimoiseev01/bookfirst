@@ -709,6 +709,12 @@
                                     <table class="table table-bordered">
                                         <tbody>
                                         <tr>
+                                            <td style="font-weight: bold">ID Printorder</td>
+                                            <td>
+                                                {{$own_book->printorder['id']}})
+                                            </td>
+                                        </tr>
+                                        <tr>
                                             <td style="font-weight: bold">Страниц</td>
                                             <td>
                                                 {{$own_book['pages']}}
