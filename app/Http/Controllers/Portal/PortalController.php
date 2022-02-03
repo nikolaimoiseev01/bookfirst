@@ -12,7 +12,7 @@ class PortalController extends Controller
 {
     public function index() {
         $own_books = own_book::where('own_book_status_id', 9)->where('promo_price', '>', 1000)->orderBy('id', 'desc')->get();
-        $collections = Collection::where('col_status_id','1')->get();
+        $collections = Collection::where('col_status_id','1')->orderBy('id', 'desc')->get();
         $col_statuses = Col_status::orderBY('id')->get();
         return view('portal.index', [
             'collections' => $collections,
@@ -34,7 +34,7 @@ class PortalController extends Controller
     }
 
     public function old_collections() {
-        $collections = Collection::orderBY('id', 'desc')->where('col_status_id', 9)->paginate(9);
+        $collections = Collection::orderBY('id', 'desc')->where('col_status_id', 9)->orderBy('id', 'desc')->paginate(9);
         return view('portal.old_collections', [
             'collections' => $collections,
             'collection_input_search' => 'no_search',
@@ -42,7 +42,7 @@ class PortalController extends Controller
     }
 
     public function actual_collections() {
-        $collections = Collection::orderBY('id', 'asc')->where('col_status_id', 1)->paginate(9);
+        $collections = Collection::orderBY('id', 'asc')->where('col_status_id', 1)->orderBy('id', 'desc')->paginate(9);
         return view('portal.actual_collections', [
             'collections' => $collections,
         ]);
