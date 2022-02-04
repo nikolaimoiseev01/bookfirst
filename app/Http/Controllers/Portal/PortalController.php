@@ -42,7 +42,7 @@ class PortalController extends Controller
     }
 
     public function actual_collections() {
-        $collections = Collection::orderBY('id', 'asc')->where('col_status_id', 1)->orderBy('id', 'desc')->paginate(9);
+        $collections = Collection::orderBY('id', 'desc')->where('col_status_id', 1)->paginate(9);
         return view('portal.actual_collections', [
             'collections' => $collections,
         ]);

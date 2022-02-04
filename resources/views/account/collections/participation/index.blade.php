@@ -114,8 +114,8 @@
                 <div class="info">
                     <div class="part_part">
                         <h2>Участие:</h2>
-                        <span><p style="margin: 0;">Фамилия: <i>{{$participation['name']}}</i></p></span>
-                        <span><p style="margin: 0;">Имя: <i>{{$participation['surname']}}</i></p></span>
+                        <span><p style="margin: 0;">Имя: <i>{{$participation['name']}}</i></p></span>
+                        <span><p style="margin: 0;">Фамилия: <i>{{$participation['surname']}}</i></p></span>
                         @if($participation['nickname'] <> "")
                             <span><p style="margin: 0;">Псевдоним: <i>{{$participation['nickname']}}</i></p></span>
                         @endif
