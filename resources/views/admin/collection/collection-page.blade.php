@@ -479,7 +479,7 @@
                                         выполненными
                                     </button>
                                 </form>
-                                <table id="comments_table" class="table table-bordered table-hover">
+                                <table id="comments_table" class="table table-striped table-bordered table-hover">
                                     <thead>
                                     <tr>
                                         <th>Автор</th>
