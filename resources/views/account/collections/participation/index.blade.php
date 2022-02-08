@@ -804,7 +804,7 @@
             {{$part_action_needed}};
 
             @endif" class="line"></div>
-            @if (!$participation->printorder['paid_at'] ?? null)
+            @if ($participation->printorder['paid_at'] ?? null == null)
                 <svg id="Слой_1" class="circle_status" style="fill:
                 @if ($collection['col_status_id'] < 4){{$part_not_available}};
                 @else
