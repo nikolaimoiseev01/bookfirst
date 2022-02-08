@@ -357,9 +357,9 @@
                 } else if (rows < 490) {
                     participation_price = 1900
                 } else if (rows < 735) {
-                    participation_price = 800
+                    participation_price = 2850
                 } else if (rows < 980) {
-                    participation_price = 3200
+                    participation_price = 3800
                 } else {
                     participation_price = 3200 + (((row - 980) / 35) * 300);
                 }
