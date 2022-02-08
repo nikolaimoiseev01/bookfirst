@@ -126,7 +126,7 @@
                 </div>
                 <div id="contest" class="hide">
                     <h2 style="font-size: 30px; text-align: center;">Объявлен <span style="color: #47af98;"> <b>КОНКУРС</b></span> среди участников сборника!</h2>
-                    <p>Участие в данном сборнике может быть бесплатно именно для Вас! <br>
+                    <p>Участие в данном сборнике может быть бесплатным именно для Вас! <br>
                     <div class="contest-wrap">
                         <div>
 
