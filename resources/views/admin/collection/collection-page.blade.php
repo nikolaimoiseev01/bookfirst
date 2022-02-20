@@ -579,7 +579,7 @@
         <div class="col-md-12">
             <div class="card collapsed-card mt-0">
                 <div class="bg-gradient-cyan card-header">
-                    <h1 style="font-size: 25px;" class="card-title">Печатные экзепляры</h1>
+                    <h1 style="font-size: 25px;" class="card-title">Печатные экзепляры оплативших клиентов</h1>
 
                     <div class="card-tools">
                         <button class="btn btn-tool" data-card-widget="collapse">
