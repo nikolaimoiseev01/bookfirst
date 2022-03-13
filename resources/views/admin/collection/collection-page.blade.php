@@ -119,7 +119,7 @@
 
                                     <script>
 
-                                        function check_cur_date () {
+                                        function check_cur_date() {
                                             date_1 = $('#datepicker1').val()
                                             date_2 = $('#datepicker2').val()
                                             date_3 = $('#datepicker3').val()
@@ -127,12 +127,12 @@
                                         }
 
                                         function take_cur_date(id) {
-                                            cur_date_before =  $('#datepicker_').val()
+                                            cur_date_before = $('#datepicker_').val()
                                         }
 
                                         check_cur_date();
 
-                                        $('.datepicker').on('change', function() {
+                                        $('.datepicker').on('change', function () {
                                             cur_date = $(this).val();
                                             id = $(this).attr('id').slice(-1);
 
@@ -214,8 +214,10 @@
                                             action="{{route('create_col_file')}}"
                                             class="ml-auto">
                                             @csrf
-                                            <input style="display: none" type="number" id="col_id" name="col_id" value="{{$collection['id']}}">
-                                            <button id="chat_form" style="width:fit-content; position: relative;"  class="button btn btn-block bg-gradient-primary" >
+                                            <input style="display: none" type="number" id="col_id" name="col_id"
+                                                   value="{{$collection['id']}}">
+                                            <button id="chat_form" style="width:fit-content; position: relative;"
+                                                    class="button btn btn-block bg-gradient-primary">
                                                 <span class="button__text">Скачать верстку!</span>
                                             </button>
                                         </form>
@@ -301,9 +303,159 @@
                                     <div class="tab-pane" id="winners">
                                         <div class="p-4">
                                             <div class="row">
-                                                <div class="border-right col-md-6">
-                                                    @foreach($winners as $winner)
-                                                        <h2 style="font-size: 30px;">{{$loop->index + 1}} место
+                                                <div style="font-size: 20px;" class="border-right col-md-4">
+                                                    <h2>Утвержденные призеры</h2>
+
+                                                    <div class="d-flex align-items-center">1 место:
+                                                        @if($winners[0]->participation['id'] ?? 0 > 0)
+                                                            <a target="_blank" class="ml-2"
+                                                               href="{{route('user_participation', $winners[0]->participation['id'] )}}">
+                                                                @if($winners[0]->participation['nickname'] <> null)
+                                                                    {{$winners[0]->participation['nickname']}}
+                                                                @else
+                                                                    {{$winners[0]->participation->name}} {{$winners[0]->participation->surname}}
+                                                                @endif
+                                                            </a>
+                                                        @else
+
+                                                            <form class="d-flex ml-3" style=" align-items: center;"
+                                                                  action="{{ route('add_winner', $collection['id']) }}"
+                                                                  method="POST"
+                                                                  enctype="multipart/form-data"
+                                                            >
+                                                                @csrf
+                                                                <input id="place" name="place" value="1" class="d-none"
+                                                                       type="number">
+
+                                                                <select id="winner_participation_id"
+                                                                        class="form-control"
+                                                                        name="winner_participation_id">
+                                                                    @foreach($participations as $participation)
+                                                                        <option value="{{$participation['id']}}">
+                                                                            @if($participation['nickname'] <> null)
+                                                                                {{$participation['nickname']}}
+                                                                            @else
+                                                                                {{$participation->name}} {{$participation->surname}}
+                                                                            @endif
+                                                                        </option>
+                                                                    @endforeach
+                                                                </select>
+
+                                                                <button id="btn-submit" type="submit"
+                                                                        style="height: fit-content; max-height: 30px; max-width:150px;"
+                                                                        data-status-from=""
+                                                                        class="change_status ml-3 d-flex align-items-center justify-content-center btn btn-outline-primary"
+                                                                >
+                                                                    Сохранить
+                                                                </button>
+                                                            </form>
+                                                        @endif
+                                                    </div>
+
+                                                    <div class="mt-3 d-flex align-items-center">2 место:
+                                                        @if($winners[1]->participation['id'] ?? 0 > 0)
+                                                            <a target="_blank" class="ml-2"
+                                                               href="{{route('user_participation', $winners[1]->participation['id'] )}}">
+                                                                @if($winners[1]->participation['nickname'] <> null)
+                                                                    {{$winners[1]->participation['nickname']}}
+                                                                @else
+                                                                    {{$winners[1]->participation->name}} {{$winners[1]->participation->surname}}
+                                                                @endif
+                                                            </a>
+                                                        @else
+
+
+
+                                                            <form class="d-flex ml-3" style=" align-items: center;"
+                                                                  action="{{ route('add_winner', $collection['id']) }}"
+                                                                  method="POST"
+                                                                  enctype="multipart/form-data"
+                                                            >
+                                                                @csrf
+                                                                <input id="place" name="place" value="2" class="d-none"
+                                                                       type="number">
+
+                                                                <select id="winner_participation_id"
+                                                                        class="form-control"
+                                                                        name="winner_participation_id">
+                                                                    @foreach($participations as $participation)
+                                                                        <option value="{{$participation['id']}}">
+                                                                            @if($participation['nickname'] <> null)
+                                                                                {{$participation['nickname']}}
+                                                                            @else
+                                                                                {{$participation->name}} {{$participation->surname}}
+                                                                            @endif
+                                                                        </option>
+                                                                    @endforeach
+                                                                </select>
+
+                                                                <button id="btn-submit" type="submit"
+                                                                        style="height: fit-content; max-height: 30px; max-width:150px;"
+                                                                        data-status-from=""
+                                                                        class="change_status ml-3 d-flex align-items-center justify-content-center btn btn-outline-primary"
+                                                                >
+                                                                    Сохранить
+                                                                </button>
+                                                            </form>
+                                                        @endif
+                                                    </div>
+
+                                                    <div class="mt-3 d-flex align-items-center">3 место:
+                                                        @if($winners[2]->participation['id'] ?? 0 > 0)
+                                                            <a target="_blank" class="ml-2"
+                                                               href="{{route('user_participation', $winners[2]->participation['id'] )}}">
+                                                                @if($winners[2]->participation['nickname'] <> null)
+                                                                    {{$winners[2]->participation['nickname']}}
+                                                                @else
+                                                                    {{$winners[2]->participation->name}} {{$winners[2]->participation->surname}}
+                                                                @endif
+                                                            </a>
+                                                        @else
+
+
+
+                                                            <form class="d-flex ml-3" style=" align-items: center;"
+                                                                  action="{{ route('add_winner', $collection['id']) }}"
+                                                                  method="POST"
+                                                                  enctype="multipart/form-data"
+                                                            >
+                                                                @csrf
+                                                                <input id="place" name="place" value="3" class="d-none"
+                                                                       type="number">
+
+                                                                <select id="winner_participation_id"
+                                                                        class="form-control"
+                                                                        name="winner_participation_id">
+                                                                    @foreach($participations as $participation)
+                                                                        <option value="{{$participation['id']}}">
+                                                                            @if($participation['nickname'] <> null)
+                                                                                {{$participation['nickname']}}
+                                                                            @else
+                                                                                {{$participation->name}} {{$participation->surname}}
+                                                                            @endif
+                                                                        </option>
+                                                                    @endforeach
+                                                                </select>
+
+                                                                <button id="btn-submit" type="submit"
+                                                                        style="height: fit-content; max-height: 30px; max-width:150px;"
+                                                                        data-status-from=""
+                                                                        class="change_status ml-3 d-flex align-items-center justify-content-center btn btn-outline-primary"
+                                                                >
+                                                                    Сохранить
+                                                                </button>
+                                                            </form>
+                                                        @endif
+                                                    </div>
+
+
+                                                </div>
+
+
+                                                <div class="border-right pl-4 col-md-4">
+                                                    <h2>Кандидаты</h2>
+                                                    @foreach($winners_candidates as $winner)
+                                                        <h2 style="font-size: 25px;">{{$loop->index + 1}} место
                                                             (голосов: {{$winner->votes_got}}):
                                                             @if($winner->nickname <> null)
                                                                 {{$winner->nickname}}
@@ -314,7 +466,9 @@
                                                         </h2>
                                                     @endforeach
                                                 </div>
-                                                <div style="font-size: 20px;" class="mb-3 pl-4 col-md-6">
+
+                                                <div style="font-size: 20px;" class="mb-3 pl-4 col-md-4">
+                                                    <h2>Голоса</h2>
                                                     @foreach($votes as $vote)
                                                         @if($vote->user_from_nickname <> null)
                                                             {{$vote->user_from_nickname}}
@@ -391,26 +545,33 @@
                                                     @csrf
                                                     <div class="chat-create-wrap">
                                                         <p class="mb-0">Тема: </p>
-                                                        <input type="number" id="col_id" name="col_id" style="display: none;" value="{{$collection['id']}}">
-                                                        <input value="Процесс издания сборника" id="subject" name="subject" class="form-control" type="text">
-                                                        <textarea style="min-height: 200px; resize: none;" type="text" placeholder="ТОЛЬКО ТЕЛО ПИСЬМА! Не нужно писать приветствие и концовку, это будет автоматом!" name="email_text" class="mt-3 form-control" id="email_text"></textarea>
-                                                        <button id="chat_form" style="width:fit-content; position: relative;"  class="all_participants_email mt-3 button btn btn-block bg-gradient-primary" >
+                                                        <input type="number" id="col_id" name="col_id"
+                                                               style="display: none;" value="{{$collection['id']}}">
+                                                        <input value="Процесс издания сборника" id="subject"
+                                                               name="subject" class="form-control" type="text">
+                                                        <textarea style="min-height: 200px; resize: none;" type="text"
+                                                                  placeholder="ТОЛЬКО ТЕЛО ПИСЬМА! Не нужно писать приветствие и концовку, это будет автоматом!"
+                                                                  name="email_text" class="mt-3 form-control"
+                                                                  id="email_text"></textarea>
+                                                        <button id="chat_form"
+                                                                style="width:fit-content; position: relative;"
+                                                                class="all_participants_email mt-3 button btn btn-block bg-gradient-primary">
                                                             <span class="button__text">Отправить всем участникам!</span>
                                                         </button>
                                                     </div>
                                                 </form>
                                             </div>
-                                            <a id="chat_add" style="width: fit-content;" class="mt-3 btn btn-outline-secondary">
+                                            <a id="chat_add" style="width: fit-content;"
+                                               class="mt-3 btn btn-outline-secondary">
                                                 <i class="mr-2 fa fa-plus"></i> Создать Email всем участникам</a>
                                         </div>
                                         <script>
                                             $('#chat_add').click(function () {
                                                 $('.chat-create-admin').toggle();
 
-                                                if($('.chat-create-admin').is(":visible")) {
+                                                if ($('.chat-create-admin').is(":visible")) {
                                                     $('#chat_add').html('<i class="mr-2 fa fa-times"></i> Отменить');
-                                                }
-                                                else {
+                                                } else {
                                                     $('#chat_add').html(' <i class="mr-2 fa fa-plus"></i> Создать чат');
                                                 }
                                             })
@@ -479,7 +640,7 @@
                                         выполненными
                                     </button>
                                 </form>
-                                <table id="comments_table" class="table table-striped table-bordered table-hover">
+                                <table id="comments_table" class="table table-striped table-bordered">
                                     <thead>
                                     <tr>
                                         <th>Автор</th>
@@ -494,6 +655,8 @@
 
                                         <tr>
                                             <td style="width: 10%; text-align: center;">
+                                                <a target="_blank" class="ml-2"
+                                                   href="{{route('user_participation', $pre_comment->participation['id'] )}}">
                                                 {{$pre_comment->participation['surname']}} {{$pre_comment->participation['name']}}
                                             </td>
                                             <td style="width: 10%;  text-align: center;">
@@ -503,7 +666,7 @@
                                                 {{$pre_comment['page']}}
                                             </td>
                                             <td>
-                                                {{$pre_comment['text']}}
+                                                {!! nl2br(e($pre_comment['text'])) !!}
                                             </td>
                                             <td style="width: 5%; text-align: center;">
                                                 <form
@@ -602,8 +765,10 @@
                                     action="{{route('download_all_prints')}}"
                                     class="ml-3">
                                     @csrf
-                                    <input style="display: none" type="number" id="col_id" name="col_id" value="{{$collection['id']}}">
-                                    <button id="chat_form" style="width:fit-content; position: relative;"  class="button btn btn-block bg-gradient-primary" >
+                                    <input style="display: none" type="number" id="col_id" name="col_id"
+                                           value="{{$collection['id']}}">
+                                    <button id="chat_form" style="width:fit-content; position: relative;"
+                                            class="button btn btn-block bg-gradient-primary">
                                         <span class="button__text">Скачать таблицу печати!</span>
                                     </button>
                                 </form>

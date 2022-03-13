@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Chat;
 use App\Models\Collection;
 use App\Models\Col_status;
+use App\Models\collection_winner;
 use App\Models\EmailSent;
+use App\Models\Message;
 use App\Models\Participation;
 use App\Models\Participation_work;
 use App\Models\preview_comment;
@@ -315,7 +318,7 @@ class CollectionController extends Controller
             ->where('votes.collection_id', $collection->id)
             ->get();
 
-        $winners = DB::table('votes')
+        $winners_candidates = DB::table('votes')
             ->Join('participations as p2', function ($join) {
                 $join->on('p2.user_id', '=', 'votes.user_id_to');
                 $join->on('p2.collection_id', '=', 'votes.collection_id');
@@ -328,6 +331,7 @@ class CollectionController extends Controller
             ->orderBy('votes_got', 'desc')
             ->get();
         $emails_sent = EmailSent::where('collection_id', $collection->id)->get();
+        $winners = collection_winner::where('collection_id', $collection->id)->orderBy('place', 'asc')->get();
         return view('admin.collection.collection-page', [
             'collection' => $collection,
             'col_statuses' => $col_statuses,
@@ -336,10 +340,10 @@ class CollectionController extends Controller
             'printorders' => $printorders,
             'pre_comments' => $pre_comments,
             'votes' => $votes,
-            'winners' => $winners,
+            'winners_candidates' => $winners_candidates,
             'emails_sent' => $emails_sent,
+            'winners' => $winners,
         ]);
-
     }
 
     /**
@@ -557,5 +561,65 @@ class CollectionController extends Controller
             ->update(['status_done' => 1]);
 
         return redirect(url()->previous());
+    }
+
+
+    public function add_winner($collection_id, Request $request)
+    {
+        $user = User::where('id',Participation::where('id', $request->winner_participation_id)->value('user_id'))->first();
+        $collection = Collection::where('id', $collection_id)->first();
+        $chat = Chat::where('user_created', $user['id'])->where('collection_id', $collection_id)->first();
+        $message_text_email = "Поздравляем! Вы заняли " . $request->place . " место в конкурсе современных писателей сборника " . $collection['title'] . "! " .
+            "Сейчас необходимо прислать небольшой блок информации о себе для вставки в сборник. Пожалуйста, отправьте его в чате на странице участия.";
+
+        $message_text_chat = "Здравствуйте, уважаемый " . $user['name'] . "!" . "\n\n" .
+            "Спешим Вам сообщить, что вы заняли " . $request->place . " место в конкурсе авторов сборника " . $collection['title'] . "!\n" .
+            "За вас проголосовало большое количество участников! Пожалуйста, пришлите информацию о себе, которую вы бы хотели видеть в сборнике (она будет вставлена в блок призеров конкурса)." . "\n\n" .
+            "О том, как получить приз, мы сообщим позднее." . "\n\n" .
+            "Поздравляем!";
+
+
+
+
+        // ---- Сохраняем победителя! ---- //
+        $new_winner = new collection_winner();
+        $new_winner->collection_id = $collection['id'];
+        $new_winner->participation_id = $request->winner_participation_id;
+        $new_winner->place = $request->place;
+        $new_winner->user_id = $user['id'];
+        $new_winner->save();
+        // ---- //// Сохраняем победителя! ---- //
+
+        // ---- //// Пишем по почте! ---- //
+        $user->notify(new EmailNotification(
+                'Вы были выбранны призёром конкурса!',
+                $user['name'],
+                $message_text_email,
+                "На страницу участия",
+                route('participation_index', ['participation_id'=>$request->winner_participation_id,'collection_id'=>$collection['id']]))
+        );
+
+        // ---- //// Пишем в личном кабинете (нотификация) ---- //
+        \Illuminate\Support\Facades\Notification::send($user, new UserNotification(
+            'Вы были выбранны призёром конкурса!',
+            route('participation_index', ['participation_id'=>$request->winner_participation_id,'collection_id'=>$collection['id']])
+        ));
+
+        // ---- //// Пишем в чат! ---- //
+        $new_message = new Message();
+        $new_message->chat_id = $chat['id'];
+        $new_message->user_from = 2;
+        $new_message->user_to = $user['id'];
+        $new_message->text = $message_text_chat;
+        $new_message->save();
+
+        session()->flash('success', 'change_printorder');
+        session()->flash('alert_type', 'success');
+        session()->flash('alert_title', 'Успешно!');
+        session()->flash('alert_text', 'Выбрали победителя и даже послали письмо :)');
+
+        return redirect()->back();
+
+
     }
 }

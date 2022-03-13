@@ -134,6 +134,7 @@ Route::middleware(['role:admin'])->prefix('admin_panel')->group(function () {
     Route::get('/collections/participants/{collection_id}', [\App\Http\Controllers\Admin\ParticipationController::class, 'participants'])->name('participants');
     Route::get('/user/{user_id}', [\App\Http\Controllers\Admin\UserController::class, 'user_page'])->name('user_page');
     Route::resource('collection', \App\Http\Controllers\Admin\CollectionController::class,);
+    Route::post('/add_winner/{collection_id}', [App\Http\Controllers\Admin\CollectionController::class, 'add_winner'])->name('add_winner');
     Route::get('/collections/participation/{participation_id}', [App\Http\Controllers\Admin\ParticipationController::class, 'user_participation'])->name('user_participation');
     Route::get('/chats', [App\Http\Controllers\Admin\UserController::class, 'chats'])->name('chats');
     Route::get('/chats/{chat_id}', [App\Http\Controllers\Admin\UserController::class, 'chat'])->name('admin_chat');
