@@ -569,11 +569,11 @@ class CollectionController extends Controller
         $user = User::where('id',Participation::where('id', $request->winner_participation_id)->value('user_id'))->first();
         $collection = Collection::where('id', $collection_id)->first();
         $chat = Chat::where('user_created', $user['id'])->where('collection_id', $collection_id)->first();
-        $message_text_email = "Поздравляем! Вы заняли " . $request->place . " место в конкурсе современных писателей сборника " . $collection['title'] . "! " .
-            "Сейчас необходимо прислать небольшой блок информации о себе для вставки в сборник. Пожалуйста, отправьте его в чате на странице участия.";
+        $message_text_email = "Поздравляем! Вы заняли " . $request->place . " место в конкурсе авторов сборника '" . $collection['title'] . "'! " .
+            "Сейчас необходимо прислать небольшой блок информации о себе для добавления в сборник. Пожалуйста, отправьте его в чате на странице участия.";
 
-        $message_text_chat = "Здравствуйте, уважаемый " . $user['name'] . "!" . "\n\n" .
-            "Спешим Вам сообщить, что вы заняли " . $request->place . " место в конкурсе авторов сборника " . $collection['title'] . "!\n" .
+        $message_text_chat = "Здравствуйте, " . $user['name'] . "!" . "\n\n" .
+            "Спешим Вам сообщить, что вы заняли " . $request->place . " место в конкурсе авторов сборника '" . $collection['title'] . "'!\n" .
             "За вас проголосовало большое количество участников! Пожалуйста, пришлите информацию о себе, которую вы бы хотели видеть в сборнике (она будет вставлена в блок призеров конкурса)." . "\n\n" .
             "О том, как получить приз, мы сообщим позднее." . "\n\n" .
             "Поздравляем!";
