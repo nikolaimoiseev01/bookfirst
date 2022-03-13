@@ -601,7 +601,7 @@ class CollectionController extends Controller
 
         // ---- //// Пишем в личном кабинете (нотификация) ---- //
         \Illuminate\Support\Facades\Notification::send($user, new UserNotification(
-            'Вы были выбранны призёром конкурса!',
+            'Вы были выбраны призёром конкурса!',
             route('participation_index', ['participation_id'=>$request->winner_participation_id,'collection_id'=>$collection['id']])
         ));
 
