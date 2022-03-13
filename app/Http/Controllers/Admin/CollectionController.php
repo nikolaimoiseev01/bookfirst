@@ -592,7 +592,7 @@ class CollectionController extends Controller
 
         // ---- //// Пишем по почте! ---- //
         $user->notify(new EmailNotification(
-                'Вы были выбранны призёром конкурса!',
+                'Вы были выбраны призёром конкурса!',
                 $user['name'],
                 $message_text_email,
                 "На страницу участия",
