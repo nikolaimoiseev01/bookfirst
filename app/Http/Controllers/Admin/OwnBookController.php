@@ -85,7 +85,7 @@ class OwnBookController extends Controller
         own_book::where('id', $request->own_book_id)->update(array(
             'amazon_link' => $request->amazon_link,
         ));
-        if ($this->own_book['amazon_link'] == null and $request->amazon_link <> null and own_book['user_id'] <> null) {
+        if ($this->own_book['amazon_link'] == null and $request->amazon_link <> null and $this->own_book['user_id'] <> null) {
             $user = User::where('id', $request->user_id)->first();
 
 
