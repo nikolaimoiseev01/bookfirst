@@ -783,11 +783,11 @@
                  border-bottom: 2px {{$part_not_available}} solid;
                  border-left: 2px {{$part_not_available}} solid;
                  border-right: 2px {{$part_not_available}} solid;
-             @elseif($collection['col_status_id'] === 9 and $participation->printorder['paid_at'] ?? null)
+             @elseif($collection['col_status_id'] === 9 and !($participation->printorder['paid_at'] ?? null))
                  border-bottom: 2px {{$part_action_needed}} solid;
                  border-left: 2px {{$part_action_needed}} solid;
                  border-right: 2px {{$part_action_needed}} solid;
-             @elseif($collection['col_status_id'] === 9 and !($participation->printorder['paid_at'] ?? null))
+             @elseif($collection['col_status_id'] === 9 and $participation->printorder['paid_at'] ?? null)
                  border-bottom: 2px {{$part_all_good}} solid;
                  border-left: 2px {{$part_all_good}} solid;
                  border-right: 2px {{$part_all_good}} solid;
@@ -797,10 +797,10 @@
             <div style=" background:
             @if ($collection['col_status_id'] < 4)
             {{$part_not_available}};
-            @elseif($collection['col_status_id'] === 9 and $participation->printorder['paid_at'] ?? null)
+            @elseif($collection['col_status_id'] === 9 and !($participation->printorder['paid_at'] ?? null))
             {{$part_action_needed}} ;
 
-            @elseif($collection['col_status_id'] === 9 and !($participation->printorder['paid_at'] ?? null))
+            @elseif($collection['col_status_id'] === 9 and $participation->printorder['paid_at'] ?? null)
             {{$part_all_good}};
 
             @endif" class="line"></div>
@@ -860,27 +860,27 @@
             @endif
             <div style="
             @if ($collection['col_status_id'] <= 3)
-            @elseif ($participation->printorder['paid_at'] ?? null)
-                box-shadow: 0 0 10px 1px {{$part_action_needed}}85;
             @elseif (!($participation->printorder['paid_at'] ?? null))
+                box-shadow: 0 0 10px 1px {{$part_action_needed}}85;
+            @elseif ($participation->printorder['paid_at'] ?? null)
                 box-shadow: 0 0 10px 1px {{$part_all_good}}85;
             @endif" class="container">
                 <div style="border-bottom: 1px
                 @if ($collection['col_status_id'] < 4)
                 {{$part_not_available}}
-                @elseif($collection['col_status_id'] === 9 and $participation->printorder['paid_at'] ?? null)
+                @elseif($collection['col_status_id'] === 9 and !($participation->printorder['paid_at'] ?? null))
                 {{$part_action_needed}}
 
-                @elseif($collection['col_status_id'] === 9 and !($participation->printorder['paid_at'] ?? null))
+                @elseif($collection['col_status_id'] === 9 and $participation->printorder['paid_at'] ?? null)
                 {{$part_all_good}}
                 @endif solid;" class=hero>
                     <h2 style="color:
                     @if ($collection['col_status_id'] < 4)
                     {{$part_not_available}};
-                    @elseif($collection['col_status_id'] === 9 and $participation->printorder['paid_at'] ?? null)
+                    @elseif($collection['col_status_id'] === 9 and !($participation->printorder['paid_at'] ?? null))
                     {{$part_action_needed}} ;
 
-                    @elseif($collection['col_status_id'] === 9 and !($participation->printorder['paid_at'] ?? null))
+                    @elseif($collection['col_status_id'] === 9 and $participation->printorder['paid_at'] ?? null)
                     {{$part_all_good}};
                     @endif;">Отслеживание сборника</h2>
                 </div>
@@ -912,7 +912,8 @@
                             @endif
                         @endif
                     </div>
-                @elseif ($participation['printorder_id'] <> 0 && $participation->printorder['paid_at'] ?? null == null)
+
+                @elseif ($participation['printorder_id'] <> 0 && ($participation->printorder['paid_at'] ?? null) == null)
                     <div class="no-access">
                         <p>Сборник успешно отправлен всем авторам! Для того, чтобы получить посылку нужно произвести
                             оплату за отправление.
@@ -944,7 +945,7 @@
                                                      class="link">У меня проблема с пересылкой</a>
                         @endif
                     </div>
-                @elseif ($participation['printorder_id'] ?? 0 <> 0 && $participation->printorder['paid_at'] ?? null <> null)
+                @elseif ($participation['printorder_id'] ?? 0 <> 0 && ($participation->printorder['paid_at'] ?? null) <> null)
                     <div class="no-access">
                         <p>Сборник успешно отправлен всем авторам! Вы оплатили пересылку, поэтому можете отследить ее по
                             номеру: {{$participation->printorder['track_number'] ?? "ссылка не найдена"}}.</p>
