@@ -31,7 +31,7 @@
                     </div>
 
                     <div wire:ignore style="flex-flow: column;" class="participation-inputs-row">
-                        <p>Произведения для участия</p>
+                        <p>Произведения для участия232</p>
                         <div>
 
                             <div class="add-work-block">
