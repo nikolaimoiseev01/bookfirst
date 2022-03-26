@@ -23,7 +23,7 @@
             <div class="hero">
                 <p id="hero_tablet_text" style="display: none;">Независимое Издательство</p>
                 <p id="hero_name_mobile_text" style="display: none;">"Первая Книга"</p>
-                <h1>Ваш шаг в мир литературы</h1>
+                <h1>Ваш шаг в мир литературы1</h1>
                 <i>
                 <div style="height: 70px;" class="typed_hero" id="typed_hero">
                     <span class="cursor_blinking"></span>
