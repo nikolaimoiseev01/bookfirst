@@ -24,7 +24,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-         $schedule->command('TaskUpdate')->timezone('Europe/Moscow')->dailyAt('19:30');
+         $schedule->command('TaskUpdate')->timezone('Europe/Moscow')->dailyAt('18:38');
         $schedule->command('PayReminder')->timezone('Europe/Moscow')->dailyAt('19:00');
     }
 
