@@ -829,6 +829,14 @@
 
             function calculation() {
 
+                // Меняем стоимость обложки, если готовая
+                if ($('#cover_status_no').prop('checked')) {
+                    cover_price = 1500;
+                } else {
+                    cover_price = 0;
+                }
+                ;
+
                 // Убираем чекбоксы с помощи по макету, если макет готов
                 if ($('#inside_status_yes').prop('checked')) {
                     inside_status = 9;
