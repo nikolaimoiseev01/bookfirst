@@ -427,6 +427,50 @@
 </script>
 
 
+<script>
+
+    var utm_source_cookie;
+    var utm_medium_cookie;
+
+    function getCook(cookiename)
+    {
+        // Get name followed by anything except a semicolon
+        var cookiestring=RegExp(cookiename+"=[^;]+").exec(document.cookie);
+        // Return everything after the equal sign, or an empty string if the cookie name not found
+        return decodeURIComponent(!!cookiestring ? cookiestring.toString().replace(/^[^=]+./,"") : "");
+    }
+
+    function getParameters() {
+        let urlString = window.location.toString();
+        let paramString = urlString.split('?')[1];
+        let queryString = new URLSearchParams(paramString);
+        for(let pair of queryString.entries()) {
+            if(pair[0] == 'utm_source') {
+                utm_source = pair[1]
+                document.cookie = "utm_source=" + utm_source;
+            }
+            else if (pair[0] == 'utm_medium') {
+                utm_medium = pair[1]
+                document.cookie = "utm_medium=" + utm_medium;
+            }
+        }
+    }
+
+
+    utm_source_cookie = getCook('utm_source');
+    utm_medium_cookie = getCook('utm_medium');
+
+    if (utm_source_cookie === '') {
+        getParameters();
+        utm_source_cookie = getCook('utm_source');
+        utm_medium_cookie = getCook('utm_medium');
+    }
+
+    console.log(utm_source_cookie, utm_medium_cookie)
+
+
+</script>
+
 {{--Новогодние снежинки--}}
 
 {{--<script src="https://unpkg.com/magic-snowflakes/dist/snowflakes.min.js"></script>--}}

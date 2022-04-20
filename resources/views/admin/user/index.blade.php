@@ -50,6 +50,9 @@
                             <th scope="col" style="text-align: center;">
                                 Работ загружено
                             </th>
+                            <th scope="col" style="text-align: center;">
+                                Reg_utm_source
+                            </th>
 
 
                         </tr>
@@ -78,6 +81,9 @@
 
                                 <td data-label="Работ загружено" style="text-align: center;">
                                     {{count($user->work)}}
+                                </td>
+                                <td data-label="UTM Source" style="text-align: center;">
+                                    {{$user['reg_utm_source']}}
                                 </td>
                             </tr>
 

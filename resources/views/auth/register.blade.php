@@ -30,6 +30,9 @@
 
             <div class="login_register_list">
                 <form method="POST" action="{{ route('register') }}" id="register" class="hide">
+                    <input style="display: none" type="text" id="utm_source" name="utm_source">
+                    <input style="display: none" type="text" id="utm_medium" name="utm_medium">
+
                     @csrf
                     @if ($errors->count() > 0)
                         <div class="error-wrap">
@@ -199,7 +202,10 @@
 
 @section('page-js')
 
-
+    <script>
+        $('#utm_source').val(utm_source_cookie);
+        $('#utm_medium').val(utm_medium_cookie);
+    </script>
 
     <script>
         $('.password').on("input", function () {

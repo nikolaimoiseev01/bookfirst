@@ -72,6 +72,22 @@
                                             </td>
                                         </tr>
 
+                                        <tr>
+                                            <td style="font-weight: bold">Reg_utm_source</td>
+                                            <td>
+                                                {{$user['reg_utm_source']}}
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td style="font-weight: bold">Reg_utm_medium</td>
+                                            <td>
+                                                {{$user['reg_utm_medium']}}
+                                            </td>
+                                        </tr>
+
+
+
                                         </tbody>
                                     </table>
                                 </div>

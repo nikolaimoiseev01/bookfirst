@@ -145,6 +145,16 @@
                             </p>
                         </a>
                         <ul style="padding-left: 20px;" class="nav nav-treeview">
+
+                            <li class="nav-item">
+                                <a href="{{ route('promocodes_page') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-percent "></i>
+                                    <p>
+                                        Промокоды
+                                    </p>
+                                </a>
+                            </li>
+
                             <li class="nav-item">
                                 <a href="{{ route('transactions_from_admin') }}" class="nav-link">
                                     <i class="nav-icon fas fa-ruble-sign "></i>
@@ -159,6 +169,8 @@
                                     <p>YooKassa</p>
                                 </a>
                             </li>
+
+
 
                         </ul>
                     </li>

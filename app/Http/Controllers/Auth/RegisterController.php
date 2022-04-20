@@ -82,6 +82,8 @@ class RegisterController extends Controller
             'nickname' => $data['nickname'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'reg_utm_source' => $data['utm_source'],
+            'reg_utm_medium' => $data['utm_medium'],
         ]);
         $user->assignRole('user');
         return $user;
