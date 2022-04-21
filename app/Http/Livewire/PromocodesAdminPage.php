@@ -26,7 +26,7 @@ class PromocodesAdminPage extends Component
     public function mount() {
         $this->promocodes = promocode::orderby('id')->get();
 
-        foreach (promocode::orderby('id')->get()->toArray() as $promocode)
+        foreach (promocode::orderby('id', 'desc')->get()->toArray() as $promocode)
         {
             $this->promocode[$promocode['id']] = $promocode['promocode'];
             $this->discount[$promocode['id']] = $promocode['discount'];
