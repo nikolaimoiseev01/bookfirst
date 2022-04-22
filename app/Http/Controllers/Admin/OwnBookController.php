@@ -200,7 +200,6 @@ class OwnBookController extends Controller
         session()->flash('success', 'change_printorder');
         $own_book = own_book::where('id', $request->own_book_id)->first();
 
-        if (file_exists($own_book['inside_file'])) {
 
             own_book::where('id', $request->own_book_id)->update(array(
                 'own_book_inside_status_id' => $request->own_book_inside_status_id,
@@ -225,11 +224,7 @@ class OwnBookController extends Controller
 
             session()->flash('alert_type', 'success');
             session()->flash('alert_title', 'Статус успешно изменен!');
-        } else {
-            session()->flash('alert_type', 'error');
-            session()->flash('alert_title', 'Статус не заменен!');
-            session()->flash('alert_text', 'Не смог найти файл внутреннего блока в папке!');
-        }
+
 
         return redirect()->back();
 
@@ -280,7 +275,7 @@ class OwnBookController extends Controller
         session()->flash('success', 'change_printorder');
 
 
-        if ($own_book['cover_2d'] & $own_book['cover_3d']) {
+
 
             own_book::where('id', $request->own_book_id)->update(array(
                 'own_book_cover_status_id' => $request->own_book_cover_status_id,
@@ -306,11 +301,7 @@ class OwnBookController extends Controller
 
             session()->flash('alert_type', 'success');
             session()->flash('alert_title', 'Статус успешно изменен!');
-        } else {
-            session()->flash('alert_type', 'error');
-            session()->flash('alert_title', 'Статус не заменен!');
-            session()->flash('alert_text', 'С файлами обложек что-то не так!');
-        }
+
 
         return redirect()->back();
 
