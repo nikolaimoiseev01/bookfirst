@@ -920,7 +920,7 @@
                             По нашим правилам оплата происходит именно в этот момент, так как стоимость мы точно
                             фиксируем только после окончания печати.
                             <br><b>Если оплата будет произведена
-                                позднее {{ Date::parse($collection['col_date4'])->addDays(3)->format('j F') }} нам
+                                позднее {{ Date::parse($collection['updated_at'])->addDays(3)->format('j F') }} нам
                                 придется заблокировать возможность получения!</b>
                             @if ($participation->printorder['send_price'])
                                 <br> Стоимость именно вашего отправления: {{$participation->printorder['send_price'] ?? 0}}
