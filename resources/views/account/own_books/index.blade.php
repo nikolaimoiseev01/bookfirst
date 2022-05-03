@@ -31,7 +31,7 @@
             <div style="flex-wrap: wrap;" class="container">
                 <div class="img-wrap">
                     @if($own_book->cover_2d != '')
-                        <img style="border-radius: 9px; width: 100px !important; margin-right: 20px;"
+                        <img style="border: 1px #bebebe solid; border-radius: 9px; width: 100px !important; margin-right: 20px;"
                              src="/{{$own_book->cover_2d}}"
                              alt="">
                     @else
