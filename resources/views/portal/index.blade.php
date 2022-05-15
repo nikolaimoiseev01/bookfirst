@@ -168,7 +168,7 @@
 
         <div class="container">
             <div class="cover-wrap">
-                <img src="/img/Own_book_example_cover.png" alt="">
+                <img src="/img/own_book_example_cover.png" alt="">
             </div>
             <div class="info-wrap">
                 <h3> Ваша собственная книга</h3>
