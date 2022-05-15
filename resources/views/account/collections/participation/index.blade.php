@@ -805,7 +805,7 @@
 
             @endif" class="line"></div>
 
-            @if ($collection['col_status_id'] < 3)
+            @if ($collection['col_status_id'] <= 3)
                 <svg id="Слой_1" class="circle_status" style="fill:
                 @if ($collection['col_status_id'] < 4){{$part_not_available}};
                 @else
