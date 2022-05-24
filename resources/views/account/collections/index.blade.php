@@ -22,7 +22,7 @@
     <div class="my-collections">
         @if(count($participations) == 0)
             <div class="no-books-yet">
-                <h1>На данный момент у Вас нет сборников, в которых Вы учавствуете.</h1>
+                <h1>На данный момент у Вас нет сборников, в которых Вы участвуете.</h1>
             </div>
         @endif
         @foreach($participations as $participation)
