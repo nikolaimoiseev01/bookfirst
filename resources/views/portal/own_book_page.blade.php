@@ -372,7 +372,7 @@
                                     <div class="participation-price-desc">
                                         <div>
                                             <p>работа с макетом (</p>
-                                            <p id="pages_output">0</p>
+                                            <p id="pages_output">1</p>
                                             <p>&nbsp;стр.)</p>
                                         </div>
 
@@ -425,7 +425,7 @@
 
                             <div id="price-total-wrap">
                                 <div style="margin-top: 0;" class="total_price participation-price">
-                                    <h1 id="total_price">800</h1>
+                                    <h1 id="total_price">2300</h1>
                                     <h1>&nbsp;руб.</h1>
                                     <div class="participation-price-desc"><p>Итог</p></div>
                                 </div>
