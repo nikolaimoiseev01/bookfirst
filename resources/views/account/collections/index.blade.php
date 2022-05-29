@@ -29,7 +29,7 @@
 
             <div class="container">
                 <div class="img-wrap">
-                    <img style="border-radius: 9px;" width="200px" src="/{{$participation->collection['cover_2d']}}"
+                    <img style="border: 1px #dbdbdb solid; border-radius: 9px;" width="200px" src="/{{$participation->collection['cover_2d']}}"
                          alt="">
                 </div>
                 <div class="right-wrap">
