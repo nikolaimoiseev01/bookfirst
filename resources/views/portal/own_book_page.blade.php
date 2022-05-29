@@ -371,9 +371,7 @@
                                     <h1>&nbsp;руб.</h1>
                                     <div class="participation-price-desc">
                                         <div>
-                                            <p>работа с макетом (</p>
-                                            <p id="pages_output">1</p>
-                                            <p>&nbsp;стр.)</p>
+                                            <p>работа с макетом (</p><p id="pages_output">1</p><p>&nbsp;стр.)</p>
                                         </div>
 
                                         <p style="display: none; line-height: 20px; font-size: 20px;"
