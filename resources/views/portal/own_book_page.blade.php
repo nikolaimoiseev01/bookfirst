@@ -50,7 +50,7 @@
                 <div class="col-card">
                     <div class="container">
                         <div class="row">
-                            Кол-во страниц:&nbsp;<span>>30</span>
+                            Кол-во страниц:&nbsp;<span>>20</span>
                         </div>
                         <div class="row">
                             Возможный тираж:&nbsp;<span>от 1-го экземпляра</span>
