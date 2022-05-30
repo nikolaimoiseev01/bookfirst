@@ -177,7 +177,7 @@ class CreateOwnBook extends Component
             array_push($errors_array, 'Загрузите файлы обложки!');
         }
 
-        if ($this->pages <= 20) {
+        if ($this->pages < 20) {
             array_push($errors_array, 'Минимальное количество страниц в собственной книге - 20.');
         }
 
