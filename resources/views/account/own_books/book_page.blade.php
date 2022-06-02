@@ -323,7 +323,7 @@
                         <div style="padding: 10px; width:90%;" class="participation-outputs">
                             <div style="display: flex; flex-wrap:wrap; justify-content: space-evenly;">
                                 <div class="participation-price">
-                                    <h1 id="layout_work_price_price">{{ 300 + $own_book['text_design_price'] +  $own_book['text_check_price']}}</h1>
+                                    <h1 id="layout_work_price_price">{{$own_book['text_design_price'] +  $own_book['text_check_price']}}</h1>
                                     <h1>&nbsp;руб.</h1>
                                     <div class="participation-price-desc">
                                         <div>
