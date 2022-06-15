@@ -69,7 +69,7 @@ class AdminPrintOrderTable extends Component
                 'type' => 'success',
                 'title' => 'Трек номер успешно добавлен!',
                 'text' => '']);
-            $this->participations = Participation::where('collection_id', $this->collection_id)->get();
+            $this->participations = Participation::where('collection_id', $this->collection_id)->where('pat_status_id', 3)->get();
 // ----------------------------------------------------------- //
 
             $this->show_input = 0;
@@ -97,7 +97,7 @@ class AdminPrintOrderTable extends Component
                 'type' => 'success',
                 'title' => 'Цена пересылки успешно добавлена!',
                 'text' => '']);
-            $this->participations = Participation::where('collection_id', $this->collection_id)->get();
+            $this->participations = Participation::where('collection_id', $this->collection_id)->where('pat_status_id', 3)->get();
 // ----------------------------------------------------------- //
 
             $this->show_input_send = 0;
