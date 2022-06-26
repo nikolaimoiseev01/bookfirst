@@ -788,7 +788,7 @@
                                 @endif (голосов: )
                             </p><br>
                         @endforeach
-                        <p style="margin-top: 10px;">Уважаемая {{$participation['name']}}, спасибо большое за участие!
+                        <p style="margin-top: 10px;">{{$participation['name']}}, спасибо за участие!
                             В этом сборнике за Вас проголосовало человек: <span style="color:#47AF98">{{$votes_for_me + 1}}</span> </p>
                     </div>
 
