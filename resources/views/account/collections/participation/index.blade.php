@@ -11,7 +11,8 @@
 @section('page-title')
     <div style="flex-direction: column; align-items: flex-start;" class="account-header">
         <h1 id="participation-index-h1" style="margin-left: 30px;">Мое участие в сборнике {{$collection['title']}}</h1>
-        <a target="_blank" style="margin-left:30px;" href="{{route('help_collection')}}#application_pay" class="link">Инструкция по этой странице</a>
+        <a target="_blank" style="margin-left:30px;" href="{{route('help_collection')}}#application_pay" class="link">Инструкция
+            по этой странице</a>
     </div>
 @endsection
 
@@ -655,28 +656,34 @@
              style="border-left: 2px
              @if ($collection['col_status_id'] === 1)
              {{$part_not_available}}
-             @elseif ($collection['col_status_id'] === 2 && !isset($voted_to['user_id']))
+             @elseif ($collection['col_status_id'] === 2 && !isset($voted_to['user_id']) && $is_winners == null)
              {{$part_action_needed}}
+             @elseif ($collection['col_status_id'] === 2 && $is_winners > 0)
+             {{$part_all_good}}
              @else
              {{$part_all_good}}
              @endif solid;
                  border-right: 2px
              @if ($collection['col_status_id'] === 1)
              {{$part_not_available}}
-             @elseif ($collection['col_status_id'] === 2 && !isset($voted_to['user_id']))
+             @elseif ($collection['col_status_id'] === 2 && !isset($voted_to['user_id']) && $is_winners == null)
              {{$part_action_needed}}
+             @elseif ($collection['col_status_id'] === 2 && $is_winners > 0)
+             {{$part_all_good}}
              @else
              {{$part_all_good}}
              @endif solid;">
             <div style="background:
              @if ($collection['col_status_id'] === 1)
             {{$part_not_available}}
-            @elseif ($collection['col_status_id'] === 2 && !isset($voted_to['user_id']))
+            @elseif ($collection['col_status_id'] === 2 && !isset($voted_to['user_id']) && $is_winners == null)
             {{$part_action_needed}}
+            @elseif ($collection['col_status_id'] === 2 && $is_winners > 0)
+            {{$part_all_good}}
             @else
             {{$part_all_good}}
             @endif" class="line"></div>
-            @if ($collection['col_status_id'] <= 2 && !isset($voted_to['user_id']))
+            @if ($collection['col_status_id'] <= 2 && !isset($voted_to['user_id']) && $is_winners == null)
                 <svg class="circle_status" style="fill:
              @if ($collection['col_status_id'] === 1)
                 {{$part_not_available}}
@@ -733,7 +740,7 @@
                 </svg>
             @endif
             <div style="
-            @if ($collection['col_status_id'] <= 3)
+            @if ($collection['col_status_id'] <= 3 && $is_winners > 0)
             @else
                 box-shadow: 0 0 10px 1px {{$part_all_good}}85;
             @endif" class="container">
@@ -746,11 +753,19 @@
                     <h2 style="color:
                     @if ($collection['col_status_id'] === 1)
                     {{$part_not_available}}
-                    @elseif ($collection['col_status_id'] === 2 && !isset($voted_to['user_id']))
+                    @elseif ($collection['col_status_id'] === 2 && !isset($voted_to['user_id']) && $is_winners == null)
                     {{$part_action_needed}}
+                    @elseif ($collection['col_status_id'] === 2 && $is_winners > 0)
+                    {{$part_all_good}}
                     @else
                     {{$part_all_good}}
-                    @endif;">Голосование в конкурсе</h2>
+                    @endif;">
+                        @if ($is_winners == null)
+                            Голосование в конкурсе
+                        @else
+                            Голосование завершено!
+                        @endif
+                    </h2>
                 </div>
                 @if ($collection['col_status_id'] >= 2 && $participation['paid_at'] === null)
                     <div class="no-access">
@@ -766,8 +781,26 @@
                                 ВК</a> {{ Date::parse($collection['col_date3'])->addDays(3)->format('j F Y') }}
                         </p>
                     </div>
-                @else
 
+                @elseif ($collection['col_status_id'] >= 2 && $is_winners > 0)
+                    <div  style="padding:10px 25px;" class="">
+                        <p style="margin-bottom: 10px;">Спасибо всем авторам, принявшем участие в голосовании! Основываясь только на голосах от самих авторов своим коллегам мы рады представить 3-х призёров:
+                        </p>
+                        @foreach($winners as $winner)
+                            <p> <span style="color:#47AF98">{{ $loop->index + 1}}-е место:</span>
+                            @if($winner->participation['nickname'])
+                                {{$winner->participation['nickname']}}
+                            @else
+                                {{Str::limit($winner->participation['name'] . ' ' . $winner->participation['surname'], 30)}}
+                            @endif (голосов: )
+                        </p><br>
+                        @endforeach
+                        <p style="margin-top: 10px;">{{$participation['name']}}, спасибо Вам большое за участие!
+                            В этом сборнике за Вас проголосовало человек: <span style="color:#47AF98">{{$votes_for_me + 1}}</span> </p>
+                    </div>
+
+
+                @else
                     @livewire('vote-block', ['collection_id' => $collection->id])
                 @endif
             </div>
@@ -923,7 +956,8 @@
                                 позднее {{ Date::parse($collection['updated_at'])->addDays(3)->format('j F') }} нам
                                 придется заблокировать возможность получения!</b>
                             @if ($participation->printorder['send_price'])
-                                <br> Стоимость именно вашего отправления: {{$participation->printorder['send_price'] ?? 0}}
+                                <br> Стоимость именно вашего
+                                отправления: {{$participation->printorder['send_price'] ?? 0}}
                                 руб.
                         </p>
                         <form style="display:inline-block"

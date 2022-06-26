@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Chat;
 use App\Models\Col_status;
 use App\Models\Collection;
+use App\Models\collection_winner;
 use App\Models\Participation;
 use App\Models\Participation_work;
 use App\Models\Pat_status;
@@ -84,6 +85,11 @@ class ParticipationController extends Controller
         $voted_to = Participation::where('collection_id', $request->collection_id)
             ->where('user_id', vote::where('user_id_from', Auth::user()->id)->where('collection_id', $request->collection_id)->value('user_id_to'))
             ->first();
+        $is_winners = collection_winner::where('collection_id', $request->collection_id)->sum('place');
+        $winners = collection_winner::where('collection_id', $request->collection_id)->orderby('place')->get();
+
+        $votes_for_me = vote::where('collection_id', $request->collection_id)->where('user_id_to', Auth::user()->id)->count();
+
         return
             view('account.collections.participation.index', [
                 'col_statuses' => $col_statuses,
@@ -94,6 +100,9 @@ class ParticipationController extends Controller
                 'chat_id' => $chat_id,
                 'voted_to' => $voted_to,
                 'yookassa_token' => $yookassa_token,
+                'is_winners' => $is_winners,
+                'winners' => $winners,
+                'votes_for_me' => $votes_for_me,
             ]);
 
     }
