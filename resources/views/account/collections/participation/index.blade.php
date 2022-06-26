@@ -769,14 +769,15 @@
                 </div>
                 @if ($collection['col_status_id'] >= 2 && $participation['paid_at'] === null)
                     <div class="no-access">
-                        <span>Сейчас идет голосование на лучшего автора, но из-за отствия оплаты Вы не были включены в список участников.
+                        <span>Сейчас идет голосование на лучшего автора, но из-за отсутствия оплаты Вы не были включены в список участников.
                         </span>
                     </div>
 
 
                 @elseif ($collection['col_status_id'] >= 2 && $is_winners > 0)
                     <div  style="padding:10px 25px;" class="">
-                        <p style="margin-bottom: 10px;">Спасибо всем авторам, принявшем участие в голосовании! Основываясь только на голосах от самих авторов своим коллегам мы рады представить 3-х призёров:
+                        <p style="margin-bottom: 10px;">Спасибо всем авторам, принявшим участие в голосовании!
+                            Основываясь только на голосах от самих авторов, мы рады представить 3-х призёров сборника:
                         </p>
                         @foreach($winners as $winner)
                             <p> <span style="color:#47AF98">{{ $loop->index + 1}}-е место:</span>
@@ -787,7 +788,7 @@
                                 @endif (голосов: )
                             </p><br>
                         @endforeach
-                        <p style="margin-top: 10px;">{{$participation['name']}}, спасибо Вам большое за участие!
+                        <p style="margin-top: 10px;">{{$participation['name']}}, спасибо большое за участие!
                             В этом сборнике за Вас проголосовало человек: <span style="color:#47AF98">{{$votes_for_me + 1}}</span> </p>
                     </div>
 
