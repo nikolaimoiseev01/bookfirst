@@ -121,8 +121,7 @@ class OwnBookController extends Controller
         $this->own_book = own_book::where('id', $request->own_book_id)->first();
         $printorder = Printorder::where('own_book_id', $request->own_book_id)->first();
 
-
-        if (((is_null($printorder['track_number']) || !($printorder['send_price'] > 1)) && $this->own_book['own_book_status_id'] === 6 && intval($request->own_book_status_id) === 9)) {
+        if (((($printorder) || is_null($printorder['track_number']) || !($printorder['send_price'] > 1)) && $this->own_book['own_book_status_id'] === 6 && intval($request->own_book_status_id) === 9)) {
             session()->flash('alert_type', 'error');
             session()->flash('alert_title', 'Статус не заменен!');
             session()->flash('alert_text', 'Не могу завершить печать, когда трек номер или цена отправления пустые');
