@@ -139,6 +139,11 @@ class CreateOwnBook extends Component
 
         $is_same_title = own_book::where('user_id', Auth::user()->id)->Where('title', $this->book_title)->value('title');
         $is_same_user = own_book::where('user_id', Auth::user()->id)->Where('title', $this->book_title)->value('user_id');
+
+        if (!$this->pages) {
+            array_push($errors_array, "Укажите количество страниц! <a href='/img/own_book_pages_help.png' target='_blank'>Где?</a>");
+        }
+
         if ($this->book_title === $is_same_title & Auth::user()->id === $is_same_user) {
             array_push($errors_array, 'У Вас уже есть книга с точно таким же названием!');
         }
@@ -177,7 +182,9 @@ class CreateOwnBook extends Component
             array_push($errors_array, 'Загрузите файлы обложки!');
         }
 
-        if ($this->pages < 20) {
+
+
+        if ($this->pages && $this->pages < 20) {
             array_push($errors_array, 'Минимальное количество страниц в собственной книге - 20.');
         }
 

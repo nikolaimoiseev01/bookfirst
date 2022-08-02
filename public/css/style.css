@@ -780,6 +780,7 @@ form .check-block {
     background: rgba(0, 0, 0, .8);
     font-family: "Futura PT Light", serif;
     font-size: 17px;
+    width:180px;
     line-height: 22px;
     border-radius: 5px;
     bottom: 150%;

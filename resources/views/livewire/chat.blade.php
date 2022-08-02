@@ -70,11 +70,12 @@
                 <div wire:ignore class="input-block">
                 <textarea oninput="auto_grow(this)"
                           class="textarea_chat"
-                          wire:model="text"
+                          wire:model.defer="text"
                           style="z-index: 10; border-radius: 10px 0 0 10px; border-right: none;"
                           name="chat_text" required
                           type="text"
                           id="chat_text"
+
                 ></textarea>
 
                     <div class="send-wrap">

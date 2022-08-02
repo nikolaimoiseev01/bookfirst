@@ -20,11 +20,14 @@ use Livewire\Component;
 
 class Chat extends Component
 {
+
     public $text;
     public $messages;
     public $chat_id;
     public $message_files;
     public $currentUrl;
+    public $user_to;
+    public $chat;
 
     protected $listeners = [
         'new_message',
@@ -34,6 +37,7 @@ class Chat extends Component
     {
 //        dd($this->message_file);
         $this->chat = \App\Models\Chat::where('id', $this->chat_id)->first();
+
         return view('livewire.chat', [
             'messages' => $this->messages,
             'chat' => $this->chat,
@@ -52,10 +56,13 @@ class Chat extends Component
 
     public function mount($chat_id)
     {
+        $this->chat = \App\Models\Chat::where('id', $this->chat_id)->first();
+        $this->user_to = User::where('id', $this->chat['user_created'])->first();
         $this->messages = Message::where('chat_id', $chat_id)->with('message_file')->get();
         $this->chat_id = $chat_id;
         $this->currentUrl = url()->current();
         $this->dispatchBrowserEvent('update_hrefs');
+        $this->text = 'Здравствуйте, ' . $this->user_to['name'] . '!';
     }
 
     public function new_message()

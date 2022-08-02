@@ -7,14 +7,15 @@
                 @csrf
                 <div class="participation-inputs">
                     <input style="display: none;" value="{{$collection['id']}}" name="collection_id" type="number">
-                    <div class="participation-inputs-row">
+
+                    <div style="margin-bottom: 0;" class="participation-inputs-row">
                         <div class="input-group">
-                            <p>Имя</p>
+                            <p>Имя*</p>
                             <input required wire:model.self="name" type="text"
                                    placeholder="Имя" name="name" id="name">
                         </div>
                         <div class="input-group">
-                            <p>Фамилия</p>
+                            <p>Фамилия*</p>
                             <input required wire:model="surname" type="text"
                                    placeholder="Фамилия" name="surname"
                                    id="surname">
@@ -28,10 +29,14 @@
                                    id="nickname">
                         </div>
 
+
                     </div>
+                    <p style="margin-bottom: 20px; font-size: 21px; color:#05b28d">
+                        <i>Псевдоним заменяет имя в сборнике! Индивидуальные условия обсуждаются отдельно.</i>
+                        </p>
 
                     <div wire:ignore style="flex-flow: column;" class="participation-inputs-row">
-                        <p>Произведения для участия</p>
+                        <p>Произведения для участия*</p>
                         <div>
 
                             <div class="add-work-block">
@@ -302,14 +307,19 @@
                     </div>
 
                 </div>
+
             </div>
+
         </div>
 
     </div>
-    <div style="width:100%; text-align: end">
+    <div style="display: flex; justify-content: space-between; width:100%; text-align: end">
+        <div>
         <button style="float: left; margin-right:20px;" type="submit" id="save_form" class="preloader_button button">
             <span class="button__text">Отправить заявку</span>
         </button>
+        <p style="font-size: 20px; color: #bdbdbd"><i>* - обязательны для заполнения</i></p>
+        </div>
         <a href="{{route('help_collection')}}" style="font-size: 20px;" class="link"><i>Нужна помощь</i></a>
     </div>
 
