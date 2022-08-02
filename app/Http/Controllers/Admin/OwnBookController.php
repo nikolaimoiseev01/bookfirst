@@ -29,7 +29,7 @@ class OwnBookController extends Controller
 
     public function index()
     {
-        $own_books = own_book::orderBy('id', 'desc')->where('own_book_status_id', '<>', 9)->paginate(10);
+        $own_books = own_book::orderBy('id', 'desc')->where('own_book_status_id', '<>', 9)->paginate(30);
         return view('admin.own_books.index', [
             'own_books' => $own_books,
         ]);
