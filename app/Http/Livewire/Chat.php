@@ -57,12 +57,13 @@ class Chat extends Component
     public function mount($chat_id)
     {
         $this->chat = \App\Models\Chat::where('id', $this->chat_id)->first();
+        Auth::user()->id;
         $this->user_to = User::where('id', $this->chat['user_created'])->first();
         $this->messages = Message::where('chat_id', $chat_id)->with('message_file')->get();
         $this->chat_id = $chat_id;
         $this->currentUrl = url()->current();
         $this->dispatchBrowserEvent('update_hrefs');
-        $this->text = 'Здравствуйте, ' . $this->user_to['name'] . '!';
+        if(Auth::user()->id == 2) {$this->text = 'Здравствуйте, ' . $this->user_to['name'] . '!';};
     }
 
     public function new_message()
