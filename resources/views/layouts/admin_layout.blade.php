@@ -22,6 +22,9 @@
     <!-- Custom css -->
     <link rel="stylesheet" href="/admin/admin.css">
 
+    <!-- iCheck for checkboxes and radio inputs -->
+    <link rel="stylesheet" href="/admin/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+
     <link rel="stylesheet" href="/plugins/filepond/filepond.css">
 
     <link rel="apple-touch-icon" sizes="180x180" href="/img/favicon/apple-touch-icon.png">

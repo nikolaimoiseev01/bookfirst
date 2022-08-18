@@ -19,9 +19,100 @@
                 <a href="{{route('closed_own_books')}}" class="ml-3 btn btn-outline-info">Закрытые книги</a>
 
             </div><!-- /.row -->
+            <div>
+                <div style="{{--   isplay: inline-flex; padding: 10px; border: 1px #dadada solid;--}}" class="row">
+
+                    <div class="mr-3 button-group">
+                        <button type="button" style="font-weight: 100; font-size: 20px"
+                                class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                            Общий статус <span id="own_book_statuses_button_text">(7/7)</span>
+                        </button>
+                        <ul style="padding:10px;" class="dropdown-menu">
+                            @foreach($own_book_statuses as $own_book_status)
+                                <li class="check_own_book_status">
+                                    <input type="checkbox" class="own_book_statuses"
+                                           id="own_book_status_{{$own_book_status['id']}}" checked="">
+                                    <label style="font-size: 18px; font-weight: 100;"
+                                           for="own_book_status_{{$own_book_status['id']}}">
+                                        {{Str::ucfirst($own_book_status['status_title'])}}
+                                    </label>
+                                </li>
+                            @endforeach
+                        </ul>
+
+                    </div>
+
+                    <div class="mr-3 button-group">
+                        <button type="button" style="font-weight: 100; font-size: 20px"
+                                class=" btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                            Статус макета <span id="own_book_inside_statuses_button_text">(6/6)</span>
+                        </button>
+                        <ul style="padding:10px;" class="dropdown-menu">
+                            @foreach($own_book_inside_statuses as $own_book_inside_status)
+                                <li class="check_own_inside_book_status">
+                                    <input type="checkbox" class="own_book_inside_statuses"
+                                           id="own_book_inside_status_{{$own_book_inside_status['id']}}" checked="">
+                                    <label style="font-size: 18px; font-weight: 100;"
+                                           for="own_book_inside_status_{{$own_book_inside_status['id']}}">
+                                        {{Str::ucfirst($own_book_inside_status['status_title'])}}
+                                    </label>
+                                </li>
+                            @endforeach
+                        </ul>
+
+                    </div>
+
+                    <div class="mr-3 button-group">
+                        <button type="button" style="font-weight: 100; font-size: 20px"
+                                class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                            Статус обложки <span id="own_book_cover_statuses_button_text">(6/6)</span>
+                        </button>
+                        <ul style="padding:10px;" class="dropdown-menu">
+                            @foreach($own_book_cover_statuses as $own_book_cover_status)
+                                <li class="check_own_cover_book_status">
+                                    <input type="checkbox" class="own_book_cover_statuses"
+                                           id="own_book_cover_status_{{$own_book_cover_status['id']}}" checked="">
+                                    <label style="font-size: 18px; font-weight: 100;"
+                                           for="own_book_cover_status_{{$own_book_cover_status['id']}}">
+                                        {{Str::ucfirst($own_book_cover_status['status_title'])}}
+                                    </label>
+                                </li>
+                            @endforeach
+                        </ul>
+
+                    </div>
+
+                    <span class="col-info-block d-flex align-items-center clear_filters">
+                        <i class="mr-2 fa fa-times"></i> Очистить фильтры
+                    </span>
+
+                    <style>
+                        .clear_filters {
+
+                            transition: 0.1s;
+                        }
+                        .clear_filters:hover {
+                            color: BLUE;
+                            cursor: pointer;
+                            transition: 0.1s;
+                        }
+                    </style>
+
+                    {{-- Чтобы не закрывалось меню--}}
+                    <script>
+                        $(document).on('click', '.dropdown-menu', function (e) {
+                            e.stopPropagation();
+                        });
+                    </script>
+
+                </div>
+            </div>
         </div><!-- /.container-fluid -->
+
     </div>
     <!-- /.content-header -->
+
+
 
     <!-- Main content -->
     <section class="content">
@@ -48,7 +139,12 @@
                 </style>
                 {{App::setLocale('ru')}}
                 @foreach($own_books as $own_book)
-                    <div>
+                    <div
+                        class="own_book_block"
+                        data-own_book_status_id="{{$own_book['own_book_status_id']}}"
+                        data-own_book_inside_status_id="{{$own_book['own_book_inside_status_id']}}"
+                        data-own_book_cover_status_id="{{$own_book['own_book_cover_status_id']}}"
+                    >
                         <!-- Widget: user widget style 2 -->
                         <div style="width:450px;" class="media-card card mb-5 mr-5 card-widget widget-user-2">
                             <!-- Add the bg color to the header using any of the bg-* classes -->
@@ -126,7 +222,8 @@
                                 <div class="row">
                                     <div class="col-sm-4 border-right">
                                         <div class="description-block">
-                                            <a style="display: inline-block;" href="{{route('collection.edit', $own_book->id)}}">Печать:</a><br>
+                                            <a style="display: inline-block;"
+                                               href="{{route('collection.edit', $own_book->id)}}">Печать:</a><br>
                                             <span style="font-size:20px;"
                                                   class="badge">
                                                 @if ($own_book->print_price > 0) Да
@@ -139,7 +236,8 @@
                                     <div
                                         class="col-sm-4 border-right">
                                         <div class="description-block">
-                                            <a style="display: inline-block;" href="{{route('collection.edit', $own_book->id)}}">Продвижение:</a> <br>
+                                            <a style="display: inline-block;"
+                                               href="{{route('collection.edit', $own_book->id)}}">Продвижение:</a> <br>
                                             <span style="font-size:20px;"
                                                   class="badge">
                                                 @if ($own_book->promo_price > 0) Да
@@ -151,7 +249,8 @@
                                     <!-- /.col -->
                                     <div class="col-sm-4">
                                         <div class="description-block">
-                                            <a style="display: inline-block;" href="{{route('collection.edit', $own_book->id)}}">Профит</a> <br>
+                                            <a style="display: inline-block;"
+                                               href="{{route('collection.edit', $own_book->id)}}">Профит</a> <br>
                                             <span style="font-size:20px;"
                                                   class="badge">{{number_format($own_book->total_price, 0, ',', ' ')}} руб.</span>
                                         </div>
@@ -188,6 +287,155 @@
                             }
                         }
                     }
+                </script>
+
+                <script>
+
+                    $('.dropdown-menu .check_own_book_status').on('click', function (event) {
+
+                        // Скрываем/показываем именно общий
+                        own_book_statuses_hide = $(".own_book_statuses:checkbox:not(:checked)").map(function (_, x) {
+                            return x.id;
+                        }).get();
+                        own_book_statuses_show = $(".own_book_statuses:checkbox:checked").map(function (_, x) {
+                            return x.id;
+                        }).get();
+
+                        own_book_statuses_checked = own_book_statuses_show.length;
+                        $('#own_book_statuses_button_text').text('(' + own_book_statuses_checked + '/7)')
+
+                        $.each(own_book_statuses_hide, function (index, value) {
+                            own_book_statuses_hide_id = value.substring(16, 100);
+                            $('[data-own_book_status_id=' + own_book_statuses_hide_id + ']').hide();
+                        });
+                        $.each(own_book_statuses_show, function (index, value) {
+                            own_book_statuses_show_id = value.substring(16, 100);
+                            $('[data-own_book_status_id=' + own_book_statuses_show_id + ']').show();
+                        });
+                        /////////////////////////////////////////////////////////////////
+
+
+                        // Скрываем макет
+                        own_book_inside_statuses_hide = $(".own_book_inside_statuses:checkbox:not(:checked)").map(function (_, x) {
+                            return x.id;
+                        }).get();
+                        $.each(own_book_inside_statuses_hide, function (index, value) {
+                            own_book_inside_statuses_hide_id = value.substring(23, 100);
+                            $('[data-own_book_inside_status_id=' + own_book_inside_statuses_hide_id + ']').hide();
+                        });
+
+                        // Скрываем обложку
+                        own_book_cover_statuses_hide = $(".own_book_cover_statuses:checkbox:not(:checked)").map(function (_, x) {
+                            return x.id;
+                        }).get();
+                        $.each(own_book_cover_statuses_hide, function (index, value) {
+                            own_book_cover_statuses_hide_id = value.substring(22, 100);
+                            $('[data-own_book_cover_status_id=' + own_book_cover_statuses_hide_id + ']').hide();
+                        });
+
+
+                    });
+
+                    $('.dropdown-menu .check_own_inside_book_status').on('click', function (event) {
+
+                        // Скрываем/показываем именно макет
+                        own_book_inside_statuses_hide = $(".own_book_inside_statuses:checkbox:not(:checked)").map(function (_, x) {
+                            return x.id;
+                        }).get();
+                        own_book_inside_statuses_show = $(".own_book_inside_statuses:checkbox:checked").map(function (_, x) {
+                            return x.id;
+                        }).get();
+
+                        own_book_inside_statuses_checked = own_book_inside_statuses_show.length;
+                        $('#own_book_inside_statuses_button_text').text('(' + own_book_inside_statuses_checked + '/6)')
+
+
+                        $.each(own_book_inside_statuses_hide, function (index, value) {
+                            own_book_inside_statuses_hide_id = value.substring(23, 100);
+                            $('[data-own_book_inside_status_id=' + own_book_inside_statuses_hide_id + ']').hide();
+                        });
+                        $.each(own_book_inside_statuses_show, function (index, value) {
+                            own_book_inside_statuses_show_id = value.substring(23, 100);
+                            $('[data-own_book_inside_status_id=' + own_book_inside_statuses_show_id + ']').show();
+                        });
+                        /////////////////////////////////////////////////////////////////////////////////
+
+                        // Скрываем общий статус
+                        own_book_statuses_hide = $(".own_book_statuses:checkbox:not(:checked)").map(function (_, x) {
+                            return x.id;
+                        }).get();
+                        $.each(own_book_statuses_hide, function (index, value) {
+                            own_book_statuses_hide_id = value.substring(16, 100);
+                            $('[data-own_book_status_id=' + own_book_statuses_hide_id + ']').hide();
+                        });
+
+                        // Скрываем обложку
+                        own_book_cover_statuses_hide = $(".own_book_cover_statuses:checkbox:not(:checked)").map(function (_, x) {
+                            return x.id;
+                        }).get();
+                        $.each(own_book_cover_statuses_hide, function (index, value) {
+                            own_book_cover_statuses_hide_id = value.substring(22, 100);
+                            $('[data-own_book_cover_status_id=' + own_book_cover_statuses_hide_id + ']').hide();
+                        });
+
+
+                    });
+
+
+                    $('.dropdown-menu .check_own_cover_book_status').on('click', function (event) {
+
+                        // Скрываем/показываем именно обложку
+                        own_book_cover_statuses_hide = $(".own_book_cover_statuses:checkbox:not(:checked)").map(function (_, x) {
+                            return x.id;
+                        }).get();
+                        own_book_cover_statuses_show = $(".own_book_cover_statuses:checkbox:checked").map(function (_, x) {
+                            return x.id;
+                        }).get();
+
+                        own_book_cover_statuses_checked = own_book_cover_statuses_show.length;
+                        $('#own_book_cover_statuses_button_text').text('(' + own_book_cover_statuses_checked + '/6)')
+
+
+                        $.each(own_book_cover_statuses_hide, function (index, value) {
+                            own_book_cover_statuses_hide_id = value.substring(22, 100);
+                            $('[data-own_book_cover_status_id=' + own_book_cover_statuses_hide_id + ']').hide();
+                        });
+                        $.each(own_book_cover_statuses_show, function (index, value) {
+                            own_book_cover_statuses_show_id = value.substring(22, 100);
+                            $('[data-own_book_cover_status_id=' + own_book_cover_statuses_show_id + ']').show();
+                        });
+
+                        // Скрываем общий статус
+                        own_book_statuses_hide = $(".own_book_statuses:checkbox:not(:checked)").map(function (_, x) {
+                            return x.id;
+                        }).get();
+                        $.each(own_book_statuses_hide, function (index, value) {
+                            own_book_statuses_hide_id = value.substring(16, 100);
+                            $('[data-own_book_status_id=' + own_book_statuses_hide_id + ']').hide();
+                        });
+
+                        // Скрываем макет
+                        own_book_inside_statuses_hide = $(".own_book_inside_statuses:checkbox:not(:checked)").map(function (_, x) {
+                            return x.id;
+                        }).get();
+                        $.each(own_book_inside_statuses_hide, function (index, value) {
+                            own_book_inside_statuses_hide_id = value.substring(23, 100);
+
+                            $('[data-own_book_inside_status_id=' + own_book_inside_statuses_hide_id + ']').hide();
+                        });
+
+                    });
+                </script>
+
+                <script>
+                    $('.clear_filters').on('click', function () {
+                        $('.own_book_block').show();
+                        $('input:checkbox').prop('checked', true);
+                        $('#own_book_statuses_button_text').text('(7/7)')
+                        $('#own_book_inside_statuses_button_text').text('(6/6)')
+                        $('#own_book_cover_statuses_button_text').text('(6/6)')
+
+                    })
                 </script>
 
             </div>

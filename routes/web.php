@@ -127,6 +127,9 @@ Route::middleware(['role:admin'])->prefix('admin_panel')->group(function () {
     Route::get('/create_col_file', [App\Http\Controllers\Admin\CollectionController::class, 'create_col_file'])->name('create_col_file');
     Route::get('/download_all_prints', [App\Http\Controllers\Admin\CollectionController::class, 'download_all_prints'])->name('download_all_prints');
     Route::get('/collections/closed', [App\Http\Controllers\Admin\CollectionController::class, 'closed_collections'])->name('closed_collections');
+    Route::post('/change_user_collection/{participation_id}', [App\Http\Controllers\Admin\ParticipationController::class, 'change_user_collection'])->name('change_user_collection');
+
+
     Route::get('/own_books', [App\Http\Controllers\Admin\OwnBookController::class, 'index'])->name('own_books_index');
     Route::get('/own_books/closed', [App\Http\Controllers\Admin\OwnBookController::class, 'closed_own_books'])->name('closed_own_books');
     Route::get('/own_books/{own_book_id}', [App\Http\Controllers\Admin\OwnBookController::class, 'own_books_page'])->name('own_books_page');
@@ -145,6 +148,8 @@ Route::middleware(['role:admin'])->prefix('admin_panel')->group(function () {
     Route::post('/change_chat_status/{chat_id}', [\App\Http\Controllers\ChatController::class, 'change_chat_status'])->name('change_chat_status');
     Route::post('/change_user_status', [\App\Http\Controllers\Admin\ParticipationController::class, 'change_user_status'])->name('change_user_status');
     Route::post('/send_email_all_participants', [\App\Http\Controllers\Admin\CollectionController::class, 'send_email_all_participants'])->name('send_email_all_participants');
+
+
 
 
     Route::post('/change_book_status', [\App\Http\Controllers\Admin\OwnBookController::class, 'change_book_status'])->name('change_book_status');

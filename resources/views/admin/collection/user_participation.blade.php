@@ -8,10 +8,49 @@
                 Страница автора: <a
                     href="{{route('user_page', $participation['user_id'])}}"><i>{{$participation['name']}} {{$participation['surname']}}</i></a>
             </h1>
-            <h1 class="mt-2">
-                В сборинке: <i><a
-                        href="{{route('collection.edit', $participation->collection['id'])}}">{{$participation->collection['title']}}</a></i>
-            </h1>
+
+            <div class="mt-2 d-flex align-items-center">
+
+                <h1 class="mt-2">
+                    В сборинке: <i><a id="change_user_collection_text"
+                            href="{{route('collection.edit', $participation->collection['id'])}}">{{$participation->collection['title']}}</a></i>
+                </h1>
+
+                <div style="display: none" id="change_user_collection_form_wrap">
+                    <form class="d-flex ml-3" style="align-items: center;"
+                          action="{{ route('change_user_collection',$participation['id']) }}" method="POST"
+                          enctype="multipart/form-data"
+                    >
+                        @csrf
+
+                        <select style="padding: 0 0 0 10px; height: 33px; width: fit-content;"
+                                id="collection_id_to_update" class="form-control"
+                                name="collection_id_to_update">
+                            @foreach($collections_to_update as $collection_to_update)
+                                <option @if($collection_to_update['id'] === $participation['collection_id']) selected
+                                        @endif value="{{$collection_to_update['id']}}">{{$collection_to_update['title']}}</option>
+                            @endforeach
+                        </select>
+
+                        <button id="btn-submit" type="submit"
+                                style="height: fit-content; max-height: 30px; max-width:150px;"
+                                data-status-from="{{$participation->collection['title']}}"
+                                class="change_status ml-3 d-flex align-items-center justify-content-center btn btn-outline-primary"
+                        >
+                            Сохранить
+                        </button>
+                    </form>
+                </div>
+
+                <button style="display: flex; border: none; width: auto; padding: 3px 10px;max-width:150px"
+                        data-form="change_user_collection" type="button"
+                        class="change_status_button ml-1 btn btn-outline-info btn-block btn-sm"
+                >
+                    <i style="font-size: 20px;" class="fa fa-edit"></i>
+
+                </button>
+            </div>
+
             <div class="mt-2 d-flex align-items-center">
                 <h1 style="margin-bottom: 0 !important;" class="">Статус участия:
                     <i id="change_pat_status_text">{{$participation->pat_status['pat_status_title']}}</i>

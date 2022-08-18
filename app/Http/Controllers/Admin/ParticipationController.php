@@ -7,6 +7,8 @@ use App\Http\Livewire\ChatCreate;
 use App\Models\Chat;
 use App\Models\chat_status;
 use App\Models\Collection;
+use App\Models\collection_winner;
+use App\Models\Message;
 use App\Models\Participation;
 use App\Models\Participation_work;
 use App\Models\Pat_status;
@@ -87,7 +89,7 @@ class ParticipationController extends Controller
 
     public function user_participation($participation_id)
     {
-
+        $collections_to_update = Collection::OrderBy('created_at', 'desc')->get();
         $participation = Participation::where('id', $participation_id)->with('participation_work')->first();
         $pat_statuses = Pat_status::orderBy('id')->get();
         $chat = Chat::where('user_created', $participation['user_id'])->where('collection_id', $participation['collection_id'])->first();
@@ -99,7 +101,47 @@ class ParticipationController extends Controller
             'chat' => $chat,
             'chat_statuses' => $chat_statuses,
             'transactions' => $transactions,
+            'collections_to_update' => $collections_to_update,
         ]);
+
+    }
+
+
+
+    public function change_user_collection($participation_id, Request $request)
+    {
+
+        $participation = Participation::where('id', $request->participation_id)->first();
+        $collection_from_update = Collection::where('id', $participation['collection_id'])->first();
+        $collection_to_update = Collection::where('id', $request->collection_id_to_update)->first();
+
+
+        // ---- Меняем сборник в участии ---- //
+        Participation::where('id', $request->participation_id)->update(array(
+            'collection_id' => $collection_to_update['id']
+        ));
+
+        // ---- Меняем сборник в печатном заказе ---- //
+        IF ($participation['printorder_id'] ?? 0 > 0) {
+            PrintOrder::where('id', $participation['printorder_id'])->update(array(
+                'collection_id' => $collection_to_update['id']
+            ));
+        }
+
+        // ---- Меняем сборник в чате ---- //
+        Chat::where('collection_id', $participation['collection_id'])->update(array(
+            'collection_id' => $collection_to_update['id'],
+            'title' => 'Личный чат по сборнику: ' . $collection_to_update['title']
+        ));
+
+
+        session()->flash('success', 'change_printorder');
+        session()->flash('alert_type', 'success');
+        session()->flash('alert_title', 'Успешно!');
+        session()->flash('alert_text', 'Заменили сборник участнику!');
+
+        return redirect()->back();
+
 
     }
 
