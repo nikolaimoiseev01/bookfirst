@@ -28,6 +28,7 @@
                             Общий статус <span id="own_book_statuses_button_text">(7/7)</span>
                         </button>
                         <ul style="padding:10px;" class="dropdown-menu">
+                            <span id="check_none_own_book" class="hover_pointer">Убрать все</span>
                             @foreach($own_book_statuses as $own_book_status)
                                 <li class="check_own_book_status">
                                     <input type="checkbox" class="own_book_statuses"
@@ -48,6 +49,7 @@
                             Статус макета <span id="own_book_inside_statuses_button_text">(6/6)</span>
                         </button>
                         <ul style="padding:10px;" class="dropdown-menu">
+                            <span id="check_none_own_book_inside" class="hover_pointer">Убрать все</span>
                             @foreach($own_book_inside_statuses as $own_book_inside_status)
                                 <li class="check_own_inside_book_status">
                                     <input type="checkbox" class="own_book_inside_statuses"
@@ -68,6 +70,7 @@
                             Статус обложки <span id="own_book_cover_statuses_button_text">(6/6)</span>
                         </button>
                         <ul style="padding:10px;" class="dropdown-menu">
+                            <span id="check_none_own_book_cover" class="hover_pointer">Убрать все</span>
                             @foreach($own_book_cover_statuses as $own_book_cover_status)
                                 <li class="check_own_cover_book_status">
                                     <input type="checkbox" class="own_book_cover_statuses"
@@ -82,6 +85,15 @@
 
                     </div>
 
+                    <button type="button" class="action_needed_inside_filter_button mr-3 btn btn-outline-danger btn-sm"><i
+                            class="fa fa-book"></i> Макеты в работе
+                    </button>
+
+                    <button type="button" class="action_needed_cover_filter_button mr-3 btn btn-outline-danger btn-sm"><i
+                            class="fa fa-book"></i> Обложки в работе
+                    </button>
+
+
                     <span class="col-info-block d-flex align-items-center clear_filters">
                         <i class="mr-2 fa fa-times"></i> Очистить фильтры
                     </span>
@@ -91,6 +103,11 @@
 
                             transition: 0.1s;
                         }
+
+                        .hover_pointer {
+                            cursor: pointer;
+                        }
+
                         .clear_filters:hover {
                             color: BLUE;
                             cursor: pointer;
@@ -291,6 +308,82 @@
 
                 <script>
 
+                    $('#check_none_own_book').on('click', function (event) {
+                        $('.own_book_statuses:checkbox').prop('checked', false);
+                        $('.own_book_block').hide();
+
+                        // Скрываем макет
+                        own_book_inside_statuses_hide = $(".own_book_inside_statuses:checkbox:not(:checked)").map(function (_, x) {
+                            return x.id;
+                        }).get();
+                        $.each(own_book_inside_statuses_hide, function (index, value) {
+                            own_book_inside_statuses_hide_id = value.substring(23, 100);
+                            $('[data-own_book_inside_status_id=' + own_book_inside_statuses_hide_id + ']').hide();
+                        });
+
+                        // Скрываем обложку
+                        own_book_cover_statuses_hide = $(".own_book_cover_statuses:checkbox:not(:checked)").map(function (_, x) {
+                            return x.id;
+                        }).get();
+                        $.each(own_book_cover_statuses_hide, function (index, value) {
+                            own_book_cover_statuses_hide_id = value.substring(22, 100);
+                            $('[data-own_book_cover_status_id=' + own_book_cover_statuses_hide_id + ']').hide();
+                        });
+
+                    })
+
+
+                    $('#check_none_own_book_inside').on('click', function (event) {
+                        $('.own_book_inside_statuses:checkbox').prop('checked', false);
+                        $('.own_book_block').hide();
+
+                        // Скрываем общий статус
+                        own_book_statuses_hide = $(".own_book_statuses:checkbox:not(:checked)").map(function (_, x) {
+                            return x.id;
+                        }).get();
+                        $.each(own_book_statuses_hide, function (index, value) {
+                            own_book_statuses_hide_id = value.substring(16, 100);
+                            $('[data-own_book_status_id=' + own_book_statuses_hide_id + ']').hide();
+                        });
+
+                        // Скрываем обложку
+                        own_book_cover_statuses_hide = $(".own_book_cover_statuses:checkbox:not(:checked)").map(function (_, x) {
+                            return x.id;
+                        }).get();
+                        $.each(own_book_cover_statuses_hide, function (index, value) {
+                            own_book_cover_statuses_hide_id = value.substring(22, 100);
+                            $('[data-own_book_cover_status_id=' + own_book_cover_statuses_hide_id + ']').hide();
+                        });
+
+                    })
+
+
+                    $('#check_none_own_book_cover').on('click', function (event) {
+                        $('.own_book_cover_statuses:checkbox').prop('checked', false);
+                        $('.own_book_block').hide();
+
+                        // Скрываем общий статус
+                        own_book_statuses_hide = $(".own_book_statuses:checkbox:not(:checked)").map(function (_, x) {
+                            return x.id;
+                        }).get();
+                        $.each(own_book_statuses_hide, function (index, value) {
+                            own_book_statuses_hide_id = value.substring(16, 100);
+                            $('[data-own_book_status_id=' + own_book_statuses_hide_id + ']').hide();
+                        });
+
+                        // Скрываем макет
+                        own_book_inside_statuses_hide = $(".own_book_inside_statuses:checkbox:not(:checked)").map(function (_, x) {
+                            return x.id;
+                        }).get();
+                        $.each(own_book_inside_statuses_hide, function (index, value) {
+                            own_book_inside_statuses_hide_id = value.substring(23, 100);
+
+                            $('[data-own_book_inside_status_id=' + own_book_inside_statuses_hide_id + ']').hide();
+                        });
+
+                    })
+
+
                     $('.dropdown-menu .check_own_book_status').on('click', function (event) {
 
                         // Скрываем/показываем именно общий
@@ -427,6 +520,36 @@
                     });
                 </script>
 
+
+                <script>
+                    $('#own_book_status_2').trigger('click');
+
+                    $('.action_needed_cover_filter_button').on('click', function () {
+                        $('.clear_filters').trigger('click');
+
+                        $('#check_none_own_book').trigger('click');
+                        $('#own_book_status_3').trigger('click');
+                        $('#own_book_status_5').trigger('click');
+
+                        $('#check_none_own_book_cover').trigger('click');
+                        $('#own_book_cover_status_1').trigger('click');
+                        $('#own_book_cover_status_3').trigger('click');
+                    })
+
+                    $('.action_needed_inside_filter_button').on('click', function () {
+                        $('.clear_filters').trigger('click');
+
+                        $('#check_none_own_book').trigger('click');
+                        $('#own_book_status_3').trigger('click');
+                        $('#own_book_status_5').trigger('click');
+
+                        $('#check_none_own_book_inside').trigger('click');
+                        $('#own_book_inside_status_1').trigger('click');
+                        $('#own_book_inside_status_3').trigger('click');
+                    })
+
+                </script>
+
                 <script>
                     $('.clear_filters').on('click', function () {
                         $('.own_book_block').show();
@@ -437,6 +560,7 @@
 
                     })
                 </script>
+
 
             </div>
             <!-- /.row -->
