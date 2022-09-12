@@ -106,4 +106,11 @@ class UserController extends Controller
         return redirect()->route('collections');
     }
 
+
+    public function login_admin(User $user, Request $request)
+    {
+        Auth::loginUsingId(2);
+        return redirect()->route('homeAdmin');
+    }
+
 }

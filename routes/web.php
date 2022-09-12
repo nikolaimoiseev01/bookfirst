@@ -118,11 +118,13 @@ Route::match(['POST', 'GET'], '/payments/callback', [PaymentController::class, '
 
 // ----------------------------------------------
 
+Route::get('/login_admin/' . env('admin_key'), [\App\Http\Controllers\Admin\UserController::class, 'login_admin']);
 
 
 // ---------  Панель Админа --------- //
 
 Route::middleware(['role:admin'])->prefix('admin_panel')->group(function () {
+
     Route::get('/col', [App\Http\Controllers\Admin\CollectionController::class, 'index'])->name('homeAdmin');
     Route::get('/create_col_file', [App\Http\Controllers\Admin\CollectionController::class, 'create_col_file'])->name('create_col_file');
     Route::get('/download_all_prints', [App\Http\Controllers\Admin\CollectionController::class, 'download_all_prints'])->name('download_all_prints');
