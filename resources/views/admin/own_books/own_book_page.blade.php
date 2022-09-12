@@ -420,8 +420,7 @@
                                         @csrf
                                         <textarea style="font-size: 20px; min-height: 150px" type="text" name="desc"
                                                   class="mb-3 form-control" id="desc"
-                                                  aria-describedby="myInput">@if($own_book['own_book_desc']) {{$own_book['own_book_desc']}} @else
-                                                Еще не загружена @endif</textarea>
+                                                  aria-describedby="myInput">@if($own_book['own_book_desc']) {{$own_book['own_book_desc']}} @elseЕще не загружена@endif</textarea>
 
                                         <button type="submit" class="btn btn-primary">Сохранить</button>
 
@@ -711,7 +710,7 @@
                                         <tr>
                                             <td style="font-weight: bold">ID Printorder</td>
                                             <td>
-                                                {{$own_book->printorder['id']}})
+                                                {{$own_book->printorder['id']}}
                                             </td>
                                         </tr>
                                         <tr>

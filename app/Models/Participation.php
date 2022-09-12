@@ -22,7 +22,7 @@ class Participation extends Model
     }
 
     public function Printorder() {
-        return $this->belongsTo(Printorder::class);
+        return $this->belongsTo(Printorder::class)->orderBy('send_to_name', 'desc');;
     }
 
     public function Participation_work() {

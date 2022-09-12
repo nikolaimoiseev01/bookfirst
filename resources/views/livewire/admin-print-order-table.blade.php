@@ -38,7 +38,7 @@
                         @endif
                     </td>
                     <td style="width: 10%; text-align: center;">
-                        {{$participation['name']}} {{$participation['surname']}}
+                        {{$participation['surname']}} {{$participation['name']}}
                     </td>
                     <td style="width: 10%;  text-align: center;">
                         {{$participation->printorder['send_to_name']}}

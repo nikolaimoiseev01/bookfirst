@@ -31,7 +31,8 @@ class AdminPrintOrderTable extends Component
 
     public function mount($collection_id)
     {
-        $this->participations = Participation::where('collection_id', $collection_id)->where('pat_status_id', 3)->get();
+        $this->participations = Participation::where('collection_id', $collection_id)->where('pat_status_id', 3)->orderBy('surname')->get();
+
         $this->collection_id = $collection_id;
         foreach (Printorder::where('collection_id', $this->collection_id)->get()->toArray() as $print_order)
         {

@@ -10,7 +10,7 @@ class Printorder extends Model
     use HasFactory;
 
     public function Participation() {
-        return $this->belongsTo(Participation::class);
+        return $this->belongsTo(Participation::class)->orderBy('send_to_name', 'desc');
     }
 
 
