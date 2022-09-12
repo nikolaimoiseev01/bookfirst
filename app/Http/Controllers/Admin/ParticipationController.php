@@ -123,7 +123,7 @@ class ParticipationController extends Controller
 
         // ---- Меняем сборник в печатном заказе ---- //
         IF ($participation['printorder_id'] ?? 0 > 0) {
-            PrintOrder::where('id', $participation['printorder_id'])->update(array(
+            Printorder::where('id', $participation['printorder_id'])->update(array(
                 'collection_id' => $collection_to_update['id']
             ));
         }
