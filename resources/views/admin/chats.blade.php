@@ -4,8 +4,15 @@
     <!-- Content Header (Page header) -->
     <div class="content-header">
         <div class="container-fluid">
-            <div class="d-flex">
+            <div class="justify-content-between d-flex">
                 <h1 class="m-0">Наши чаты</h1>
+                <style>
+                    .page-link, .page-item {
+                        display: flex;
+                        height: 38px;
+                    }
+                </style>
+                {{ $chats->links() }}
             </div>
 
         </div><!-- /.container-fluid -->
@@ -102,7 +109,9 @@
 
 
             </div>
+
         </div>
+
     </section>
     <!-- /.content -->
 @endsection
