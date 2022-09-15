@@ -32,10 +32,10 @@
                             @foreach($own_book_statuses as $own_book_status)
                                 <li class="check_own_book_status">
                                     <input type="checkbox" class="own_book_statuses"
-                                           id="own_book_status_{{$own_book_status->id}}" checked="">
+                                           id="own_book_status_{{$own_book_status['id']}}" checked="">
                                     <label style="font-size: 18px; font-weight: 100;"
-                                           for="own_book_status_{{$own_book_status->id}}">
-                                        {{Str::ucfirst($own_book_status->status_title)}}
+                                           for="own_book_status_{{$own_book_status['id']}}">
+                                        {{Str::ucfirst($own_book_status['status_title'])}}
                                     </label>
                                 </li>
                             @endforeach
@@ -53,10 +53,10 @@
                             @foreach($own_book_inside_statuses as $own_book_inside_status)
                                 <li class="check_own_inside_book_status">
                                     <input type="checkbox" class="own_book_inside_statuses"
-                                           id="own_book_inside_status_{{$own_book_inside_status->id}}" checked="">
+                                           id="own_book_inside_status_{{$own_book_inside_status['id']}}" checked="">
                                     <label style="font-size: 18px; font-weight: 100;"
-                                           for="own_book_inside_status_{{$own_book_inside_status->id}}">
-                                        {{Str::ucfirst($own_book_inside_status->status_title)}}
+                                           for="own_book_inside_status_{{$own_book_inside_status['id']}}">
+                                        {{Str::ucfirst($own_book_inside_status['status_title'])}}
                                     </label>
                                 </li>
                             @endforeach
@@ -74,10 +74,10 @@
                             @foreach($own_book_cover_statuses as $own_book_cover_status)
                                 <li class="check_own_cover_book_status">
                                     <input type="checkbox" class="own_book_cover_statuses"
-                                           id="own_book_cover_status_{{$own_book_cover_status->id}}" checked="">
+                                           id="own_book_cover_status_{{$own_book_cover_status['id']}}" checked="">
                                     <label style="font-size: 18px; font-weight: 100;"
-                                           for="own_book_cover_status_{{$own_book_cover_status->id}}">
-                                        {{Str::ucfirst($own_book_cover_status->status_title)}}
+                                           for="own_book_cover_status_{{$own_book_cover_status['id']}}">
+                                        {{Str::ucfirst($own_book_cover_status['status_title'])}}
                                     </label>
                                 </li>
                             @endforeach
@@ -237,7 +237,7 @@
                             </div>
                             <div class="card-footer">
                                 @if ($own_book->chat_status_id == 1)
-                                    <span style="right: 5px; top:8px;" class="position-absolute right badge badge-danger">
+                                    <span style="right: 5px; top:11px;" class="position-absolute right badge badge-danger">
                                         Вопрос в чате
                                     </span>
                                 @endif
@@ -284,8 +284,7 @@
                                      class="mt-2 pt-2 w-100 btn-group">
                                     <a style="    font-size: 18px;"
                                        href="{{route('own_books_page', $own_book->id)}}" type="button"
-                                       class="btn btn-sm btn-outline-primary">Подробнее
-                                    </a>
+                                       class="btn btn-sm btn-outline-primary">Подробнее</a>
                                 </div>
                                 <!-- /.row -->
                             </div>
@@ -324,7 +323,7 @@
                         }).get();
                         $.each(own_book_inside_statuses_hide, function (index, value) {
                             own_book_inside_statuses_hide_id = value.substring(23, 100);
-                            $('[data-own_book_inside_status_id=' + own_book_inside_statuses_hide_id + ').hide();
+                            $('[data-own_book_inside_status_id=' + own_book_inside_statuses_hide_id + ']').hide();
                         });
 
                         // Скрываем обложку
@@ -333,7 +332,7 @@
                         }).get();
                         $.each(own_book_cover_statuses_hide, function (index, value) {
                             own_book_cover_statuses_hide_id = value.substring(22, 100);
-                            $('[data-own_book_cover_status_id=' + own_book_cover_statuses_hide_id + ').hide();
+                            $('[data-own_book_cover_status_id=' + own_book_cover_statuses_hide_id + ']').hide();
                         });
 
                     })
@@ -349,7 +348,7 @@
                         }).get();
                         $.each(own_book_statuses_hide, function (index, value) {
                             own_book_statuses_hide_id = value.substring(16, 100);
-                            $('[data-own_book_status_id=' + own_book_statuses_hide_id + ').hide();
+                            $('[data-own_book_status_id=' + own_book_statuses_hide_id + ']').hide();
                         });
 
                         // Скрываем обложку
@@ -358,7 +357,7 @@
                         }).get();
                         $.each(own_book_cover_statuses_hide, function (index, value) {
                             own_book_cover_statuses_hide_id = value.substring(22, 100);
-                            $('[data-own_book_cover_status_id=' + own_book_cover_statuses_hide_id + ').hide();
+                            $('[data-own_book_cover_status_id=' + own_book_cover_statuses_hide_id + ']').hide();
                         });
 
                     })
@@ -374,7 +373,7 @@
                         }).get();
                         $.each(own_book_statuses_hide, function (index, value) {
                             own_book_statuses_hide_id = value.substring(16, 100);
-                            $('[data-own_book_status_id=' + own_book_statuses_hide_id + ').hide();
+                            $('[data-own_book_status_id=' + own_book_statuses_hide_id + ']').hide();
                         });
 
                         // Скрываем макет
@@ -384,7 +383,7 @@
                         $.each(own_book_inside_statuses_hide, function (index, value) {
                             own_book_inside_statuses_hide_id = value.substring(23, 100);
 
-                            $('[data-own_book_inside_status_id=' + own_book_inside_statuses_hide_id + ').hide();
+                            $('[data-own_book_inside_status_id=' + own_book_inside_statuses_hide_id + ']').hide();
                         });
 
                     })
@@ -405,11 +404,11 @@
 
                         $.each(own_book_statuses_hide, function (index, value) {
                             own_book_statuses_hide_id = value.substring(16, 100);
-                            $('[data-own_book_status_id=' + own_book_statuses_hide_id + ').hide();
+                            $('[data-own_book_status_id=' + own_book_statuses_hide_id + ']').hide();
                         });
                         $.each(own_book_statuses_show, function (index, value) {
                             own_book_statuses_show_id = value.substring(16, 100);
-                            $('[data-own_book_status_id=' + own_book_statuses_show_id + ').show();
+                            $('[data-own_book_status_id=' + own_book_statuses_show_id + ']').show();
                         });
                         /////////////////////////////////////////////////////////////////
 
@@ -420,7 +419,7 @@
                         }).get();
                         $.each(own_book_inside_statuses_hide, function (index, value) {
                             own_book_inside_statuses_hide_id = value.substring(23, 100);
-                            $('[data-own_book_inside_status_id=' + own_book_inside_statuses_hide_id + ').hide();
+                            $('[data-own_book_inside_status_id=' + own_book_inside_statuses_hide_id + ']').hide();
                         });
 
                         // Скрываем обложку
@@ -429,7 +428,7 @@
                         }).get();
                         $.each(own_book_cover_statuses_hide, function (index, value) {
                             own_book_cover_statuses_hide_id = value.substring(22, 100);
-                            $('[data-own_book_cover_status_id=' + own_book_cover_statuses_hide_id + ').hide();
+                            $('[data-own_book_cover_status_id=' + own_book_cover_statuses_hide_id + ']').hide();
                         });
 
 
@@ -451,11 +450,11 @@
 
                         $.each(own_book_inside_statuses_hide, function (index, value) {
                             own_book_inside_statuses_hide_id = value.substring(23, 100);
-                            $('[data-own_book_inside_status_id=' + own_book_inside_statuses_hide_id + ').hide();
+                            $('[data-own_book_inside_status_id=' + own_book_inside_statuses_hide_id + ']').hide();
                         });
                         $.each(own_book_inside_statuses_show, function (index, value) {
                             own_book_inside_statuses_show_id = value.substring(23, 100);
-                            $('[data-own_book_inside_status_id=' + own_book_inside_statuses_show_id + ').show();
+                            $('[data-own_book_inside_status_id=' + own_book_inside_statuses_show_id + ']').show();
                         });
                         /////////////////////////////////////////////////////////////////////////////////
 
@@ -465,7 +464,7 @@
                         }).get();
                         $.each(own_book_statuses_hide, function (index, value) {
                             own_book_statuses_hide_id = value.substring(16, 100);
-                            $('[data-own_book_status_id=' + own_book_statuses_hide_id + ').hide();
+                            $('[data-own_book_status_id=' + own_book_statuses_hide_id + ']').hide();
                         });
 
                         // Скрываем обложку
@@ -474,7 +473,7 @@
                         }).get();
                         $.each(own_book_cover_statuses_hide, function (index, value) {
                             own_book_cover_statuses_hide_id = value.substring(22, 100);
-                            $('[data-own_book_cover_status_id=' + own_book_cover_statuses_hide_id + ').hide();
+                            $('[data-own_book_cover_status_id=' + own_book_cover_statuses_hide_id + ']').hide();
                         });
 
 
@@ -497,11 +496,11 @@
 
                         $.each(own_book_cover_statuses_hide, function (index, value) {
                             own_book_cover_statuses_hide_id = value.substring(22, 100);
-                            $('[data-own_book_cover_status_id=' + own_book_cover_statuses_hide_id + ').hide();
+                            $('[data-own_book_cover_status_id=' + own_book_cover_statuses_hide_id + ']').hide();
                         });
                         $.each(own_book_cover_statuses_show, function (index, value) {
                             own_book_cover_statuses_show_id = value.substring(22, 100);
-                            $('[data-own_book_cover_status_id=' + own_book_cover_statuses_show_id + ').show();
+                            $('[data-own_book_cover_status_id=' + own_book_cover_statuses_show_id + ']').show();
                         });
 
                         // Скрываем общий статус
@@ -510,7 +509,7 @@
                         }).get();
                         $.each(own_book_statuses_hide, function (index, value) {
                             own_book_statuses_hide_id = value.substring(16, 100);
-                            $('[data-own_book_status_id=' + own_book_statuses_hide_id + ').hide();
+                            $('[data-own_book_status_id=' + own_book_statuses_hide_id + ']').hide();
                         });
 
                         // Скрываем макет
@@ -520,7 +519,7 @@
                         $.each(own_book_inside_statuses_hide, function (index, value) {
                             own_book_inside_statuses_hide_id = value.substring(23, 100);
 
-                            $('[data-own_book_inside_status_id=' + own_book_inside_statuses_hide_id + ').hide();
+                            $('[data-own_book_inside_status_id=' + own_book_inside_statuses_hide_id + ']').hide();
                         });
 
                     });
