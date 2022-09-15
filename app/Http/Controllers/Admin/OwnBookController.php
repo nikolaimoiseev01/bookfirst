@@ -20,6 +20,7 @@ use App\Notifications\UserNotification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
@@ -33,7 +34,22 @@ class OwnBookController extends Controller
         $own_book_statuses = own_book_status::orderBy('id')->get();
         $own_book_inside_statuses = own_book_inside_status::orderBy('id')->get();
         $own_book_cover_statuses = own_book_cover_status::orderBy('id')->get();
+
+        $own_books = DB::table('own_books')
+        ->join('chats', 'own_books.id', '=', 'chats.own_book_id')
+        ->join('own_book_statuses', 'own_book_statuses.id', '=', 'own_books.own_book_status_id')
+        ->join('own_book_inside_statuses', 'own_book_inside_statuses.id', '=', 'own_books.own_book_inside_status_id')
+        ->join('own_book_cover_statuses', 'own_book_cover_statuses.id', '=', 'own_books.own_book_cover_status_id')
+        ->select('own_books.*', 'chats.chat_status_id', 'own_book_statuses.status_title', 'own_book_inside_statuses.status_title as inside_status_title', 'own_book_cover_statuses.status_title as cover_status_title')
+        ->paginate(30)
+        ;
+
+//        $own_books = array_map(function ($own_books) {
+//            return (array)$own_books;
+//        }, $own_books);
+
         return view('admin.own_books.index', [
+
             'own_books' => $own_books,
             'own_book_statuses' => $own_book_statuses,
             'own_book_inside_statuses' => $own_book_inside_statuses,

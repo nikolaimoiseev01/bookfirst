@@ -334,7 +334,8 @@
                             <a @if ($chat['chat_status_id'] == 1) style="padding-right: 22px;"
                                @endif  class="position-relative nav-link" href="#chat" data-toggle="tab">
                                 @if ($chat['chat_status_id'] == 1)<span style="right: 5px; top:11px;"
-                                                                        class="position-absolute right badge badge-danger">!</span>@endif
+                                                                        class="position-absolute right badge badge-danger">!</span>
+                                @endif
                                 Чат по изданию
                             </a>
                         </li>
