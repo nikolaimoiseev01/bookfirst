@@ -738,9 +738,9 @@
                                         <tr>
                                             <td style="font-weight: bold">Формат обложки:</td>
                                             <td>
-                                                @if($own_book->printorder['cover_type'] = 'soft')
+                                                @if($own_book->printorder['cover_type'] == 'soft')
                                                     Мягкая,
-                                                @elseif($own_book->printorder['cover_type'] = 'hard')
+                                                @elseif($own_book->printorder['cover_type'] == 'hard')
                                                     Твердая,
                                                 @endif
                                                 @if($own_book->printorder['cover_color'] = 1)

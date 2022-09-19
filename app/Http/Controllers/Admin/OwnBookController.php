@@ -71,6 +71,7 @@ class OwnBookController extends Controller
     public function own_books_page(Request $request)
     {
         $this->own_book = own_book::where('id', $request->own_book_id)->with('printorder')->with('own_books_works')->with('own_book_files')->first();
+//        dd($this->own_book);
         $inside_files = own_book_files::where('file_type', 'inside')->where('own_book_id', $request->own_book_id)->get();
         $cover_files = own_book_files::where(function ($q) {
             $q->where('file_type', 'cover')
