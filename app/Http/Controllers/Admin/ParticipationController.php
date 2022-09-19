@@ -111,38 +111,38 @@ class ParticipationController extends Controller
     public function change_user_collection($participation_id, Request $request)
     {
 
-//        $participation = Participation::where('id', $request->participation_id)->first();
-//        $collection_from_update = Collection::where('id', $participation['collection_id'])->first();
-//        $collection_to_update = Collection::where('id', $request->collection_id_to_update)->first();
-//
-//
-//        // ---- Меняем сборник в участии ---- //
-//        Participation::where('id', $request->participation_id)->update(array(
-//            'collection_id' => $collection_to_update['id']
-//        ));
-//
-//        // ---- Меняем сборник в печатном заказе ---- //
-//        IF ($participation['printorder_id'] ?? 0 > 0) {
-//            Printorder::where('id', $participation['printorder_id'])->update(array(
-//                'collection_id' => $collection_to_update['id']
-//            ));
-//        }
+        $participation = Participation::where('id', $request->participation_id)->first();
+        $collection_from_update = Collection::where('id', $participation['collection_id'])->first();
+        $collection_to_update = Collection::where('id', $request->collection_id_to_update)->first();
 
-//        // ---- Меняем сборник в чате ---- //
-//        Chat::where('collection_id', $participation['collection_id'])
-//            ->where('user_created', $participation['user_id'])
-//            ->update(array(
-//            'collection_id' => $collection_to_update['id'],
-//            'title' => 'Личный чат по сборнику: ' . $collection_to_update['title']
-//        ));
 
-//
-//        session()->flash('success', 'change_printorder');
-//        session()->flash('alert_type', 'success');
-//        session()->flash('alert_title', 'Успешно!');
-//        session()->flash('alert_text', 'Заменили сборник участнику!');
-//
-//        return redirect()->back();
+        // ---- Меняем сборник в участии ---- //
+        Participation::where('id', $request->participation_id)->update(array(
+            'collection_id' => $collection_to_update['id']
+        ));
+
+        // ---- Меняем сборник в печатном заказе ---- //
+        IF ($participation['printorder_id'] ?? 0 > 0) {
+            Printorder::where('id', $participation['printorder_id'])->update(array(
+                'collection_id' => $collection_to_update['id']
+            ));
+        }
+
+        // ---- Меняем сборник в чате ---- //
+        Chat::where('collection_id', $participation['collection_id'])
+            ->where('user_created', $participation['user_id'])
+            ->update(array(
+            'collection_id' => $collection_to_update['id'],
+            'title' => 'Личный чат по сборнику: ' . $collection_to_update['title']
+        ));
+
+
+        session()->flash('success', 'change_printorder');
+        session()->flash('alert_type', 'success');
+        session()->flash('alert_title', 'Успешно!');
+        session()->flash('alert_text', 'Заменили сборник участнику!');
+
+        return redirect()->back();
 
 
     }
