@@ -458,12 +458,12 @@
                                                         <h2 style="font-size: 25px;">{{$loop->index + 1}} место
                                                             (голосов: {{$winners_candidate->votes_got}}):
                                                             @if($winners_candidate->nickname <> null)
-                                                                <a href="{{route('user_participation', $winners_candidate->participation_id)}}">
+                                                                <a target="_blank" href="{{route('user_participation', $winners_candidate->participation_id)}}">
                                                                     {{$winners_candidate->nickname}}
                                                                 </a>
 
                                                             @else
-                                                                <a href="{{route('user_participation', $winners_candidate->participation_id)}}">
+                                                                <a target="_blank" href="{{route('user_participation', $winners_candidate->participation_id)}}">
                                                                     {{$winners_candidate->name}} {{$winners_candidate->surname}}
                                                                 </a>
 
@@ -476,26 +476,26 @@
                                                     <h2>Голоса</h2>
                                                     @foreach($votes as $vote)
                                                         @if($vote->user_from_nickname <> null)
-                                                            <a href="{{route('user_participation', $vote->participation_id_from)}}">
+                                                            <a target="_blank" href="{{route('user_participation', $vote->participation_id_from)}}">
                                                                 {{$vote->user_from_nickname}}
                                                             </a>
 
 
                                                         @else
 
-                                                            <a href="{{route('user_participation', $vote->participation_id_from)}}">
+                                                            <a target="_blank" href="{{route('user_participation', $vote->participation_id_from)}}">
                                                                 {{$vote->user_from_name}} {{$vote->user_from_surname}}
                                                             </a>
                                                         @endif
                                                         -> за
                                                         @if($vote->user_to_nickname <> null)
-                                                                <a href="{{route('user_participation', $vote->participation_id_to)}}">
+                                                                <a target="_blank" href="{{route('user_participation', $vote->participation_id_to)}}">
                                                                     {{$vote->user_to_nickname}}
                                                                 </a>
 
 
                                                         @else
-                                                                <a href="{{route('user_participation', $vote->participation_id_to)}}">
+                                                                <a target="_blank" href="{{route('user_participation', $vote->participation_id_to)}}">
                                                                     {{$vote->user_to_name}} {{$vote->user_to_surname}}
                                                                 </a>
 
