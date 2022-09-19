@@ -308,6 +308,8 @@ class CollectionController extends Controller
                 $join->on('p2.collection_id', '=', 'votes.collection_id');
             })
             ->select('votes.*'
+                , 'p1.id as participation_id_from'
+                , 'p2.id as participation_id_to'
                 , 'p1.name as user_from_name'
                 , 'p1.surname as user_from_surname'
                 , 'p1.nickname as user_from_nickname'
@@ -323,7 +325,7 @@ class CollectionController extends Controller
                 $join->on('p2.user_id', '=', 'votes.user_id_to');
                 $join->on('p2.collection_id', '=', 'votes.collection_id');
             })
-            ->select('p2.name', 'p2.surname', 'p2.nickname'
+            ->select('p2.id as participation_id', 'p2.name', 'p2.surname', 'p2.nickname'
                 , DB::raw('count(votes.user_id_from) AS votes_got')
             )
             ->where('votes.collection_id', $collection->id)
