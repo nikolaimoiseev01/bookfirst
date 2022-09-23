@@ -743,9 +743,9 @@
                                                 @elseif($own_book->printorder['cover_type'] == 'hard')
                                                     Твердая,
                                                 @endif
-                                                @if($own_book->printorder['cover_color'] = 1)
+                                                @if($own_book->printorder['cover_color'] == 1)
                                                     цветная
-                                                @elseif($own_book->printorder['cover_color'] = 0)
+                                                @elseif($own_book->printorder['cover_color'] == 0)
                                                     черно-белая
                                                 @endif
                                             </td>
@@ -753,9 +753,9 @@
                                         <tr>
                                             <td style="font-weight: bold">Цветность ВБ:</td>
                                             <td>
-                                                @if($own_book->printorder['cover_type'] = 1)
+                                                @if($own_book->printorder['color_pages'] == 1)
                                                     Цветной
-                                                @elseif($own_book->printorder['cover_type'] = 0)
+                                                @elseif($own_book->printorder['color_pages'] == 0)
                                                     Черно-белый
                                                 @endif
                                             </td>
