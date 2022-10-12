@@ -1,6 +1,8 @@
 <?php
 
 
+use App\Http\Controllers\Social\SocialController;
+use App\Http\Controllers\Social\WorkCommentsController;
 use App\Models\Participation;
 use App\Notifications\new_participation;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -13,12 +15,19 @@ use App\Http\Controllers\Portal\CollectionController;
 use App\Http\Controllers\Portal\PortalController;
 use App\Http\Controllers\PaymentController;
 
+
+
+
 // ---------  Регистрация --------- //
 Auth::routes(['verify' => true]);
+
+
 
 Route::get('/email/verify', function () {
     return view('auth.verify-email');
 })->middleware('auth')->name('verification.notice');
+
+
 
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill();
@@ -28,6 +37,24 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
     ]);
 })->middleware(['auth', 'signed'])->name('verification.verify');
 // ---------  Регистрация --------- //
+
+
+
+
+
+
+// ---------  СОЦИАЛЬНАЯ СЕТЬ --------- //
+
+Route::domain('social.' . env('APP_URL'))->group(function () {
+    Route::get('/', [SocialController::class, 'index'])->name('social.home');
+    Route::get('/user/{user_id}', [SocialController::class, 'user_page'])->name('social.user_page');
+    Route::get('/work/{work_id}', [SocialController::class, 'work_page'])->name('social.work_page');
+    Route::post('/create_work_comment', [WorkCommentsController::class, 'create_comment'])->name('social.create_comment');
+});
+
+// ---------  СОЦИАЛЬНАЯ СЕТЬ --------- //
+
+
 
 
 // ---------  ПОРТАЛ --------- //
@@ -121,6 +148,9 @@ Route::match(['POST', 'GET'], '/payments/callback', [PaymentController::class, '
 Route::get('/login_admin/' . env('admin_key'), [\App\Http\Controllers\Admin\UserController::class, 'login_admin']);
 
 
+
+
+
 // ---------  Панель Админа --------- //
 
 Route::middleware(['role:admin'])->prefix('admin_panel')->group(function () {
@@ -150,9 +180,6 @@ Route::middleware(['role:admin'])->prefix('admin_panel')->group(function () {
     Route::post('/change_chat_status/{chat_id}', [\App\Http\Controllers\ChatController::class, 'change_chat_status'])->name('change_chat_status');
     Route::post('/change_user_status', [\App\Http\Controllers\Admin\ParticipationController::class, 'change_user_status'])->name('change_user_status');
     Route::post('/send_email_all_participants', [\App\Http\Controllers\Admin\CollectionController::class, 'send_email_all_participants'])->name('send_email_all_participants');
-
-
-
 
     Route::post('/change_book_status', [\App\Http\Controllers\Admin\OwnBookController::class, 'change_book_status'])->name('change_book_status');
     Route::post('/change_amazon_link', [\App\Http\Controllers\Admin\OwnBookController::class, 'change_amazon_link'])->name('change_amazon_link');

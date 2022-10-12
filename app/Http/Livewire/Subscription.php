@@ -51,6 +51,8 @@ class Subscription extends Component
             $new_subsriber->save();
 
 
+
+
             $this->dispatchBrowserEvent('swal:modal', [
                 'type' => 'success',
                 'title' => 'Отлично!',

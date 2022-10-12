@@ -62,8 +62,9 @@ class CreateWork extends Component
         $new_work->user_id = Auth::user()->id;
         $new_work->save();
 
+
         session()->flash('show_modal', 'yes');
-        session()->flash('alert_type', 'success');
+        session()->flash('alert_type', 'success ');
         session()->flash('alert_title', 'Отлично!');
         session()->flash('alert_text', 'Произведение успешно добавлено!');
         return redirect(Session('back_after_add'));

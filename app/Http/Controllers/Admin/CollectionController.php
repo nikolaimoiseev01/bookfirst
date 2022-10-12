@@ -52,7 +52,7 @@ class CollectionController extends Controller
             )
             ->where('col_status_id', '<>', 9)
             ->groupBy('collections.id')
-            ->orderBy('collections.col_status_id')
+            ->orderBy('collections.created_at')
             ->paginate(5);
 
 

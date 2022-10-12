@@ -64,11 +64,18 @@ class AppServiceProvider extends ServiceProvider
                 })
                 ->count();
             //...with this variable
+
+
+            $urlParts = explode('.', $_SERVER['HTTP_HOST']);
+            $subdomain = $urlParts[0];
+
+
             $view->with([
                 'notifications' => $notifications,
                 'new_participants' => $new_participants,
                 'new_chats' => $new_chats,
                 'own_books_alert' => $own_books_alert,
+                'subdomain' => $subdomain,
             ]);
         });
 

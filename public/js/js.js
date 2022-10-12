@@ -207,9 +207,9 @@ $('a[href*="#"]')
 
 
 // Auto resize textarea
-function auto_grow(element) {
-    $('.input-block').css('height', "100px");
-    $('.input-block').css('height', element.scrollHeight + 2+"px");
+function auto_grow(element, start_height) {
+    $(element).closest('.input-block').css('height', start_height + "px");
+    $(element).closest('.input-block').css('height', element.scrollHeight + 2+"px");
 };
 
 

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateWorksTable extends Migration
+class CreateUserSubscriptionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,10 @@ class CreateWorksTable extends Migration
      */
     public function up()
     {
-        Schema::create('works', function (Blueprint $table) {
+        Schema::create('user_subscriptions', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('user_id');
-            $table->string('title');
-            $table->text('text');
-            $table->bigInteger('symbols');
-            $table->bigInteger('rows');
-            $table->bigInteger('pages');
-            $table->bigInteger('work_type_id');
+            $table->bigInteger('subscribed_to_user_id');
             $table->timestamps();
         });
     }
@@ -33,6 +28,6 @@ class CreateWorksTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('works');
+        Schema::dropIfExists('user_subscriptions');
     }
 }

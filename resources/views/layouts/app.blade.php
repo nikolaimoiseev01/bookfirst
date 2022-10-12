@@ -86,6 +86,7 @@
 
 
 <div class="navbar">
+
     <div class="hamburger-menu">
         <input id="menu__toggle" type="checkbox"/>
         <label class="menu__btn" for="menu__toggle">
@@ -95,6 +96,7 @@
         <ul class="menu__box">
             <li><a class="menu__item" id="home_mobile" href="/">Главная</a></li>
             <li><a class="menu__item" href="#">Сборники</a></li>
+
             <li><a class="menu__item" href="/own_books">Книги авторов</a></li>
             <li><a class="menu__item" href="#">О нас</a></li>
             <li><a class="menu__item" href="/#reviews-block">Отзывы</a></li>
@@ -220,6 +222,7 @@
             </div>
         </div>
         <div style="position:relative;">
+
             <span class="menu-link" id="own_books_menu_link">Собственные книги</span>
             <div class="own_dropped_menu_box">
                 <a class="menu-link" style="display: inline-block; margin: 0 20px !important;"
@@ -499,6 +502,8 @@
 <script src="/plugins/filepond/filepond-plugin-file-validate-size.min.js"></script>
 <!-- include FilePond file-validate-type adapter -->
 <script src="/plugins/filepond/filepond-plugin-file-validate-type.min.js"></script>
+
+<script src="https://kit.fontawesome.com/e1202d4768.js" crossorigin="anonymous"></script>
 
 
 <script>
