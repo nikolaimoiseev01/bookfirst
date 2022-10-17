@@ -41,7 +41,7 @@
 
 
     <div  class=" tooltip_custom_block">
-        <span class="tooltip_custom" title="Есть вопросы от издательства" style="color: #ffffff;
+        <span class="tooltip_custom" title="Последнее сообщение - от издательства" style="color: #ffffff;
         padding: 0px 8px;
         background: #e16464;
         border-radius: 20px;
