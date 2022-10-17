@@ -77,8 +77,16 @@
 
     </div>
     {{-- // Общая информация о заявке--}}
-    <a id="chat_button" style="margin-left: 30px; margin-top: 20px; width: 95%; text-align: center; max-width: 1000px;"
-       class="button">Чат по моему изданию</a>
+    <div style="max-width: 1000px; margin-left: 30px;  display: flex;
+    align-items: center; margin-top: 20px; width: 95%;">
+        <a id="chat_button"
+           style="width: 100%; text-align: center; max-width: 1000px;"
+           class="button">Чат по моему изданию
+        </a>
+        @if($chat_question_check)
+        @livewire('chat-question-check',['chat_id'=>$chat_id])
+            @endif
+    </div>
     <div class="participation-wrap">
         <div id="book_chat" style="display: none; margin: 0 0 30px 0; width: 100%; max-width: 1000px;" class="chat">
             <div style="margin: 0; width: 100%; max-width: 1000px;" class="container">
@@ -775,12 +783,12 @@
 
 
                 @elseif ($collection['col_status_id'] >= 2 && $is_winners > 0)
-                    <div  style="padding:10px 25px;" class="">
+                    <div style="padding:10px 25px;" class="">
                         <p style="margin-bottom: 10px;">Спасибо всем авторам, принявшим участие в голосовании!
                             Основываясь только на голосах от самих авторов, мы рады представить 3-х призёров сборника:
                         </p>
                         @foreach($winners as $winner)
-                            <p> <span style="color:#47AF98">{{ $loop->index + 1}}-е место:</span>
+                            <p><span style="color:#47AF98">{{ $loop->index + 1}}-е место:</span>
                                 @if($winner->participation['nickname'])
                                     {{$winner->participation['nickname']}}
                                 @else
@@ -789,7 +797,8 @@
                             </p><br>
                         @endforeach
                         <p style="margin-top: 10px;">{{$participation['name']}}, спасибо Вам за участие!
-                            В этом сборнике за Вас проголосовало человек: <span style="color:#47AF98">{{$votes_for_me + 1}}</span> </p>
+                            В этом сборнике за Вас проголосовало человек: <span
+                                style="color:#47AF98">{{$votes_for_me + 1}}</span></p>
                     </div>
 
 

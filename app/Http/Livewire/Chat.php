@@ -187,7 +187,8 @@ class Chat extends Component
 
                 $user_from = User::where('id', $this->user_from)->first();
 
-                \App\Models\Chat::where('id', $this->chat_id)->update(array('chat_status_id' => '1'));
+                \App\Models\Chat::where('id', $this->chat_id)->update(array('chat_status_id' => '1', 'flag_hide_question' => 0));
+
                 // Посылаем Telegram уведомление нам
                 Notification::route('telegram', '-506622812')
                     ->notify(new TelegramNotification('',

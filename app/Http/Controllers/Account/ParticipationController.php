@@ -7,6 +7,7 @@ use App\Models\Chat;
 use App\Models\Col_status;
 use App\Models\Collection;
 use App\Models\collection_winner;
+use App\Models\Message;
 use App\Models\Participation;
 use App\Models\Participation_work;
 use App\Models\Pat_status;
@@ -80,9 +81,13 @@ class ParticipationController extends Controller
         $collection = Collection::orderBY('id')->find($request->collection_id);
         $col_statuses = Col_status::orderBY('id')->get();
         $pat_statuses = Pat_status::orderBY('id')->get();
-        $chat_id = Chat::where('user_created', Auth::user()->id)->where('collection_id', $request->collection_id)->value('id');
+        $chat = Chat::where('user_created', Auth::user()->id)->where('collection_id', $request->collection_id)->first();
 //      $pre_var_chat = Chat::where('chat_status_id', '<>', 3)->where([['user_created', Auth::user()->id], ['pre_comment_flag', 1]])->first();
-        $voted_to = Participation::where('collection_id', $request->collection_id)
+
+        $chat_question_check = Message::where('chat_id', $chat['id'])->latest('created_at')->first();
+        $chat_question_check = ($chat_question_check['user_from'] == 2 && $chat['flag_hide_question'] <> 1);
+
+         $voted_to = Participation::where('collection_id', $request->collection_id)
             ->where('user_id', vote::where('user_id_from', Auth::user()->id)->where('collection_id', $request->collection_id)->value('user_id_to'))
             ->first();
         $is_winners = collection_winner::where('collection_id', $request->collection_id)->sum('place');
@@ -97,12 +102,13 @@ class ParticipationController extends Controller
                 'participation' => $participation,
                 'pat_statuses' => $pat_statuses,
                 'printorder' => $printorder,
-                'chat_id' => $chat_id,
+                'chat_id' => $chat['id'],
                 'voted_to' => $voted_to,
                 'yookassa_token' => $yookassa_token,
                 'is_winners' => $is_winners,
                 'winners' => $winners,
                 'votes_for_me' => $votes_for_me,
+                'chat_question_check' => $chat_question_check,
             ]);
 
     }
