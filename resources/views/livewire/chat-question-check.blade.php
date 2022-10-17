@@ -41,7 +41,7 @@
 
 
     <div  class=" tooltip_custom_block">
-        <span class="tooltip_custom" title="Последнее сообщение - от издательства" style="color: #ffffff;
+        <span class="tooltip_custom" style="color: #ffffff;
         padding: 0px 8px;
         background: #e16464;
         border-radius: 20px;
@@ -49,7 +49,7 @@
         </span>
 
         <div class="tooltip_custom_shown">
-            Есть вопросы от издательства
+            Последнее сообщение - от издательства
             <a wire:click.prevent="hide_question()" style="font-size: 15px;" class="link">Скрыть</a>
         </div>
     </div>
