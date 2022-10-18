@@ -85,6 +85,7 @@ class ParticipationController extends Controller
 //      $pre_var_chat = Chat::where('chat_status_id', '<>', 3)->where([['user_created', Auth::user()->id], ['pre_comment_flag', 1]])->first();
 
         $chat_question_check = Message::where('chat_id', $chat['id'])->latest('created_at')->first();
+        dd($chat_question_check);
         $chat_question_check = false;
 
          $voted_to = Participation::where('collection_id', $request->collection_id)
