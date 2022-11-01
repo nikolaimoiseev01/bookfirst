@@ -37,6 +37,7 @@ class CreateWork extends Component
     public $work_type = "";
     public $work_topic = "";
     public $work_topics = "";
+    public $cropped_img = "";
 
     public function render()
     {
@@ -49,6 +50,7 @@ class CreateWork extends Component
                 $this->file_extension = $this->file->extension();
                 File::move($file_old_temp_path, $file_new_temp_path); // перемещаем в нашу временную папку
                 $this->file_preview = '/filepond_temp/work_pics/' . $this->file->getfilename();
+                $this->dispatchBrowserEvent('update_preview');
             }
         } else {
             $file_preview = "";
@@ -69,11 +71,22 @@ class CreateWork extends Component
 
     public function storeWork($formData) {
 
+
+        $folderPath = public_path('img/work_pics/');
+        $image_parts = explode(";base64,", $this->cropped_img);
+        $image_type_aux = explode("image/", $image_parts[0]);
+        $image_type = $image_type_aux[1];
+        $image_base64 = base64_decode($image_parts[1]);
+        // $file = $folderPath . uniqid() . '.png';
+        $filename = time() . '.'. $image_type;
+        $file =$folderPath.$filename;
+        file_put_contents($file, $image_base64);
+
         $validator = Validator::make($formData, [
             'work_text' => 'required',
             'work_title' => 'required',
-            'work_type' => 'required',
-            'work_topic' => 'required',
+//            'work_type' => 'required',
+//            'work_topic' => 'required',
         ]);
 
 
@@ -106,29 +119,29 @@ class CreateWork extends Component
         $new_work->upload_type = 'вручную';
         $new_work->user_id = Auth::user()->id;
 
-        $work_type_db = work_type::where('type', $this->work_type)->where('topic', $this->work_topic)->value('id');
-
-        $new_work->work_type_id = $work_type_db;
-
-        // Если есть изображение: оптимизируем его и уменьшаем
-        if ($this->file ?? 0 != null) {
-            $file_old_temp_path = public_path('filepond_temp/work_pics/' . $this->file_name);
-            $cur_width = Image::load($file_old_temp_path)->getWidth();
-            if ($cur_width > 350) {
-                Image::load($file_old_temp_path)
-                    ->width(350)
-                    ->optimize()
-                    ->save($file_old_temp_path);
-            }
-            $file_new_path = public_path('img/work_pics/work_' .$work_next_id . '.' . $this->file_extension);
-            File::move($file_old_temp_path, $file_new_path); // перемещаем в нашу временную папку
-            $file_preview = '/img/work_pics/work_' . $work_next_id . '.' . $this->file_extension;
-        } else {
-            $file_preview = null;
-        }
-        // ------------------------------------------------------------------------------
-
-        $new_work->picture = $file_preview;
+//        $work_type_db = work_type::where('type', $this->work_type)->where('topic', $this->work_topic)->value('id');
+//
+//        $new_work->work_type_id = $work_type_db;
+//
+//        // Если есть изображение: оптимизируем его и уменьшаем
+//        if ($this->file ?? 0 != null) {
+//            $file_old_temp_path = public_path('filepond_temp/work_pics/' . $this->file_name);
+//            $cur_width = Image::load($file_old_temp_path)->getWidth();
+//            if ($cur_width > 350) {
+//                Image::load($file_old_temp_path)
+//                    ->width(350)
+//                    ->optimize()
+//                    ->save($file_old_temp_path);
+//            }
+//            $file_new_path = public_path('img/work_pics/work_' .$work_next_id . '.' . $this->file_extension);
+//            File::move($file_old_temp_path, $file_new_path); // перемещаем в нашу временную папку
+//            $file_preview = '/img/work_pics/work_' . $work_next_id . '.' . $this->file_extension;
+//        } else {
+//            $file_preview = null;
+//        }
+//        // ------------------------------------------------------------------------------
+//
+//        $new_work->picture = $file_preview;
 
         $new_work->save();
 
@@ -139,6 +152,10 @@ class CreateWork extends Component
         session()->flash('alert_text', 'Произведение успешно добавлено!');
         return redirect(Session('back_after_add'));
 
+    }
+
+    public function test_function() {
+        dd('test');
     }
 
 

@@ -626,9 +626,12 @@ label {
 select {
     font-family: "Futura PT Light", serif;
     color: #1c1c16;
-    font-size: 18px;
+    font-size: 20px;
     border-radius: 5px;
     border: 1px #6dc4b1 solid;
+    height: 34px;
+    padding: 2px 5px;
+
 }
 
 select:focus-visible {
@@ -684,11 +687,12 @@ form .check-block {
     color: #47AF98;
     background: white;
     border: 1px #47AF98 solid;
-    box-shadow: 0 0 4px rgba(0, 0, 0, 0.14);
+    /*box-shadow: 0 0 4px rgba(0, 0, 0, 0.14);*/
     border-radius: 7px;
     transition: all .3s;
     position: relative;
 }
+
 
 .button:focus-visible {
     outline: none;
@@ -715,6 +719,18 @@ form .check-block {
     background: #47AF98;
     transition: all .3s;
     cursor: pointer;
+}
+
+.button__disabled {
+    color: var(--grey_font);
+    border: 1px var(--grey_font) solid;
+}
+
+.button__disabled:hover {
+    color: #ffffff;
+    border: 1px var(--grey_font) solid;
+    background: var(--grey_font);
+    transition: all .3s;
 }
 
 
