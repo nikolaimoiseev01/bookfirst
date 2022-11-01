@@ -65,9 +65,11 @@ class AppServiceProvider extends ServiceProvider
                 ->count();
             //...with this variable
 
-
-            $urlParts = explode('.', $_SERVER['HTTP_HOST']);
-            $subdomain = $urlParts[0];
+            if(isset($_SERVER['HTTP_HOST']) && !empty($_SERVER['HTTP_HOST'])) {
+                $urlParts = explode('.', $_SERVER['HTTP_HOST']);
+                $subdomain = $urlParts[0];
+            }
+            $user_id_logged_in = Auth::user()->id ?? 0;
 
 
             $view->with([
@@ -76,6 +78,7 @@ class AppServiceProvider extends ServiceProvider
                 'new_chats' => $new_chats,
                 'own_books_alert' => $own_books_alert,
                 'subdomain' => $subdomain,
+                'user_id_logged_in' => $user_id_logged_in
             ]);
         });
 
