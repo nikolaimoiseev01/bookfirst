@@ -75,7 +75,7 @@
 
     </style>
 
-    <div wire:ignore title="tst" class="sub_block">
+    <div wire:ignore title="tst" class="log_check sub_block">
         <div wire:click.prevent="subscribe()" class="not_sub_yet">
             <span>Подписаться</span> <i class="fa-regular fa-heart"></i>
         </div>
@@ -112,28 +112,28 @@
         </script>
     @endif
 
-        <script>
+    <script>
 
 
-            document.addEventListener('subscribe', function () {
-                $('.not_sub_yet').css('right', '-100%');
-                $('.sub_yet').css({'left': '0'});
-                setTimeout(function () {
-                    $(".not_sub_yet").css({display: 'none'});
-                    $(".sub_block").css('overflow', 'inherit');
-                }, 300);
-            });
+        document.addEventListener('subscribe', function () {
+            $('.not_sub_yet').css('right', '-100%');
+            $('.sub_yet').css({'left': '0'});
+            setTimeout(function () {
+                $(".not_sub_yet").css({display: 'none'});
+                $(".sub_block").css('overflow', 'inherit');
+            }, 300);
+        });
 
-            document.addEventListener('unsubscribe', function () {
-                $(".sub_block").css('overflow', 'hidden');
-                $('.not_sub_yet').css('display', 'inherit');
+        document.addEventListener('unsubscribe', function () {
+            $(".sub_block").css('overflow', 'hidden');
+            $('.not_sub_yet').css('display', 'inherit');
 
-                setTimeout(function () {
+            setTimeout(function () {
 
-                    $('.not_sub_yet').css('right', '0');
-                    $('.sub_yet').css('left', '-100%');
-                }, 300);
+                $('.not_sub_yet').css('right', '0');
+                $('.sub_yet').css('left', '-100%');
+            }, 300);
 
-            });
-        </script>
+        });
+    </script>
 </div>

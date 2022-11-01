@@ -68,6 +68,8 @@ class AppServiceProvider extends ServiceProvider
             if(isset($_SERVER['HTTP_HOST']) && !empty($_SERVER['HTTP_HOST'])) {
                 $urlParts = explode('.', $_SERVER['HTTP_HOST']);
                 $subdomain = $urlParts[0];
+            } else {
+                $subdomain = "";
             }
             $user_id_logged_in = Auth::user()->id ?? 0;
 

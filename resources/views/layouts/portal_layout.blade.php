@@ -21,6 +21,12 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon/favicon-16x16.png">
     <link rel="manifest" href="/img/favicon/site.webmanifest">
     <link rel="mask-icon" href="/img/favicon/safari-pinned-tab.svg" color="#5bbad5">
+    @if($subdomain == 'social')
+    <link rel="stylesheet" href="/css/social-home.css">
+    @endif
+
+
+
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
 
@@ -50,6 +56,8 @@
     </noscript>
     <!-- /Yandex.Metrika counter -->
 </head>
+
+<span id="user_id_logged_in" data-user_id = '{{$user_id_logged_in}}' style="display: none !important;"></span>
 
 <body>
 <div id="modal_login" class="modal">
@@ -104,6 +112,7 @@
 @extends(($subdomain == 'social') ? 'layouts.parts.header_social' : 'layouts.parts.header_portal')
 
 
+
 @yield('content')
 
 
@@ -114,11 +123,15 @@
 
 <script src="/js/js.js"></script>
 <script src="/js/sweetalert2.js"></script>
-<script>
-    {{Session(['js_main_loaded' => 0])}}
+{{Session(['js_main_loaded' => 0])}}
 
-    <script src="https://kit.fontawesome.com/e1202d4768.js" crossorigin="anonymous"></script>
+<script src="https://kit.fontawesome.com/e1202d4768.js" crossorigin="anonymous"></script>
 </script>
+
+@if($subdomain == 'social')
+    <script src="/js/social-js.js"></script>
+@endif
+
 
 @if(Auth::user()->id ?? 0 > 0)
 @else
@@ -130,7 +143,7 @@
         $(".log_check").click(function (event) {
             event.preventDefault();
             Swal.fire({
-                html: '<p style="margin-bottom: 20px;" >Для выполнения действия необходимо быть авторизированным в системе. Для этого необходимо произвести вход или зарегистрироваться, если у Вас еще нет аккаунта.</p><a style="margin-right: 10px;"  class="button" href="' + $(this).attr('href') + '">Войти</a> <a style="margin-left: 10px;"  class="button" href="{{route('register')}}">Регистрация</a>',
+                html: '<p style="margin-bottom: 20px;" >Для выполнения действия необходимо быть авторизированным в системе. Для этого необходимо произвести вход или зарегистрироваться, если у Вас еще нет аккаунта.</p><a style="margin-right: 10px;"  class="button" href="/login">Войти</a> <a style="margin-left: 10px;"  class="button" href="{{route('register')}}">Регистрация</a>',
                 icon: 'info',
                 showConfirmButton: false,
             })

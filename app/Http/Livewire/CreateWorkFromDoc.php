@@ -55,7 +55,7 @@ class CreateWorkFromDoc extends Component
 
             foreach ($phpWord->getSections() as $section) { // Секция обычно только одна
 
-                foreach ($section->getElements() as $e) { // Проходим по каждому элементу (элемент - это одна строчка походу
+                foreach ($section->getElements() as $e) { // Проходим по каждому элементу (элемент - это одна строчка походу)
 
                     if (get_class($e) === 'PhpOffice\PhpWord\Element\TextRun') {
 

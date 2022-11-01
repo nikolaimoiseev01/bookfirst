@@ -88,7 +88,7 @@ class ParticipationController extends Controller
         if ($chat_question_check) {
             $chat_question_check = ($chat_question_check['user_from'] ?? 0 == 2 && $chat['flag_hide_question'] ?? 0 <> 1);
         }
-        
+
          $voted_to = Participation::where('collection_id', $request->collection_id)
             ->where('user_id', vote::where('user_id_from', Auth::user()->id)->where('collection_id', $request->collection_id)->value('user_id_to'))
             ->first();

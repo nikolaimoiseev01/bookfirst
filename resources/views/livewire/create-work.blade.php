@@ -11,9 +11,39 @@
         <input wire:model="symbols" style="display: none" type="number" name="symbols" id="symbols">
         <input wire:model="rows" style="display: none" type="number" name="rows" id="rows">
         <input wire:model="pages" style="display: none" type="number" min="1" name="pages" id="pages">
+
+
+        <div style="margin-top: 20px; margin-right: 20px;" class="input-file">
+            <label for="work_file" class="custom-file-upload">
+                Выбрать файл
+            </label>
+            <span wire:ignore="" id="label_work_file"><p></p></span>
+
+            <input accept=".png, .jpg" style="display: none;" wire:model="file" name="work_file"
+                   class="custom-file-input" id="work_file" type="file">
+            <div style="margin: 0 20px; display: none;" wire:loading="" wire:target="file"><p style="font-size: 22px;">
+                    Файл загружается</p></div>
+        </div>
+
+        <select wire:model="work_type" name="work_type" id="work_type">
+            <option value="" disabled selected="selected">Выберите тип</option>
+            @foreach($work_types->unique('type') as $work_type)
+                <option value="{{$work_type['type']}}">{{$work_type['type']}}</option>
+            @endforeach
+        </select>
+
+        <select wire:model="work_topic" name="work_topic" id="work_topic">
+            <option value="" disabled selected="selected">Выберите тему</option>
+            @foreach($work_topics as $work_topic)
+                <option value="{{$work_topic['topic']}}">{{$work_topic['topic']}}</option>
+            @endforeach
+        </select>
+
         <button type="submit" class="button">Добавить</button>
+
     </form>
-{{--    <a style="" id="back" href="{{Session('back_after_add')}}" class="fast-load">back_after_add: {{Session('back_after_add')}}</a>--}}
+    <img src="{{$file_preview}}" id="work_img_preview" style="max-width: 300px;" alt="">
+
     @section('page-js')
         <script>
             document.addEventListener('livewire:load', function () {

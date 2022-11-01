@@ -7,33 +7,73 @@ use App\Models\Participation;
 use App\Models\Participation_work;
 use App\Models\Printorder;
 use App\Models\Work;
+use App\Models\work_type;
 use App\Notifications\new_participation;
 use App\Rules\SameParticipation;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
 use Livewire\Component;
+use Livewire\WithFileUploads;
+use Spatie\Image\Image;
+use Spatie\LaravelImageOptimizer\Facades\ImageOptimizer;
 
 class CreateWork extends Component
 {
+    use WithFileUploads;
 
     public $work_title;
     public $work_text;
     public $symbols;
     public $rows;
     public $pages;
+    public $file;
+    public $file_preview;
+    public $file_name;
+    public $file_extension;
+    public $work_type = "";
+    public $work_topic = "";
+    public $work_topics = "";
 
     public function render()
     {
-        return view('livewire.create-work');
-        $this->dispatchBrowserEvent('livewire:load');
+
+        if ($this->file ?? 0 != null & $this->file_preview == null) {
+            if(file_exists(storage_path('app/livewire-tmp/' . $this->file->getfilename()))) {
+                $file_old_temp_path = storage_path('app/livewire-tmp/' . $this->file->getfilename());
+                $file_new_temp_path = public_path('filepond_temp/work_pics/' . $this->file->getfilename());
+                $this->file_name = $this->file->getfilename();
+                $this->file_extension = $this->file->extension();
+                File::move($file_old_temp_path, $file_new_temp_path); // перемещаем в нашу временную папку
+                $this->file_preview = '/filepond_temp/work_pics/' . $this->file->getfilename();
+            }
+        } else {
+            $file_preview = "";
+        }
+        $work_types = work_type::get();
+        $this->work_topics = work_type::where('type', $this->work_type)->get();
+
+//        dd($this->work_topics);
+
+        return view('livewire.create-work', [
+            'file_preview' => $this->file_preview,
+            'work_types' => $work_types,
+            'work_topics' => $this->work_topics
+        ]);
+
     }
+
+
     public function storeWork($formData) {
 
         $validator = Validator::make($formData, [
             'work_text' => 'required',
             'work_title' => 'required',
+            'work_type' => 'required',
+            'work_topic' => 'required',
         ]);
 
 
@@ -52,6 +92,11 @@ class CreateWork extends Component
 
         $validator->validate();
 
+
+
+        $work_last_id = DB::select("SELECT ID FROM WORKS ORDER BY CREATED_AT DESC LIMIT 1");
+        $work_next_id = $work_last_id[0]->ID + 1;
+
         $new_work = new Work();
         $new_work->title = $this->work_title;
         $new_work->text = ($this->work_text);
@@ -60,6 +105,31 @@ class CreateWork extends Component
         $new_work->pages = $this->pages;
         $new_work->upload_type = 'вручную';
         $new_work->user_id = Auth::user()->id;
+
+        $work_type_db = work_type::where('type', $this->work_type)->where('topic', $this->work_topic)->value('id');
+
+        $new_work->work_type_id = $work_type_db;
+
+        // Если есть изображение: оптимизируем его и уменьшаем
+        if ($this->file ?? 0 != null) {
+            $file_old_temp_path = public_path('filepond_temp/work_pics/' . $this->file_name);
+            $cur_width = Image::load($file_old_temp_path)->getWidth();
+            if ($cur_width > 350) {
+                Image::load($file_old_temp_path)
+                    ->width(350)
+                    ->optimize()
+                    ->save($file_old_temp_path);
+            }
+            $file_new_path = public_path('img/work_pics/work_' .$work_next_id . '.' . $this->file_extension);
+            File::move($file_old_temp_path, $file_new_path); // перемещаем в нашу временную папку
+            $file_preview = '/img/work_pics/work_' . $work_next_id . '.' . $this->file_extension;
+        } else {
+            $file_preview = null;
+        }
+        // ------------------------------------------------------------------------------
+
+        $new_work->picture = $file_preview;
+
         $new_work->save();
 
 
@@ -70,5 +140,7 @@ class CreateWork extends Component
         return redirect(Session('back_after_add'));
 
     }
+
+
 
 }

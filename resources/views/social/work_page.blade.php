@@ -17,6 +17,7 @@
         <div class="work_block">
             <div>
                 <h2>{{$work['title']}}  </h2>
+                @livewire('like-button', ['work_id' => $work->id])
             </div>
 
             <div>
@@ -44,6 +45,7 @@
                     <span
                         style="color: var(--grey_font) !important;"> {{ Date::parse($work['created_at'])->format('j F Y') }}</span>
                 </p>
+
             </div>
         </div>
 

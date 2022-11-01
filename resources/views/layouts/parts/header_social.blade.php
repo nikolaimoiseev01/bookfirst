@@ -151,7 +151,7 @@
         <div class="account">
             @guest
                 @if (Route::has('register'))
-                    <a id="a_modal_login" href="/login" class="menu-link">
+                    <a id="a_modal_login" href="{{route('collections')}}" class="menu-link">
                         <svg id="Слой_1" data-name="Слой 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                             <path
                                 d="M512,256C512,114.51,397.5,0,256,0S0,114.5,0,256C0,396.23,113.54,512,256,512,397.88,512,512,396.88,512,256ZM256,30c124.62,0,226,101.38,226,226a225,225,0,0,1-38.7,126.52c-101-108.61-273.44-108.81-374.6,0A225,225,0,0,1,30,256C30,131.38,131.38,30,256,30ZM87.41,406.5c89.78-100.7,247.43-100.67,337.17,0C334.51,507.27,177.53,507.3,87.41,406.5Z"/>
@@ -162,7 +162,7 @@
                     </a>
                 @endif
             @else
-                <a class="menu-link" href="/myaccount/collections">
+                <a class="menu-link" href="{{route('collections')}}">
                     <div class="not-bell">
                         <svg id="Слой_1" data-name="Слой 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                             <path

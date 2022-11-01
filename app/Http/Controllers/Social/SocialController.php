@@ -14,7 +14,8 @@ class SocialController extends Controller
 {
     public function index(Request $request)
     {
-        $last_works = Work::orderBy('id', 'desc')->take(14)->get();
+        $last_works = Work::orderBy('id', 'desc')->take(14)->orderBy('created_at', 'desc')->get();
+//        $top_users =
         return view('social.index', [
             'last_works' => $last_works
         ]);
