@@ -107,8 +107,8 @@ class CreateWork extends Component
 
 
 
-        $work_last_id = DB::select("SELECT ID FROM WORKS ORDER BY CREATED_AT DESC LIMIT 1");
-        $work_next_id = $work_last_id[0]->ID + 1;
+//        $work_last_id = DB::select("SELECT ID FROM WORKS ORDER BY CREATED_AT DESC LIMIT 1");
+//        $work_next_id = $work_last_id[0]->ID + 1;
 
         $new_work = new Work();
         $new_work->title = $this->work_title;
