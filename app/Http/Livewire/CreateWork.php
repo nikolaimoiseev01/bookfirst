@@ -42,28 +42,28 @@ class CreateWork extends Component
     public function render()
     {
 
-        if ($this->file ?? 0 != null & $this->file_preview == null) {
-            if(file_exists(storage_path('app/livewire-tmp/' . $this->file->getfilename()))) {
-                $file_old_temp_path = storage_path('app/livewire-tmp/' . $this->file->getfilename());
-                $file_new_temp_path = public_path('filepond_temp/work_pics/' . $this->file->getfilename());
-                $this->file_name = $this->file->getfilename();
-                $this->file_extension = $this->file->extension();
-                File::move($file_old_temp_path, $file_new_temp_path); // перемещаем в нашу временную папку
-                $this->file_preview = '/filepond_temp/work_pics/' . $this->file->getfilename();
-                $this->dispatchBrowserEvent('update_preview');
-            }
-        } else {
-            $file_preview = "";
-        }
-        $work_types = work_type::get();
-        $this->work_topics = work_type::where('type', $this->work_type)->get();
+//        if ($this->file ?? 0 != null & $this->file_preview == null) {
+//            if(file_exists(storage_path('app/livewire-tmp/' . $this->file->getfilename()))) {
+//                $file_old_temp_path = storage_path('app/livewire-tmp/' . $this->file->getfilename());
+//                $file_new_temp_path = public_path('filepond_temp/work_pics/' . $this->file->getfilename());
+//                $this->file_name = $this->file->getfilename();
+//                $this->file_extension = $this->file->extension();
+//                File::move($file_old_temp_path, $file_new_temp_path); // перемещаем в нашу временную папку
+//                $this->file_preview = '/filepond_temp/work_pics/' . $this->file->getfilename();
+//                $this->dispatchBrowserEvent('update_preview');
+//            }
+//        } else {
+//            $file_preview = "";
+//        }
+//        $work_types = work_type::get();
+//        $this->work_topics = work_type::where('type', $this->work_type)->get();
 
 //        dd($this->work_topics);
 
         return view('livewire.create-work', [
             'file_preview' => $this->file_preview,
-            'work_types' => $work_types,
-            'work_topics' => $this->work_topics
+//            'work_types' => $work_types,
+//            'work_topics' => $this->work_topics
         ]);
 
     }
@@ -72,15 +72,15 @@ class CreateWork extends Component
     public function storeWork($formData) {
 
 
-        $folderPath = public_path('img/work_pics/');
-        $image_parts = explode(";base64,", $this->cropped_img);
-        $image_type_aux = explode("image/", $image_parts[0]);
-        $image_type = $image_type_aux[1];
-        $image_base64 = base64_decode($image_parts[1]);
-        // $file = $folderPath . uniqid() . '.png';
-        $filename = time() . '.'. $image_type;
-        $file =$folderPath.$filename;
-        file_put_contents($file, $image_base64);
+//        $folderPath = public_path('img/work_pics/');
+//        $image_parts = explode(";base64,", $this->cropped_img);
+//        $image_type_aux = explode("image/", $image_parts[0]);
+//        $image_type = $image_type_aux[1];
+//        $image_base64 = base64_decode($image_parts[1]);
+//        // $file = $folderPath . uniqid() . '.png';
+//        $filename = time() . '.'. $image_type;
+//        $file =$folderPath.$filename;
+//        file_put_contents($file, $image_base64);
 
         $validator = Validator::make($formData, [
             'work_text' => 'required',
