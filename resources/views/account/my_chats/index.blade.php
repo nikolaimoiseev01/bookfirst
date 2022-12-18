@@ -5,7 +5,8 @@
 @endsection
 
 @section('page-style')
-
+    <link rel="stylesheet" href="/css/chat.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 @endsection
 
 

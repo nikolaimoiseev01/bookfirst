@@ -1,9 +1,6 @@
 <div style="    position: relative; width:100%; margin-top: 10px;">
     {{App::setLocale('ru')}}
-    <link rel="stylesheet" href="/css/chat.css">
 
-
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 
     {{--    <style>--}}
     {{--        #resizable {--}}
@@ -232,7 +229,7 @@
 
                     <div id="messages" class="messages">
                         @if(!$new_chat_user_id_check)
-                            @if(count($messages) == 0 && ($messages[0]->chat['collection_id'] || $messages[0]->chat['own_book_id']) > 0)
+                            @if(count($messages) == 0 && ($cur_chat[0]->collection_id || $cur_chat[0]->own_book_id) > 0)
                                 <div
                                     style="margin:0; height: 100%; display: flex; align-items: center; justify-content: center"
                                     class="no-access">
