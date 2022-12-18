@@ -266,8 +266,8 @@
                                 <path
                                     d="M256,271a90.1,90.1,0,0,0,90-90V151a90,90,0,0,0-180,0v30A90.1,90.1,0,0,0,256,271ZM196,151a60,60,0,0,1,120,0v30a60,60,0,0,1-120,0Z"/>
                             </svg>
-                            @if (count($notifications) > 0)
-                                <span>{{count($notifications)}}</span>
+                            @if ($notifications > 0)
+                                <span>{{$notifications}}</span>
                             @endif
                         </div>
 
@@ -300,8 +300,8 @@
                                 <path
                                     d="M256,271a90.1,90.1,0,0,0,90-90V151a90,90,0,0,0-180,0v30A90.1,90.1,0,0,0,256,271ZM196,151a60,60,0,0,1,120,0v30a60,60,0,0,1-120,0Z"/>
                             </svg>
-                            @if (count($notifications) > 0)
-                                <span>{{count($notifications)}}</span>
+                            @if ($notifications > 0)
+                                <span>{{$notifications}}</span>
                             @endif
                         </div>
                     </a>
