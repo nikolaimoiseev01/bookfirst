@@ -17,6 +17,7 @@ class ChatQuestionCheck extends Component
 
     public function mount($mes_id)
     {
+
         $this->mes_id = $mes_id;
 
     }

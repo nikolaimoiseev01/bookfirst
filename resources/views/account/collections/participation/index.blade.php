@@ -84,8 +84,10 @@
            class="button">Чат по моему изданию
         </a>
         @if($chat_question_check)
-        @livewire('chat-question-check',['mes_id'=>$chat_question_check->id])
-            @endif
+            <div style="margin-left: 20px;">
+                @livewire('chat-question-check',['mes_id'=>$last_mes_id])
+            </div>
+        @endif
     </div>
     <div class="participation-wrap">
         <div id="book_chat" style="display: none; margin: 0 0 30px 0; width: 100%; max-width: 1000px;" class="chat">
