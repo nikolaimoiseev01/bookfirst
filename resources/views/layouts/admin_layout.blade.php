@@ -115,16 +115,40 @@
                         </a>
                     </li>
 
+
                     <li class="nav-item">
-                        <a href="{{ route('chats') }}" class="nav-link">
+                        <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-comments"></i>
                             <p>
                                 Чаты
-                                @if ($new_chats > 0)
-                                    <span class="right badge badge-danger">{{$new_chats}}</span>
-                                @endif
+                                <i style="top: .4rem;" class="fas fa-angle-left right"></i>
+
                             </p>
                         </a>
+                        <ul style="padding-left: 20px;" class="nav nav-treeview">
+
+                            <li class="nav-item">
+                                <a href="{{ route('chats_admin') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-comments"></i>
+                                    <p>
+                                        Админ
+                                        @if ($new_chats > 0)
+                                            <span class="right badge badge-danger">{{$new_chats}}</span>
+                                        @endif
+                                    </p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="{{ route('chats_users') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-comments"></i>
+                                    <p>
+                                        Пользователей
+                                    </p>
+                                </a>
+                            </li>
+
+                        </ul>
                     </li>
 
 

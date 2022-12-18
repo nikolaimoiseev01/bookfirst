@@ -190,7 +190,8 @@ Route::middleware(['role:admin'])->prefix('admin_panel')->group(function () {
     Route::get('/promocodes', [\App\Http\Controllers\Admin\PromocodeController::class, 'index'])->name('promocodes_page');
     Route::post('/add_winner/{collection_id}', [App\Http\Controllers\Admin\CollectionController::class, 'add_winner'])->name('add_winner');
     Route::get('/collections/participation/{participation_id}', [App\Http\Controllers\Admin\ParticipationController::class, 'user_participation'])->name('user_participation');
-    Route::get('/chats', [App\Http\Controllers\Admin\UserController::class, 'chats'])->name('chats');
+    Route::get('/chats_admin', [App\Http\Controllers\Admin\UserController::class, 'chats_admin'])->name('chats_admin');
+    Route::get('/chats_users', [App\Http\Controllers\Admin\UserController::class, 'chats_users'])->name('chats_users');
     Route::get('/chats/{chat_id}', [App\Http\Controllers\Admin\UserController::class, 'chat'])->name('admin_chat');
 
     Route::get('/login_as/{user_id}', [App\Http\Controllers\Admin\UserController::class, 'login_as'])->name('login_as');

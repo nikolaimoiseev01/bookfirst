@@ -84,12 +84,24 @@ class UserController extends Controller
     }
 
 
-    public function chats()
+    public function chats_admin()
     {
 
         $users = User::orderBy('created_at', 'desc')->get();
-        $chats = Chat::orderBy('chat_status_id', 'asc')->orderBy('updated_at', 'desc')->with('message')->paginate(50);
-        return view('admin.chats', [
+        $chats = Chat::where('user_created', '=', 2)->orwhere('user_to', '=', 2)->orderBy('chat_status_id', 'asc')->orderBy('updated_at', 'desc')->with('message')->paginate(50);
+        return view('admin.chats_admin', [
+            'users' => $users,
+            'chats' => $chats
+        ]);
+    }
+
+
+    public function chats_users()
+    {
+
+        $users = User::orderBy('created_at', 'desc')->get();
+        $chats = Chat::where('user_created', '<>', 2)->where('user_to', '<>', 2)->orderBy('chat_status_id', 'asc')->orderBy('updated_at', 'desc')->with('message')->paginate(50);
+        return view('admin.chats_users', [
             'users' => $users,
             'chats' => $chats
         ]);
