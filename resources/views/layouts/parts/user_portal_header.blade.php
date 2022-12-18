@@ -141,134 +141,134 @@
              justify-content: center;
          @endif
              ">
-        <div style="
-            margin-top:30px;
-        @if ($awards->count() > 0)
-        @else
+{{--        <div style="--}}
+{{--            margin-top:30px;--}}
+{{--        @if ($awards->count() > 0)--}}
+{{--        @else--}}
 
-        @endif
+{{--        @endif--}}
 
-            "
-             class="container user_header_main_block">
+{{--            "--}}
+{{--             class="container user_header_main_block">--}}
 
-            <div>
-                <img data-for-modal="modal_user_avatar" style="width:85px;" class="show_modal user_avatar"
-                     src="{{($last_work->user['avatar'] ?? '/img/avatars/default_avatar.svg')}}" alt="user_avatar">
-            </div>
+{{--            <div>--}}
+{{--                <img data-for-modal="modal_user_avatar" style="width:85px;" class="show_modal user_avatar"--}}
+{{--                     src="{{($last_work->user['avatar'] ?? '/img/avatars/default_avatar.svg')}}" alt="user_avatar">--}}
+{{--            </div>--}}
 
-            <div style="display: none;" id="modal_user_avatar"  class="cus-modal-container">
-                <img style="    width: 100%;" src="{{$last_work->user['avatar_cropped']  ?? '/img/avatars/default_avatar.svg'}}">
-            </div>
+{{--            <div style="display: none;" id="modal_user_avatar"  class="cus-modal-container">--}}
+{{--                <img style="    width: 100%;" src="{{$last_work->user['avatar_cropped']  ?? '/img/avatars/default_avatar.svg'}}">--}}
+{{--            </div>--}}
 
-            <div style="width: 100%; position:relative;">
-                <img id="more_user_actions" data-for-modal="modal_user_actions" class="show_modal"
-                     src="/img/social/more_user_actions.svg" alt="">
-                <div style="POSITION: RELATIVE; width: 100%; margin-bottom: 10px; display: flex; align-items: center;">
+{{--            <div style="width: 100%; position:relative;">--}}
+{{--                <img id="more_user_actions" data-for-modal="modal_user_actions" class="show_modal"--}}
+{{--                     src="/img/social/more_user_actions.svg" alt="">--}}
+{{--                <div style="POSITION: RELATIVE; width: 100%; margin-bottom: 10px; display: flex; align-items: center;">--}}
 
-                    <div STYLE=" display: flex;">
-                        <img style="width:85px;" class="user_avatar user_avatar_mobile"
-                             src="{{($last_work->user['avatar'] ?? '/img/avatars/default_avatar.svg')}}"
-                             alt="user_avatar">
+{{--                    <div STYLE=" display: flex;">--}}
+{{--                        <img style="width:85px;" class="user_avatar user_avatar_mobile"--}}
+{{--                             src="{{($last_work->user['avatar'] ?? '/img/avatars/default_avatar.svg')}}"--}}
+{{--                             alt="user_avatar">--}}
 
-                        <div style="display: flex;    flex-direction: column;    justify-content: space-evenly;">
-                            <div class="user_status_mobile">
-                                @if(Cache::has('is_online' . $user->id))
-                                    <span style="color: var(--green);"
-                                          class="user_now">В сети</span>
-                                @else
-                                    <span style="color: #969393;" class="user_now"> Не в сети</span>
-                                @endif
-                            </div>
-                            <a style="color: #363636" href="{{route('social.user_page', $user['id'])}}">
-                                <h2>
-                                    {{($user['nickname']) ? $user['nickname'] : $user['name'] . ' ' . $user['surname']}}
-                                </h2>
-                            </a>
-                        </div>
-                    </div>
+{{--                        <div style="display: flex;    flex-direction: column;    justify-content: space-evenly;">--}}
+{{--                            <div class="user_status_mobile">--}}
+{{--                                @if(Cache::has('is_online' . $user->id))--}}
+{{--                                    <span style="color: var(--green);"--}}
+{{--                                          class="user_now">В сети</span>--}}
+{{--                                @else--}}
+{{--                                    <span style="color: #969393;" class="user_now"> Не в сети</span>--}}
+{{--                                @endif--}}
+{{--                            </div>--}}
+{{--                            <a style="color: #363636" href="{{route('social.user_page', $user['id'])}}">--}}
+{{--                                <h2>--}}
+{{--                                    {{($user['nickname']) ? $user['nickname'] : $user['name'] . ' ' . $user['surname']}}--}}
+{{--                                </h2>--}}
+{{--                            </a>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
 
-                    <div style="margin-right: 45px;" class="user_status">
-                        @if(Cache::has('is_online' . $user->id))
-                            <span style="border: 1px var(--green) solid; color: var(--green);"
-                                  class="user_now">В сети</span>
-                        @else
-                            <span style="border: 1px #969393 solid; color: #969393;" class="user_now"> Не в сети</span>
-                        @endif
-                    </div>
+{{--                    <div style="margin-right: 45px;" class="user_status">--}}
+{{--                        @if(Cache::has('is_online' . $user->id))--}}
+{{--                            <span style="border: 1px var(--green) solid; color: var(--green);"--}}
+{{--                                  class="user_now">В сети</span>--}}
+{{--                        @else--}}
+{{--                            <span style="border: 1px #969393 solid; color: #969393;" class="user_now"> Не в сети</span>--}}
+{{--                        @endif--}}
+{{--                    </div>--}}
 
 
-                    <div style="display: none;" id="modal_user_actions" class="cus-modal-container">
-                        <h3>Дополнительные действия</h3>
-                        <div class="modal_user_more_actions">
-                            <a href="{{route('chat_create',($user['nickname']) ? 'Жалоба на пользователя ' . $user['nickname'] : 'Жалоба на пользователя ' . $user['name'] . ' ' . $user['surname'])}}">
-                                <img src="/img/danger-alert.svg" alt="">
-                                <p style="color: var(--red)">Пожаловаться</p>
-                            </a>
+{{--                    <div style="display: none;" id="modal_user_actions" class="cus-modal-container">--}}
+{{--                        <h3>Дополнительные действия</h3>--}}
+{{--                        <div class="modal_user_more_actions">--}}
+{{--                            <a href="{{route('chat_create',($user['nickname']) ? 'Жалоба на пользователя ' . $user['nickname'] : 'Жалоба на пользователя ' . $user['name'] . ' ' . $user['surname'])}}">--}}
+{{--                                <img src="/img/danger-alert.svg" alt="">--}}
+{{--                                <p style="color: var(--red)">Пожаловаться</p>--}}
+{{--                            </a>--}}
 
 {{--                            <a href="">--}}
 {{--                                <img src="/img/block_icon.svg" alt="">--}}
 {{--                                <p style="color: var(--red)">Блокировать</p>--}}
 {{--                            </a>--}}
-                        </div>
-                    </div>
-                </div>
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
 
-                <div class="user_header_buttons">
-                    @livewire('subscribe-button', ['user_to_subscribe' => $user->id])
-                    <a class="write_span @if((\Illuminate\Support\Facades\Auth::user()->id ?? 0) === $user->id) self_mes @endif log_check"
-                       href="{{route('new_chat', $user->id)}}">
-                        <img src="/img/social/pen_icon.svg" alt="">
-                        <p>Написать</p>
-                    </a>
+{{--                <div class="user_header_buttons">--}}
+{{--                    @livewire('subscribe-button', ['user_to_subscribe' => $user->id])--}}
+{{--                    <a class="write_span @if((\Illuminate\Support\Facades\Auth::user()->id ?? 0) === $user->id) self_mes @endif log_check"--}}
+{{--                       href="{{route('new_chat', $user->id)}}">--}}
+{{--                        <img src="/img/social/pen_icon.svg" alt="">--}}
+{{--                        <p>Написать</p>--}}
+{{--                    </a>--}}
 
-                    <script>
-                        $('.self_mes').click(function (event) {
-                            event.preventDefault();
-                            Swal.fire({
-                                title: 'Что-то пошло не так',
-                                icon: 'error',
-                                html: "<p>Нельзя написать сообщение самому себе :)</p>",
-                                showConfirmButton: false,
-                            })
-                        })
-                    </script>
+{{--                    <script>--}}
+{{--                        $('.self_mes').click(function (event) {--}}
+{{--                            event.preventDefault();--}}
+{{--                            Swal.fire({--}}
+{{--                                title: 'Что-то пошло не так',--}}
+{{--                                icon: 'error',--}}
+{{--                                html: "<p>Нельзя написать сообщение самому себе :)</p>",--}}
+{{--                                showConfirmButton: false,--}}
+{{--                            })--}}
+{{--                        })--}}
+{{--                    </script>--}}
 
-                    <a class="donate_span send_donate @if((\Illuminate\Support\Facades\Auth::user()->id ?? 0) === $user->id) self_donate @endif
-                    @if(Auth::check() && !((\Illuminate\Support\Facades\Auth::user()->id ?? 0) === $user->id)) show_modal @endif
-                            log_check
-                            "
-                       id="send_donate" data-for-modal="modal_user_donate">
-                        <img src="/img/social/donate_icon.svg" alt="">
-                        <p> Отправить донат</p>
-                    </a>
+{{--                    <a class="donate_span send_donate @if((\Illuminate\Support\Facades\Auth::user()->id ?? 0) === $user->id) self_donate @endif--}}
+{{--                    @if(Auth::check() && !((\Illuminate\Support\Facades\Auth::user()->id ?? 0) === $user->id)) show_modal @endif--}}
+{{--                            log_check--}}
+{{--                            "--}}
+{{--                       id="send_donate" data-for-modal="modal_user_donate">--}}
+{{--                        <img src="/img/social/donate_icon.svg" alt="">--}}
+{{--                        <p> Отправить донат</p>--}}
+{{--                    </a>--}}
 
-                    <script>
-                        $('.self_donate').click(function (event) {
-                            event.preventDefault();
-                            Swal.fire({
-                                title: 'Что-то пошло не так',
-                                icon: 'error',
-                                html: "<p>Нельзя сделать донат самому себе :)</p>",
-                                showConfirmButton: false,
-                            })
-                        })
-                    </script>
+{{--                    <script>--}}
+{{--                        $('.self_donate').click(function (event) {--}}
+{{--                            event.preventDefault();--}}
+{{--                            Swal.fire({--}}
+{{--                                title: 'Что-то пошло не так',--}}
+{{--                                icon: 'error',--}}
+{{--                                html: "<p>Нельзя сделать донат самому себе :)</p>",--}}
+{{--                                showConfirmButton: false,--}}
+{{--                            })--}}
+{{--                        })--}}
+{{--                    </script>--}}
 
-                    @if(Auth::check())
-                        <div style="display: none;" id="modal_user_donate" class="cus-modal-container">
-                            <h3 style="margin-bottom: 10px;">
-                                Отправить донат автору: <br>
-                                <span
-                                    style="color: var(--social_blue)">{{($user['nickname']) ? $user['nickname'] : $user['name'] . ' ' . $user['surname']}}</span>
-                            </h3>
-                            <div style="flex-wrap: wrap; display:flex;">
-                                @livewire('make-donate-form', ['user_to' => $user])
-                            </div>
-                        </div>
-                    @endif
-                </div>
-            </div>
-        </div>
+{{--                    @if(Auth::check())--}}
+{{--                        <div style="display: none;" id="modal_user_donate" class="cus-modal-container">--}}
+{{--                            <h3 style="margin-bottom: 10px;">--}}
+{{--                                Отправить донат автору: <br>--}}
+{{--                                <span--}}
+{{--                                    style="color: var(--social_blue)">{{($user['nickname']) ? $user['nickname'] : $user['name'] . ' ' . $user['surname']}}</span>--}}
+{{--                            </h3>--}}
+{{--                            <div style="flex-wrap: wrap; display:flex;">--}}
+{{--                                @livewire('make-donate-form', ['user_to' => $user])--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    @endif--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
 
         <style>
             .user_header_stats_block div {
