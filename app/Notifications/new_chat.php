@@ -83,6 +83,6 @@ class new_chat extends Notification
             // ->view('notification', ['url' => $url])
 
             // (Optional) Inline Buttons
-            ->button('К чатам', route('chats'));
+            ->button('К чатам', route('chats_admin'));
     }
 }
