@@ -63,7 +63,7 @@ class AppServiceProvider extends ServiceProvider
         ) a
         where a.rn = 1
         and (a.flag_mes_read is null or a.flag_mes_read = 0)
-        and a.last_mes_to = ' . Auth::user()->id . '
+//        and a.last_mes_to = ' . Auth::user()->id . '
         order by last_mes_created desc';
 
 
