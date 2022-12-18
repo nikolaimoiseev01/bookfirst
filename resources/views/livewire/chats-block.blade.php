@@ -29,7 +29,7 @@
                     <i wire:ignore
                        class="show_admin_chats fa-solid fa-chevron-down"></i>
                 </div>
-                <div style="border-bottom: 1px #8ecec0 solid !important; display: none;" class="chats_with_admin">
+                <div style="padding-top: 5px; border-bottom: 1px #8ecec0 solid !important; display: none;" class="chats_with_admin">
                     @foreach($user_chats as $chat)
                         @if($chat->u_to_id === 2 || $chat->u_cr_id === 2)
                             <div wire:click.prevent="choose_chat({{$chat->id}})"
