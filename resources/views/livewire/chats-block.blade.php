@@ -232,17 +232,17 @@
 
                     <div id="messages" class="messages">
                         @if(!$new_chat_user_id_check)
-{{--                            @if(count($messages) == 0 && ($messages->chat['collection_id'] || $messages->chat['own_book_id']) > 0)--}}
-{{--                                <div--}}
-{{--                                    style="margin:0; height: 100%; display: flex; align-items: center; justify-content: center"--}}
-{{--                                    class="no-access">--}}
-{{--                            <span>--}}
-{{--                                Это чат с Вашим личным менеджером по конкретно этому изданию.--}}
-{{--                                В нем пока нет сообщений.</br>--}}
-{{--                                Здесь Вы можете задать любые вопросы, а также прикреплять файлы при необходимости.--}}
-{{--                            </span>--}}
-{{--                                </div>--}}
-{{--                            @endif--}}
+                            @if(count($messages) == 0 && ($messages[0]->chat['collection_id'] || $messages[0]->chat['own_book_id']) > 0)
+                                <div
+                                    style="margin:0; height: 100%; display: flex; align-items: center; justify-content: center"
+                                    class="no-access">
+                            <span>
+                                Это чат с Вашим личным менеджером по конкретно этому изданию.
+                                В нем пока нет сообщений.</br>
+                                Здесь Вы можете задать любые вопросы, а также прикреплять файлы при необходимости.
+                            </span>
+                                </div>
+                            @endif
 
 
                             @foreach($messages as $message)

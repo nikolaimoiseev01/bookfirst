@@ -104,7 +104,7 @@ class ChatsBlock extends Component
         }
 
         $this->messages = Message::where('chat_id', $this->chosen_chat_id)->with('message_file')->get();
-
+dd($this->messages[0]);
         return view('livewire.chats-block', [
             'user_chats' => $this->user_chats,
             'cur_chat' => $this->cur_chat,
