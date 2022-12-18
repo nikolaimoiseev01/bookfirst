@@ -122,7 +122,7 @@
                                 <a style="padding: 3px 20px;" target="_blank"
                                    href="{{route('social.work_page', $last_work['id'])}}">Читать</a>
                             </div>
-                            <img src="{{$last_work['picture_cropped'] ?? '/img/social/default_work_pic_cropped.png'}}" alt="">
+                            <img src="{{$last_work['picture_cropped'] ?? '/img/social/default_work_pic_' . rand(1,4) . '.svg'}}" alt="">
                         </div>
 
                         <div class="other_work_icon_block">
@@ -199,7 +199,7 @@
                             <div style="display: none;" id="modal_user_avatar_{{$user->id}}"
                                  class="cus-modal-container">
                                 <img style="    width: 100%;"
-                                     src="{{$user->avatar_cropped  ?? '/img/avatars/default_avatar.svg'}}">
+                                     src="{{$user->avatar_cropped  ?? '/img/social/default_work_pic_' . rand(1,4) . '.svg'}}">
                             </div>
 
                             <a href="{{route('social.user_page', ($user->id))}}" target="_blank"
