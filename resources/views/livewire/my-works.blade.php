@@ -18,7 +18,11 @@
         @foreach($works as $work)
             <div class="container">
                 <div class="el-desc">
-                    <a href="{{route('social.work_page', $work['id'])}}"><span>{{Str::limit($work['title'], 30)}}</span></a>
+                    <a
+{{--                        href="{{route('social.work_page', $work['id'])}}"--}}
+                    >
+                        <span>{{Str::limit($work['title'], 30)}}</span>
+                    </a>
                     <p>Опубликовано: {{ Date::parse($work['created_at'])->format('j F') }}</p>
                 </div>
 
