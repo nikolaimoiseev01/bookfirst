@@ -84,7 +84,7 @@
            class="button">Чат по моему изданию
         </a>
         @if($chat_question_check)
-        @livewire('chat-question-check',['chat_id'=>$chat_id])
+        @livewire('chat-question-check',['mes_id'=>$chat_question_check->id])
             @endif
     </div>
     <div class="participation-wrap">
