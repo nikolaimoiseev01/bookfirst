@@ -46,7 +46,7 @@ class AppServiceProvider extends ServiceProvider
 
         view()->composer('*', function ($view) {
             if (Auth::user()->id ?? null) {
-                $this->query = 'select count(distinct chat_id) from messages m where (m.flag_mes_read is null or m.flag_mes_read = 0)  and m.user_to = ' . Auth::user()->id;
+                $this->query = 'select count(distinct chat_id) as noti_cnt from messages m where (m.flag_mes_read is null or m.flag_mes_read = 0)  and m.user_to = ' . Auth::user()->id;
 //select * from (
 //        SELECT c.*
 //
@@ -68,7 +68,7 @@ class AppServiceProvider extends ServiceProvider
 //        order by last_mes_created desc';
 
 
-                $notifications = DB::select(DB::raw($this->query));
+                $notifications = DB::select(DB::raw($this->query))[0]->noti_cnt;
             } else {
                 $notifications = null;
             }
