@@ -3,32 +3,33 @@
     <style>
 
         .sub_block {
-            color: #47AF98;
             background: white;
-            border: 1px #47AF98 solid;
-            border-radius: 7px;
             transition: all .3s;
             position: relative;
-            width: 158px;
-            height: 31px;
+            width: 135px;
+            height: 30px;
             overflow: hidden;
+            display: flex;
+            align-items: center;
+            margin-right: 15px;
+        }
+
+        .sub_block span {
+            font-size: 20px;
+            font-family: "Futura PT medium", serif;
+            color: #424242;
+            transition: 0.1s all ease-in-out;
         }
 
         .not_sub_yet:hover {
-
-            background: #47AF98;
             transition: all .3s;
             cursor: pointer;
         }
 
         .not_sub_yet:hover span {
-            color: white;
+            color: #ED5E3F;
+            transition: 0.1s all ease-in-out;
         }
-
-        .not_sub_yet:hover i {
-            color: white;
-        }
-
 
         .not_sub_yet, .sub_yet {
             font-size: 18px;
@@ -39,7 +40,7 @@
         .not_sub_yet {
             right: 0;
             width: 100%;
-            padding: 3px 20px;
+            /*padding: 3px 20px;*/
             transition: .3s all ease-in-out;
             display: flex;
             align-items: center;
@@ -53,39 +54,40 @@
             transition: .3s all ease-in-out;
             padding: 0;
             display: flex;
+            align-items: center;
+        }
+
+        .fa-xmark {
+            color: #ff6b6b;
         }
 
         .fa-xmark:hover {
             cursor: pointer;
         }
 
-        .sub_yet > div:first-child {
-            padding: 3px 20px;
-        }
 
         .sub_yet > div:nth-child(2) {
-            display: flex;
-            align-items: center;
-            flex: 1;
-            margin-left: auto;
-            border-left: 1px solid var(--green);
-            justify-content: center;
-            color: #ff6b6b;
+            padding-top: 2px;
+            padding-left: 15px;
+
         }
 
     </style>
 
     <div wire:ignore title="tst" class="log_check sub_block">
         <div wire:click.prevent="subscribe()" class="not_sub_yet">
-            <span>Подписаться</span> <i class="fa-regular fa-heart"></i>
+            <img src="/img/heart-regular.svg" alt="">
+            <span>Подписаться</span>
+
         </div>
 
         <div class="sub_yet">
-            <div>
-                <span>Подписан</span>
+
+            <div style="padding-left: 5px;">
+                <span style="color: var(--green) !important;">Подписан</span>
             </div>
             <div>
-                    <span title="Отписаться" class="tooltip">
+                    <span style="font-size: 24px;" title="Отписаться" class="tooltip">
                     <i wire:click.prevent="unsubscribe()" class="fa-solid fa-xmark"></i>
                         </span>
             </div>
@@ -93,10 +95,11 @@
         </a>
     </div>
 
-    {{--        <a href="" wire:click.prevent="subscribe()" style="box-shadow: none" class="log_check subscribed-button button">--}}
-    {{--            В избранном--}}
-    {{--            <i class="fa-regular fa-heart"></i>--}}
-    {{--        </a>--}}
+{{--    <a href="">--}}
+{{--        <img src="/img/heart-regular.svg" alt="">--}}
+{{--        <p>Подписаться</p>--}}
+{{--    </a>--}}
+
 
 
 

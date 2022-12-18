@@ -17,6 +17,7 @@ class CreateWorkLikesTable extends Migration
             $table->id();
             $table->bigInteger('user_id')->nullable();
             $table->bigInteger('work_id');
+            $table->bigInteger('user_id_of_work');
             $table->timestamps();
         });
     }

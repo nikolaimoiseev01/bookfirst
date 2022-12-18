@@ -22,15 +22,12 @@
     <link rel="manifest" href="/img/favicon/site.webmanifest">
     <link rel="mask-icon" href="/img/favicon/safari-pinned-tab.svg" color="#5bbad5">
     @if($subdomain == 'social')
-    <link rel="stylesheet" href="/css/social-home.css">
+        <link rel="stylesheet" href="/css/social-home.css">
     @endif
-
 
 
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
-
-
 
 
     <!-- Yandex.Metrika counter -->
@@ -57,7 +54,7 @@
     <!-- /Yandex.Metrika counter -->
 </head>
 
-<span id="user_id_logged_in" data-user_id = '{{$user_id_logged_in}}' style="display: none !important;"></span>
+<span id="user_id_logged_in" data-user_id='{{$user_id_logged_in}}' style="display: none !important;"></span>
 
 <body>
 <div id="modal_login" class="modal">
@@ -67,12 +64,8 @@
     </div>
 </div>
 
-<div id="no_amazon_modal" class="modal">
-    <div class="modal-wrap">
-        <div class="modal-container">
-            <p>На данный момент идет процесс добавления данного сборника на сайт Amazon.com. Ссылка станет
-                активной в ближайшее время.</p>
-        </div>
+<div class="cus-modal">
+    <div class="cus-modal-wrap">
     </div>
 </div>
 
@@ -116,7 +109,7 @@
 @yield('content')
 
 
-@extends('layouts.parts.footer_portal')
+@extends(($subdomain == 'social') ? 'layouts.parts.footer_social' : 'layouts.parts.footer_portal')
 
 <a href=""></a>
 @livewireScripts
@@ -128,30 +121,31 @@
 <script src="https://kit.fontawesome.com/e1202d4768.js" crossorigin="anonymous"></script>
 </script>
 
+
 @if($subdomain == 'social')
     <script src="/js/social-js.js"></script>
 @endif
 
-
-@if(Auth::user()->id ?? 0 > 0)
-@else
+{{--@stack('scripts')--}}
 
 
-    <script>
-
-
-        $(".log_check").click(function (event) {
+<script>
+    function make_log_check() {
+        $(".log_check").on('click', function (event) {
+            @if(Auth::user()->id ?? 0 > 0)
+            @else
             event.preventDefault();
             Swal.fire({
-                html: '<p style="margin-bottom: 20px;" >Для выполнения действия необходимо быть авторизированным в системе. Для этого необходимо произвести вход или зарегистрироваться, если у Вас еще нет аккаунта.</p><a style="margin-right: 10px;"  class="button" href="/login">Войти</a> <a style="margin-left: 10px;"  class="button" href="{{route('register')}}">Регистрация</a>',
-                icon: 'info',
+                html: '<p style="margin-bottom: 20px;" >Для выполнения действия необходимо быть авторизированным в системе. Для этого необходимо произвести вход или зарегистрироваться, если у Вас еще нет аккаунта.</p><div style="display: flex; justify-content: center;"><a style="margin-right: 10px;"  class="button" href="/login">Войти</a> <a style="margin-left: 10px;"  class="button" href="{{route('register')}}">Регистрация</a></div>',
+                // icon: 'info',
                 showConfirmButton: false,
             })
+            @endif
         });
-    </script>
+    }
+    make_log_check();
 
-
-@endif
+</script>
 
 
 <script>
@@ -181,24 +175,22 @@
     var utm_source_cookie;
     var utm_medium_cookie;
 
-    function getCook(cookiename)
-    {
+    function getCook(cookiename) {
         // Get name followed by anything except a semicolon
-        var cookiestring=RegExp(cookiename+"=[^;]+").exec(document.cookie);
+        var cookiestring = RegExp(cookiename + "=[^;]+").exec(document.cookie);
         // Return everything after the equal sign, or an empty string if the cookie name not found
-        return decodeURIComponent(!!cookiestring ? cookiestring.toString().replace(/^[^=]+./,"") : "");
+        return decodeURIComponent(!!cookiestring ? cookiestring.toString().replace(/^[^=]+./, "") : "");
     }
 
     function getParameters() {
         let urlString = window.location.toString();
         let paramString = urlString.split('?')[1];
         let queryString = new URLSearchParams(paramString);
-        for(let pair of queryString.entries()) {
-            if(pair[0] == 'utm_source') {
+        for (let pair of queryString.entries()) {
+            if (pair[0] == 'utm_source') {
                 utm_source = pair[1]
                 document.cookie = "utm_source=" + utm_source;
-            }
-            else if (pair[0] == 'utm_medium') {
+            } else if (pair[0] == 'utm_medium') {
                 utm_medium = pair[1]
                 document.cookie = "utm_medium=" + utm_medium;
             }
@@ -214,8 +206,6 @@
         utm_source_cookie = getCook('utm_source');
         utm_medium_cookie = getCook('utm_medium');
     }
-
-    console.log(utm_source_cookie, utm_medium_cookie)
 
 
 </script>
@@ -234,22 +224,22 @@
 
 {{--Новогодние снежинки--}}
 
-{{--<script src="https://unpkg.com/magic-snowflakes/dist/snowflakes.min.js"></script>--}}
-{{--<script>--}}
-{{--    new Snowflakes({--}}
-{{--        color: '#5ECDEF', // Default: "#5ECDEF"--}}
-{{--        container: document.body, // Default: document.body--}}
-{{--        count: 20, // 100 snowflakes. Default: 50--}}
-{{--        minOpacity: 0.4, // From 0 to 1. Default: 0.6--}}
-{{--        maxOpacity: 0.8, // From 0 to 1. Default: 1--}}
-{{--        minSize: 10, // Default: 10--}}
-{{--        maxSize: 20, // Default: 25--}}
-{{--        rotation: true, // Default: true--}}
-{{--        speed: 1, // The property affects the speed of falling. Default: 1--}}
-{{--        wind: true, // Without wind. Default: true--}}
-{{--        zIndex: 9997 // Default: 9999--}}
-{{--    });--}}
-{{--</script>--}}
+<script src="https://unpkg.com/magic-snowflakes/dist/snowflakes.min.js"></script>
+<script>
+    new Snowflakes({
+        color: '#5ECDEF', // Default: "#5ECDEF"
+        container: document.body, // Default: document.body
+        count: 20, // 100 snowflakes. Default: 50
+        minOpacity: 0.4, // From 0 to 1. Default: 0.6
+        maxOpacity: 0.8, // From 0 to 1. Default: 1
+        minSize: 10, // Default: 10
+        maxSize: 20, // Default: 25
+        rotation: true, // Default: true
+        speed: 1, // The property affects the speed of falling. Default: 1
+        wind: true, // Without wind. Default: true
+        zIndex: 9997 // Default: 9999
+    });
+</script>
 {{-------------------------------------------------------------------------}}
 
 

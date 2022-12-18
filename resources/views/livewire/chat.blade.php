@@ -19,7 +19,9 @@
             {{App::setLocale('ru')}}
             @foreach($messages as $message)
 
-                <div wire:ignore class="message">
+                <div
+{{--                    wire:ignore --}}
+                    class="message">
                     <p style="font-size: 18px;">@if($message['user_from'] === 2)
                             Поддержка @else {{App\Models\User::where('id',$message['user_from'])->value('name')}}@endif</p>
                     <div style="background:

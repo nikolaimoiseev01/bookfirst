@@ -257,7 +257,7 @@
                             <p id="print_needed">1</p>
                             <p>экз.)</p></div>
                     </div>
-                    <div style="display: none" id="check-price" class="participation-price">
+                    <div style="display: none !important;" id="check-price" class="participation-price">
                         <div style="display: flex;">
                             <h1 id="check_needed">0</h1>
                             <h1 style="margin-left:10px;">руб.</h1>

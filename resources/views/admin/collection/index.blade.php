@@ -104,7 +104,7 @@
                                     <!-- /.col -->
                                     <div class="col-sm-4">
                                         <div class="description-block">
-                                            <a href="{{route('collection.edit', $collection->id)}}">Профит</a> <br>
+                                            <a href="{{route('collection.edit', $collection->id)}}">Выручка</a> <br>
                                             <span style="font-size:20px;"
                                                   class="badge">{{\App\Models\Participation::where([['collection_id',$collection->id],['pat_status_id',3]])->sum('total_price')}}</span>
                                         </div>

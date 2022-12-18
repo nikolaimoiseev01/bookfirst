@@ -3,21 +3,51 @@
 namespace App\Http\Controllers\Social;
 
 use App\Http\Controllers\Controller;
+use App\Models\award;
 use App\Models\User;
+use App\Models\user_subscription;
+use App\Models\UserWallet;
 use App\Models\Work;
 use App\Models\work_comment;
 use App\Models\work_type;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class SocialController extends Controller
 {
     public function index(Request $request)
     {
-        $last_works = Work::orderBy('id', 'desc')->take(14)->orderBy('created_at', 'desc')->get();
-//        $top_users =
+        $last_work_first = Work::orderBy('id', 'desc')->first();
+
+
+        $last_works = Work::where('id', '<', $last_work_first['id'])
+            ->orderBy('id', 'desc')
+            ->take(20)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $users = DB::table('users as u')
+            ->leftJoin('user_subscriptions as us', 'u.id', '=', 'us.subscribed_to_user_id')
+            ->leftJoin('work_comments as wc', 'u.id', '=', 'wc.user_id')
+            ->leftJoin('work_likes as wl', 'u.id', '=', 'wl.user_id_of_work')
+            ->leftJoin('works as w', 'u.id', '=', 'w.user_id')
+            ->select('u.id', 'u.name', 'u.surname', 'u.nickname', 'u.avatar', 'u.avatar_cropped',
+                DB::raw('count(distinct us.id) AS cnt_user_subs'),
+                DB::raw('count(distinct wc.id) AS cnt_user_comments'),
+                DB::raw('count(distinct wl.id) AS cnt_user_likes'),
+                DB::raw('count(distinct w.id) AS cnt_user_works')
+            )
+            ->where('u.id', '<>', 2)
+            ->groupBy('u.id')
+            ->take(12)
+            ->get();
+
+        //        $top_users =
         return view('social.index', [
-            'last_works' => $last_works
+            'last_works' => $last_works,
+            'last_work_first' => $last_work_first,
+            'users' => $users,
         ]);
 
     }
@@ -25,8 +55,20 @@ class SocialController extends Controller
     public function user_page(Request $request)
     {
         $user = User::where('id', $request->user_id)->first();
+        $user_stat_readers = user_subscription::where('subscribed_to_user_id', $request->user_id)->get();
+        $user_stat_reads = user_subscription::where('user_id', $request->user_id)->get();
+        $works = Work::where('user_id', $request->user_id)->get();
+        $awards = award::where('user_id', $request->user_id)->get();
+        $last_other_works = Work::inRandomOrder()->limit(5)->get();
+
+//        $user_wallet = UserWallet::where('user_id', Auth::user()->id)->first();
         return view('social.user_page', [
-            'user' => $user
+            'user' => $user,
+            'awards' => $awards,
+            'user_stat_readers' => $user_stat_readers,
+            'user_stat_reads' => $user_stat_reads,
+            'works' => $works,
+            'last_other_works' => $last_other_works
         ]);
 
     }
@@ -35,6 +77,11 @@ class SocialController extends Controller
     {
         $work = Work::where('id', $request->work_id)->first();
         $user = User::where('id', $work['user_id'])->first();
+
+        $user_stat_readers = user_subscription::where('subscribed_to_user_id', $request->user_id)->get();
+        $user_stat_reads = user_subscription::where('user_id', $request->user_id)->get();
+        $works = Work::where('user_id', $request->user_id)->get();
+        $awards = award::where('user_id', $request->user_id)->get();
 
         $comments = work_comment::where('work_id', $request->work_id)
             ->wherenull('reply_to_comment_id')
@@ -48,7 +95,6 @@ class SocialController extends Controller
             ->where('a.work_id', $request->work_id)
             ->whereNotNull('a.reply_to_comment_id')
             ->get();
-
 
 
         $replies = DB::table('work_comments as a')
@@ -68,8 +114,34 @@ class SocialController extends Controller
             'user' => $user,
             'comments' => $comments,
             'replies' => $replies,
-            'replies_check' => $replies_check
+            'replies_check' => $replies_check,
+            'awards' => $awards,
+            'user_stat_readers' => $user_stat_readers,
+            'user_stat_reads' => $user_stat_reads,
+            'works' => $works,
         ]);
 
     }
+
+    protected $withCount = ['relation'];
+
+    public function all_works_feed()
+    {
+        $works = Work::where('user_id', '<>', 2)->withcount('work_like')->get();
+//        $works = Work::where('user_id', '<>', 2)->get();
+//        $query = 'select w.id, w.user_id, u.name, u.nickname, u.surname, u.avatar, wt.id as work_topic_id, wt.name as topic_name, w.title, w.text, w.created_at, w.work_type_id, w.picture, count(wl.id) as work_like_count, count(wc.id) as work_comment_count from works w
+//                  left join work_likes wl on wl.work_id = w.id
+//                  left join work_comments wc on wc.work_id = w.id
+//                  left join users u on u.id = w.user_Id
+//                  left join work_topics wt on wt.id = w.work_topic_id
+//                  group by  w.id, w.user_id, u.name, u.nickname, u.surname, u.avatar, wt.id, wt.name, w.title, w.text, w.created_at, w.work_type_id, w.picture';
+//
+//        $works = collect(DB::select(DB::raw($query)));
+        return view('social.all_works_feed', [
+            'works' => $works,
+        ]);
+    }
+
+
+
 }

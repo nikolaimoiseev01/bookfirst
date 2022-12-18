@@ -16,4 +16,16 @@ class Work extends Model
     public function work_type() {
         return $this->belongsTo(work_type::class);
     }
+
+    public function work_topic() {
+        return $this->belongsTo(work_topic::class);
+    }
+
+    public function work_like() {
+        return $this->hasMany(work_like::class);
+    }
+
+    public function work_comment() {
+        return $this->hasMany(work_comment::class);
+    }
 }

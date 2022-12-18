@@ -24,7 +24,14 @@ Auth::routes(['verify' => true]);
 
 
 Route::get('/email/verify', function () {
-    return view('auth.verify-email');
+
+    if(Auth::user()->hasVerifiedEmail()) {
+        return redirect()->route('collections');
+    }
+    else {
+        return view('auth.verify-email');
+    }
+
 })->middleware('auth')->name('verification.notice');
 
 
@@ -45,20 +52,30 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
 
 // ---------  СОЦИАЛЬНАЯ СЕТЬ --------- //
 
-Route::domain('social.' . env('APP_URL'))->group(function () {
+//Route::domain('social.' . env('APP_URL'))->group(function () {
+//    Route::get('/', [SocialController::class, 'index'])->name('social.home');
+//    Route::get('/user/{user_id}', [SocialController::class, 'user_page'])->name('social.user_page');
+//    Route::get('/work/{work_id}', [SocialController::class, 'work_page'])->name('social.work_page');
+//    Route::post('/create_work_comment', [WorkCommentsController::class, 'create_comment'])->name('social.create_comment');
+//
+//});
+
+Route::prefix('social')->group(function () {
     Route::get('/', [SocialController::class, 'index'])->name('social.home');
     Route::get('/user/{user_id}', [SocialController::class, 'user_page'])->name('social.user_page');
     Route::get('/work/{work_id}', [SocialController::class, 'work_page'])->name('social.work_page');
+    Route::get('/works_feed', [SocialController::class, 'all_works_feed'])->name('social.all_works_feed');
     Route::post('/create_work_comment', [WorkCommentsController::class, 'create_comment'])->name('social.create_comment');
+    Route::get('/search/{search_input}', [\App\Http\Controllers\Controller::class, 'site_search'])->name('site_search');
+
 });
 
 // ---------  СОЦИАЛЬНАЯ СЕТЬ --------- //
 
 
 
-
 // ---------  ПОРТАЛ --------- //
-Route::middleware([])->prefix('/')->group(function () {
+Route::middleware([])->domain(env('APP_URL'))->group(function () {
     Route::get('/', [PortalController::class, 'index'])->name('homePortal');
     Route::get('/collections/{collection_id}', [CollectionController::class, 'index'])->name('collection_page');
     Route::get('/own_book', [PortalController::class, 'own_book_page'])->name('own_book_page');
@@ -116,19 +133,17 @@ Route::middleware(['verified'])->prefix('myaccount')->group(function () {
     Route::resource('work', \App\Http\Controllers\Account\WorkController::class,);
     Route::get('/work/search/{work_input_search}', [App\Http\Controllers\Account\WorkController::class, 'index_search'])->name('work_search');
     Route::get('/myawards', [App\Http\Controllers\Account\AccountController::class, 'myawards'])->name('myawards');
+    Route::get('/mysubscribtions', [App\Http\Controllers\Account\AccountController::class, 'mysubscribtions'])->name('mysubscribtions');
     Route::get('/mynotifications', [App\Http\Controllers\Account\AccountController::class, 'mynotifications'])->name('mynotifications');
     Route::get('/chats', [App\Http\Controllers\ChatController::class, 'index'])->name('all_chats');
+    Route::get('/chats/new_chat_user_id={new_chat_user_id}', [App\Http\Controllers\ChatController::class, 'new_chat'])->name('new_chat');
     Route::get('/chats/archive', [App\Http\Controllers\ChatController::class, 'archive'])->name('archive_chats');
     Route::get('/chats/{chat_id}', [App\Http\Controllers\ChatController::class, 'chat'])->name('chat');
     Route::get('/chats/create/{chat_title}', [App\Http\Controllers\ChatController::class, 'create'])->name('chat_create');
     Route::get('/mysettings', [App\Http\Controllers\Account\AccountController::class, 'mysettings'])->name('mysettings');
 
-    Route::get('/my_digital_sales', function () {
-        $digital_sales = \App\Models\digital_sale::where('user_id', Auth::user()->id)->get();
-        return view('account.digital_sales', [
-            'digital_sales' => $digital_sales,
-        ]);
-    })->name('my_digital_sales');
+    Route::get('/my_digital_sales', [App\Http\Controllers\Account\AccountController::class, 'digital_sales'])->name('my_digital_sales');
+    Route::post('/make_donate', [App\Http\Controllers\Account\AccountController::class, 'make_donate'])->name('make_donate');
 
     // ---------  ОПЛАТА --------- //
     Route::post('/payments/create_part_payment/part_id={participation_id}/amount={amount}', [PaymentController::class, 'create_part_payment'])->name('payment.create_part_payment');
@@ -136,6 +151,8 @@ Route::middleware(['verified'])->prefix('myaccount')->group(function () {
     Route::post('/payments/create_own_book_payment/own_book_id={own_book_id}/payment_type={payment_type}/amount={amount}', [PaymentController::class, 'create_own_book_payment'])->name('payment.create_own_book_payment');
     Route::post('/payments/create_buying_collection/collection_id={collection_id}', [PaymentController::class, 'create_buying_collection'])->name('payment.create_buying_collection');
     Route::post('/payments/create_buying_own_book/own_book_id={collection_id}', [PaymentController::class, 'create_buying_own_book'])->name('payment.create_buying_own_book');
+
+    Route::post('/payments/create_points_payment', [PaymentController::class, 'create_points_payment'])->name('payment.create_points_payment');
     // ---------  // ОПЛАТА --------- //
 
 });
@@ -168,6 +185,7 @@ Route::middleware(['role:admin'])->prefix('admin_panel')->group(function () {
     Route::get('/collections/new_participants', [App\Http\Controllers\Admin\ParticipationController::class, 'new_participants'])->name('new_participants');
     Route::get('/collections/participants/{collection_id}', [\App\Http\Controllers\Admin\ParticipationController::class, 'participants'])->name('participants');
     Route::get('/user/{user_id}', [\App\Http\Controllers\Admin\UserController::class, 'user_page'])->name('user_page');
+    Route::post('/add_user_award/{user_id}', [\App\Http\Controllers\Admin\UserController::class, 'add_user_award'])->name('add_user_award');
     Route::resource('collection', \App\Http\Controllers\Admin\CollectionController::class,);
     Route::get('/promocodes', [\App\Http\Controllers\Admin\PromocodeController::class, 'index'])->name('promocodes_page');
     Route::post('/add_winner/{collection_id}', [App\Http\Controllers\Admin\CollectionController::class, 'add_winner'])->name('add_winner');

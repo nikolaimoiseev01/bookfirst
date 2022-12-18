@@ -97,7 +97,7 @@
     }
 
     .setting-button a {
-        margin-top: 20px !important;
+        margin-top: 0 !important;
         margin-left: 0 !important;
     }
 
@@ -204,7 +204,7 @@
     }
 
     .account-content {
-        padding-left: 120px;
+        padding-left: 100px !important;
     }
 
     .app-preloader {
@@ -216,7 +216,7 @@
         flex-direction: column;
         margin-bottom: 20px;
         width: 100%;
-        align-content: center;
+        /*align-content: center;*/
     }
 
     .account-header a {
@@ -258,15 +258,26 @@
 @media screen and (max-width: 500px) {
 
     .side-bar {
-        width: 50px;
+        width: 100%;
+        height: auto;
+        z-index: 99;
+        top: inherit;
+        padding: initial;
+        background: white;
+        border-top: 1px #e0e0e0a1 solid;
+        border-right: none;
     }
 
     .side-menu {
         padding: 5px 5px;
+        flex-direction: row;
+        justify-content: space-between;
+        overflow: auto;
     }
 
     .side-menu a {
-        padding: 2px 0;
+        padding: 6px;
+        margin: 3px;
     }
 
     .nav-item svg {
@@ -276,8 +287,18 @@
     }
 
     .account-content {
-        padding-left: 80px;
-        padding-right: 10px;
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+    }
+
+
+
+    .footer {
+        margin-bottom: 52px;
+    }
+
+    .side-menu::-webkit-scrollbar {
+        height: 5px;
     }
 
     .app-preloader {

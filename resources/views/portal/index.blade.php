@@ -9,7 +9,7 @@
 @endsection
 
 @section('content')
-    <div id="modal_video_hero" class="modal">
+    <div style="display: none;" id="modal_video_hero" class="modal">
         <div class="modal-wrap">
             <iframe id="video_hero_iframe" width="740" height="420" src="https://www.youtube.com/embed/q9YOJS_6FMg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>

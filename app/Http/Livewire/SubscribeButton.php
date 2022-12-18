@@ -31,7 +31,14 @@ class SubscribeButton extends Component
 
     public function subscribe()
     {
-        if (Auth::user()->id ?? 0 > 0) {
+        if ((Auth::user()->id ?? 0) === $this->user_to_subscribe) {
+            $this->dispatchBrowserEvent('swal:modal', [
+                'type' => 'error',
+                'title' => 'Что-то пошло не так!',
+                'text' => 'Нельзя подписаться на самого себя2 :)',
+            ]);
+        }
+        else if ((Auth::user()->id ?? 0) > 0) {
             $new_user_subsriber = new user_subscription();
             $new_user_subsriber->user_id = Auth::user()->id;
             $new_user_subsriber->subscribed_to_user_id = $this->user_to_subscribe;
@@ -39,13 +46,6 @@ class SubscribeButton extends Component
 
 
             $this->dispatchBrowserEvent('subscribe');
-
-
-//        $this->dispatchBrowserEvent('swal:modal', [
-//            'type' => 'success',
-//            'title' => 'Отлично!',
-//            'text' => 'Вы успешно подписались на пользователя!',
-//        ]);
         }
     }
 

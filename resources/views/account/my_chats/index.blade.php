@@ -21,10 +21,12 @@
 
 @section('content')
 
-    @if (count($chats_check) === 0)
-        <div class="no-books-yet">
-            <h1 style="line-height: 45px;">На данный момент активные чаты отсутствуют. Обращаем внимание, что общение по вопросам начатой публикации ведется на странице конкретного издания. Создавать отдельный чат для этого не нужно.</h1>
-        </div>
-    @endif
-  @livewire('my-chats',['chat_group' => 1])
+{{--    @if (count($chats_check) === 0)--}}
+{{--        <div class="no-books-yet">--}}
+{{--            <h1 style="line-height: 45px;">На данный момент активные чаты отсутствуют. Обращаем внимание, что общение по вопросам начатой публикации ведется на странице конкретного издания. Создавать отдельный чат для этого не нужно.</h1>--}}
+{{--        </div>--}}
+{{--    @endif--}}
+
+    @livewire('chats-block', ['new_chat_user_id' => $new_user_id])
+{{--  @livewire('my-chats',['chat_group' => 1])--}}
 @endsection

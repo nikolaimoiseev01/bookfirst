@@ -15,8 +15,7 @@ class CreateWorkTypesTable extends Migration
     {
         Schema::create('work_types', function (Blueprint $table) {
             $table->id();
-            $table->string('type');
-            $table->string('topic');
+            $table->string('name');
             $table->timestamps();
         });
     }

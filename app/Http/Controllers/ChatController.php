@@ -24,8 +24,27 @@ class ChatController extends Controller
                     ->orWhere('user_created', Auth::user()->id);
             })
             ->get();
+        $new_user_id = null;
         return view('account/my_chats/index', [
             'chats_check'=>$chats_check,
+            'new_user_id' => $new_user_id
+        ]);
+    }
+
+
+    public function new_chat($new_user_id)
+    {
+
+        $chats_check = Chat::where('chat_status_id', '<>', 3)->where('collection_id', null)->where('own_book_id', null)
+            ->where(function($q) {
+                $q->where('user_to', Auth::user()->id)
+                    ->orWhere('user_created', Auth::user()->id);
+            })
+            ->get();
+
+        return view('account/my_chats/index', [
+            'chats_check'=>$chats_check,
+            'new_user_id' => $new_user_id
         ]);
     }
 
@@ -33,7 +52,7 @@ class ChatController extends Controller
     {
         $chat = Chat::where('id', $chat_id)->first();
         return view('account/my_chats/chat', [
-            'chat'=>$chat,
+            'chat'=>$chat
         ]);
     }
 

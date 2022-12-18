@@ -12,4 +12,8 @@ class Message extends Model
     public function message_file() {
         return $this->hasMany(message_file::class);
     }
+
+    public function Chat() {
+        return $this->belongsTo(Chat::class);
+    }
 }

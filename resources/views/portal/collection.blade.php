@@ -27,7 +27,7 @@
             </div>
             <div class="right-collection-info">
                 <div class="col-text">
-                    <h3>{{$collection['title']}}</h3>
+                    <h3 style="border-bottom: 1px #4C4B46 solid;">{{$collection['title']}}</h3>
                     <p>{{$collection['col_desc']}}</p>
                 </div>
                 <div class="col-card">

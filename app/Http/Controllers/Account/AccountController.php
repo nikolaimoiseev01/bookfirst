@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\own_book;
 use App\Models\Participation;
 use App\Models\Pat_status;
+use App\Models\User;
+use App\Models\user_subscription;
+use App\Models\UserWallet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
@@ -33,6 +36,19 @@ class AccountController extends Controller
         ]);
     }
 
+
+    public function mysubscribtions() {
+        $user_subed_to_ids = user_subscription::where('user_id', Auth::user()->id)->pluck('subscribed_to_user_Id')->toArray();
+        $sub_users = User::wherein('id', $user_subed_to_ids)->paginate(10);
+
+        return view('account/mysubscriptions', [
+            'sub_users' => $sub_users
+        ]);
+    }
+
+
+
+
     public function mynotifications() {
 
         return view('account/mynotifications', [
@@ -44,6 +60,23 @@ class AccountController extends Controller
         return view('account/mysettings', [
         ]);
     }
+
+
+
+    public function digital_sales () {
+        $digital_sales = \App\Models\digital_sale::where('user_id', Auth::user()->id)->get();
+        $user_wallet = UserWallet::where('user_id', Auth::user()->id)->first();
+        return view('account.digital_sales', [
+            'digital_sales' => $digital_sales,
+            'user_wallet' => $user_wallet,
+        ]);
+    }
+
+
+
+
+
+
 
 
 }

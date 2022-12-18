@@ -10,6 +10,7 @@ use App\Models\Participation;
 use App\Models\Printorder;
 use App\Models\Transaction;
 use App\Models\User;
+use App\Models\UserWallet;
 use App\Notifications\EmailNotification;
 use App\Notifications\new_participation;
 use App\Notifications\TelegramNotification;
@@ -205,6 +206,40 @@ class PaymentController extends Controller
             }
         }
     }
+
+    public function create_points_payment(Request $request, PaymentService $service)
+    {
+
+        $user_id = Auth::user()->id;
+        $amount = $request->amount;
+        $description = "Пополнение кошелька";
+        $url_redirect = $request->url_redirect;
+
+        // Записываем данные транзакции
+        $transaction = new Transaction();
+        $transaction->user_id = $user_id;
+        $transaction->amount = $amount;
+        $transaction->bought_own_book_id = null;
+        $transaction->description = $description;
+        $transaction->save();
+
+        if ($transaction) {
+            $link = $service->createPayment($amount, $description, $url_redirect, [
+                'user_id' => Auth::user()->id,
+                'transaction_id' => $transaction->id,
+                'amount' => $amount,
+                'description' => $description,
+                'url_redirect' => $url_redirect
+            ]);
+
+            if (isset($link)) {
+                return redirect()->away($link);
+            }
+        }
+    }
+
+
+
 
 
     public function callback(Request $request, PaymentService $service)
@@ -461,7 +496,7 @@ class PaymentController extends Controller
                                 ->update(array(
                                     'paid_at' => Carbon::now('Europe/Moscow')->toDateTime(),
                                 ));
-                            Log::info($metadata['print_id']);
+
                             // Посылаем Email уведомление пользователю
                             $user->notify(new EmailNotification(
                                 'Оплата подтверждена!',
@@ -571,6 +606,39 @@ class PaymentController extends Controller
                                     route('user_participation', 232)));
 
                         }
+                    }
+                    // --------------------------------------------------------------------------------------------------------------------------------
+
+
+                    // Клиент пополнил себе кошелек -------------------------------------------------------------------------------------------------
+                    if ($metadata['description'] == 'Пополнение кошелька' && Transaction::where('id', $transactionId)->value('status') === 'CREATED') { // Это пополнение кошелька
+                        $user = User::where('id', $metadata['user_id'])->first();
+                        $old_amount = UserWallet::where('user_id', $user['id'])->value('cur_amount');
+                        $new_amount = $old_amount + $metadata['amount'];
+
+
+                            // Меняем баланс кошелька
+                            UserWallet::where('user_id', $user['id'])
+                                ->update(array(
+                                    'cur_amount' => $new_amount
+                                ));
+                            // -----------------------------------------------------------------
+
+                            // Посылаем Email уведомление автору
+                            $user->notify(new EmailNotification(
+                                'Вашу баланс успешно пополнен!',
+                                $user['name'],
+                                "Поздравляем! Платеж на пополнение баланса прошел успешно.",
+                                "Личный кабинет",
+                                $metadata['url_redirect']));
+
+                            // Посылаем Telegram уведомление нам
+                            Notification::route('telegram', '-506622812')
+                                ->notify(new TelegramNotification('💸 Новое зачисление в кабинет! 💸', "Юзер: " . $user['name'] . ' ' . $user['surname'] .
+                                    "\n" . "Сумма: " . $metadata['amount'] . " руб.",
+                                    "В админку",
+                                    route('homeAdmin')));
+
                     }
                     // --------------------------------------------------------------------------------------------------------------------------------
 

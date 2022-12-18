@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\award;
+use App\Models\award_type;
 use App\Models\Chat;
 use App\Models\chat_status;
 use App\Models\Collection;
@@ -32,9 +34,13 @@ class UserController extends Controller
 
         $user = User::orderBy('created_at', 'desc')->where('id', $request->user_id)->first();
         $chats = Chat::where('user_to', $request->user_id)->orWhere('user_created', $request->user_id)->get();
+        $awards = award::where('user_id', $request->user_id)->get();
+        $awards_types = award_type::orderBy('created_at')->get();
         return view('admin.user.user_page', [
             'user' => $user,
             'chats' => $chats,
+            'awards' => $awards,
+            'awards_types' => $awards_types
         ]);
     }
 
@@ -112,5 +118,21 @@ class UserController extends Controller
         Auth::loginUsingId(2);
         return redirect()->route('homeAdmin');
     }
+
+
+    public function add_user_award(Request $request) {
+
+
+        $new_award = new award;
+        $new_award->user_id = $request->user_id;
+        $new_award->award_type_id = $request->award_id_to_update;
+        $new_award->save();
+//        $writer = new Xlsx($spreadsheet);
+//        $file_title = 'Подписчики с сайта';
+//        $writer->save($file_title . '.xlsx');
+//        return response()->download($file_title . '.xlsx')->deleteFileAfterSend(true);
+
+    }
+
 
 }

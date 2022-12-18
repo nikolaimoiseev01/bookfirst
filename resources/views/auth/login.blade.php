@@ -83,7 +83,7 @@
                     </div>
 
                     <div class="login-buttons-wrap">
-                        <button id="form_login" class="preloader_button button" type="submit">
+                        <button id="form_login" class="show_preloader_on_click preloader_button button" type="submit">
                             <span class="button__text">Войти</span>
                         </button>
                         @if (Route::has('password.request'))

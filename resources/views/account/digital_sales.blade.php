@@ -45,8 +45,40 @@
     </style>
 @endsection
 @section('page-title')
-    <div class="account-header">
+    <div style="width: 100%; justify-content: space-between; max-width: 900px;" class="account-header">
         <h1>Мои покупки</h1>
+        <div style="display:flex;">
+            <p style="margin-right: 10px;" >Баланс: {{$user_wallet['cur_amount']}} руб.</p>
+            <form style="display: none; margin-left: 20px; width: auto;"
+                  action="{{ route('payment.create_points_payment')}}"
+                  method="POST"
+                  enctype="multipart/form-data"
+            id="input_points_form">
+                @csrf
+                <input value="{{route('my_digital_sales')}}"
+                       style="display: none"
+                       type="text" name="url_redirect"
+                       id="url_redirect">
+                <input style="max-width: 80px; text-align: center; padding: 2px;" placeholder="сумма" type="number" name="amount"
+                       class="form-control"
+                       id="amount">
+
+                <button type="submit" style="background: none; border: none; margin-left: 10px; height: fit-content; max-width:250px;"
+                   class="link">
+                    К оплате
+                </button>
+            </form>
+            <a id="show_input_points" type="submit" style="height: fit-content; max-width:250px;"
+               class="link">
+                Пополнить
+            </a>
+        </div>
+        <script>
+            $('#show_input_points').click(function() {
+$('#input_points_form').show();
+$(this).hide();
+            })
+        </script>
     </div>
     <div class="digital_sales_wrap">
         @if(count($digital_sales) > 0)
@@ -79,6 +111,8 @@
         @endif
 
     </div>
+
+
 @endsection
 @section('content')
 @endsection

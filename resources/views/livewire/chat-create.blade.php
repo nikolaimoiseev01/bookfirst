@@ -28,7 +28,7 @@
                       class="form-control" id="text"></textarea>
             <button id="chat_form" style="position: relative;"
                     class="@if (Auth::user()->hasRole('admin'))create_chat @endif preloader_button_wo_submit button btn btn-block bg-gradient-primary">
-                <span onclick="test()" class="button__text">Создать вопрос</span>
+                <span onclick="test()" class="button__text">Создать обсуждение</span>
             </button>
         </div>
     </form>

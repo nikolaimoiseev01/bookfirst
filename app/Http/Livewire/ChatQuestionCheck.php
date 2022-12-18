@@ -2,24 +2,31 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Message;
 use Livewire\Component;
 
 class ChatQuestionCheck extends Component
 {
 
-    public $chat_id;
+    public $mes_id;
 
     public function render()
     {
         return view('livewire.chat-question-check');
     }
 
-    public function hide_question() {
+    public function mount($mes_id)
+    {
+        $this->mes_id = $mes_id;
 
-        \App\Models\Chat::where('id', $this->chat_id)->update([
-            'flag_hide_question' => 1,
+    }
+
+    public function hide_message() {
+
+        Message::where('id', $this->mes_id)->update([
+            'flag_mes_read' => 1,
         ]);
 
-        $this->dispatchBrowserEvent('hide_question_chat');
+        $this->dispatchBrowserEvent('hide_mes_notification', ['mes_id' => $this->mes_id]);
     }
 }

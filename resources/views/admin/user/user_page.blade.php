@@ -23,6 +23,7 @@
                         <li class="nav-item"><a class="nav-link" href="#participations" data-toggle="tab">Участие в
                                 сборниках</a></li>
                         <li class="nav-item"><a class="nav-link" href="#own_books" data-toggle="tab">Книги автора</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#awards" data-toggle="tab">Награды</a></li>
                         <li class="nav-item"><a class="nav-link" href="#chats" data-toggle="tab">Чаты</a></li>
                     </ul>
                 </div><!-- /.card-header -->
@@ -181,6 +182,60 @@
                             </div>
                         </div>
                         <!-- /.tab-content -->
+
+
+                        <div class="tab-pane" id="awards">
+                            {{App::setLocale('ru')}}
+                            @if(count($awards)>0)
+                                <h2 class="text-info mb-4">Всего у автора <b>{{count($awards)}}</b> наград.
+                                </h2>
+                                @foreach($awards as $award)
+                                    <h3>{{$loop->index + 1}}. {{$award['name']}}</h3>
+                                @endforeach
+                            @else
+                                У автора еще нет наград :(
+                            @endif
+
+                            <div class="mt-2 d-flex align-items-center">
+
+                                <div style="display: none" id="change_user_award_form_wrap">
+                                    <form class="d-flex ml-3" style="align-items: center;"
+                                          action="{{ route('add_user_award',['user_id' => $user['id']]) }}" method="POST"
+                                          enctype="multipart/form-data"
+                                    >
+                                        @csrf
+
+                                        <select style="padding: 0 0 0 10px; height: 33px; width: fit-content;"
+                                                id="award_id_to_update" class="form-control"
+                                                name="award_id_to_update">
+                                            @foreach($awards_types as $awards_type)
+                                                <option value="{{$awards_type['id']}}">{{$awards_type['name']}}</option>
+                                            @endforeach
+                                        </select>
+
+                                        <button id="btn-submit" type="submit"
+                                                style="height: fit-content; max-height: 30px; max-width:150px;"
+                                                data-status-from="{{'123'}}"
+                                                class="change_status ml-3 d-flex align-items-center justify-content-center btn btn-outline-primary"
+                                        >
+                                            Добавить
+                                        </button>
+                                    </form>
+                                </div>
+
+                                <button style="display: flex; border: none; width: auto; padding: 3px 10px;max-width:150px"
+                                        data-form="change_user_award" type="button"
+                                        class="change_status_button ml-1 btn btn-outline-info btn-block btn-sm"
+                                >
+                                    <span style="margin-right: 20px;">Добавить награду</span>
+                                    <i style="font-size: 20px;" class="fa fa-edit"></i>
+
+                                </button>
+                            </div>
+
+                        </div>
+                        <!-- /.tab-content -->
+
 
                         <div class=" tab-pane" id="chats">
 

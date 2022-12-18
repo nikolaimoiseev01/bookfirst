@@ -1,11 +1,11 @@
 <div>
-    <div class="like_block">
+    <div wire:key="like_for_work_{{$work_id}}" class="like_block">
 
         <i id="like_{{$work_id}}"
-           wire:ignore href="."
+           href="."
            wire:click.prevent="new_like()"
            class="log_check @if ($like_check)like_icon__active @endif fa-regular like_icon fa-heart"
-           style="--fa-animation-duration: 0.1s;">
+           style="color: var(--grey_font);">
 
         </i>
 

@@ -162,8 +162,13 @@
     border-left: 1px #dfdfdf solid;
 }
 
+.messages .message {
+    max-width: fit-content;
+    margin-top: 20px;
+}
+
 .messages .message:first-child {
-    margin-top: 10px !important;
+    margin-top: 0;
 }
 
 #preview-textarea:focus-visible {
