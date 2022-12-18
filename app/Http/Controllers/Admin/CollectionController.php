@@ -165,6 +165,8 @@ class CollectionController extends Controller
     {
         $authors = Participation::where('collection_id', $request->col_id)->where('pat_status_id', 3)->get();
 
+        // Creating the new document...
+        $phpWord = new \PhpOffice\PhpWord\PhpWord();
 
         // Делаем стили для разных сборников
         if (str_contains($authors[1]->collection['title'], 'Дух')) {
@@ -174,6 +176,8 @@ class CollectionController extends Controller
             $work_title_style = array('name' => 'Bad Script', 'size' => 16, 'color' => 'FF0000', 'bold' => true);
             $work_title_align = array('align' => 'left');
             $work_text_style = array('name' => 'Ayuthaya', 'size' => 10, 'color' => '000000', 'bold' => false);
+            $phpWord->getSettings()->setMirrorMargins(true);
+
         } else {
             $page_size = "A4";
             $author_name_style = array('name' => 'Days', 'size' => 16, 'color' => 'F79646', 'bold' => true);
@@ -187,12 +191,12 @@ class CollectionController extends Controller
             'marginTop' => 1000,
             'footerHeight' => \PhpOffice\PhpWord\Shared\Converter::inchToTwip(.35),
             'marginBottom' => 1100,
-            "paperSize" => $page_size
+            "paperSize" => $page_size,
+            'headerHeight'=> \PhpOffice\PhpWord\Shared\Converter::inchToTwip(.28)
         );
 
 
-        // Creating the new document...
-        $phpWord = new \PhpOffice\PhpWord\PhpWord();
+
 
         foreach ($authors as $author) {
 
@@ -200,7 +204,7 @@ class CollectionController extends Controller
 
 
             $section = $phpWord->addSection($PidPageSettings);
-            $header = $section->addHeader();
+
 
 
             $phpWord->setDefaultParagraphStyle(
@@ -235,6 +239,21 @@ class CollectionController extends Controller
                 $author_name,
                 $author_name_footer_style
             );
+
+            // Делаем изображение в хедер
+            if (str_contains($author->collection['title'], 'Дух')) {
+                $header = $section->addHeader();
+                $header->firstPage();
+                $header->addText("");
+
+                $header_sub = $section->addHeader();
+                $header_sub->addImage('img/duh_header_img.png',
+                    array('width' => 200,
+                        'height' => 27.27,
+                        'alignment' => 'center'
+                    )
+                );
+            }
 
 
             $author_works = Participation_work::where('participation_id', $author['id'])->get();
