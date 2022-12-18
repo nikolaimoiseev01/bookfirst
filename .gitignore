@@ -4,7 +4,8 @@
 /public/admin_files
 /public/app/public/filepond_temp
 /public/filepond_temp
-/public/img
+/public/img/avatars
+/public/img/work_pics
 /public/storage
 /storage/*.key
 /vendor
