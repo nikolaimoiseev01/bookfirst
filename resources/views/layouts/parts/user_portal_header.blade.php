@@ -6,11 +6,11 @@
                      src="{{($last_work->user['avatar'] ?? '/img/avatars/default_avatar.svg')}}" alt="user_avatar">
 
                 <div id="mobile_header_scroll_name_wrap">
-                    <a style="color: #363636" href="{{route('social.user_page', $user['id'])}}">
-                        <h2>
-                            {{($user['nickname']) ? $user['nickname'] : $user['name'] . ' ' . $user['surname']}}
-                        </h2>
-                    </a>
+{{--                    <a style="color: #363636" href="{{route('social.user_page', $user['id'])}}">--}}
+{{--                        <h2>--}}
+{{--                            {{($user['nickname']) ? $user['nickname'] : $user['name'] . ' ' . $user['surname']}}--}}
+{{--                        </h2>--}}
+{{--                    </a>--}}
                     <style>
                         #mobile_header_scroll_name_buttons span {
                             display: block;
@@ -19,7 +19,7 @@
                     <div style="display: none" id="mobile_header_scroll_name_buttons" class="user_header_buttons">
                         @livewire('subscribe-button', ['user_to_subscribe' => $user->id])
                         <a target="_blank"
-                           class="write_span log_check @if((\Illuminate\Support\Facades\Auth::user()->id ?? 0) === $user->id) self_mes @endif "
+                           class="write_span log_check @if((\Illuminate\Support\Facades\Auth::user()->id ?? 0) === $user['id']) self_mes @endif "
                            @if((\Illuminate\Support\Facades\Auth::user()->id ?? 0) != $user->id)
                            href="{{route('new_chat', $user->id)}}"
                             @endif

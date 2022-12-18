@@ -54,11 +54,12 @@ class SocialController extends Controller
 
     public function user_page(Request $request)
     {
-        $user = User::where('id', $request->user_id)->first();
-        $user_stat_readers = user_subscription::where('subscribed_to_user_id', $request->user_id)->get();
-        $user_stat_reads = user_subscription::where('user_id', $request->user_id)->get();
-        $works = Work::where('user_id', $request->user_id)->get();
-        $awards = award::where('user_id', $request->user_id)->get();
+        $user_id = intval($request->user_id);
+        $user = User::where('id', $user_id)->first();
+        $user_stat_readers = user_subscription::where('subscribed_to_user_id', $user_id)->get();
+        $user_stat_reads = user_subscription::where('user_id', $user_id)->get();
+        $works = Work::where('user_id', $user_id)->get();
+        $awards = award::where('user_id', $user_id)->get();
         $last_other_works = Work::inRandomOrder()->limit(5)->get();
 
 //        $user_wallet = UserWallet::where('user_id', Auth::user()->id)->first();
