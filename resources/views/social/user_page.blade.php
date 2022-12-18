@@ -48,7 +48,7 @@
                                     <a style="padding: 3px 20px;" target="_blank"
                                        href="{{route('social.work_page', $last_work['id'])}}">Читать</a>
                                 </div>
-                                <img src="{{$last_work['picture_cropped'] ?? '/img/social/default_work_pic_cropped.png'}}" alt="">
+                                <img src="{{$last_work['picture_cropped'] ?? '/img/social/default_work_pic_' . rand(1,4) . '.svg'}}" alt="">
                             </div>
 
                             <div class="other_work_icon_block">

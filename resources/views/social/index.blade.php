@@ -97,7 +97,7 @@
                     </div>
                 </div>
 
-                <img src="{{$last_work_first['picture_cropped']}}" alt="">
+                <img src="{{$last_work_first['picture_cropped'] ?? '/img/social/default_work_pic_cropped.png'}}" alt="">
                 <div class="main_img_background"></div>
                 <div class="main_work_info">
 
