@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\own_books_works;
+use App\Models\Participation_work;
 use App\Models\Work;
 use App\Models\work_topic;
 use App\Models\work_type;
@@ -86,6 +88,18 @@ class EditWork extends Component
 
         // --------- Ищем ошибки в заполнении  --------- //
         $errors_array = [];
+
+        $work_in_collections=Participation_work::where('work_id', $this->work['id'])->get() ?? 0;
+        $work_in_own_book=own_books_works::where('work_id', $this->work['id'])->get() ?? 0;
+
+        if (count($work_in_collections) > 0) {
+            array_push($errors_array, 'Это произведение используется в сборнике! Его нельзя удалить сейчас.');
+        }
+
+        if (count($work_in_own_book) > 0) {
+            array_push($errors_array, 'Это произведение используется в собственной книге! Его нельзя удалить сейчас.');
+        }
+
 
         if ($this->work_title == null) {
             array_push($errors_array, 'Введите название произведения!');
