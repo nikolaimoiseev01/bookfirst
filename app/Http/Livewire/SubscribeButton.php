@@ -35,7 +35,7 @@ class SubscribeButton extends Component
             $this->dispatchBrowserEvent('swal:modal', [
                 'type' => 'error',
                 'title' => 'Что-то пошло не так!',
-                'text' => 'Нельзя подписаться на самого себя2 :)',
+                'text' => 'Нельзя подписаться на самого себя :)',
             ]);
         }
         else if ((Auth::user()->id ?? 0) > 0) {
