@@ -97,7 +97,7 @@
                     </div>
                 </div>
 
-                <img src="{{$last_work_first['picture_cropped'] ?? '/img/social/default_work_pic_cropped.png'}}" alt="">
+                <img src="{{$last_work_first['picture_cropped'] ?? '/img/social/default_work_pic_' . rand(1,4) . '.svg'}}" alt="">
                 <div class="main_img_background"></div>
                 <div class="main_work_info">
 
@@ -199,7 +199,7 @@
                             <div style="display: none;" id="modal_user_avatar_{{$user->id}}"
                                  class="cus-modal-container">
                                 <img style="    width: 100%;"
-                                     src="{{$user->avatar_cropped  ?? '/img/social/default_work_pic_' . rand(1,4) . '.svg'}}">
+                                     src="{{$user->avatar_cropped  ?? '/img/avatars/default_avatar.svg'}}">
                             </div>
 
                             <a href="{{route('social.user_page', ($user->id))}}" target="_blank"
