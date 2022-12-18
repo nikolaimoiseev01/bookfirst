@@ -186,8 +186,8 @@
                 <circle cx="212" cy="203" r="20"/>
             </svg>
             <div class="app_menu_text">Сообщения</div>
-            @if (count($notifications) > 0)
-                <span>{{count($notifications)}}</span>
+            @if ($notifications > 0)
+                <span>{{$notifications}}</span>
             @endif
         </a>
 
