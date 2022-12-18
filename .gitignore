@@ -1,9 +1,10 @@
-/public
-
 /node_modules
 /public/ngrok.exe
 /public/hot
 /public/admin_files
+/public/app/public/filepond_temp
+/public/filepond_temp
+/public/img
 /public/storage
 /storage/*.key
 /vendor
