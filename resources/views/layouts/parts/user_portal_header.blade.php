@@ -1,131 +1,131 @@
-@section('user_header_block_scroll')
-    <div style="width: 90%; display: none;" id="user_header_block_scroll">
-        <div class="user_header_block_scroll">
-            <div class="user_header_block_scroll_left_wrap" style="display: flex; justify-content: center; align-items: center;">
-                <img style="width:50px;" class="user_avatar"
-                     src="{{($last_work->user['avatar'] ?? '/img/avatars/default_avatar.svg')}}" alt="user_avatar">
+{{--@section('user_header_block_scroll')--}}
+{{--    <div style="width: 90%; display: none;" id="user_header_block_scroll">--}}
+{{--        <div class="user_header_block_scroll">--}}
+{{--            <div class="user_header_block_scroll_left_wrap" style="display: flex; justify-content: center; align-items: center;">--}}
+{{--                <img style="width:50px;" class="user_avatar"--}}
+{{--                     src="{{($last_work->user['avatar'] ?? '/img/avatars/default_avatar.svg')}}" alt="user_avatar">--}}
 
-                <div id="mobile_header_scroll_name_wrap">
+{{--                <div id="mobile_header_scroll_name_wrap">--}}
 {{--                    <a style="color: #363636" href="{{route('social.user_page', $user['id'])}}">--}}
 {{--                        <h2>--}}
 {{--                            {{($user['nickname']) ? $user['nickname'] : $user['name'] . ' ' . $user['surname']}}--}}
 {{--                        </h2>--}}
 {{--                    </a>--}}
-                    <style>
-                        #mobile_header_scroll_name_buttons span {
-                            display: block;
-                        }
-                    </style>
-                    <div style="display: none" id="mobile_header_scroll_name_buttons" class="user_header_buttons">
-                        @livewire('subscribe-button', ['user_to_subscribe' => $user->id])
-                        <a target="_blank"
-                           class="write_span log_check @if((\Illuminate\Support\Facades\Auth::user()->id ?? 0) === $user['id']) self_mes @endif "
-                           @if((\Illuminate\Support\Facades\Auth::user()->id ?? 0) != $user->id)
-                           href="{{route('new_chat', $user->id)}}"
-                            @endif
-                        >
-                            <img src="/img/social/pen_icon.svg" alt="">
-                            <p>Написать</p>
-                        </a>
-                        <a onclick="trigger_modal()" class="send_donate @if((\Illuminate\Support\Facades\Auth::user()->id ?? 0) === $user->id) self_donate @endif
-                        @if(Auth::check() && !((\Illuminate\Support\Facades\Auth::user()->id ?? 0) === $user->id)) show_modal @endif
-                            log_check"
-                           data-for-modal="modal_user_donate">
-                            <img src="/img/social/donate_icon.svg" alt="">
-                            <p> Отправить донат</p>
-                        </a>
-                    </div>
-                </div>
+{{--                    <style>--}}
+{{--                        #mobile_header_scroll_name_buttons span {--}}
+{{--                            display: block;--}}
+{{--                        }--}}
+{{--                    </style>--}}
+{{--                    <div style="display: none" id="mobile_header_scroll_name_buttons" class="user_header_buttons">--}}
+{{--                        @livewire('subscribe-button', ['user_to_subscribe' => $user->id])--}}
+{{--                        <a target="_blank"--}}
+{{--                           class="write_span log_check @if((\Illuminate\Support\Facades\Auth::user()->id ?? 0) === $user['id']) self_mes @endif "--}}
+{{--                           @if((\Illuminate\Support\Facades\Auth::user()->id ?? 0) != $user->id)--}}
+{{--                           href="{{route('new_chat', $user->id)}}"--}}
+{{--                            @endif--}}
+{{--                        >--}}
+{{--                            <img src="/img/social/pen_icon.svg" alt="">--}}
+{{--                            <p>Написать</p>--}}
+{{--                        </a>--}}
+{{--                        <a onclick="trigger_modal()" class="send_donate @if((\Illuminate\Support\Facades\Auth::user()->id ?? 0) === $user->id) self_donate @endif--}}
+{{--                        @if(Auth::check() && !((\Illuminate\Support\Facades\Auth::user()->id ?? 0) === $user->id)) show_modal @endif--}}
+{{--                            log_check"--}}
+{{--                           data-for-modal="modal_user_donate">--}}
+{{--                            <img src="/img/social/donate_icon.svg" alt="">--}}
+{{--                            <p> Отправить донат</p>--}}
+{{--                        </a>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
 
 
-                @if(Cache::has('is_online' . $user->id))
-                    <span style="border: 1px var(--green) solid; color: var(--green);"
-                          class="user_now">В сети</span>
-                @else
-                    <span style="border: 1px #969393 solid; color: #969393;" class="user_now"> Не в сети</span>
-                @endif
-            </div>
+{{--                @if(Cache::has('is_online' . $user->id))--}}
+{{--                    <span style="border: 1px var(--green) solid; color: var(--green);"--}}
+{{--                          class="user_now">В сети</span>--}}
+{{--                @else--}}
+{{--                    <span style="border: 1px #969393 solid; color: #969393;" class="user_now"> Не в сети</span>--}}
+{{--                @endif--}}
+{{--            </div>--}}
 
-            <div id="pc_header_scroll_name_buttons"  class="user_header_buttons">
-                @livewire('subscribe-button', ['user_to_subscribe' => $user->id])
-                <a target="_blank"
-                   class="write_span log_check @if((\Illuminate\Support\Facades\Auth::user()->id ?? 0) === $user->id) self_mes @endif "
-                   @if((\Illuminate\Support\Facades\Auth::user()->id ?? 0) != $user->id)
-                   href="{{route('new_chat', $user->id)}}"
-                    @endif
-                >
-                    <img src="/img/social/pen_icon.svg" alt="">
-                    <p class="write_span">Написать</p>
-                </a>
-                <a onclick="trigger_modal()" class="donate_span send_donate @if((\Illuminate\Support\Facades\Auth::user()->id ?? 0) === $user->id) self_donate @endif
-                @if(Auth::check() && !((\Illuminate\Support\Facades\Auth::user()->id ?? 0) === $user->id)) show_modal @endif
-                    log_check"
-                   data-for-modal="modal_user_donate">
-                    <img src="/img/social/donate_icon.svg" alt="">
-                    <p> Отправить донат</p>
-                </a>
-                <script>
+{{--            <div id="pc_header_scroll_name_buttons"  class="user_header_buttons">--}}
+{{--                @livewire('subscribe-button', ['user_to_subscribe' => $user->id])--}}
+{{--                <a target="_blank"--}}
+{{--                   class="write_span log_check @if((\Illuminate\Support\Facades\Auth::user()->id ?? 0) === $user->id) self_mes @endif "--}}
+{{--                   @if((\Illuminate\Support\Facades\Auth::user()->id ?? 0) != $user->id)--}}
+{{--                   href="{{route('new_chat', $user->id)}}"--}}
+{{--                    @endif--}}
+{{--                >--}}
+{{--                    <img src="/img/social/pen_icon.svg" alt="">--}}
+{{--                    <p class="write_span">Написать</p>--}}
+{{--                </a>--}}
+{{--                <a onclick="trigger_modal()" class="donate_span send_donate @if((\Illuminate\Support\Facades\Auth::user()->id ?? 0) === $user->id) self_donate @endif--}}
+{{--                @if(Auth::check() && !((\Illuminate\Support\Facades\Auth::user()->id ?? 0) === $user->id)) show_modal @endif--}}
+{{--                    log_check"--}}
+{{--                   data-for-modal="modal_user_donate">--}}
+{{--                    <img src="/img/social/donate_icon.svg" alt="">--}}
+{{--                    <p> Отправить донат</p>--}}
+{{--                </a>--}}
+{{--                <script>--}}
 
-                    $('.show_modal').click(function test(e) {
-                        e.preventDefault();
-                        modal_object_id = $(this).attr('data-for-modal');
-                        modal_object = $('#' + modal_object_id);
-                        $('.cus-modal-wrap').append(modal_object);
+{{--                    $('.show_modal').click(function test(e) {--}}
+{{--                        e.preventDefault();--}}
+{{--                        modal_object_id = $(this).attr('data-for-modal');--}}
+{{--                        modal_object = $('#' + modal_object_id);--}}
+{{--                        $('.cus-modal-wrap').append(modal_object);--}}
 
-                        $('#' + modal_object_id).show();
-                        $('.cus-modal').fadeIn();
-                    })
-
-
-                    $('.cus-modal').on('click', function (event) {
-                        if ($(event.target).has('.cus-modal-container').length === 1) {
-                            $('.cus-modal-container').hide();
-                            $('.cus-modal').fadeOut();
-                        }
-                    });
+{{--                        $('#' + modal_object_id).show();--}}
+{{--                        $('.cus-modal').fadeIn();--}}
+{{--                    })--}}
 
 
-
-
-                    $(".log_check").click(function (event) {
-                        @if(Auth::user()->id ?? 0 > 0)
-                        @else
-                        event.preventDefault();
-                        Swal.fire({
-                            html: '<p style="margin-bottom: 20px;" >Для выполнения действия необходимо быть авторизированным в системе. Для этого необходимо произвести вход или зарегистрироваться, если у Вас еще нет аккаунта.</p><div style="display: flex; justify-content: center;"><a style="margin-right: 10px;"  class="button" href="/login">Войти</a> <a style="margin-left: 10px;"  class="button" href="{{route('register')}}">Регистрация</a></div>',
-                            // icon: 'info',
-                            showConfirmButton: false,
-                        })
-                        @endif
-                    });
-
-                    $('.self_donate').click(function (event) {
-                        event.preventDefault();
-                        Swal.fire({
-                            title: 'Что-то пошло не так',
-                            icon: 'error',
-                            html: "<p>Нельзя сделать донат самому себе :)</p>",
-                            showConfirmButton: false,
-                        })
-                    })
-
-                    $('.self_mes').click(function (event) {
-                        event.preventDefault();
-                        Swal.fire({
-                            title: 'Что-то пошло не так',
-                            icon: 'error',
-                            html: "<p>Нельзя написать сообщение самому себе :)</p>",
-                            showConfirmButton: false,
-                        })
-                    })
+{{--                    $('.cus-modal').on('click', function (event) {--}}
+{{--                        if ($(event.target).has('.cus-modal-container').length === 1) {--}}
+{{--                            $('.cus-modal-container').hide();--}}
+{{--                            $('.cus-modal').fadeOut();--}}
+{{--                        }--}}
+{{--                    });--}}
 
 
 
-                </script>
-            </div>
-        </div>
-    </div>
-@endsection
+
+{{--                    $(".log_check").click(function (event) {--}}
+{{--                        @if(Auth::user()->id ?? 0 > 0)--}}
+{{--                        @else--}}
+{{--                        event.preventDefault();--}}
+{{--                        Swal.fire({--}}
+{{--                            html: '<p style="margin-bottom: 20px;" >Для выполнения действия необходимо быть авторизированным в системе. Для этого необходимо произвести вход или зарегистрироваться, если у Вас еще нет аккаунта.</p><div style="display: flex; justify-content: center;"><a style="margin-right: 10px;"  class="button" href="/login">Войти</a> <a style="margin-left: 10px;"  class="button" href="{{route('register')}}">Регистрация</a></div>',--}}
+{{--                            // icon: 'info',--}}
+{{--                            showConfirmButton: false,--}}
+{{--                        })--}}
+{{--                        @endif--}}
+{{--                    });--}}
+
+{{--                    $('.self_donate').click(function (event) {--}}
+{{--                        event.preventDefault();--}}
+{{--                        Swal.fire({--}}
+{{--                            title: 'Что-то пошло не так',--}}
+{{--                            icon: 'error',--}}
+{{--                            html: "<p>Нельзя сделать донат самому себе :)</p>",--}}
+{{--                            showConfirmButton: false,--}}
+{{--                        })--}}
+{{--                    })--}}
+
+{{--                    $('.self_mes').click(function (event) {--}}
+{{--                        event.preventDefault();--}}
+{{--                        Swal.fire({--}}
+{{--                            title: 'Что-то пошло не так',--}}
+{{--                            icon: 'error',--}}
+{{--                            html: "<p>Нельзя написать сообщение самому себе :)</p>",--}}
+{{--                            showConfirmButton: false,--}}
+{{--                        })--}}
+{{--                    })--}}
+
+
+
+{{--                </script>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </div>--}}
+{{--@endsection--}}
 
 <div class="user_header_block">
 
