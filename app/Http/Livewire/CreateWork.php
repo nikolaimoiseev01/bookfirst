@@ -57,8 +57,8 @@ class CreateWork extends Component
             $file_preview = "";
         }
 
-        $this->work_types = work_type::get();
-        $this->work_topics = work_topic::get();
+        $this->work_types = work_type::orderBy('name', 'asc')->get();
+        $this->work_topics = work_topic::orderBy('name', 'asc')->get();
 
 
         return view('livewire.create-work', [
