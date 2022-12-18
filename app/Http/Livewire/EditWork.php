@@ -93,11 +93,11 @@ class EditWork extends Component
         $work_in_own_book=own_books_works::where('work_id', $this->work['id'])->get() ?? 0;
 
         if (count($work_in_collections) > 0) {
-            array_push($errors_array, 'Это произведение используется в сборнике! Его нельзя удалить сейчас.');
+            array_push($errors_array, 'Это произведение используется в сборнике! Его нельзя изменить сейчас.');
         }
 
         if (count($work_in_own_book) > 0) {
-            array_push($errors_array, 'Это произведение используется в собственной книге! Его нельзя удалить сейчас.');
+            array_push($errors_array, 'Это произведение используется в собственной книге! Его нельзя изменить сейчас.');
         }
 
 
