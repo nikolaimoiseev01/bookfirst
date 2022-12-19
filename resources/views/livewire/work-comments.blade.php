@@ -114,7 +114,7 @@
                                     <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;">
                                         <div style="display: flex; align-items: center; flex-wrap: wrap;">
                                         <img style="margin-right: 20px; border-radius: 100%; width:40px;"
-                                             src="{{($reply->avatar ?? '/img/avatars/default_avatar.png')}}"
+                                             src="{{($reply->avatar ?? '/img/avatars/default_avatar.svg')}}"
                                              alt="user_avatar">
                                         <a style="margin-right: 10px; font-size: 24px;"
                                            href="{{route('social.user_page', $reply->user_id)}}" class="link_social">
