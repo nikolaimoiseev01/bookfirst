@@ -219,7 +219,7 @@
 
     .menu-link {
         font-size: 18px !important;
-        margin-left: 10px !important;
+        margin-left: 5px !important;
     }
 
 }
@@ -254,6 +254,10 @@
 
     .header-logo-wrap p {
         display: none !important;
+    }
+
+    .menu-link {
+        margin-left: 15px !important;
     }
 
     #hero_name_mobile_text {

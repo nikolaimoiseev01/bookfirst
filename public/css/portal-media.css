@@ -772,6 +772,8 @@
         height: 440px !important;
     }
 
+
+
     #typed_hero {
         height: 105px !important;
     }
@@ -810,7 +812,9 @@
 
     .account-mobile {
         display: inherit !important;
+        margin-left: 0 !important;
     }
+
 
     .slick-slide {
         margin: 55px !important;
