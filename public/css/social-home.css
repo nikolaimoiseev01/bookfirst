@@ -218,6 +218,7 @@
         overflow-x: auto;
         max-height: none;
         padding-bottom: 15px;
+        height: 262px;
     }
 
     .last_works_block__right h2 {
@@ -294,6 +295,7 @@
 @media screen and (max-width: 688px) {
     .other_works_block {
         z-index: 0;
+        height: auto;
     }
 
     .other_works_block_in {
