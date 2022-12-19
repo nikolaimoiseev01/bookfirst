@@ -228,7 +228,6 @@
 .main_work:hover .read_main_hovered {
     transition: all 0.1s ease-in-out;
     opacity: 1;
-    background: #60606033;
     cursor: pointer;
 }
 
@@ -260,7 +259,7 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    background: #606060;
+    background: #60606033;
     /*padding: 15px 0 15px 25px;*/
     backdrop-filter: blur(15px);
     opacity: 0;
@@ -717,6 +716,7 @@ textarea:focus-visible {
     flex: 1;
     justify-content: space-around;
     padding: 0 30px;
+    flex-wrap: wrap;
 }
 
 .award_block {
