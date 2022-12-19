@@ -127,7 +127,7 @@ function move_work(dir) {
         setTimeout(function () {
             $('.main_work_info p').hide().text(title_to_change).fadeIn('slow');
             $('.main_work_info a').hide().text(author_to_change).fadeIn('slow');
-            $('.main_work .read_main_hovered a').attr('href', '/work/' + src_to_change);
+            $('.main_work .read_main_hovered a').attr('href', '/social/work/' + src_to_change);
             $('.main_work .other_work_icon_block div:nth-child(1) span').text(like_to_change);
             $('.main_work .other_work_icon_block div:nth-child(2) span').text(comment_to_change);
             $('.main_work img').fadeOut(100, function () {
