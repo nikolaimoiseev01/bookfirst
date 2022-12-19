@@ -99,7 +99,7 @@
             </div>
             <div class="user_work_text_wrap">
                 <div id="work_text_{{$work['id']}}" class="user_work_text">
-                    <p>{{$work['text']}}</p>
+                    <p>{!! nl2br($work['text']) !!}</p>
                     @if($work['picture_cropped'])
                         <br>
                         <img style="margin-top: 20px; max-width: 250px;" src="{{$work['picture_cropped']}}" alt="">
