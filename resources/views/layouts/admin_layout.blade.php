@@ -115,12 +115,25 @@
                         </a>
                     </li>
 
+                    <li class="nav-item">
+                        <a href="{{ route('chats_admin') }}" class="nav-link">
+                            <i class="nav-icon fas fa-comments"></i>
+                            <p>
+                                Чаты админ
+                                @if ($new_chats > 0)
+                                    <span class="right badge badge-danger">{{$new_chats}}</span>
+                                @endif
+                            </p>
+                        </a>
+                    </li>
+
+
 
                     <li class="nav-item">
                         <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-comments"></i>
+                            <i class="nav-icon fas fa-share-alt"></i>
                             <p>
-                                Чаты
+                                Соц. сеть
                                 <i style="top: .4rem;" class="fas fa-angle-left right"></i>
 
                             </p>
@@ -128,25 +141,52 @@
                         <ul style="padding-left: 20px;" class="nav nav-treeview">
 
                             <li class="nav-item">
-                                <a href="{{ route('chats_admin') }}" class="nav-link">
+                                <a href="{{ route('chats_users') }}" class="nav-link">
                                     <i class="nav-icon fas fa-comments"></i>
                                     <p>
-                                        Админ
-                                        @if ($new_chats > 0)
-                                            <span class="right badge badge-danger">{{$new_chats}}</span>
-                                        @endif
+                                        Чаты польз.
                                     </p>
                                 </a>
                             </li>
 
                             <li class="nav-item">
-                                <a href="{{ route('chats_users') }}" class="nav-link">
-                                    <i class="nav-icon fas fa-comments"></i>
+                                <a href="{{ route('admin_social_comments') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-comment"></i>
+
                                     <p>
-                                        Пользователей
+                                        Комментарии
                                     </p>
                                 </a>
                             </li>
+
+                            <li class="nav-item">
+                                <a href="{{ route('admin_social_likes') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-heart"></i>
+                                    <p>
+                                        Лайки
+                                    </p>
+                                </a>
+                            </li>
+
+
+                            <li class="nav-item">
+                                <a href="{{ route('admin_social_subs') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-star"></i>
+                                    <p>
+                                        Подписки
+                                    </p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="{{ route('admin_social_donates') }}" class="nav-link">
+                                    <i class="nav-icon nav-icon fas fa-donate"></i>
+                                    <p>
+                                        Донаты
+                                    </p>
+                                </a>
+                            </li>
+
 
                         </ul>
                     </li>
@@ -200,6 +240,15 @@
 
 
                         </ul>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{{ route('admin_stat') }}" class="nav-link">
+                            <i class="nav-icon fas fa-chart-line"></i>
+                            <p>
+                                Статистика
+                            </p>
+                        </a>
                     </li>
 
 

@@ -191,7 +191,6 @@ Route::middleware(['role:admin'])->prefix('admin_panel')->group(function () {
     Route::post('/add_winner/{collection_id}', [App\Http\Controllers\Admin\CollectionController::class, 'add_winner'])->name('add_winner');
     Route::get('/collections/participation/{participation_id}', [App\Http\Controllers\Admin\ParticipationController::class, 'user_participation'])->name('user_participation');
     Route::get('/chats_admin', [App\Http\Controllers\Admin\UserController::class, 'chats_admin'])->name('chats_admin');
-    Route::get('/chats_users', [App\Http\Controllers\Admin\UserController::class, 'chats_users'])->name('chats_users');
     Route::get('/chats/{chat_id}', [App\Http\Controllers\Admin\UserController::class, 'chat'])->name('admin_chat');
 
     Route::get('/login_as/{user_id}', [App\Http\Controllers\Admin\UserController::class, 'login_as'])->name('login_as');
@@ -218,6 +217,16 @@ Route::middleware(['role:admin'])->prefix('admin_panel')->group(function () {
     Route::post('/update_own_book_send_price/{own_book_id}', [\App\Http\Controllers\Admin\OwnBookController::class, 'update_own_book_send_price'])->name('update_own_book_send_price');
     Route::post('/update_own_book_desc/{own_book_id}', [\App\Http\Controllers\Admin\OwnBookController::class, 'update_own_book_desc'])->name('update_own_book_desc');
 
+
+    Route::get('/chats_users', [App\Http\Controllers\Admin\AdminSocialController::class, 'chats_users'])->name('chats_users');
+    Route::get('/social_comments', [App\Http\Controllers\Admin\AdminSocialController::class, 'admin_social_comments'])->name('admin_social_comments');
+    Route::get('/social_likes', [App\Http\Controllers\Admin\AdminSocialController::class, 'admin_social_likes'])->name('admin_social_likes');
+    Route::get('/social_subs', [App\Http\Controllers\Admin\AdminSocialController::class, 'admin_social_subs'])->name('admin_social_subs');
+    Route::get('/social_donates', [App\Http\Controllers\Admin\AdminSocialController::class, 'admin_social_donates'])->name('admin_social_donates');
+
+
+    Route::get('/admin_stat', [App\Http\Controllers\Admin\AdminSocialController::class, 'admin_stat'])->name('admin_stat');
+
     Route::get('/transactions', function () {
         $transactions = \App\Models\Transaction::orderBy('created_at', 'desc')->get();
         return view('admin.transactions', [
@@ -226,6 +235,7 @@ Route::middleware(['role:admin'])->prefix('admin_panel')->group(function () {
     })->name('transactions_from_admin');
 
     Route::resource('user', \App\Http\Controllers\Admin\UserController::class);
+    Route::get('/search_user/{users_input}', [App\Http\Controllers\Admin\UserController::class, 'search_user'])->name('search_user');
     Route::get('/subscribers', [App\Http\Controllers\Admin\UserController::class, 'subscribers_index'])->name('subscribers_index');
     Route::get('/subscribers/get', [App\Http\Controllers\Admin\UserController::class, 'subscribers_download'])->name('subscribers_download');
 });

@@ -14,6 +14,7 @@ use App\Models\Work;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Schema;
 use Jenssegers\Date\Date;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -22,10 +23,13 @@ class UserController extends Controller
 {
     public function index()
     {
-
-        $users = User::orderBy('created_at', 'desc')->get();
+        $users_amt = User::count();
+        $subscribers_amt = subscriber::count();
+        $users = User::orderBy('created_at', 'desc')->paginate(50);
         return view('admin.user.index', [
-            'users' => $users
+            'users' => $users,
+            'users_amt' => $users_amt,
+            'subscribers_amt' => $subscribers_amt
         ]);
     }
 
@@ -41,6 +45,29 @@ class UserController extends Controller
             'chats' => $chats,
             'awards' => $awards,
             'awards_types' => $awards_types
+        ]);
+    }
+
+
+
+    public function search_user($users_input)
+    {
+        $query = User::query();
+        $columns = Schema::getColumnListing('users');
+
+        foreach($columns as $column){
+            $query->orWhere($column, 'LIKE', '%' . $users_input . '%');
+        }
+
+        $users = $query->get();
+        $users_amt = count($users);
+        $users = $query->paginate(50);
+
+
+        return view('admin.user.user_search', [
+            'users' => $users,
+            'user_input' => $users_input,
+            'users_amt' => $users_amt,
         ]);
     }
 
@@ -96,16 +123,6 @@ class UserController extends Controller
     }
 
 
-    public function chats_users()
-    {
-
-        $users = User::orderBy('created_at', 'desc')->get();
-        $chats = Chat::where('user_created', '<>', 2)->where('user_to', '<>', 2)->orderBy('chat_status_id', 'asc')->orderBy('updated_at', 'desc')->with('message')->paginate(50);
-        return view('admin.chats_users', [
-            'users' => $users,
-            'chats' => $chats
-        ]);
-    }
 
     public function chat(Request $request)
     {

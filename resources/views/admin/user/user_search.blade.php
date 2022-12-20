@@ -5,9 +5,9 @@
     <div class="content-header">
         <div class="container-fluid">
             <div class="align-items-center row mb-2">
-                    <h1 class="m-0">Наши пользователи ({{$users_amt}})</h1>
+                <h1 class="m-0">По запросу "<span style="color: #007bff">{{$user_input}}</span>" найдено пользователей: {{$users_amt}}</h1>
 
-                <a class="ml-3 btn btn-outline-info" href="{{route('subscribers_index')}}">Подписчики ({{$subscribers_amt}})</a>
+                <a class="ml-auto btn btn-outline-info" href="{{route('user.index')}}">Все пользователи</a>
                 <style>
                     .page-link, .page-item {
                         display: flex;
@@ -36,22 +36,6 @@
             <div class="card">
 
 
-                    <div class="d-flex card-header">
-
-                            <input class="form-control" id="users_input" name="users_input" type="text" placeholder="Поиск...">
-                            <a id="users_input_link"  style="width:fit-content; position: relative;" href=""
-                                    class="ml-3 button btn btn-block bg-gradient-primary">
-                                <span style="color: white" class="button__text">Поиск</span>
-                            </a>
-                            <script>
-                                $(function () {
-                                    $("#users_input").on('change', function (e) {
-                                        $("#users_input_link").attr("href", "/admin_panel/search_user/" + $(this).val());
-                                    });
-                                });
-                            </script>
-
-                    </div>
                 <style>
                     tr:hover {
                         cursor: pointer;
@@ -125,15 +109,15 @@
             </div>
         </div>
     </section>
-{{--    <script>--}}
-{{--        $(document).ready(function () {--}}
-{{--            $("#users_input").on("keyup", function () {--}}
-{{--                var value = $(this).val().toLowerCase();--}}
-{{--                $("#users_input tr").filter(function () {--}}
-{{--                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)--}}
-{{--                });--}}
-{{--            });--}}
-{{--        });--}}
-{{--    </script>--}}
+    {{--    <script>--}}
+    {{--        $(document).ready(function () {--}}
+    {{--            $("#users_input").on("keyup", function () {--}}
+    {{--                var value = $(this).val().toLowerCase();--}}
+    {{--                $("#users_input tr").filter(function () {--}}
+    {{--                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)--}}
+    {{--                });--}}
+    {{--            });--}}
+    {{--        });--}}
+    {{--    </script>--}}
     <!-- /.content -->
 @endsection
