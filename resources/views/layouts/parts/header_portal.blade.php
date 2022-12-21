@@ -69,17 +69,17 @@
                 </div>
             </a>
 
-            <a id="to_social_link" style="display:flex; align-items: center;" href="{{route('social.home')}}">
-                <p>
-                    <i>
-                                    <span
-                                        style="font-size: 20px; color: var(--grey_font); border-left: 1px #4c4b463d  solid; padding-left: 5px;">
-                             Социальная сеть
-                        </span>
+{{--            <a id="to_social_link" style="display:flex; align-items: center;" href="{{route('social.home')}}">--}}
+{{--                <p>--}}
+{{--                    <i>--}}
+{{--                                    <span--}}
+{{--                                        style="font-size: 20px; color: var(--grey_font); border-left: 1px #4c4b463d  solid; padding-left: 5px;">--}}
+{{--                             Социальная сеть--}}
+{{--                        </span>--}}
 
-                    </i>
-                </p>
-            </a>
+{{--                    </i>--}}
+{{--                </p>--}}
+{{--            </a>--}}
 
         </div>
 

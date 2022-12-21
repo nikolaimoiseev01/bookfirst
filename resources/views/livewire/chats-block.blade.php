@@ -158,7 +158,7 @@
                     <h3>
                         @if($new_chat_user_id_check)
                             <a href="
-{{route('social.user_page', $new_chat_user_id['id'])}}
+{{--{{route('social.user_page', $new_chat_user_id['id'])}}--}}
                                 ">
                                 @if ($new_chat_user_id['nickname'])
                                     {{$new_chat_user_id['nickname']}}
@@ -169,13 +169,13 @@
                             </a>
                         @elseif(\Illuminate\Support\Facades\Auth::user()->id === $cur_chat[0]->u_cr_id)
                             <a href="
-{{route('social.user_page', $cur_chat[0]->u_to_id)}}
+{{--{{route('social.user_page', $cur_chat[0]->u_to_id)}}--}}
                                 ">
                                 {{$cur_chat[0]->u_to_name}}
                             </a>
                         @else
                             <a href="
-{{route('social.user_page', $cur_chat[0]->u_cr_id)}}
+{{--{{route('social.user_page', $cur_chat[0]->u_cr_id)}}--}}
                                 ">
                                 {{$cur_chat[0]->u_cr_name}}
                             </a>
