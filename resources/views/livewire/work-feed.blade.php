@@ -84,7 +84,7 @@
                         <a href="{{route('social.user_page', ($work->user['id']))}}" target="_blank"
                            style="display: flex; margin-right: 10px;" class="link_social">
                             <h3 style="margin: 0;">
-                                {{Str::limit(Str::ucfirst(Str::lower(($work->user['nickname']) ? $work->user['nickname'] : $work->user['name'] . ' ' . $work->user['surname'])), 21, '...')}}:
+                                {{Str::limit(($work->user['nickname']) ? Str::ucfirst($work->user['nickname']) : Str::ucfirst($work->user['name']) . ' ' . Str::ucfirst($work->user['surname'])), 21, '...'}}:
                             </h3>
                         </a>
                     @endif
