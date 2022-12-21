@@ -19,7 +19,7 @@
             <div class="container">
                 <div class="el-desc">
                     <a
-{{--                        href="{{route('social.work_page', $work['id'])}}"--}}
+                        href="{{route('social.work_page', $work['id'])}}"
                     >
                         <span>{{Str::limit($work['title'], 30)}}</span>
                     </a>
