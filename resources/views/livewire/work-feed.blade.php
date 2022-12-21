@@ -272,6 +272,7 @@
             like_icon_animation_function();
             livewire_trig();
             make_log_check();
+            make_load_more_preloader()
         })
 
 

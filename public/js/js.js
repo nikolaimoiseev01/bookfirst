@@ -324,14 +324,18 @@ $('.send_mes_button').on('click', function () {
 })
 
 // Покзываем и скрываем прелоадер на кнопке "загрузить еще"
-$('#load_more').click(function () {
-    $(this).css('height', "30px")
-    $(this).text("")
-    $(this).addClass('button--loading');
-    $(this).css('background', "none")
-    $('.user_work_text_wrap').attr('wire:ignore', '');
-    // Livewire.emit('load_more');
-})
+function make_load_more_preloader() {
+    $('#load_more').click(function () {
+        $(this).css('height', "30px")
+        $(this).text("")
+        $(this).addClass('button--loading');
+        $(this).css('background', "none")
+        $('.user_work_text_wrap').attr('wire:ignore', '');
+        // Livewire.emit('load_more');
+    })
+}
+make_load_more_preloader()
+
 
 
 

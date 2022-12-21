@@ -987,6 +987,17 @@ form .check-block {
     position: relative;
 }
 
+.button_social:hover {
+    color: white;
+    background: var(--social_blue);
+    transition: all .3s;
+    cursor: pointer;
+}
+
+.button_social:focus-visible {
+    outline:none;
+}
+
 
 .button:focus-visible {
     outline: none;
@@ -1017,12 +1028,7 @@ form .check-block {
 
 
 
-.button_social:hover {
-    color: white;
-    background: var(--social_blue);
-    transition: all .3s;
-    cursor: pointer;
-}
+
 
 .button__disabled {
     color: var(--grey_font) !important;
@@ -1834,7 +1840,7 @@ form .check-block {
 .el-desc {
     display: flex;
     flex-direction: column;
-    margin-right: 20px;
+    /*margin-right: 20px;*/
 }
 
 .el-desc span:first-child {

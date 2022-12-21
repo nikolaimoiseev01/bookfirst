@@ -72,6 +72,29 @@
                 <!-- /.card-footer -->
             </div>
 
+            <div class="mb-3 card">
+                <div class="bg-gradient-info card-header">
+                    <h1 style="font-size: 25px;" class="card-title">Новые пользователи</h1>
+
+                    <div class="card-tools">
+                        <button class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body p-0" style="display: block;">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div id="chart_new_users">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /.card-footer -->
+            </div>
+
 
 
         </div>
@@ -149,8 +172,6 @@
             var chart = new ApexCharts(document.querySelector("#chart_works_uploaded"), options);
             chart.render();
         </script>
-
-
         <script>
             var options = {
                 series: [{
@@ -188,6 +209,71 @@
             var chart = new ApexCharts(document.querySelector("#chart_likes_and_comments"), options);
             chart.render();
 
+        </script>
+        <script>
+            var options = {
+                series: [{
+                    name: 'Вручную',
+                    data: {!! json_encode($data_new_users->pluck('cnt_users')) !!}
+                }],
+                chart: {
+                    type: 'bar',
+                    height: 350,
+                    width: '100%',
+                    stacked: true,
+                },
+                plotOptions: {
+                    bar: {
+                        horizontal: false,
+                        dataLabels: {
+                            total: {
+                                enabled: true,
+                                offsetX: 0,
+                                style: {
+                                    fontSize: '13px',
+                                    fontWeight: 900
+                                }
+                            }
+                        }
+                    },
+                },
+                stroke: {
+                    width: 1,
+                    colors: ['#fff']
+                },
+
+                xaxis: {
+                    categories: {!! json_encode($data_new_users->pluck('date')) !!},
+                    labels: {
+                        formatter: function (val) {
+                            return val
+                        }
+                    }
+                },
+                yaxis: {
+                    title: {
+                        text: undefined
+                    },
+                },
+                tooltip: {
+                    y: {
+                        formatter: function (val) {
+                            return val
+                        }
+                    }
+                },
+                fill: {
+                    opacity: 1
+                },
+                legend: {
+                    position: 'top',
+                    horizontalAlign: 'left',
+                    offsetX: 40
+                }
+            };
+
+            var chart = new ApexCharts(document.querySelector("#chart_new_users"), options);
+            chart.render();
         </script>
 
 

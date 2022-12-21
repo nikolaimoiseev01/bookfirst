@@ -40,7 +40,8 @@ class SocialController extends Controller
             )
             ->where('u.id', '<>', 2)
             ->groupBy('u.id')
-            ->take(12)
+            ->inRandomOrder()
+            ->limit(12)
             ->get();
 
         //        $top_users =

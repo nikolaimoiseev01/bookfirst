@@ -7,8 +7,10 @@
             }
 
             .el-button-wrap {
-                flex-direction: column;
-                justify-content: space-around;
+                /*flex-direction: column;*/
+                justify-content: space-between;
+                width: 100%;
+                padding-top: 8px;
             }
         </style>
         @if ($work_input_search <> 'no_search' & count($works) == 0)
@@ -16,20 +18,40 @@
         @endif
         {{App::setLocale('ru')}}
         @foreach($works as $work)
-            <div class="container">
-                <div class="el-desc">
-                    <a
-{{--                        href="{{route('social.work_page', $work['id'])}}"--}}
-                    >
-                        <span>{{Str::limit($work['title'], 30)}}</span>
-                    </a>
-                    <p>Опубликовано: {{ Date::parse($work['created_at'])->format('j F') }}</p>
-                </div>
+            <div style="flex-direction: column;" class="container">
+                <div style="display: flex;">
+                    <div class="el-desc">
+                        <a class="link" style="    text-align: inherit;"
+                                                    href="{{route('social.work_page', $work['id'])}}"
+                        >
+                            <span>{{Str::limit($work['title'], 30)}}</span>
+                        </a>
+                        <p>Опубликовано: {{ Date::parse($work['created_at'])->format('j F') }}</p>
 
-                <div class="el-button-wrap">
-                    <a href="{{route('work.edit', $work->id)}}">
+                    </div>
+
+                </div>
+                <div
+                    style="     display: flex;    justify-content: space-between;   border-top: 1px var(--grey_border) solid;    margin-top: 10px;">
+                    <div class="el-button-wrap">
+
+                        <div>
+                                                <span style="margin-right: 8px;">
+                        <i class="fa-regular like_icon fa-heart" style="color: var(--grey_font);"></i>
+                            <p style="    font-size: 18px;">{{$work['work_like_count']}}</p>
+                        </span>
+
+                            <span>
+                        <i class="fa-regular fa-comment" style="color: var(--grey_font);"></i>
+                            <p style="font-size: 18px;">{{$work['work_comment_count']}}</p>
+                        </span>
+                        </div>
+
+
+                        <div>
+                            <a style="margin-right: 8px;" href="{{route('work.edit', $work->id)}}">
                          <span class="tooltip" title="Редактировать">
-                           <svg id="Слой_1" data-name="Слой 1" xmlns="http://www.w3.org/2000/svg"
+                           <svg style="fill: var(--green);" id="Слой_1" data-name="Слой 1" xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 401 398.98">
                             <path
                                 d="M370.11,251.91a10,10,0,0,0-10,10v88.68a30,30,0,0,1-30,30H49.93a30,30,0,0,1-30-30V90.32a30,30,0,0,1,30-30h88.68a10,10,0,1,0,0-20H49.93A50,50,0,0,0,0,90.32V350.57A50,50,0,0,0,49.93,400.5H330.16a50,50,0,0,0,49.93-49.93V261.89A10,10,0,0,0,370.11,251.91Z"
@@ -39,10 +61,10 @@
                                 transform="translate(0 -1.52)"/>
                         </svg>
                        </span>
-                    </a>
-                    <a wire:click.prevent="delete_confirm({{$work->id}})">
+                            </a>
+                            <a wire:click.prevent="delete_confirm({{$work->id}})">
                           <span class="tooltip" title="Удалить">
-                        <svg id="#delete_chat" data-name="Слой 1"
+                        <svg style="fill: var(--red);" id="#delete_chat" data-name="Слой 1"
                              xmlns="http://www.w3.org/2000/svg"
                              viewBox="0 0 346.8 427">
                             <path
@@ -59,8 +81,11 @@
                                 transform="translate(-40 0)"/>
                         </svg>
                           </span>
-                    </a>
+                            </a>
+                        </div>
+                    </div>
                 </div>
+
             </div>
         @endforeach
     </div>

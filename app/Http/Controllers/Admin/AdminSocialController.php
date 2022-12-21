@@ -85,7 +85,7 @@ WHERE dt.datetime between '2022-12-10' and sysdate()";
     public function admin_stat()
     {
 
-        $query_likes_and_comments = "select DATE_FORMAT(dt.datetime, '%Y-%m-%d') AS date,  works_comments_cnt, works_likes_cnt from dc_date dt
+        $query_likes_and_comments = "select DATE_FORMAT(dt.datetime, '%d.%m') AS date,  works_comments_cnt, works_likes_cnt from dc_date dt
 
                 left join (
                     select DATE_FORMAT(created_at, '%Y-%m-%d') as created_at, count(id) as works_comments_cnt from work_comments
@@ -98,14 +98,14 @@ WHERE dt.datetime between '2022-12-10' and sysdate()";
                 ) wl on DATE_FORMAT(dt.datetime, '%Y-%m-%d') = wl.created_at
 
                 WHERE dt.datetime between DATE_SUB(sysdate(), INTERVAL 30 DAY) and sysdate()
-                order by date asc";
+                order by dt.datetime asc";
 
 
         $data_likes_and_comments = collect(DB::select(DB::raw($query_likes_and_comments)));
 
 
         $query_works_uploaded = "
-            select DATE_FORMAT(dt.datetime, '%Y-%m-%d') AS date,
+            select DATE_FORMAT(dt.datetime, '%d.%m') AS date,
             sum(case when upload_type = 'вручную' then works_cnt end) as works_cnt_manual,
             sum(case when upload_type = 'из документа' then works_cnt end) as works_cnt_doc,
             sum(case when upload_type is null then works_cnt end) as works_cnt_other,
@@ -117,16 +117,28 @@ WHERE dt.datetime between '2022-12-10' and sysdate()";
                     group by DATE_FORMAT(created_at, '%Y-%m-%d'), upload_type
                 ) w on DATE_FORMAT(dt.datetime, '%Y-%m-%d') = w.created_at
                 WHERE dt.datetime between DATE_SUB(sysdate(), INTERVAL 30 DAY) and sysdate()
-                group by  DATE_FORMAT(dt.datetime, '%Y-%m-%d')
-                order by date asc";
+                group by  DATE_FORMAT(dt.datetime, '%d.%m')
+                order by dt.datetime asc";
+
+
 
         $data_works_uploaded = collect(DB::select(DB::raw($query_works_uploaded)));
+
+        $query_new_users = "select DATE_FORMAT(u.created_at, '%m.%d') AS date, count(*) as cnt_users from users u
+WHERE u.created_at between DATE_SUB(sysdate(), INTERVAL 30 DAY) and sysdate()
+group by DATE_FORMAT(u.created_at, '%m.%d')
+order by u.created_at asc";
+
+
+        $data_new_users = collect(DB::select(DB::raw($query_new_users)));
+
 
 
 
         return view('admin.stat', [
             'data_likes_and_comments' => $data_likes_and_comments,
-            'data_works_uploaded' => $data_works_uploaded
+            'data_works_uploaded' => $data_works_uploaded,
+            'data_new_users' => $data_new_users
         ]);
 
     }

@@ -21,6 +21,8 @@ class MyWorks extends Component
         if ($this->page_type == 'no_search') {
             $this->works = Work::where('user_id', Auth::user()->id)
                 ->orderBy('created_at', 'desc')
+                ->withCount('work_like')
+                ->withCount('work_comment')
                 ->paginate(10);
         } else {
             $this->works = Work::where('user_id', Auth::user()->id)
@@ -28,6 +30,8 @@ class MyWorks extends Component
                     $q->where('text', 'like', '%' . $this->work_input_search . '%')
                         ->orWhere('title', 'like', '%' . $this->work_input_search . '%');
                 })
+                ->withCount('work_like')
+                ->withCount('work_comment')
                 ->orderBy('created_at', 'desc')
                 ->paginate(10);
         }

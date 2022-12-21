@@ -46,7 +46,16 @@ class AppServiceProvider extends ServiceProvider
 
         view()->composer('*', function ($view) {
             if (Auth::user()->id ?? null) {
-                $this->query = 'select count(distinct chat_id) as noti_cnt from messages m where (m.flag_mes_read is null or m.flag_mes_read = 0)  and m.user_to = ' . Auth::user()->id;
+                $this->query = '
+            SELECT
+            count(distinct m.chat_id) as noti_cnt
+            FROM messages m
+            JOIN (
+                SELECT chat_id, MAX(m.updated_at) AS max_mes_upd
+                FROM messages m
+                group by chat_id
+            ) b ON m.chat_id = b.chat_id and m.updated_at = b.max_mes_upd
+            where (m.flag_mes_read = 0 or m.flag_mes_read is null) and m.user_to = ' . Auth::user()->id;
 //select * from (
 //        SELECT c.*
 //

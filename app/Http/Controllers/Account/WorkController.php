@@ -20,9 +20,11 @@ class WorkController extends Controller
     {
         $page_type = 'no_search';
         session(['previous-url' => request()->url()]);
+        $works = Work::where('user_id', Auth::user()->id)->get();
         return view('account.my_works.index', [
             'page_type' => 'no_search',
             'work_input_search' => 'no_search',
+            'works' => $works
         ]);
     }
 
