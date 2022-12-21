@@ -995,7 +995,7 @@ form .check-block {
 }
 
 .button_social:focus-visible {
-    outline:none;
+    outline:none !important;
 }
 
 

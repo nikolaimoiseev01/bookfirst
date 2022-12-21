@@ -127,7 +127,11 @@
 @endif
 
 {{--@stack('scripts')--}}
-
+<style>
+    .button_social:focus-visible {
+        outline:none !important;
+    }
+</style>
 
 @if($subdomain != 'social')
 <script>
@@ -150,7 +154,7 @@
                 Swal.close();
                 sessionStorage.setItem("network_present_session", true)
             }
-        }, 1000)
+        }, 5000)
     }
 </script>
 @endif
