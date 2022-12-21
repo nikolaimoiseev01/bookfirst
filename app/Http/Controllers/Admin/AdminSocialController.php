@@ -124,10 +124,17 @@ WHERE dt.datetime between '2022-12-10' and sysdate()";
 
         $data_works_uploaded = collect(DB::select(DB::raw($query_works_uploaded)));
 
-        $query_new_users = "select DATE_FORMAT(u.created_at, '%m.%d') AS date, count(*) as cnt_users from users u
-WHERE u.created_at between DATE_SUB(sysdate(), INTERVAL 30 DAY) and sysdate()
-group by DATE_FORMAT(u.created_at, '%m.%d')
-order by u.created_at asc";
+        $query_new_users = "select DATE_FORMAT(dt.datetime, '%d.%m') AS date,  cnt_users from dc_date dt
+
+                left join (
+                    select DATE_FORMAT(u.created_at, '%Y-%m-%d') AS created_at, count(*) as cnt_users from users u
+                    WHERE u.created_at between DATE_SUB(sysdate(), INTERVAL 30 DAY) and sysdate()
+                    group by DATE_FORMAT(u.created_at, '%d.%m')
+                ) wc on DATE_FORMAT(dt.datetime, '%Y-%m-%d') = wc.created_at
+
+
+                WHERE dt.datetime between DATE_SUB(sysdate(), INTERVAL 30 DAY) and sysdate()
+                order by dt.datetime asc";
 
 
         $data_new_users = collect(DB::select(DB::raw($query_new_users)));
