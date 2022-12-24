@@ -315,7 +315,7 @@ class ChatsBlock extends Component
                     ->notify(new TelegramNotification('',
                         '💬' . $user_from['name'] . ' ' . $user_from['surname'] . ': ' . $this->text,
                         "К чатам",
-                        route('chats')));
+                        route('chats_admin')));
             }
         }
 
