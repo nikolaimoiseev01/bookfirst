@@ -6,7 +6,13 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="d-flex align-items-center bg-gradient-info card-header">
-                    <h1 style="font-size: 25px;" class="card-title"><i>{{$user['name']}} {{$user['surname']}} @if($user['nickname'] <> '') (Псевдоним: {{$user['nickname']}}) @endif</i></h1>
+                    <h1 style="margin-right: 20px; font-size: 25px;" class="card-title"><i>{{$user['name']}} {{$user['surname']}} @if($user['nickname'] <> '') (Псевдоним: {{$user['nickname']}}) @endif</i></h1>
+                    @if(Cache::has('is_online' . $user['id']))
+                        <span style="padding: 0 10px; border: 1px #51ff3e  solid; color: #51ff3e;"
+                              class="user_now">В сети</span>
+                    @else
+                        <span style="padding: 0 10px; border: 1px white solid; color: white;" class="user_now"> Не в сети</span>
+                    @endif
                     <a style="margin-left: auto;" href="{{route('login_as', $user['id'])}}" class="btn btn-primary"> Войти в его аккаунт</a>
                 </div>
 
