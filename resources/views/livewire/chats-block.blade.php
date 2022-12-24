@@ -328,8 +328,8 @@
                     </span>
                                     <button type="submit">
                                         <div style="position: relative;" class="send_mes_button">
-                            <span id="send_env" class="tooltip" title="Отправить">
-                                <svg id="send_message_{{$cur_chat[0]->id}}" id="Capa_1" data-name="Capa 1"
+                            <span id="send_message_{{$cur_chat[0]->id}}" class="send_env tooltip" title="Отправить">
+                                <svg id="Capa_1" data-name="Capa 1"
                                      xmlns="http://www.w3.org/2000/svg"
                                      viewBox="0 0 512 512">
                                     <path
@@ -500,7 +500,7 @@
 
                         document.addEventListener('show_send_button', function () {
                             $('#send_preloader').hide();
-                            $('#send_env').css('opacity', 1);
+                            $('.send_env').css('opacity', 1);
                             $('.send-wrap button').prop("disabled", false);
                             $('.input-block').css('height', "100px");
                         });
