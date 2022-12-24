@@ -69,6 +69,7 @@ class ChatsBlock extends Component
             ) b ON m.chat_id = b.chat_id and m.updated_at = b.max_mes_upd
         ) m on m.chat_id = c.id
 		WHERE (c.user_created = ' . Auth::user()->id . ' or c.user_to = ' . Auth::user()->id . ')
+		and c.chat_status_id <> 3
         ORDER BY last_mes_created desc
         ';
     }
