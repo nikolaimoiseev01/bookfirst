@@ -297,7 +297,7 @@ class PaymentController extends Controller
                     // -----------------------------------------------------------------
 
                     // Участник оплатил участие в сборнике -------------------------------------------------------------------------------------------------
-                    if ((int)$metadata['participation_id'] > 0 && !($metadata['print_id'] ?? null)) { // Это оплата за сборник
+                    if ((int)($metadata['participation_id'] ?? null) > 0 && !($metadata['print_id'] ?? null)) { // Это оплата за сборник
 
                         $Participation = Participation::where('id', (int)$metadata['participation_id'])->first();
                         $Collection = Collection::where('id', $Participation['collection_id'])->first();
@@ -431,11 +431,11 @@ class PaymentController extends Controller
 
 
                     // Автор оплатил все кроме печати -------------------------------------------------------------------------------------------------
-                    if ((int)$metadata['own_book_id'] > 0 && (string)$metadata['own_book_payment_type'] == 'Without_Print') { // Это оплата за книгу (БЕЗ ПЕЧАТИ)
+                    if ((int)($metadata['own_book_id'] ?? null) > 0 && (string)($metadata['own_book_payment_type'] ?? null) == 'Without_Print') { // Это оплата за книгу (БЕЗ ПЕЧАТИ)
                         $own_book = own_book::where('id', (int)$metadata['own_book_id'])->first();
                         $user = User::where('id', $own_book['user_id'])->first();
 
-                        if ($own_book['paid_at_without_print'] === null) {  // Это НОВАЯ оплата
+                        if (($own_book['paid_at_without_print'] ?? null) === null) {  // Это НОВАЯ оплата
                             // Записываем время оплаты на строку участия
                             own_book::where('id', (int)$metadata['own_book_id'])
                                 ->update(array(
@@ -468,7 +468,7 @@ class PaymentController extends Controller
 
 
                     // Автор оплатил печать книги -------------------------------------------------------------------------------------------------
-                    if ((int)$metadata['own_book_id'] > 0 && (string)$metadata['own_book_payment_type'] == 'Print_only') { // Это оплата за печать книги
+                    if ((int)($metadata['own_book_id'] ?? null) > 0 && (string)($metadata['own_book_payment_type'] ?? null) == 'Print_only') { // Это оплата за печать книги
 
 
                         $own_book = own_book::where('id', (int)$metadata['own_book_id'])->first();
@@ -503,7 +503,7 @@ class PaymentController extends Controller
                     // --------------------------------------------------------------------------------------------------------------------------------
 
                     // Это оплата за пересылку -------------------------------------------------------------------------------------------------
-                    if ((int)$metadata['print_id'] ?? 0 > 0) { // Это оплата за пересылку
+                    if ((int)($metadata['print_id'] ?? 0) > 0) { // Это оплата за пересылку
 
                         $print_order = Printorder::where('id', (int)$metadata['print_id'])->first();
                         $user = User::where('id', $print_order['user_id'])->first();
@@ -536,7 +536,7 @@ class PaymentController extends Controller
 
 
                     // Клиент купил электронный сбрник -------------------------------------------------------------------------------------------------
-                    if ((int)$metadata['bought_collection_id'] > 0) { // Это покупка электронного варианта
+                    if ((int)($metadata['bought_collection_id'] ?? 0) > 0) { // Это покупка электронного варианта
 
                         $digital_sale = digital_sale::where('user_id', $metadata['user_id'])
                                 ->where('bought_collection_id', $metadata['bought_collection_id'])
@@ -577,7 +577,7 @@ class PaymentController extends Controller
 
 
                     // Клиент купил собственную книгу -------------------------------------------------------------------------------------------------
-                    if ((int)$metadata['bought_own_book_id'] > 0) { // Это покупка электронного варианта
+                    if ((int)($metadata['bought_own_book_id'] ?? 0) > 0) { // Это покупка электронного варианта
 
                         $digital_sale = digital_sale::where('user_id', $metadata['user_id'])
                                 ->where('bought_own_book_id', $metadata['bought_own_book_id'])
@@ -628,7 +628,7 @@ class PaymentController extends Controller
 
 
                     // Клиент пополнил себе кошелек -------------------------------------------------------------------------------------------------
-                    if ($metadata['description'] == 'Пополнение кошелька' && Transaction::where('id', $transactionId)->value('status') === 'CREATED') { // Это пополнение кошелька
+                    if (($metadata['description'] ?? null) == 'Пополнение кошелька' && Transaction::where('id', $transactionId)->value('status') === 'CREATED') { // Это пополнение кошелька
                         $user = User::where('id', $metadata['user_id'])->first();
                         $old_amount = UserWallet::where('user_id', $user['id'])->value('cur_amount');
                         $new_amount = $old_amount + $metadata['amount'];
