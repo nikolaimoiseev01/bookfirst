@@ -102,9 +102,10 @@ class PaymentController extends Controller
                             'xid' => 'OTAwNzAyMTk2NmE2OTQ2NWY5ZmY=',
                         ),
                 ),
-        );
+        )  ;
 
-        dd($test);
+        dd($test['metadata']);
+//        dd(!((int)$notification['metadata']['print_id'] ?? null));
 
         $description = "Оплата участия в сборнике '" . Collection::where('id', Participation::where('id', $participation_id)->value('collection_id'))->value('title') . "'";
         $url_redirect = url()->previous();
@@ -330,20 +331,21 @@ class PaymentController extends Controller
         Log::info('// $source ENDED //');
 
         $requestBody = json_decode($source, true);
-        Log::info('//  $source STARTED //');
+        Log::info('//  $requestBody STARTED //');
         Log::info($requestBody);
-        Log::info('// $source ENDED //');
+        Log::info('// $requestBody ENDED //');
 
         $notification = $requestBody['object'];
-        Log::info('//  $source STARTED //');
+        Log::info('//  $notification STARTED //');
         Log::info($notification);
-        Log::info('// $source ENDED //');
+        Log::info('// $notification ENDED //');
 
 
 
         // Общая информация о транзакции
         // Добавляем ID от YOOKASSA
         $metadata = $notification['metadata'];
+
         $transactionId = (int)$metadata['transaction_id'];
         if (Transaction::where('id', $transactionId)->value('yoo_id') === null) {
 
