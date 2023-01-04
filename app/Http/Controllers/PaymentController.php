@@ -104,7 +104,7 @@ class PaymentController extends Controller
                 ),
         )  ;
 
-        dd($test['metadata']['print_id']);
+        dd($test['metadata']['print_id'] ?? null);
 //        dd(!((int)$notification['metadata']['print_id'] ?? null));
 
         $description = "Оплата участия в сборнике '" . Collection::where('id', Participation::where('id', $participation_id)->value('collection_id'))->value('title') . "'";
