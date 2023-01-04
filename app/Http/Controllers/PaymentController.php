@@ -335,7 +335,7 @@ class PaymentController extends Controller
                     // --------------------------------------------------------------------------------------------------------------------------------
 
                     // Участник создал/отредактировал print_order -------------------------------------------------------------------------------------------------
-                    if ((int)$metadata['col_adit_print_needed'] > 0) { // Это доплата за печатные экземпляры
+                    if ((int)($metadata['col_adit_print_needed'] ?? null) > 0) { // Это доплата за печатные экземпляры
 
                         $Participation = Participation::where('id', (int)$metadata['participation_id'])->first();
                         $Collection = Collection::where('id', $Participation['collection_id'])->first();
@@ -349,7 +349,7 @@ class PaymentController extends Controller
                                 $new_PrintOrder = new PrintOrder();
                                 $new_PrintOrder->collection_id = $Collection['id'];
                                 $new_PrintOrder->user_id = (int)$metadata['user_id'];
-                                $new_PrintOrder->books_needed = (int)$metadata['col_adit_print_needed'];
+                                $new_PrintOrder->books_needed = (int)($metadata['col_adit_print_needed'] ?? null);
                                 $new_PrintOrder->send_to_name = $metadata['col_adit_send_to_name'];
                                 $new_PrintOrder->send_to_tel = $metadata['col_adit_send_to_tel'];
                                 $new_PrintOrder->send_to_address = $metadata['col_adit_send_to_address'];
@@ -389,7 +389,7 @@ class PaymentController extends Controller
 
                                 PrintOrder::where('id', $Participation['printorder_id'])
                                     ->update(array(
-                                        'books_needed' => (int)$metadata['col_adit_print_needed'],
+                                        'books_needed' => (int)($metadata['col_adit_print_needed'] ?? null),
                                         'send_to_name' => $metadata['col_adit_send_to_name'],
                                         'send_to_tel' => $metadata['col_adit_send_to_tel'],
                                         'send_to_address' => $metadata['col_adit_send_to_address'],
