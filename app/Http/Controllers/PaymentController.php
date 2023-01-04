@@ -245,12 +245,27 @@ class PaymentController extends Controller
     public function callback(Request $request, PaymentService $service)
     {
 
+        Log::info('//////////////////////////  CALBACK STARTED //////////////////////////');
+
+
         App::setLocale('ru');
 
         // Получите данные из POST-запроса от ЮKassa
         $source = file_get_contents('php://input');
+        Log::info('//  $source STARTED //');
+        Log::info($source);
+        Log::info('// $source ENDED //');
+
         $requestBody = json_decode($source, true);
+        Log::info('//  $source STARTED //');
+        Log::info($requestBody);
+        Log::info('// $source ENDED //');
+
         $notification = $requestBody['object'];
+        Log::info('//  $source STARTED //');
+        Log::info($notification);
+        Log::info('// $source ENDED //');
+
 
 
         // Общая информация о транзакции
@@ -655,6 +670,6 @@ class PaymentController extends Controller
             }
         }
 
-//        Log::info('//////////////////////////  CALBACK ENDED //////////////////////////');
+        Log::info('//////////////////////////  CALBACK ENDED //////////////////////////');
     }
 }
