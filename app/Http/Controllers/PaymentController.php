@@ -33,6 +33,79 @@ class PaymentController extends Controller
     public function create_part_payment($participation_id, $amount, PaymentService $service)
     {
 
+
+        $test = array (
+            'id' => '2b47a843-000f-5000-9000-1a6f2fdde4fc',
+            'status' => 'succeeded',
+            'amount' =>
+                array (
+                    'value' => '2.00',
+                    'currency' => 'RUB',
+                ),
+            'income_amount' =>
+                array (
+                    'value' => '1.93',
+                    'currency' => 'RUB',
+                ),
+            'description' => 'Оплата участия в сборнике \'Книга фанфиков "Гарри Поттер". Выпуск 3\'',
+            'recipient' =>
+                array (
+                    'account_id' => '789169',
+                    'gateway_id' => '1827374',
+                ),
+            'payment_method' =>
+                array (
+                    'type' => 'bank_card',
+                    'id' => '2b47a843-000f-5000-9000-1a6f2fdde4fc',
+                    'saved' => false,
+                    'title' => 'Bank card *7952',
+                    'card' =>
+                        array (
+                            'first6' => '546925',
+                            'last4' => '7952',
+                            'expiry_year' => '2024',
+                            'expiry_month' => '02',
+                            'card_type' => 'MasterCard',
+                            'issuer_country' => 'RU',
+                            'issuer_name' => 'SBERBANK OF RUSSIA',
+                        ),
+                ),
+            'captured_at' => '2023-01-04T15:00:48.077Z',
+            'created_at' => '2023-01-04T15:00:19.613Z',
+            'test' => false,
+            'refunded_amount' =>
+                array (
+                    'value' => '0.00',
+                    'currency' => 'RUB',
+                ),
+            'paid' => true,
+            'refundable' => true,
+            'metadata' =>
+                array (
+                    'transaction_id' => '1237',
+                    'url_redirect' => 'https://pervajakniga.ru/myaccount/collections/77/participation/520',
+                    'user_id' => '5',
+                    'participation_id' => '520',
+                ),
+            'authorization_details' =>
+                array (
+                    'rrn' => '300415348077',
+                    'auth_code' => '290059',
+                    'three_d_secure' =>
+                        array (
+                            'applied' => true,
+                            'protocol' => 'v1',
+                            'method_completed' => false,
+                            'challenge_completed' => true,
+                            'authentication_value' => 'jCozNwlWlHRKDxEBQo0BBSUAAAA=',
+                            'eci' => '2',
+                            'xid' => 'OTAwNzAyMTk2NmE2OTQ2NWY5ZmY=',
+                        ),
+                ),
+        );
+
+        dd($test);
+
         $description = "Оплата участия в сборнике '" . Collection::where('id', Participation::where('id', $participation_id)->value('collection_id'))->value('title') . "'";
         $url_redirect = url()->previous();
 
