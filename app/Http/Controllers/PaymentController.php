@@ -295,7 +295,7 @@ class PaymentController extends Controller
                     // -----------------------------------------------------------------
 
                     // Участник оплатил участие в сборнике -------------------------------------------------------------------------------------------------
-                    if ((int)$metadata['participation_id'] > 0 && !(int)$metadata['print_id']) { // Это оплата за сборник
+                    if ((int)$metadata['participation_id'] > 0 && !(int)$metadata['print_id'] ?? null) { // Это оплата за сборник
 
                         $Participation = Participation::where('id', (int)$metadata['participation_id'])->first();
                         $Collection = Collection::where('id', $Participation['collection_id'])->first();
