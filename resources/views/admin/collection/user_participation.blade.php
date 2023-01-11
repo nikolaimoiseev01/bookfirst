@@ -150,13 +150,7 @@
                             @endif
                             @if($participation->printorder['track_number'])
                                 Трек номер:
-                                    <a target="_blank" style="
-                                    @if ($show_input === 1)
-                                        display:none;
-                                    @else
-                                        display:inline;
-                                    @endif
-                                        " class="link-dark"
+                                    <a target="_blank" class="link-dark"
                                        href="https://www.pochta.ru/tracking#{{$participation->printorder['track_number']}}">
                                         {{$participation->printorder['track_number']}}
                                     </a>
