@@ -25,7 +25,7 @@
                     <div class="mr-3 button-group">
                         <button type="button" style="font-weight: 100; font-size: 20px"
                                 class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
-                            Общий статус <span id="own_book_statuses_button_text">(7/7)</span>
+                            Общий статус <span id="own_book_statuses_button_text">(6/8)</span>
                         </button>
                         <ul style="padding:10px;" class="dropdown-menu">
                             <span id="check_none_own_book" class="hover_pointer">Убрать все</span>
@@ -400,7 +400,7 @@
                         }).get();
 
                         own_book_statuses_checked = own_book_statuses_show.length;
-                        $('#own_book_statuses_button_text').text('(' + own_book_statuses_checked + '/7)')
+                        $('#own_book_statuses_button_text').text('(' + own_book_statuses_checked + '/8)')
 
                         $.each(own_book_statuses_hide, function (index, value) {
                             own_book_statuses_hide_id = value.substring(16, 100);
@@ -560,7 +560,7 @@
                     $('.clear_filters').on('click', function () {
                         $('.own_book_block').show();
                         $('input:checkbox').prop('checked', true);
-                        $('#own_book_statuses_button_text').text('(7/7)')
+                        $('#own_book_statuses_button_text').text('(8/8)')
                         $('#own_book_inside_statuses_button_text').text('(6/6)')
                         $('#own_book_cover_statuses_button_text').text('(6/6)')
 
