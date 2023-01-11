@@ -81,7 +81,13 @@
                         <div class="mt-2 d-flex align-items-center">
                             <h4 style="margin-bottom: 0 !important;" class="">Статус ВБ:
                                 <i id="change_book_inside_status_text">{{$own_book->own_book_inside_status['status_title']}}</i>
+                                @if($own_book['inside_status_id'] == 1)
+                                    <p>
+                                        (Срок: до {{$own_book['inside_deadline']}})
+                                    </p>
+                                @endif
                             </h4>
+
                             <div style="display: none" id="change_book_inside_status_form_wrap">
                                 <form class="d-flex ml-3" style=" align-items: center;"
                                       action="{{ route('change_book_inside_status',$own_book['id']) }}"
@@ -129,6 +135,11 @@
                         <div class="mt-2 d-flex align-items-center">
                             <h4 style="margin-bottom: 0 !important;" class="">Статус обложки:
                                 <i id="change_book_cover_status_text">{{$own_book->own_book_cover_status['status_title']}}</i>
+                                @if($own_book['cover_status_id'] == 1)
+                                    <p>
+                                        (Срок: до {{$own_book['cover_deadline']}})
+                                    </p>
+                                @endif
                             </h4>
                             <div style="display: none" id="change_book_cover_status_form_wrap">
                                 <form class="d-flex ml-3" style=" align-items: center;"
