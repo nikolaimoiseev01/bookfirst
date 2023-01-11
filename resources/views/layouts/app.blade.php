@@ -57,6 +57,7 @@
     <!-- /Yandex.Metrika counter -->
 
 </head>
+{{App::setLocale('ru')}}
 <body>
 
 <div class="cus-modal">
