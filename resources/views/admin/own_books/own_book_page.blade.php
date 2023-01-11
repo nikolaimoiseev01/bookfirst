@@ -82,7 +82,7 @@
                         <div class="mt-2 d-flex align-items-center">
                             <h4 style="margin-bottom: 0 !important;" class="">Статус ВБ:
                                 <i id="change_book_inside_status_text">{{$own_book->own_book_inside_status['status_title']}}</i>
-                                @if($own_book['own_book_inside_status_id'] == 1)
+                                @if($own_book['own_book_status_id'] == 3 & $own_book['own_book_inside_status_id'] == 1)
                                     <p>
                                         (Срок: до {{ Date::parse($own_book['inside_deadline'])->addHours(3)->format('j F') }})
                                     </p>
@@ -136,7 +136,7 @@
                         <div class="mt-2 d-flex align-items-center">
                             <h4 style="margin-bottom: 0 !important;" class="">Статус обложки:
                                 <i id="change_book_cover_status_text">{{$own_book->own_book_cover_status['status_title']}}</i>
-                                @if($own_book['own_book_cover_status_id'] == 1)
+                                @if($own_book['own_book_status_id'] == 3 & $own_book['own_book_cover_status_id'] == 1)
                                     <p>
                                         (Срок: до {{ Date::parse($own_book['cover_deadline'])->addHours(3)->format('j F') }})
                                     </p>
