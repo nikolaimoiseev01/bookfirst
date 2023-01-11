@@ -330,7 +330,7 @@
 
     </div>
     <!-- /.content-header -->
-    {{App::setLocale('ru')}}
+    {{\Illuminate\Support\Facades\App::setLocale('ru')}}
     <!-- Main content -->
     <section class="content">
         <div class="col-md-12">
