@@ -13,7 +13,7 @@
 
                 <h1 class="mt-2">
                     В сборинке: <i><a id="change_user_collection_text"
-                            href="{{route('collection.edit', $participation->collection['id'])}}">{{$participation->collection['title']}}</a></i>
+                                      href="{{route('collection.edit', $participation->collection['id'])}}">{{$participation->collection['title']}}</a></i>
                 </h1>
 
                 <div style="display: none" id="change_user_collection_form_wrap">
@@ -148,6 +148,25 @@
                             @if($participation['pat_status_id'] > 1)
                                 <h4>Заявка была принята: {{$participation['approved_at']}}</h4>
                             @endif
+                            @if($participation->printorder['track_number'])
+                                Трек номер:
+                                    <a target="_blank" style="
+                                    @if ($show_input === 1)
+                                        display:none;
+                                    @else
+                                        display:inline;
+                                    @endif
+                                        " class="link-dark"
+                                       href="https://www.pochta.ru/tracking#{{$participation->printorder['track_number']}}">
+                                        {{$participation->printorder['track_number']}}
+                                    </a>
+                                @if($participation->printorder['paid_at'])
+                                    <span style="color:#00cd00;">Доствка оплачена ({{$participation->printorder['paid_at']}})</span>
+                                @else
+                                    <span style="color:#e54c4c;">Доствка НЕ оплачена</span>
+                                @endif
+                            @endif
+
                             <div class="info_tables row align-items-start">
                                 <div class="col-6">
                                     <h4>Участие</h4>
@@ -188,6 +207,7 @@
                                 </div>
                                 <div class="col-6">
                                     <h4>Печать</h4>
+
                                     <table class="table table-bordered">
                                         <tbody>
                                         <tr>
