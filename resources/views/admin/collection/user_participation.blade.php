@@ -149,6 +149,7 @@
                                 <h4>Заявка была принята: {{$participation['approved_at']}}</h4>
                             @endif
                             @if($participation->printorder['track_number'])
+                                <div style="display: flex">
                                 <h4>
                                     Трек номер:
                                     <a target="_blank" class="link-dark"
@@ -156,15 +157,14 @@
                                         {{$participation->printorder['track_number']}}
                                     </a>
                                 </h4>
-                                (
-                                <p>
-                                    <BR>
+                                <p style="margin-left: 10px;">
                                     @if($participation->printorder['paid_at'])
-                                        <span style="color:#00cd00;">Доствка оплачена {{$participation->printorder['paid_at']}})</span>
+                                        <span style="color:#00cd00;">(Доствка оплачена {{$participation->printorder['paid_at']}})</span>
                                     @else
-                                        <span style="color:#e54c4c;">Доствка НЕ оплачена)</span>
+                                        <span style="color:#e54c4c;">(Доствка НЕ оплачена)</span>
                                     @endif
                                 </p>
+                                </div>
                             @endif
 
                             <div class="info_tables row align-items-start">
