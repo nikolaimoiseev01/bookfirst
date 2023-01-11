@@ -155,13 +155,16 @@
                                        href="https://www.pochta.ru/tracking#{{$participation->printorder['track_number']}}">
                                         {{$participation->printorder['track_number']}}
                                     </a>
+                                </h4>
+                                (
+                                <p>
                                     <BR>
                                     @if($participation->printorder['paid_at'])
-                                        <span style="color:#00cd00;">Доствка оплачена ({{$participation->printorder['paid_at']}})</span>
+                                        <span style="color:#00cd00;">Доствка оплачена {{$participation->printorder['paid_at']}})</span>
                                     @else
-                                        <span style="color:#e54c4c;">Доствка НЕ оплачена</span>
+                                        <span style="color:#e54c4c;">Доствка НЕ оплачена)</span>
                                     @endif
-                                </h4>
+                                </p>
                             @endif
 
                             <div class="info_tables row align-items-start">
