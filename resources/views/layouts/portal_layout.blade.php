@@ -53,7 +53,7 @@
     </noscript>
     <!-- /Yandex.Metrika counter -->
 </head>
-{{App::setLocale('ru')}}
+
 <span id="user_id_logged_in" data-user_id='{{$user_id_logged_in}}' style="display: none !important;"></span>
 
 <body>

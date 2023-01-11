@@ -36,7 +36,7 @@
     <meta name="theme-color" content="#ffffff">
 
 </head>
-{{App::setLocale('ru')}}
+
 <body class="hold-transition sidebar-mini layout-fixed">
 
 <!-- preloader -->
