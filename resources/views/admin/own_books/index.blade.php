@@ -528,6 +528,7 @@
 
                 <script>
                     $('#own_book_status_2').trigger('click');
+                    $('#own_book_status_99').trigger('click');
 
                     $('.action_needed_cover_filter_button').on('click', function () {
                         $('.clear_filters').trigger('click');
