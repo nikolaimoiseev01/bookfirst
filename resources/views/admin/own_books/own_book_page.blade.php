@@ -83,7 +83,7 @@
                                 <i id="change_book_inside_status_text">{{$own_book->own_book_inside_status['status_title']}}</i>
                                 @if($own_book['own_book_inside_status_id'] == 1)
                                     <p>
-                                        (Срок: до {{$own_book['inside_deadline']}})
+                                        (Срок: до {{ Date::parse($own_book['inside_deadline'])->addHours(3)->format('j F') }})
                                     </p>
                                 @endif
                             </h4>
@@ -137,7 +137,7 @@
                                 <i id="change_book_cover_status_text">{{$own_book->own_book_cover_status['status_title']}}</i>
                                 @if($own_book['own_book_cover_status_id'] == 1)
                                     <p>
-                                        (Срок: до {{$own_book['cover_deadline']}})
+                                        (Срок: до {{ Date::parse($own_book['cover_deadline'])->addHours(3)->format('j F') }})
                                     </p>
                                 @endif
                             </h4>
