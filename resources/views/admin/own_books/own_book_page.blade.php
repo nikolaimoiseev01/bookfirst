@@ -80,6 +80,7 @@
                     @if ($own_book['user_id'])
                         <div class="mt-2 d-flex align-items-center">
                             <h4 style="margin-bottom: 0 !important;" class="">Статус ВБ:
+                                <i id="change_book_inside_status_text">{{$own_book->own_book_inside_status['status_title']}}</i>
                                 @if($own_book['own_book_inside_status_id'] == 1)
                                     <p>
                                         (Срок: до {{$own_book['inside_deadline']}})
