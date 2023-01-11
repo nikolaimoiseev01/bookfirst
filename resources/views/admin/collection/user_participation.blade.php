@@ -149,15 +149,15 @@
                                 <h4>Заявка была принята: {{$participation['approved_at']}}</h4>
                             @endif
                             @if($participation->printorder['track_number'])
-                                <div style="display: flex">
-                                <h4>
+                                <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                                <h4 style="margin: auto 0;">
                                     Трек номер:
                                     <a target="_blank" class="link-dark"
                                        href="https://www.pochta.ru/tracking#{{$participation->printorder['track_number']}}">
                                         {{$participation->printorder['track_number']}}
                                     </a>
                                 </h4>
-                                <p style="margin-left: 10px;">
+                                <p style="margin: 0 0 0 10px;">
                                     @if($participation->printorder['paid_at'])
                                         <span style="color:#00cd00;">(Доствка оплачена {{$participation->printorder['paid_at']}})</span>
                                     @else
