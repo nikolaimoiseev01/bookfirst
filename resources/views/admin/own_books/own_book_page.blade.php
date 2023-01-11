@@ -77,6 +77,7 @@
 
                         </button>
                     </div>
+
                     @if ($own_book['user_id'])
                         <div class="mt-2 d-flex align-items-center">
                             <h4 style="margin-bottom: 0 !important;" class="">Статус ВБ:
