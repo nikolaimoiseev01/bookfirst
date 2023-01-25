@@ -106,6 +106,9 @@ class AppServiceProvider extends ServiceProvider
 
             if(isset($_SERVER['REQUEST_URI']))  {
                 $urlParts = explode('/', $_SERVER['REQUEST_URI']);
+                $subdomain = $urlParts[1];
+            } else {
+                $subdomain = 'Default';
             }
 
 
@@ -116,7 +119,7 @@ class AppServiceProvider extends ServiceProvider
 //                $subdomain = "";
 //            }
 
-            $subdomain = $urlParts[1];
+
             $user_id_logged_in = Auth::user()->id ?? 0;
 
             $view->with([
