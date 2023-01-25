@@ -105,7 +105,7 @@ class TaskUpdate extends Command
                 $danger_deadline = "";
             };
 
-            $own_book_insides_dates = $own_book_insides_dates . ($key + 1) . '. ' . $own_book_inside['title'] . ": " .
+            $own_book_insides_dates = $own_book_insides_dates . ($key + 1) . '. ' . $own_book_inside['author'] . ": " .
                 $this_deadline . $danger_deadline . ' \n';
         }
         //---------------------------------------------
@@ -117,7 +117,7 @@ class TaskUpdate extends Command
 
         // Посылаем Telegram уведомление нам
         Notification::route('telegram', '-506622812')
-            ->notify(new TelegramNotification('🗓 *Наши дедлайны* 🗓',
+            ->notify(new TelegramNotification('🗓 *НАШИ ДЕДЛАЙНЫ* 🗓',
                 "*Обложки*" . "\n" . implode("\n", explode('\n', substr($own_book_cover_dates, 0, -2))) .
                 "\n\n" . "*Макеты* " . "\n" . implode("\n", explode('\n', substr($own_book_insides_dates, 0, -2))) .
                 "\n\n" . "*Сборники* " . "\n" . implode("\n", explode('\n', substr($collection_dates, 0, -2))),
