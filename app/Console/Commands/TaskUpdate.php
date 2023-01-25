@@ -91,7 +91,7 @@ class TaskUpdate extends Command
                 $danger_deadline = "";
             };
 
-            $own_book_cover_dates = $own_book_cover_dates . ($key + 1) . '. ' . $own_book_cover['title'] . ": " .
+            $own_book_cover_dates = $own_book_cover_dates . ($key + 1) . '. ' . $own_book_cover['author'] . ": " .
                 $this_deadline . $danger_deadline . ' \n';
         }
 
