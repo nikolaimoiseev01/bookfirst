@@ -122,6 +122,6 @@ class TaskUpdate extends Command
                 "\n\n" . "*Макеты* " . "\n" . implode("\n", explode('\n', substr($own_book_insides_dates, 0, -2))) .
                 "\n\n" . "*Сборники* " . "\n" . implode("\n", explode('\n', substr($collection_dates, 0, -2))),
                 "Админка",
-                "vk.com"));
+                "vk1.com"));
     }
 }
