@@ -21,7 +21,7 @@
             <img class="back-vector-left" src="/img/Back vector left.svg">
 
             <div class="hero">
-                <p id="hero_tablet_text" style="display: none;">Независимое Издательство1</p>
+                <p id="hero_tablet_text" style="display: none;">Независимое Издательство</p>
                 <p id="hero_name_mobile_text" style="display: none;">"Первая Книга"</p>
                 <h1>Ваш шаг в мир литературы</h1>
                 <i>
