@@ -159,7 +159,10 @@
 
         <div class="last_works_block__right">
             <div class="last_works_block__right_header_block"
-                style="">
+                style="    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;">
                 <h2>Последние произведения</h2>
                 <a href="{{route('social.all_works_feed')}}" style="    font-size: 25px;" target="_blank"
                    class="link_social">Лента</a>
