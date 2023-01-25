@@ -104,8 +104,10 @@ class AppServiceProvider extends ServiceProvider
                 ->count();
             //...with this variable
 
-
+            if(isset($_SERVER['REQUEST_URI']))  {
                 $urlParts = explode('/', $_SERVER['REQUEST_URI']);
+            }
+
 
 //            if (isset($_SERVER['HTTP_HOST']) && !empty($_SERVER['HTTP_HOST'])) {
 //                $urlParts = explode('.', $_SERVER['HTTP_HOST']);
