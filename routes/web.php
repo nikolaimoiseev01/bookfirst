@@ -61,7 +61,11 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
 //});
 
 Route::prefix('social')->group(function () {
-    Route::get('/', [SocialController::class, 'index'])->name('social.home');
+    Route::get('/', function () {
+        return 'Hello World';
+    });
+//    Route::get('/', [SocialController::class, 'index'])->name('social.home');
+//    Route::get('/', [SocialController::class, 'index'])->name('social.home');
     Route::get('/user/{user_id}', [SocialController::class, 'user_page'])->name('social.user_page');
     Route::get('/work/{work_id}', [SocialController::class, 'work_page'])->name('social.work_page');
     Route::get('/works_feed', [SocialController::class, 'all_works_feed'])->name('social.all_works_feed');
