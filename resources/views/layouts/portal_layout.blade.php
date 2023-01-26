@@ -102,14 +102,14 @@
 <!-- preloader -->
 
 
-@extends(($subdomain == 'social') ? 'layouts.parts.header_social' : 'layouts.parts.header_portal')
+@extends((str_contains($subdomain, 'social')) ? 'layouts.parts.header_social' : 'layouts.parts.header_portal')
 
 
 
 @yield('content')
 
 
-@extends(($subdomain == 'social') ? 'layouts.parts.footer_social' : 'layouts.parts.footer_portal')
+@extends(str_contains($subdomain, 'social')) ? 'layouts.parts.footer_social' : 'layouts.parts.footer_portal')
 
 <a href=""></a>
 @livewireScripts
