@@ -61,10 +61,10 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
 //});
 
 Route::prefix('social')->group(function () {
-    Route::get('/', function () {
-        return 'Hello World';
-    });
-//    Route::get('/', [SocialController::class, 'index'])->name('social.home');
+//    Route::get('/', function () {
+//        return 'Hello World';
+//    });
+    Route::get('/', [SocialController::class, 'index'])->name('social.home');
 //    Route::get('/', [SocialController::class, 'index'])->name('social.home');
     Route::get('/user/{user_id}', [SocialController::class, 'user_page'])->name('social.user_page');
     Route::get('/work/{work_id}', [SocialController::class, 'work_page'])->name('social.work_page');
@@ -76,11 +76,14 @@ Route::prefix('social')->group(function () {
 
 // ---------  СОЦИАЛЬНАЯ СЕТЬ --------- //
 
-
+Route::get('/', function () {
+    return 'На сайте идут технические работы. Извините за неудобства!';
+});
 
 // ---------  ПОРТАЛ --------- //
 Route::middleware([])->domain(env('APP_URL'))->group(function () {
-    Route::get('/', [PortalController::class, 'index'])->name('homePortal');
+
+//    Route::get('/', [PortalController::class, 'index'])->name('homePortal');
     Route::get('/collections/{collection_id}', [CollectionController::class, 'index'])->name('collection_page');
     Route::get('/own_book', [PortalController::class, 'own_book_page'])->name('own_book_page');
 
