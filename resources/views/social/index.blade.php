@@ -6,7 +6,6 @@
     <link rel="stylesheet" href="/css/home.css">
     <link rel="stylesheet" href="/css/books-example.css">
     <link rel="stylesheet" href="/css/social.css">
-
     <link rel="stylesheet" href="/plugins/slick/slick.css">
 @endsection
 

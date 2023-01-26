@@ -133,7 +133,7 @@
     }
 </style>
 
-@if($subdomain != 'social')
+@if(!str_contains($subdomain, 'social'))
 <script>
     if (!sessionStorage.getItem('network_present_session')) {
         setTimeout(() => {
