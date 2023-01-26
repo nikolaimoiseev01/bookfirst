@@ -21,7 +21,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon/favicon-16x16.png">
     <link rel="manifest" href="/img/favicon/site.webmanifest">
     <link rel="mask-icon" href="/img/favicon/safari-pinned-tab.svg" color="#5bbad5">
-    @if($subdomain == 'social')
+    @if(str_contains($subdomain, 'social'))
         <link rel="stylesheet" href="/css/social-home.css">
     @endif
 
@@ -122,7 +122,7 @@
 </script>
 
 
-@if($subdomain == 'social')
+@if(str_contains($subdomain, 'social'))
     <script src="/js/social-js.js"></script>
 @endif
 
