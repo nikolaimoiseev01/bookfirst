@@ -76,14 +76,12 @@ Route::prefix('social')->group(function () {
 
 // ---------  СОЦИАЛЬНАЯ СЕТЬ --------- //
 
-Route::get('/', function () {
-    return 'На сайте идут технические работы. Извините за неудобства!';
-});
+//    Route::get('/', [PortalController::class, 'index'])->name('homePortal');
 
 // ---------  ПОРТАЛ --------- //
 Route::middleware([])->domain(env('APP_URL'))->group(function () {
 
-//    Route::get('/', [PortalController::class, 'index'])->name('homePortal');
+    Route::get('/', [PortalController::class, 'index'])->name('homePortal');
     Route::get('/collections/{collection_id}', [CollectionController::class, 'index'])->name('collection_page');
     Route::get('/own_book', [PortalController::class, 'own_book_page'])->name('own_book_page');
 
