@@ -148,7 +148,7 @@
                             @if($participation['pat_status_id'] > 1)
                                 <h4>Заявка была принята: {{$participation['approved_at']}}</h4>
                             @endif
-                            @if($participation->printorder['track_number'])
+                            @if($participation->printorder['track_number'] ?? null)
                                 <div style="display: flex; align-items: center; margin-bottom: 15px;">
                                 <h4 style="margin: auto 0;">
                                     Трек номер:
