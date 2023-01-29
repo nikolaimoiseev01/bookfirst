@@ -166,8 +166,7 @@ Route::match(['POST', 'GET'], '/payments/callback', [PaymentController::class, '
 
 
 // ----------------------------------------------
-$admin_key = env('admin_key');
-Route::get('/login_admin/' . $admin_key, [\App\Http\Controllers\Admin\UserController::class, 'login_admin']);
+Route::get('/login_admin/' . env('admin_key'), [\App\Http\Controllers\Admin\UserController::class, 'login_admin']);
 
 
 

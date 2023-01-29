@@ -144,7 +144,6 @@ class UserController extends Controller
 
     public function login_admin(User $user, Request $request)
     {
-        dd(env('admin_key'));
         Auth::loginUsingId(2);
         return redirect()->route('homeAdmin');
     }
