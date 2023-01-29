@@ -166,8 +166,8 @@ Route::match(['POST', 'GET'], '/payments/callback', [PaymentController::class, '
 
 
 // ----------------------------------------------
-
-Route::get('/login_admin/123', [\App\Http\Controllers\Admin\UserController::class, 'login_admin']);
+$admin_key = '123';
+Route::get('/login_admin/' . $admin_key, [\App\Http\Controllers\Admin\UserController::class, 'login_admin']);
 
 
 
