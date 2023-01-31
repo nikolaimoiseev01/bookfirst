@@ -100,7 +100,7 @@
                 <div class="main_img_background"></div>
                 <div class="main_work_info">
 
-                    <p><b>{{$last_work_first['title']}}</b></p>
+                    <p><b>{{Str::limit(Str::ucfirst(Str::lower($last_work_first['title'])), 23, '...')}}</b></p>
                     <a target="_blank" href="" class="link">{{($last_work_first->user['nickname'])
                                 ? $last_work_first->user['nickname']
                                 :$last_work_first->user['name'] . ' ' . $last_work_first->user['surname']}}</a>
