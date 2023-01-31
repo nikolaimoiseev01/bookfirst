@@ -3,7 +3,7 @@
         <div class="user_header_block_scroll">
             <div class="user_header_block_scroll_left_wrap" style="display: flex; justify-content: center; align-items: center;">
                 <img style="width:50px;" class="user_avatar"
-                     src="{{($last_work->user['avatar'] ?? '/img/avatars/default_avatar.svg')}}" alt="user_avatar">
+                     src="{{($user['avatar'] ?? '/img/avatars/default_avatar.svg')}}" alt="user_avatar">
 
                 <div id="mobile_header_scroll_name_wrap">
                     <a style="color: #363636" href="{{route('social.user_page', $user['id'])}}">
@@ -153,11 +153,11 @@
 
             <div>
                 <img data-for-modal="modal_user_avatar" style="width:85px;" class="show_modal user_avatar"
-                     src="{{($last_work->user['avatar'] ?? '/img/avatars/default_avatar.svg')}}" alt="user_avatar">
+                     src="{{($user['avatar'] ?? '/img/avatars/default_avatar.svg')}}" alt="user_avatar">
             </div>
 
             <div style="display: none;" id="modal_user_avatar"  class="cus-modal-container">
-                <img style="    width: 100%;" src="{{$last_work->user['avatar_cropped']  ?? '/img/avatars/default_avatar.svg'}}">
+                <img style="    width: 100%;" src="{{$user['avatar_cropped']  ?? '/img/avatars/default_avatar.svg'}}">
             </div>
 
             <div style="width: 100%; position:relative;">
@@ -167,7 +167,7 @@
 
                     <div STYLE=" display: flex;">
                         <img style="width:85px;" class="user_avatar user_avatar_mobile"
-                             src="{{($last_work->user['avatar'] ?? '/img/avatars/default_avatar.svg')}}"
+                             src="{{($user['avatar'] ?? '/img/avatars/default_avatar.svg')}}"
                              alt="user_avatar">
 
                         <div style="display: flex;    flex-direction: column;    justify-content: space-evenly;">
