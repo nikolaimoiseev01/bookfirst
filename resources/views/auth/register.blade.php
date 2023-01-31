@@ -188,9 +188,11 @@
                         {!! NoCaptcha::display() !!}
                     </div>
 
-                    <button id="form_register" class="preloader_button button">
+                    <button id="form_register" class="show_preloader_on_click preloader_button button">
                         <span class="button__text">Зарегистрироваться</span>
                     </button>
+
+
                 </form>
 
 

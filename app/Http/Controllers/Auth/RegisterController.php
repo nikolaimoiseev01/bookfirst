@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\UserWallet;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -85,6 +86,12 @@ class RegisterController extends Controller
             'reg_utm_source' => $data['utm_source'],
             'reg_utm_medium' => $data['utm_medium'],
         ]);
+
+        $user_wallet = new UserWallet;
+        $user_wallet->user_id = $user['id'];
+        $user_wallet->cur_amount = 0;
+        $user_wallet->save();
+
         $user->assignRole('user');
         return $user;
     }
