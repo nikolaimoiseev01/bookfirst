@@ -143,7 +143,7 @@
                 html: '<p style="margin-bottom: 20px;" >Отличные новости! Мы создали современную <b style="color: var(--social_blue)">социальную сеть</b> для авторов. ' +
                     'На ней можно неограниченно бесплатно публиковаться, общаться и <b style="color: var(--social_blue)">зарабатывать деньги!</b> </p>' +
                     '<img src="/img/network_presentation.png" style="margin-bottom: 20px; max-width:90%;" alt="">' +
-                    '<div style="display: flex; justify-content: center;"><a  class="button_social" href="/social?utm_source=from_pop_up&utm_medium=site&utm_campaign=site">Смотреть</a></div>' +
+                    '<div style="display: flex; justify-content: center;"><a  class="button_social" href="/social">Смотреть</a></div>' +
                     '<a style="margin-top: 10px;" id="hide_social_present" class="link_social">Не напоминать больше</a>',
                 // icon: 'info',
                 showConfirmButton: false,
