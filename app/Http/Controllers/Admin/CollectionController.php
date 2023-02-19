@@ -297,7 +297,7 @@ class CollectionController extends Controller
         // Saving the document as HTML file...
         $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
         $col_title = Collection::where('id',$request->col_id)->value('title');
-//        ob_clean();
+        ob_clean();
         $objWriter->save($col_title . '.docx');
         return response()->download($col_title . '.docx')->deleteFileAfterSend(true);
     }
