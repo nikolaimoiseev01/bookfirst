@@ -267,11 +267,11 @@ class CollectionController extends Controller
 
                 \PhpOffice\PhpWord\Settings::setOutputEscapingEnabled(false);
 
-//                // Пишем текст работы
-//                $section->addText(
-//                    $work_text,
-//                    $work_text_style
-//                );
+                // Пишем текст работы
+                $section->addText(
+                    $work_text,
+                    $work_text_style
+                );
             }
         }
 
