@@ -201,11 +201,7 @@ class CollectionController extends Controller
         foreach ($authors as $author) {
 
             // Создаем новый раздел для автора
-
-
             $section = $phpWord->addSection($PidPageSettings);
-
-
 
             $phpWord->setDefaultParagraphStyle(
                 array(
@@ -240,20 +236,20 @@ class CollectionController extends Controller
                 $author_name_footer_style
             );
 
-            // Делаем изображение в хедер
-            if (str_contains($author->collection['title'], 'Дух')) {
-                $header = $section->addHeader();
-                $header->firstPage();
-                $header->addText("");
-
-                $header_sub = $section->addHeader();
-                $header_sub->addImage('img/duh_header_img.png',
-                    array('width' => 200,
-                        'height' => 27.27,
-                        'alignment' => 'center'
-                    )
-                );
-            }
+//            // Делаем изображение в хедер
+//            if (str_contains($author->collection['title'], 'Дух')) {
+//                $header = $section->addHeader();
+//                $header->firstPage();
+//                $header->addText("");
+//
+//                $header_sub = $section->addHeader();
+//                $header_sub->addImage('img/duh_header_img.png',
+//                    array('width' => 200,
+//                        'height' => 27.27,
+//                        'alignment' => 'center'
+//                    )
+//                );
+//            }
 
 
             $author_works = Participation_work::where('participation_id', $author['id'])->get();

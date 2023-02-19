@@ -989,7 +989,7 @@
                             </button>
                         </form>
                         @else
-                            Стоимость не найдена! <a href="{{route('chat_create', 'У меня проблема с пересылкой')}}"
+                            Стоимость не найдена! <a href="{{route('chat_create', 'У меня проблема с пересылкой (' . $collection['title'] . ')')}}"
                                                      class="link">У меня проблема с пересылкой</a>
                         @endif
                     </div>
