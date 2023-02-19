@@ -127,7 +127,7 @@ class CollectionController extends Controller
 
     public function download_all_prints(Request $request)
     {
-        $authors = Participation::where('collection_id', $request->col_id)->where('pat_status_id', 3)->where('printorder_id', '>', 0)->get();
+        $authors = Participation::where('collection_id', $request->col_id)->where('pat_status_id', 3)->where('printorder_id', '>', 0)->take(10)->get();
         $prints = Printorder::where('collection_id', $request->col_id)->where('paid_at','<>', null)->get();
 
 
