@@ -311,6 +311,7 @@ class CollectionController extends Controller
         $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
         $col_title = Collection::where('id',$request->col_id)->value('title');
         $objWriter->save($col_title . '.docx');
+        exit;
         return response()->download($col_title . '.docx')->deleteFileAfterSend(true);
     }
 
