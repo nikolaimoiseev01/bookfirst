@@ -163,8 +163,8 @@ class CollectionController extends Controller
 
     public function create_col_file(Request $request)
     {
-        $authors = Participation::where('collection_id', $request->col_id)->where('pat_status_id', 3)->take(1)->get();
-
+        $authors = Participation::where('collection_id', $request->col_id)->where('pat_status_id', 3)->take(3)->get();
+dd($authors[])
         // Creating the new document...
         $phpWord = new \PhpOffice\PhpWord\PhpWord();
 
@@ -209,41 +209,43 @@ class CollectionController extends Controller
 
         foreach ($authors as $author) {
 
-            // Создаем новый раздел для автора
-            $section = $phpWord->addSection($PidPageSettings);
+            if($author['name'] == 'Виталий') {
 
-            $phpWord->setDefaultParagraphStyle(
-                array(
-                    'spaceAfter' => \PhpOffice\PhpWord\Shared\Converter::pointToTwip(0),
-                    'spacing' => 120,
-                    'lineHeight' => 1,
-                )
-            );
+                // Создаем новый раздел для автора
+                $section = $phpWord->addSection($PidPageSettings);
 
-            if ($author['nickname']) {
-                $author_name = $author['nickname'];
-            } else {
-                $author_name = $author['name'] . ' ' . $author['surname'];
-            }
+                $phpWord->setDefaultParagraphStyle(
+                    array(
+                        'spaceAfter' => \PhpOffice\PhpWord\Shared\Converter::pointToTwip(0),
+                        'spacing' => 120,
+                        'lineHeight' => 1,
+                    )
+                );
 
-            // Пишем имя автора
-            $section->addText(
-                $author_name,
-                $author_name_style,
-                ['align' => 'center']
-            );
+                if ($author['nickname']) {
+                    $author_name = $author['nickname'];
+                } else {
+                    $author_name = $author['name'] . ' ' . $author['surname'];
+                }
 
-            // Делаем отступ от автора
-            $section->addText(' ',
-                array('name' => 'Calibri', 'size' => 5, 'color' => '000000', 'bold' => false)
-            );
+                // Пишем имя автора
+                $section->addText(
+                    $author_name,
+                    $author_name_style,
+                    ['align' => 'center']
+                );
 
-            // Пишем имя автора в колонтитул
-            $footer = $section->addFooter();
-            $footer->addText(
-                $author_name,
-                $author_name_footer_style
-            );
+                // Делаем отступ от автора
+                $section->addText(' ',
+                    array('name' => 'Calibri', 'size' => 5, 'color' => '000000', 'bold' => false)
+                );
+
+                // Пишем имя автора в колонтитул
+                $footer = $section->addFooter();
+                $footer->addText(
+                    $author_name,
+                    $author_name_footer_style
+                );
 
 //            // Делаем изображение в хедер
 //            if (str_contains($author->collection['title'], 'Дух')) {
@@ -261,27 +263,28 @@ class CollectionController extends Controller
 //            }
 
 
-            $author_works = Participation_work::where('participation_id', $author['id'])->get();
+                $author_works = Participation_work::where('participation_id', $author['id'])->get();
 
-            foreach ($author_works as $author_work) {
+                foreach ($author_works as $author_work) {
 
-                $work = Work::where('id', $author_work['work_id'])->first();
-                // Пишем название
-                $section->addText($work['title'],
-                    $work_title_style,
-                    $work_title_align
-                );
+                    $work = Work::where('id', $author_work['work_id'])->first();
+                    // Пишем название
+                    $section->addText($work['title'],
+                        $work_title_style,
+                        $work_title_align
+                    );
 
-                $work_text = str_replace("\n", '<w:br/>', htmlspecialchars($work['text']));
+                    $work_text = str_replace("\n", '<w:br/>', htmlspecialchars($work['text']));
 
-                \PhpOffice\PhpWord\Settings::setOutputEscapingEnabled(false);
+                    \PhpOffice\PhpWord\Settings::setOutputEscapingEnabled(false);
 
 
-                // Пишем текст работы
-                $section->addText(
-                    xmlEntities(htmlentities($work_text)),
-                    $work_text_style
-                );
+                    // Пишем текст работы
+                    $section->addText(
+                        xmlEntities(htmlentities($work_text)),
+                        $work_text_style
+                    );
+                }
             }
         }
 
