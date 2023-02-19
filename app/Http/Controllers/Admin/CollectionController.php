@@ -279,8 +279,7 @@ class CollectionController extends Controller
 
                 // Пишем текст работы
                 $section->addText(
-//                    xmlEntities(htmlentities($work_text)),
-                    $work['text'],
+                    xmlEntities(htmlentities($work_text)),
                     $work_text_style
                 );
             }
