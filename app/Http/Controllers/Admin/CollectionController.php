@@ -276,21 +276,21 @@ class CollectionController extends Controller
 //        }
 
 
-//        // Создаем контактную информацию авторов
-//
-//        $section = $phpWord->addSection($PidPageSettings);
-//        $table = $section->addTable();
-//
-//        foreach ($authors as $author) {
-//            if ($author['nickname']) {
-//                $author_name = $author['nickname'];
-//            } else {
-//                $author_name = $author['name'] . ' ' . $author['surname'];
-//            }
-//            $table->addRow();
-//            $table->addCell(1750)->addText($author_name);
-//            $table->addCell(1750)->addText($author->user['email']);
-//        }
+        // Создаем контактную информацию авторов
+
+        $section = $phpWord->addSection($PidPageSettings);
+        $table = $section->addTable();
+
+        foreach ($authors as $author) {
+            if ($author['nickname']) {
+                $author_name = $author['nickname'];
+            } else {
+                $author_name = $author['name'] . ' ' . $author['surname'];
+            }
+            $table->addRow();
+            $table->addCell(1750)->addText($author_name);
+            $table->addCell(1750)->addText($author->user['email']);
+        }
 
         // Saving the document as HTML file...
         $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
