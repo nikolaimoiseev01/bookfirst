@@ -254,25 +254,25 @@ class CollectionController extends Controller
 
             $author_works = Participation_work::where('participation_id', $author['id'])->get();
 
-            foreach ($author_works as $author_work) {
-
-                $work = Work::where('id', $author_work['work_id'])->first();
-                // Пишем название
-                $section->addText($work['title'],
-                    $work_title_style,
-                    $work_title_align
-                );
-
-                $work_text = str_replace("\n", '<w:br/>', htmlspecialchars($work['text']));
-
-                \PhpOffice\PhpWord\Settings::setOutputEscapingEnabled(false);
-
-                // Пишем текст работы
-                $section->addText(
-                    $work_text,
-                    $work_text_style
-                );
-            }
+//            foreach ($author_works as $author_work) {
+//
+//                $work = Work::where('id', $author_work['work_id'])->first();
+//                // Пишем название
+//                $section->addText($work['title'],
+//                    $work_title_style,
+//                    $work_title_align
+//                );
+//
+//                $work_text = str_replace("\n", '<w:br/>', htmlspecialchars($work['text']));
+//
+//                \PhpOffice\PhpWord\Settings::setOutputEscapingEnabled(false);
+//
+//                // Пишем текст работы
+//                $section->addText(
+//                    $work_text,
+//                    $work_text_style
+//                );
+//            }
         }
 
 
