@@ -252,45 +252,45 @@ class CollectionController extends Controller
 //            }
 
 
-            $author_works = Participation_work::where('participation_id', $author['id'])->get();
-
-            foreach ($author_works as $author_work) {
-
-                $work = Work::where('id', $author_work['work_id'])->first();
-                // Пишем название
-                $section->addText($work['title'],
-                    $work_title_style,
-                    $work_title_align
-                );
-
-                $work_text = str_replace("\n", '<w:br/>', htmlspecialchars($work['text']));
-
-                \PhpOffice\PhpWord\Settings::setOutputEscapingEnabled(false);
-
-                // Пишем текст работы
-                $section->addText(
-                    $work_text,
-                    $work_text_style
-                );
-            }
-        }
-
-
-        // Создаем контактную информацию авторов
-
-        $section = $phpWord->addSection($PidPageSettings);
-        $table = $section->addTable();
-
-        foreach ($authors as $author) {
-            if ($author['nickname']) {
-                $author_name = $author['nickname'];
-            } else {
-                $author_name = $author['name'] . ' ' . $author['surname'];
-            }
-            $table->addRow();
-            $table->addCell(1750)->addText($author_name);
-            $table->addCell(1750)->addText($author->user['email']);
-        }
+//            $author_works = Participation_work::where('participation_id', $author['id'])->get();
+//
+//            foreach ($author_works as $author_work) {
+//
+//                $work = Work::where('id', $author_work['work_id'])->first();
+//                // Пишем название
+//                $section->addText($work['title'],
+//                    $work_title_style,
+//                    $work_title_align
+//                );
+//
+//                $work_text = str_replace("\n", '<w:br/>', htmlspecialchars($work['text']));
+//
+//                \PhpOffice\PhpWord\Settings::setOutputEscapingEnabled(false);
+//
+//                // Пишем текст работы
+//                $section->addText(
+//                    $work_text,
+//                    $work_text_style
+//                );
+//            }
+//        }
+//
+//
+//        // Создаем контактную информацию авторов
+//
+//        $section = $phpWord->addSection($PidPageSettings);
+//        $table = $section->addTable();
+//
+//        foreach ($authors as $author) {
+//            if ($author['nickname']) {
+//                $author_name = $author['nickname'];
+//            } else {
+//                $author_name = $author['name'] . ' ' . $author['surname'];
+//            }
+//            $table->addRow();
+//            $table->addCell(1750)->addText($author_name);
+//            $table->addCell(1750)->addText($author->user['email']);
+//        }
 
         // Saving the document as HTML file...
         $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
