@@ -207,7 +207,7 @@ class CollectionController extends Controller
         }
 
 
-        foreach ($authors[0] as $author) {
+        foreach ($authors as $author) {
 
             // Создаем новый раздел для автора
             $section = $phpWord->addSection($PidPageSettings);
