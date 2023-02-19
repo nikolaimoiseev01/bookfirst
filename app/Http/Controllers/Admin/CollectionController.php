@@ -164,7 +164,7 @@ class CollectionController extends Controller
     public function create_col_file(Request $request)
     {
         $authors = Participation::where('collection_id', $request->col_id)->where('pat_status_id', 3)->take(3)->get();
-dd($authors[])
+
         // Creating the new document...
         $phpWord = new \PhpOffice\PhpWord\PhpWord();
 
