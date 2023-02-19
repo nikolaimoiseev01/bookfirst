@@ -198,60 +198,60 @@ class CollectionController extends Controller
 
 
 
-        foreach ($authors as $author) {
-
-            // Создаем новый раздел для автора
-            $section = $phpWord->addSection($PidPageSettings);
-
-            $phpWord->setDefaultParagraphStyle(
-                array(
-                    'spaceAfter' => \PhpOffice\PhpWord\Shared\Converter::pointToTwip(0),
-                    'spacing' => 120,
-                    'lineHeight' => 1,
-                )
-            );
-
-            if ($author['nickname']) {
-                $author_name = $author['nickname'];
-            } else {
-                $author_name = $author['name'] . ' ' . $author['surname'];
-            }
-
-            // Пишем имя автора
-            $section->addText(
-                $author_name,
-                $author_name_style,
-                ['align' => 'center']
-            );
-
-            // Делаем отступ от автора
-            $section->addText(' ',
-                array('name' => 'Calibri', 'size' => 5, 'color' => '000000', 'bold' => false)
-            );
-
-            // Пишем имя автора в колонтитул
-            $footer = $section->addFooter();
-            $footer->addText(
-                $author_name,
-                $author_name_footer_style
-            );
-
-//            // Делаем изображение в хедер
-//            if (str_contains($author->collection['title'], 'Дух')) {
-//                $header = $section->addHeader();
-//                $header->firstPage();
-//                $header->addText("");
+//        foreach ($authors as $author) {
 //
-//                $header_sub = $section->addHeader();
-//                $header_sub->addImage('img/duh_header_img.png',
-//                    array('width' => 200,
-//                        'height' => 27.27,
-//                        'alignment' => 'center'
-//                    )
-//                );
+//            // Создаем новый раздел для автора
+//            $section = $phpWord->addSection($PidPageSettings);
+//
+//            $phpWord->setDefaultParagraphStyle(
+//                array(
+//                    'spaceAfter' => \PhpOffice\PhpWord\Shared\Converter::pointToTwip(0),
+//                    'spacing' => 120,
+//                    'lineHeight' => 1,
+//                )
+//            );
+//
+//            if ($author['nickname']) {
+//                $author_name = $author['nickname'];
+//            } else {
+//                $author_name = $author['name'] . ' ' . $author['surname'];
 //            }
-
-
+//
+//            // Пишем имя автора
+//            $section->addText(
+//                $author_name,
+//                $author_name_style,
+//                ['align' => 'center']
+//            );
+//
+//            // Делаем отступ от автора
+//            $section->addText(' ',
+//                array('name' => 'Calibri', 'size' => 5, 'color' => '000000', 'bold' => false)
+//            );
+//
+//            // Пишем имя автора в колонтитул
+//            $footer = $section->addFooter();
+//            $footer->addText(
+//                $author_name,
+//                $author_name_footer_style
+//            );
+//
+////            // Делаем изображение в хедер
+////            if (str_contains($author->collection['title'], 'Дух')) {
+////                $header = $section->addHeader();
+////                $header->firstPage();
+////                $header->addText("");
+////
+////                $header_sub = $section->addHeader();
+////                $header_sub->addImage('img/duh_header_img.png',
+////                    array('width' => 200,
+////                        'height' => 27.27,
+////                        'alignment' => 'center'
+////                    )
+////                );
+////            }
+//
+//
 //            $author_works = Participation_work::where('participation_id', $author['id'])->get();
 //
 //            foreach ($author_works as $author_work) {
@@ -274,8 +274,8 @@ class CollectionController extends Controller
 //                );
 //            }
 //        }
-//
-//
+
+
 //        // Создаем контактную информацию авторов
 //
 //        $section = $phpWord->addSection($PidPageSettings);
