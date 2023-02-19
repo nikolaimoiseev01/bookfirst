@@ -209,7 +209,7 @@ class CollectionController extends Controller
 
         foreach ($authors as $author) {
 
-            if($author['name'] == 'Виталий') {
+
 
                 // Создаем новый раздел для автора
                 $section = $phpWord->addSection($PidPageSettings);
@@ -285,7 +285,7 @@ class CollectionController extends Controller
                         $work_text_style
                     );
                 }
-            }
+
         }
 
 
