@@ -163,7 +163,7 @@ class CollectionController extends Controller
 
     public function create_col_file(Request $request)
     {
-        $authors = Participation::where('collection_id', $request->col_id)->where('pat_status_id', 3)->take(20)->get();
+        $authors = Participation::where('collection_id', $request->col_id)->where('pat_status_id', 3)->get();
 
         // Creating the new document...
         $phpWord = new \PhpOffice\PhpWord\PhpWord();
@@ -194,17 +194,6 @@ class CollectionController extends Controller
             "paperSize" => $page_size,
             'headerHeight'=> \PhpOffice\PhpWord\Shared\Converter::inchToTwip(.28)
         );
-
-
-
-        function xmlEntities($str)
-        {
-            $xml = array('&#34;','&#38;','&#38;','&#60;','&#62;','&#160;','&#161;','&#162;','&#163;','&#164;','&#165;','&#166;','&#167;','&#168;','&#169;','&#170;','&#171;','&#172;','&#173;','&#174;','&#175;','&#176;','&#177;','&#178;','&#179;','&#180;','&#181;','&#182;','&#183;','&#184;','&#185;','&#186;','&#187;','&#188;','&#189;','&#190;','&#191;','&#192;','&#193;','&#194;','&#195;','&#196;','&#197;','&#198;','&#199;','&#200;','&#201;','&#202;','&#203;','&#204;','&#205;','&#206;','&#207;','&#208;','&#209;','&#210;','&#211;','&#212;','&#213;','&#214;','&#215;','&#216;','&#217;','&#218;','&#219;','&#220;','&#221;','&#222;','&#223;','&#224;','&#225;','&#226;','&#227;','&#228;','&#229;','&#230;','&#231;','&#232;','&#233;','&#234;','&#235;','&#236;','&#237;','&#238;','&#239;','&#240;','&#241;','&#242;','&#243;','&#244;','&#245;','&#246;','&#247;','&#248;','&#249;','&#250;','&#251;','&#252;','&#253;','&#254;','&#255;');
-            $html = array('&quot;','&amp;','&amp;','&lt;','&gt;','&nbsp;','&iexcl;','&cent;','&pound;','&curren;','&yen;','&brvbar;','&sect;','&uml;','&copy;','&ordf;','&laquo;','&not;','&shy;','&reg;','&macr;','&deg;','&plusmn;','&sup2;','&sup3;','&acute;','&micro;','&para;','&middot;','&cedil;','&sup1;','&ordm;','&raquo;','&frac14;','&frac12;','&frac34;','&iquest;','&Agrave;','&Aacute;','&Acirc;','&Atilde;','&Auml;','&Aring;','&AElig;','&Ccedil;','&Egrave;','&Eacute;','&Ecirc;','&Euml;','&Igrave;','&Iacute;','&Icirc;','&Iuml;','&ETH;','&Ntilde;','&Ograve;','&Oacute;','&Ocirc;','&Otilde;','&Ouml;','&times;','&Oslash;','&Ugrave;','&Uacute;','&Ucirc;','&Uuml;','&Yacute;','&THORN;','&szlig;','&agrave;','&aacute;','&acirc;','&atilde;','&auml;','&aring;','&aelig;','&ccedil;','&egrave;','&eacute;','&ecirc;','&euml;','&igrave;','&iacute;','&icirc;','&iuml;','&eth;','&ntilde;','&ograve;','&oacute;','&ocirc;','&otilde;','&ouml;','&divide;','&oslash;','&ugrave;','&uacute;','&ucirc;','&uuml;','&yacute;','&thorn;','&yuml;');
-            $str = str_replace($html,$xml,$str);
-            $str = str_ireplace($html,$xml,$str);
-            return $str;
-        }
 
 
         foreach ($authors as $author) {
@@ -247,20 +236,20 @@ class CollectionController extends Controller
                     $author_name_footer_style
                 );
 
-//            // Делаем изображение в хедер
-//            if (str_contains($author->collection['title'], 'Дух')) {
-//                $header = $section->addHeader();
-//                $header->firstPage();
-//                $header->addText("");
-//
-//                $header_sub = $section->addHeader();
-//                $header_sub->addImage('img/duh_header_img.png',
-//                    array('width' => 200,
-//                        'height' => 27.27,
-//                        'alignment' => 'center'
-//                    )
-//                );
-//            }
+            // Делаем изображение в хедер
+            if (str_contains($author->collection['title'], 'Дух')) {
+                $header = $section->addHeader();
+                $header->firstPage();
+                $header->addText("");
+
+                $header_sub = $section->addHeader();
+                $header_sub->addImage('img/duh_header_img.png',
+                    array('width' => 200,
+                        'height' => 27.27,
+                        'alignment' => 'center'
+                    )
+                );
+            }
 
 
                 $author_works = Participation_work::where('participation_id', $author['id'])->get();
