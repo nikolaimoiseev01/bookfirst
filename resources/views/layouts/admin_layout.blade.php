@@ -295,7 +295,7 @@
 
 <script src="/plugins/filepond/filepond.js"></script>
 <!-- include FilePond jQuery adapter -->
-<script src="https://unpkg.com/jquery-filepond/filepond.jquery.js"></script>
+<script src="/plugins/filepond/filepond.jquery.js"></script>
 <!-- include FilePond file-validate-size adapter -->
 <script src="/plugins/filepond/filepond-plugin-file-validate-size.min.js"></script>
 <!-- include FilePond file-validate-type adapter -->
