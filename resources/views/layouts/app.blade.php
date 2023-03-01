@@ -427,7 +427,6 @@
         html: '<p>{{session('alert_text')}}</p>',
         showConfirmButton: false,
     })
-
     @endif
 
 
