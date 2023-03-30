@@ -16,7 +16,6 @@
     </div>
     <div class="welcome-block">
 
-
         <div class="hero-wrap">
             <img class="back-vector-left" src="/img/Back vector left.svg">
 

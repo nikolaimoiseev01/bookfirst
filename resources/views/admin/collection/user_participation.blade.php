@@ -6,7 +6,11 @@
         <div class="container-fluid">
             <h1 class="mt-2">
                 Страница автора: <a
-                    href="{{route('user_page', $participation['user_id'])}}"><i>{{$participation['name']}} {{$participation['surname']}}</i></a>
+                    href="{{route('user_page', $participation['user_id'])}}"><i>{{$participation['name']}} {{$participation['surname']}}
+                        @if($participation['nickname'])
+                            (псевдоним: {{$participation['nickname']}}
+                        @endif
+                    </i></a>
             </h1>
 
             <div class="mt-2 d-flex align-items-center">
@@ -150,20 +154,20 @@
                             @endif
                             @if($participation->printorder['track_number'] ?? null)
                                 <div style="display: flex; align-items: center; margin-bottom: 15px;">
-                                <h4 style="margin: auto 0;">
-                                    Трек номер:
-                                    <a target="_blank" class="link-dark"
-                                       href="https://www.pochta.ru/tracking#{{$participation->printorder['track_number']}}">
-                                        {{$participation->printorder['track_number']}}
-                                    </a>
-                                </h4>
-                                <p style="margin: 0 0 0 10px;">
-                                    @if($participation->printorder['paid_at'])
-                                        <span style="color:#00cd00;">(Доствка оплачена {{$participation->printorder['paid_at']}})</span>
-                                    @else
-                                        <span style="color:#e54c4c;">(Доствка НЕ оплачена)</span>
-                                    @endif
-                                </p>
+                                    <h4 style="margin: auto 0;">
+                                        Трек номер:
+                                        <a target="_blank" class="link-dark"
+                                           href="https://www.pochta.ru/tracking#{{$participation->printorder['track_number']}}">
+                                            {{$participation->printorder['track_number']}}
+                                        </a>
+                                    </h4>
+                                    <p style="margin: 0 0 0 10px;">
+                                        @if($participation->printorder['paid_at'])
+                                            <span style="color:#00cd00;">(Доствка оплачена {{$participation->printorder['paid_at']}})</span>
+                                        @else
+                                            <span style="color:#e54c4c;">(Доствка НЕ оплачена)</span>
+                                        @endif
+                                    </p>
                                 </div>
                             @endif
 
