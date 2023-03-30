@@ -8,7 +8,7 @@
                 Страница автора: <a
                     href="{{route('user_page', $participation['user_id'])}}"><i>{{$participation['name']}} {{$participation['surname']}}
                         @if($participation['nickname'])
-                            (псевдоним: {{$participation['nickname']}}
+                            (псевдоним: {{$participation['nickname']}})
                         @endif
                     </i></a>
             </h1>
