@@ -84,7 +84,12 @@ class AppServiceProvider extends ServiceProvider
             }
 //            dd($notifications);
             $new_participants = Participation::where('pat_status_id', 1)->count();
-            $new_chats = Chat::where('chat_status_id', 1)->count();
+            $new_chats = Chat::where('chat_status_id', 1)
+                ->where(function ($query) {
+                    $query->where('user_created', '=', 2)
+                        ->orWhere('user_to', '=', 2);
+                })
+                ->count();
             $own_books_alert = own_book::where('own_book_status_id', 1)
                 ->orwhere(function ($q) {
                     $q->where('own_book_status_id', 5)
