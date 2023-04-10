@@ -216,8 +216,8 @@
                     calculate_after_remove();
                 },
                 labelIdle: `<span id="file_pond_button"></span>`,
-                maxFileSize: '10MB',
-                maxTotalFileSize: '20MB',
+                maxFileSize: '40MB',
+                maxTotalFileSize: '40MB',
                 labelMaxFileSizeExceeded: 'Размер превышен!',
                 labelMaxFileSize: 'Максимальный: {filesize}',
                 labelMaxTotalFileSizeExceeded: 'Сумма размеров превышена!',

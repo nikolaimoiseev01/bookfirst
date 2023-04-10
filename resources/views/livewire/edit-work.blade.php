@@ -54,6 +54,22 @@
                 margin-top: 30px;
             }
         }
+
+
+        .button--loading::after {
+            margin: inherit;
+        }
+
+        #add_work_button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #add_work_button:hover span {
+            color: #47AF98;
+        }
+
     </style>
 
     <div id="crop_preview" style="display: none" class="modal">
@@ -89,8 +105,11 @@
             <input style="margin-bottom: 20px;  width: 100%; margin-right: 20px;" wire:model="work_title" type="text"
                    placeholder="Название" name="work_title" id="title">
 
-            <textarea wire:model="work_text" id="poem-input" type="text" placeholder="Текст произведения"
-                      name="work_text" id="text"></textarea>
+            <textarea
+{{--                    wire:model="work_text" --}}
+                      id="poem-input"
+                      type="text" placeholder="Текст произведения"
+                      name="work_text" >{{$work_text}}</textarea>
             <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
 
                 <select wire:ignore style="flex: 1; margin-top:20px; margin-right: 10px;" wire:model="work_type"
@@ -124,7 +143,7 @@
 
 
             </div>
-            <button style="width: 100%; margin-top:20px;" type="submit" class="show_preloader_on_click button">Сохранить
+            <button style="width: 100%; margin-top:20px;" type="submit" id="add_work_button" class="button">Сохранить
             </button>
         </div>
         <input wire:model="symbols" style="display: none" type="number" name="symbols" id="symbols">
@@ -185,6 +204,58 @@
             $('#work_file').attr('disabled', false);
 
         }
+
+        $('#add_work_button').on('click', function add_work(event) {
+            event.preventDefault();
+            console.log('test')
+            $(this).css('width', $(this).innerWidth())
+            $(this).css('height', $(this).innerHeight())
+            $(this).css('background', 'none');
+            $(this).css('disabled', true);
+            $(this).css('cursor', 'wait');
+            $(this).html('<span style="#47AF98">Произведение длинное, идет добавление</span> <div style="margin-left: 20px; width: 18px; height: 18px;position:relative""><span class="button--loading"></span></div>')
+
+
+            function count_symbols() {
+                work_input = $('#poem-input')
+            @this.set("work_text", work_input.val());
+            //     var symbol = work_input.val().split('');
+            //     symbols = work_input.val().length;
+            //     symbols_to_rows = 0;
+            //     rows = 1;
+            //     $.each(symbol, function () {
+            //
+            //         if (this == '\n') {
+            //             rows++;
+            //             symbols_to_rows = 0;
+            //         } else {
+            //             if (symbols_to_rows > 50) {
+            //                 rows++;
+            //                 symbols_to_rows = 0;
+            //             } else {
+            //                 symbols_to_rows++
+            //             }
+            //         }
+            //         ;
+            //
+            //         pages = Math.ceil(rows / 33);
+            //
+            //         $('#rows').val(rows);
+            //     @this.set("rows", rows);
+            //         $('#symbols').val(symbols);
+            //     @this.set("symbols", symbols);
+            //         $('#pages').val(pages);
+            //     @this.set("pages", pages);
+            //         $('#symbols_to_rows').val(symbols_to_rows);
+            //     });
+                Livewire.emit('editWork')
+            }
+
+
+            setTimeout(function() {
+                count_symbols();
+            }, 500)
+        })
 
         // show file loader
         $('#work_file').change(function (e) {
@@ -291,42 +362,5 @@
         });
     </script>
 
-    <script>
-        document.addEventListener('livewire:load', function () {
-            symbols = 0;
-            pages = 1;
-            $('#poem-input').bind('input propertychange', function () {
-                var symbol = $(this).val().split('');
-                symbols = $(this).val().length;
-                symbols_to_rows = 0;
-                rows = 1;
-                $.each(symbol, function () {
-
-                    if (this == '\n') {
-                        rows++;
-                        symbols_to_rows = 0;
-                    } else {
-                        if (symbols_to_rows > 50) {
-                            rows++;
-                            symbols_to_rows = 0;
-                        } else {
-                            symbols_to_rows++
-                        }
-                    }
-                    ;
-
-                    pages = Math.ceil(rows / 33);
-
-                    $('#rows').val(rows);
-                @this.set("rows", rows);
-                    $('#symbols').val(symbols);
-                @this.set("symbols", symbols);
-                    $('#pages').val(pages);
-                @this.set("pages", pages);
-                    $('#symbols_to_rows').val(symbols_to_rows);
-                });
-            });
-        });
-    </script>
     @endsection
     </div>
