@@ -45,7 +45,7 @@
 
                         <div class="tab-pane active" id="info">
                             <div class="row align-items-start">
-                                <div >
+                                <div class="col-md-6">
                                     <table class="table table-bordered">
                                         <tbody>
                                         <tr>
@@ -99,6 +99,61 @@
                                     </table>
                                 </div>
 
+                                <div class="col-md-6">
+                                    <form style="gap: 20px;" class="p-3 border align-items-center mt-2 gap-2" action="{{ route('add_user_comment',$user['id']) }}" method="POST"
+                                          enctype="multipart/form-data"
+                                    >
+                                        @csrf
+                                        <h4>Комментарий: </h4>
+                                        <div id="comment_text">
+                                            {!! $user['comment'] !!}
+                                        </div>
+                                        <div style="display: none;" id="comment_text_edit">
+                            <textarea name="comment" id="summernote"
+                                      name="editordata">{{$user['comment']}}</textarea>
+                                            <button type="submit" class="mt-2 btn btn-primary">Обновить</button>
+                                        </div>
+
+                                        <button style="border:none; width: auto; padding: 3px 10px; max-width:150px"
+                                                id="edit_comment_button"
+                                                type="button"
+                                                class="ml-1 btn btn-outline-info btn-block btn-sm"
+                                        >
+                                            <i style="font-size: 20px;" class="fa fa-edit"></i>
+
+                                        </button>
+
+                                        <style>
+                                            #comment_text p {
+                                                margin: 0 !important;
+                                            }
+                                        </style>
+                                        @push('scripts')
+                                            <script>
+                                                $(document).ready(function () {
+                                                    $('#summernote').summernote({
+                                                        toolbar: [
+                                                            // [groupName, [list of button]]
+                                                            ['style', ['bold', 'italic', 'underline']],
+                                                            // ['font', ['strikethrough', 'superscript', 'subscript']],
+                                                            ['fontsize', ['fontsize']],
+                                                            ['color', ['forecolor']],
+                                                            // ['para', ['ul', 'ol', 'paragraph']],
+                                                            // ['height', ['height']]
+                                                        ]
+                                                    });
+                                                });
+
+                                                $('#edit_comment_button').on('click', function (e) {
+                                                    e.preventDefault()
+                                                    $('#comment_text_edit').toggle();
+                                                    $('#comment_text').toggle();
+
+                                                })
+                                            </script>
+                                        @endpush
+                                    </form>
+                                </div>
                             </div>
                         </div>
 

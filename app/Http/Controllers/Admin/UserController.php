@@ -48,6 +48,21 @@ class UserController extends Controller
         ]);
     }
 
+    public function add_user_comment(Request $request) {
+
+        User::where('id', $request->user_id)->update(array(
+            'comment' =>  $request->comment
+        ));
+
+        session()->flash('success', 'change_printorder');
+        session()->flash('alert_type', 'success');
+        session()->flash('alert_title', 'Успешно!');
+        session()->flash('alert_text', 'Обновили комментарий!');
+
+        return redirect()->back();
+
+    }
+
 
 
     public function search_user($users_input)

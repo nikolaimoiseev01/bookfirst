@@ -183,6 +183,8 @@ Route::middleware(['role:admin'])->prefix('admin_panel')->group(function () {
     Route::post('/change_user_collection/{participation_id}', [App\Http\Controllers\Admin\ParticipationController::class, 'change_user_collection'])->name('change_user_collection');
     Route::post('/add_participation_comment/{participation_id}', [App\Http\Controllers\Admin\ParticipationController::class, 'add_participation_comment'])->name('add_participation_comment');
 
+    Route::post('/add_user_comment/{user_id}', [App\Http\Controllers\Admin\UserController::class, 'add_user_comment'])->name('add_user_comment');
+
 
     Route::get('/own_books', [App\Http\Controllers\Admin\OwnBookController::class, 'index'])->name('own_books_index');
     Route::get('/own_books/closed', [App\Http\Controllers\Admin\OwnBookController::class, 'closed_own_books'])->name('closed_own_books');
