@@ -4,6 +4,8 @@
     <!-- Content Header (Page header) -->
     <div class="content-header">
         <div class="container-fluid">
+
+
             <h1 class="mt-2">
                 Страница автора: <a
                     href="{{route('user_page', $participation['user_id'])}}"><i>{{$participation['name']}} {{$participation['surname']}}
@@ -31,8 +33,9 @@
                                 id="collection_id_to_update" class="form-control"
                                 name="collection_id_to_update">
                             @foreach($collections_to_update as $collection_to_update)
-                                <option @if($collection_to_update['id'] === $participation['collection_id']) selected
-                                        @endif value="{{$collection_to_update['id']}}">{{$collection_to_update['title']}}</option>
+                                <option
+                                    @if($collection_to_update['id'] === $participation['collection_id']) selected
+                                    @endif value="{{$collection_to_update['id']}}">{{$collection_to_update['title']}}</option>
                             @endforeach
                         </select>
 
@@ -97,7 +100,64 @@
                     <i style="font-size: 20px;" class="fa fa-edit"></i>
 
                 </button>
+
+
             </div>
+
+            <form style="gap: 20px;" class="d-flex align-items-center mt-2 gap-2" action="{{ route('add_participation_comment',$participation['id']) }}" method="POST"
+                  enctype="multipart/form-data"
+            >
+                @csrf
+                <h1>Комментарий: </h1>
+                <div id="comment_text">
+                    {!! $participation['comment'] !!}
+                </div>
+                <div style="display: none;" id="comment_text_edit">
+                            <textarea name="comment" id="summernote"
+                                      name="editordata">{{$participation['comment']}}</textarea>
+                    <button type="submit" class="mt-2 btn btn-primary">Обновить</button>
+                </div>
+
+                <button style="border:none; width: auto; padding: 3px 10px; max-width:150px"
+                        id="edit_comment_button"
+                        type="button"
+                        class="ml-1 btn btn-outline-info btn-block btn-sm"
+                >
+                    <i style="font-size: 20px;" class="fa fa-edit"></i>
+
+                </button>
+
+                <style>
+                    #comment_text p {
+                        margin: 0 !important;
+                    }
+                </style>
+                @push('scripts')
+                    <script>
+                        $(document).ready(function () {
+                            $('#summernote').summernote({
+                                toolbar: [
+                                    // [groupName, [list of button]]
+                                    ['style', ['bold', 'italic', 'underline']],
+                                    // ['font', ['strikethrough', 'superscript', 'subscript']],
+                                    ['fontsize', ['fontsize']],
+                                    ['color', ['forecolor']],
+                                    // ['para', ['ul', 'ol', 'paragraph']],
+                                    // ['height', ['height']]
+                                ]
+                            });
+                        });
+
+                        $('#edit_comment_button').on('click', function (e) {
+                            e.preventDefault()
+                            $('#comment_text_edit').toggle();
+                            $('#comment_text').toggle();
+
+                        })
+                    </script>
+                @endpush
+            </form>
+
         </div><!-- /.container-fluid -->
 
     </div>

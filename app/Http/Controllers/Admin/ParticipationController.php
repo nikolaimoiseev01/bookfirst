@@ -87,6 +87,22 @@ class ParticipationController extends Controller
 
     }
 
+    public function add_participation_comment(Request $request) {
+        $participation = Participation::where('id', $request->participation_id)->first();
+
+        Participation::where('id', $request->participation_id)->update(array(
+            'comment' =>  $request->comment
+        ));
+
+        session()->flash('success', 'change_printorder');
+        session()->flash('alert_type', 'success');
+        session()->flash('alert_title', 'Успешно!');
+        session()->flash('alert_text', 'Обновили комментарий!');
+
+        return redirect()->back();
+
+    }
+
     public function user_participation($participation_id)
     {
         $collections_to_update = Collection::OrderBy('created_at', 'desc')->get();

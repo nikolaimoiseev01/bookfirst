@@ -181,6 +181,7 @@ Route::middleware(['role:admin'])->prefix('admin_panel')->group(function () {
     Route::get('/download_all_prints', [App\Http\Controllers\Admin\CollectionController::class, 'download_all_prints'])->name('download_all_prints');
     Route::get('/collections/closed', [App\Http\Controllers\Admin\CollectionController::class, 'closed_collections'])->name('closed_collections');
     Route::post('/change_user_collection/{participation_id}', [App\Http\Controllers\Admin\ParticipationController::class, 'change_user_collection'])->name('change_user_collection');
+    Route::post('/add_participation_comment/{participation_id}', [App\Http\Controllers\Admin\ParticipationController::class, 'add_participation_comment'])->name('add_participation_comment');
 
 
     Route::get('/own_books', [App\Http\Controllers\Admin\OwnBookController::class, 'index'])->name('own_books_index');
@@ -209,6 +210,9 @@ Route::middleware(['role:admin'])->prefix('admin_panel')->group(function () {
     Route::post('/change_book_cover_status', [\App\Http\Controllers\Admin\OwnBookController::class, 'change_book_cover_status'])->name('change_book_cover_status');
     Route::post('/change_book_pages', [\App\Http\Controllers\Admin\OwnBookController::class, 'change_book_pages'])->name('change_book_pages');
     Route::post('/change_book_promo_type', [\App\Http\Controllers\Admin\OwnBookController::class, 'change_book_promo_type'])->name('change_book_promo_type');
+    Route::post('/add_own_book_comment/{own_book_id}', [App\Http\Controllers\Admin\OwnBookController::class, 'add_own_book_comment'])->name('add_own_book_comment');
+
+
 
     Route::post('/change_preview_comment_status/{preview_comment_id}', [\App\Http\Controllers\Admin\OwnBookController::class, 'change_preview_comment_status'])->name('change_preview_comment_status');
     Route::post('/change_all_preview_comment_status/{own_book_id}/{comment_type}', [\App\Http\Controllers\Admin\OwnBookController::class, 'change_all_preview_comment_status'])->name('change_all_preview_comment_status');

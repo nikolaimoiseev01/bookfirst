@@ -22,6 +22,9 @@
     <!-- Custom css -->
     <link rel="stylesheet" href="/admin/admin.css">
 
+    <!-- SummerNote Text Editor -->
+    <link rel="stylesheet" href="/plugins/summernote/summernote.min.css">
+
     <!-- iCheck for checkboxes and radio inputs -->
     <link rel="stylesheet" href="/admin/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
 
@@ -34,6 +37,18 @@
     <link rel="mask-icon" href="/img/favicon/safari-pinned-tab.svg" color="#5bbad5">
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
+
+    <!-- include libraries(jQuery, bootstrap) -->
+{{--    <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">--}}
+
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+
+    <style>
+        .note-editing-area {
+            background: white;
+            min-width: 300px;
+        }
+    </style>
 
 </head>
 
@@ -536,6 +551,9 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
+
+<script src="/plugins/summernote/summernote.min.js"></script>
+
 <script>
     @if (session('success'))
     Swal.fire({
@@ -547,6 +565,7 @@
     @endif
 </script>
 @yield('page-js')
+@stack('scripts')
 
 </body>
 </html>
