@@ -144,7 +144,8 @@
                                     ['color', ['forecolor']],
                                     // ['para', ['ul', 'ol', 'paragraph']],
                                     // ['height', ['height']]
-                                ]
+                                ],
+                                fontSizes: ['18', '20', '22', '24']
                             });
                         });
 
