@@ -104,7 +104,7 @@
 
             </div>
 
-            <form style="gap: 20px;" class="d-flex align-items-center mt-2 gap-2" action="{{ route('add_participation_comment',$participation['id']) }}" method="POST"
+            <form style="gap: 20px;" class="d-flex flex-wrap  align-items-center mt-2 gap-2" action="{{ route('add_participation_comment',$participation['id']) }}" method="POST"
                   enctype="multipart/form-data"
             >
                 @csrf
