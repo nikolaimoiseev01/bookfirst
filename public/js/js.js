@@ -168,6 +168,7 @@ window.onload = function () {
 }
 window.setTimeout(function () { // хардкорно выключаем долгий прелоадер
     $('.book-preloader-wrap').addClass('preloaded_loaded');
+    console.log('started!')
 }, 4000);
 // ------  //// PRELOADER  ------ //
 
