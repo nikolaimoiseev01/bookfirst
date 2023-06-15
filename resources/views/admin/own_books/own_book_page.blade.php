@@ -1,5 +1,5 @@
 @extends('layouts.admin_layout')
-@section('title', $own_book['title'])
+@section('title', $own_book->user['surname'])
 @section('content')
     <link rel="stylesheet" href="/css/chat.css">
     <!-- Content Header (Page header) -->
