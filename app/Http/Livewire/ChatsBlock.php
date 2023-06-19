@@ -97,10 +97,7 @@ class ChatsBlock extends Component
 
         elseif ($this->cur_chat[0]->collection_id) {
             $participation = Participation::where('collection_id', $this->cur_chat[0]->collection_id)->where('user_id', Auth::user()->id)->first();
-            if($participation) {
-                $cur_chat_publ_page = route('participation_index', ['participation_id'=>$participation['id'],'collection_id'=>$participation['collection_id']]);
-            }
-
+            $cur_chat_publ_page = route('participation_index', ['participation_id'=>$participation['id'],'collection_id'=>$participation['collection_id']]);
         }
 
         elseif ($this->cur_chat[0]->own_book_id) {
