@@ -149,11 +149,11 @@ class ChatsBlock extends Component
 
 
         } else {
-            if ($this->user_chats ?? null) {
-                $this->chosen_chat_id = $this->user_chats[0]->id; // видим id последнего чата
-            } else {
-                $this->chosen_chat_id = 0; // видим id последнего чата
-            }
+//            if ($this->user_chats ?? null) {
+//                $this->chosen_chat_id = $this->user_chats[0]->id; // видим id последнего чата
+//            } else {
+//                $this->chosen_chat_id = 0; // видим id последнего чата
+//            }
 
         }
 
