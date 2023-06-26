@@ -133,31 +133,31 @@
     }
 </style>
 
-@if(!str_contains($subdomain, 'social'))
-<script>
-    if (!sessionStorage.getItem('network_present_session')) {
-        setTimeout(() => {
-            // Презентация соц. сети!
-            Swal.fire({
-                title: '<h2 style="font-size: 40px; margin: 20px 0 0 0;"> Мы расширяем платформу!</h2>',
-                html: '<p style="margin-bottom: 20px;" >Отличные новости! Мы создали современную <b style="color: var(--social_blue)">социальную сеть</b> для авторов. ' +
-                    'На ней можно неограниченно бесплатно публиковаться, общаться и <b style="color: var(--social_blue)">зарабатывать деньги!</b> </p>' +
-                    '<img src="/img/network_presentation.png" style="margin-bottom: 20px; max-width:90%;" alt="">' +
-                    '<div style="display: flex; justify-content: center;"><a  class="button_social" href="/social">Смотреть</a></div>' +
-                    '<a style="margin-top: 10px;" id="hide_social_present" class="link_social">Не напоминать больше</a>',
-                // icon: 'info',
-                showConfirmButton: false,
-            })
-            document.getElementById("hide_social_present").addEventListener ("click", hide_social_present, false);
+{{--@if(!str_contains($subdomain, 'social'))--}}
+{{--<script>--}}
+{{--    if (!sessionStorage.getItem('network_present_session')) {--}}
+{{--        setTimeout(() => {--}}
+{{--            // Презентация соц. сети!--}}
+{{--            Swal.fire({--}}
+{{--                title: '<h2 style="font-size: 40px; margin: 20px 0 0 0;"> Мы расширяем платформу!</h2>',--}}
+{{--                html: '<p style="margin-bottom: 20px;" >Отличные новости! Мы создали современную <b style="color: var(--social_blue)">социальную сеть</b> для авторов. ' +--}}
+{{--                    'На ней можно неограниченно бесплатно публиковаться, общаться и <b style="color: var(--social_blue)">зарабатывать деньги!</b> </p>' +--}}
+{{--                    '<img src="/img/network_presentation.png" style="margin-bottom: 20px; max-width:90%;" alt="">' +--}}
+{{--                    '<div style="display: flex; justify-content: center;"><a  class="button_social" href="/social">Смотреть</a></div>' +--}}
+{{--                    '<a style="margin-top: 10px;" id="hide_social_present" class="link_social">Не напоминать больше</a>',--}}
+{{--                // icon: 'info',--}}
+{{--                showConfirmButton: false,--}}
+{{--            })--}}
+{{--            document.getElementById("hide_social_present").addEventListener ("click", hide_social_present, false);--}}
 
-            function hide_social_present() {
-                Swal.close();
-                sessionStorage.setItem("network_present_session", true)
-            }
-        }, 5000)
-    }
-</script>
-@endif
+{{--            function hide_social_present() {--}}
+{{--                Swal.close();--}}
+{{--                sessionStorage.setItem("network_present_session", true)--}}
+{{--            }--}}
+{{--        }, 5000)--}}
+{{--    }--}}
+{{--</script>--}}
+{{--@endif--}}
 
 <script>
     function make_log_check() {
