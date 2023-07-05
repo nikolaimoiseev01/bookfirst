@@ -163,7 +163,7 @@ class CollectionController extends Controller
 
     public function create_col_file(Request $request)
     {
-        $authors = Participation::where('collection_id', $request->col_id)->where('pat_status_id', 3)->get();
+        $authors = Participation::where('collection_id', $request->col_id)->orderBy('paid_at', 'asc')->where('pat_status_id', 3)->get();
 
         // Creating the new document...
         $phpWord = new \PhpOffice\PhpWord\PhpWord();
@@ -313,7 +313,7 @@ class CollectionController extends Controller
     public function edit(Collection $collection)
     {
         $col_statuses = Col_status::orderBY('id')->get();
-        $participations = Participation::orderBy('pat_status_id', 'asc')->orderBy('paid_at', 'desc')->where('collection_id', $collection->id)->get();
+        $participations = Participation::orderBy('pat_status_id', 'asc')->orderBy('paid_at', 'asc')->where('collection_id', $collection->id)->get();
         $collection_title = DB::table('collections')->where('id', $collection->id)->value('title');
         $printorders = PrintOrder::orderBy('id', 'desc')->where('collection_id', $collection->id)->get();
         $pre_comments = preview_comment::where('collection_id', $collection->id)->with('participation')->get();
