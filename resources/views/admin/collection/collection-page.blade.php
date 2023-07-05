@@ -245,6 +245,7 @@
                                                 <th scope="col">Общая сумма</th>
                                                 <th scope="col">Создан</th>
                                                 <th scope="col">Обновлен</th>
+                                                <th scope="col">Оплачен</th>
                                                 <th scope="col">Страница участия</th>
                                             </tr>
                                             </thead>
@@ -291,8 +292,11 @@
                                                     <td data-label="Создан" style="text-align: center;">
                                                         {{ Date::parse($participation['created_at'])->addHours(3)->format('j F H:i') }}
                                                     </td>
-                                                    <td data-label="ОБновлен" style="text-align: center;">
+                                                    <td data-label="Обновлен" style="text-align: center;">
                                                         {{ Date::parse($participation['updated_at'])->addHours(3)->format('j F H:i') }}
+                                                    </td>
+                                                    <td data-label="Оплачен" style="text-align: center;">
+                                                        {{ Date::parse($participation['paid_at'])->addHours(3)->format('j F H:i') }}
                                                     </td>
 
                                                     <td>
