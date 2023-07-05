@@ -253,8 +253,7 @@
                                             {{App::setLocale('ru')}}
                                             @foreach($participations as $participation)
 
-                                                <tr onclick="document.location = '{{route('user_participation', ['participation_id' => $participation['id']])}}';"
-                                                    class="row_hover
+                                                <tr class="row_hover
                                           ">
                                                     <td scope="row" data-label="Статус" style="text-align: center;">
                                                         <i data-toggle="tooltip" data-placement="top"
