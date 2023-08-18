@@ -1,7 +1,6 @@
 $(document).ready(function () {
     $(".nav-treeview .nav-link, .nav-link").each(function () {
         var location2 = window.location.protocol + '//' + window.location.host + window.location.pathname;
-        console.log(location2);
         var link = this.href;
         if (location2.startsWith(link)) {
             $(this).addClass('active');
