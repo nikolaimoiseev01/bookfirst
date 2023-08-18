@@ -22,24 +22,15 @@
             </ul>
         </div>
     @endif
-    @livewire('create-participation', ['collection_id' => $collection->id])
+    @livewire('account.collection-participation.coll-application',
+    ['collection_id' => $collection->id,
+    'type'=>'create',
+    'part_id' => null
+    ])
 @endsection
 
-@section('page-js')
-    <script src="/js/create-participation.js"></script>
-    <script>
-        $(".works-to-go").sortable({
-            start: function (event, ui) {
-                ui.item.toggleClass("start-anim");
-            },
-            placeholder: "to-drop",
-            revert: true,
-            stop: function (event, ui) {
-                ui.item.toggleClass("stop-anim");
-            }
-        });
-        $(".works-to-go").disableSelection();
-    </script>
+@push('page-js')
+
     <script>
         function make_session() {
             {{Session(['back_after_add' => \Livewire\str(Request::url())])}}
@@ -47,4 +38,4 @@
 
     </script>
 
-@endsection
+@endpush

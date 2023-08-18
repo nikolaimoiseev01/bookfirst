@@ -54,26 +54,6 @@ class ParticipationController extends Controller
     {
 
 
-//        $ch = curl_init();
-//        curl_setopt($ch, CURLOPT_URL, 'https://api.yookassa.ru/v3/payments/');
-//        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-//        curl_setopt($ch, CURLOPT_POST, 1);
-//        curl_setopt($ch, CURLOPT_POSTFIELDS, "{\n        \"amount\": {\n          \"value\": \"2.00\",\n          \"currency\": \"RUB\"\n        },\n        \"confirmation\": {\n          \"type\": \"embedded\"\n        },\n        \"capture\": true,\n        \"description\": \"Заказ №72\"\n      }");
-//
-//        $headers = array();
-//        $headers[] = 'Content-Type: application/json';
-//        $headers[] = 'Authorization: Basic '. base64_encode("838224:test_Ld6d87_Skm4TcGQkDiAW-V0mE3XyjrAfE3E9SK6iS0U");
-//        $headers[] = 'Idempotence-Key: Basic '. uniqid('', true);
-//        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-//
-//        $result = curl_exec($ch);
-//        if (curl_errno($ch)) {
-//            echo 'Error:' . curl_error($ch);
-//        }
-//        curl_close($ch);
-//        $response = json_decode($result);
-//        $yookassa_token = $response->confirmation->confirmation_token;
-
 
 
         $participation = Participation::where('user_id', Auth::user()->id)->where('collection_id', $request->collection_id)->first() ?? array('pat_status_id' => 0);
@@ -93,8 +73,7 @@ class ParticipationController extends Controller
          $voted_to = Participation::where('collection_id', $request->collection_id)
             ->where('user_id', vote::where('user_id_from', Auth::user()->id)->where('collection_id', $request->collection_id)->value('user_id_to'))
             ->first();
-        $is_winners = collection_winner::where('collection_id', $request->collection_id)->sum('place');
-        $winners = collection_winner::where('collection_id', $request->collection_id)->orderby('place')->get();
+
 
         $votes_for_me = vote::where('collection_id', $request->collection_id)->where('user_id_to', Auth::user()->id)->count();
 
@@ -107,9 +86,6 @@ class ParticipationController extends Controller
                 'printorder' => $printorder,
                 'chat_id' => $chat['id'],
                 'voted_to' => $voted_to,
-//                'yookassa_token' => $yookassa_token,
-                'is_winners' => $is_winners,
-                'winners' => $winners,
                 'votes_for_me' => $votes_for_me,
                 'chat_question_check' => $chat_question_check,
                 'last_mes_id' => $last_mes_id

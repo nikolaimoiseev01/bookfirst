@@ -11,6 +11,6 @@
 @endsection
 @section('content')
     <div class="settings">
-        @livewire('my-settings')
+        @livewire('account.my-settings')
     </div>
 @endsection

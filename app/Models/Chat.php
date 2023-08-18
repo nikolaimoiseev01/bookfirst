@@ -9,15 +9,23 @@ class Chat extends Model
 {
     use HasFactory;
 
-    public function Message() {
+    protected $fillable = [
+        'chat_status_id',
+    ];
+
+
+    public function Message()
+    {
         return $this->hasMany(Message::class);
     }
 
-    public function User() {
+    public function User()
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function chat_status() {
+    public function chat_status()
+    {
         return $this->belongsTo(chat_status::class);
     }
 }

@@ -10,9 +10,12 @@ document.querySelectorAll('.word').forEach((el) => {
     el.innerHTML = el.textContent.replace(/\S/g, "<span class='letter'>$&</span>");
 });
 
+final_height = $('.active_text').outerHeight()
+$('.project-wrap').innerHeight(final_height)
 
 $(".change_ex").click(function () {
 
+    console.log('test');
     // Cover animate
     var active_from = parseInt($('.active').attr('id')),
         active_to = 1,
@@ -68,4 +71,6 @@ $(".change_ex").click(function () {
             $('.change_ex').css('pointer-events', '');
         });
 
+    final_height = $('.active_text').outerHeight()
+    $('.project-wrap').innerHeight(final_height)
 });

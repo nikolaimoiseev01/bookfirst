@@ -21,17 +21,11 @@ class OwnBookController extends Controller
     public function book_page($request)
     {
         $own_book = own_book::where('id', $request)->first();
-        $inside_comments = preview_comment::where([['user_id', Auth::user()->id], ['own_book_id', $own_book['id']], ['own_book_comment_type', 'inside']])->get();
-        $cover_comments = preview_comment::where([['user_id', Auth::user()->id], ['own_book_id', $own_book['id']], ['own_book_comment_type', 'cover']])->get();
         $chat_id = Chat::where('own_book_id', $own_book['id'])->value('id');
-        $digital_sales = digital_sale::where('bought_own_book_id', $own_book['id'])->get();
         return
             view('account.own_books.book_page', [
                 'own_book' => $own_book,
-                'inside_comments' => $inside_comments,
-                'cover_comments' => $cover_comments,
-                'chat_id' => $chat_id,
-                'digital_sales' => $digital_sales,
+                'chat_id' => $chat_id
             ]);
     }
 

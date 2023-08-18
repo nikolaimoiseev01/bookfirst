@@ -49,16 +49,6 @@ class PortalController extends Controller
         ]);
     }
 
-    public function collection_search($collection_input_search)
-    {
-
-        $collections = Collection::where('title', 'like', '%' . $collection_input_search . '%')->orderBy('id','desc')->paginate(9);
-        session(['previous-url' => request()->url()]);
-        return view('portal.old_collections', [
-            'collections' => $collections,
-            'collection_input_search' => $collection_input_search,
-        ]);
-    }
 
     public function own_book_page() {
             return view('portal.own_book_page', [

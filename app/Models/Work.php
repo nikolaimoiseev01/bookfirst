@@ -9,6 +9,20 @@ class Work extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'title',
+        'text',
+        'symbols',
+        'rows',
+        'pages',
+        'upload_type',
+        'user_id',
+        'work_type_id',
+        'work_topic_id',
+        'picture',
+        'picture_cropped'
+    ];
+
     public function user() {
         return $this->belongsTo(User::class);
     }

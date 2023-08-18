@@ -9,4 +9,7 @@ class own_book_files extends Model
 {
    use HasFactory;
 
+    public function own_book() {
+        return $this->belongsTo(own_book::class);
+    }
 }

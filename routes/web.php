@@ -79,7 +79,7 @@ Route::prefix('social')->group(function () {
 //    Route::get('/', [PortalController::class, 'index'])->name('homePortal');
 
 // ---------  ПОРТАЛ --------- //
-Route::middleware([])->domain(env('APP_URL'))->group(function () {
+Route::middleware([])->group(function () {
 
     Route::get('/', [PortalController::class, 'index'])->name('homePortal');
     Route::get('/collections/{collection_id}', [CollectionController::class, 'index'])->name('collection_page');
@@ -133,7 +133,7 @@ Route::middleware(['verified'])->prefix('myaccount')->group(function () {
         ]);
     })->name('own_book_create');
 
-    Route::post('temp-uploads/{file_source}',[\App\Http\Controllers\UploadController::class, 'store']);
+    Route::any('temp-uploads/{file_source}',[\App\Http\Controllers\UploadController::class, 'store']);
 
     Route::resource('work', \App\Http\Controllers\Account\WorkController::class,);
     Route::get('/work/search/{work_input_search}', [App\Http\Controllers\Account\WorkController::class, 'index_search'])->name('work_search');

@@ -1,56 +1,19 @@
 @extends('layouts.portal_layout')
 
 
-@section('page-style')
-    <link rel="stylesheet" href="/plugins/slick/slick.css">
-    <link rel="stylesheet" href="css/our_examples.css">
-    <style>
-        .rights {
-            display: flex;
-            width: 100%;
-            border-top: 1px #ccc solid;
-            margin-top: 20px;
-            padding-top: 10px;
-        }
-
-        .rights-docs {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            margin-right: 20px;
-        }
-
-        @media screen and (max-width: 670px) {
-            .rights {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .rights-docs {
-                align-items: center;
-                margin: 0 0 20px 0;
-            }
-
-            .rights-info {
-                text-align: center;
-            }
-        }
-    </style>
-
-@endsection
-
-
 
 @section('page-title') О нас @endsection
 
 
 
 @section('content')
-    <div style="max-width: 1600px;" class="content">
-        <h2 class="page-title">О нас</h2>
+    <div class="page_content_wrap about_page_wrap">
+        <div class="header_wrap">
+            <h2>О нас</h2>
+        </div>
 
 
-        <div style="flex-direction: column; align-items: flex-start;" class="normal-page-container container">
+        <div class="container">
             <p>“Первая Книга” приветствует Вас на нашем сайте!
                 Мы предоставляем возможность авторам воплощать их мечты в жизнь. Если Вы не представляете себя без пера
                 в руке и желаете оставить след в истории литературы, если Вы не проживаете ни дня без новой иллюстрации,
@@ -62,15 +25,19 @@
                 содержания, а также регистрации книги, присвоения ей уникального номера ISBN, а также ее размещения на
                 всемирных книжных интернет площадках (Amazon.com, Ozon.ru, Books.ru и т. д.).</p>
 
-            <div class="rights">
+            <div class="official_info_wrap">
                 <div class="rights-docs">
-                    <h2 style="margin: 0 0 10px 0; font-size: 25px;">Правовая информация:</h2>
-                    <a href="/admin_files/Договор%20публичной%20оферты%20на%20оказание%20услуг%20по%20публикации.pdf" download class="link">Договор издания и публикации</a>
-{{--                    <a href="" download class="link">Договор на издание книги</a>--}}
+                    <h4>Правовая информация:</h4>
+                    <a href="/admin_files/Договор публичной оферты на оказание услуг по публикации.pdf"
+                       download class="link">
+                        Договор публикации
+                    </a><br>
+                    <a href="/admin_files/Договор на издание книги.pdf"
+                       download class="link">Договор на издание книги</a>
                 </div>
                 <div class="rights-info">
-                    <h2 style="margin: 0 0 10px 0; font-size: 25px;">Юридическое лицо:</h2>
-                    <p style="font-size: 20px;"><i>ОГРНИП 321100100001571<br>
+                    <h4>Юридическое лицо:</h4>
+                    <p><i>ОГРНИП 321100100001571<br>
                             ИНН 100126488117<br>
                             Е-mail: main@pervajakniga.ru<br>
                             Веб-сайт: pervajakniga.ru</i>

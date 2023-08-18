@@ -30,9 +30,9 @@ class ParticipationController extends Controller
 {
     public function participants(Request $request)
     {
-        $participations = Participation::orderBy('pat_status_id','asc')->where('collection_id', $request->collection_id)->get();
+        $participations = Participation::orderBy('pat_status_id', 'asc')->where('collection_id', $request->collection_id)->get();
         $collection_title = DB::table('collections')->where('id', $request->collection_id)->value('title');
-        $printorders = PrintOrder::orderBy('id','desc')->where('collection_id',$request->collection_id)->get();
+        $printorders = PrintOrder::orderBy('id', 'desc')->where('collection_id', $request->collection_id)->get();
         return view('admin.collection.participants', [
             'participations' => $participations,
             'collection_title' => $collection_title,
@@ -43,26 +43,43 @@ class ParticipationController extends Controller
 
     public function change_user_status(Request $request)
     {
+
+        $participation = Participation::where('id', $request->pat_id)->first();
+        $collection_id = Participation::where('id', $request->pat_id)->value('collection_id');
+
+        $already_paid_amount = $participation->transaction->where('status', 'CONFIRMED')->sum('amount');
+
+        if ($already_paid_amount ?? 0 == $participation['total_price']) { // Если уже полностью оплатил и только чуть поменял произведения
+            $pat_status_id = 3;
+            $email_subject = 'Заявка подтверждена';
+            $email_text = "Спешим сообщить, что Ваши произведения были одобрены и приняты для участия в сборнике '" . collection::where('id',$collection_id)->value('title') . "'! " .
+                "Вы уже оплатили участие, и цена осталась прежней. Таким образом статус Вашего участия: \"заявка подтверждена\".";
+        } else {
+            $pat_status_id = $request->pat_status_id;
+            $email_subject = 'Требуется оплата участия';
+            $email_text = "Спешим сообщить, что Ваши произведения были одобрены и приняты для участия в сборнике '" . collection::where('id',$collection_id)->value('title') . "'! " .
+                "Сразу после оплаты (" . $participation['total_price'] . " рублей с учетом скидки) Вы будете включены в список авторов сборника и будете получать уведомления о всех этапах его публикации. " .
+                "Оплата происходит в автоматическом режиме. Для этого необходимо нажать кнопку 'Оплатить " . $participation['total_price'] . " руб.' на странице Вашего участия:";
+        }
+
         Participation::where('id', $request->pat_id)->update(array(
-            'pat_status_id' => $request->pat_status_id,
+            'pat_status_id' => $pat_status_id,
             'approved_at' => Carbon::now()
         ));
         $user = User::where('id', $request->user_id)->first();
-        $collection_id = Participation::where('id', $request->pat_id)->value('collection_id');
-        $participation = Participation::where('id', $request->pat_id)->first();
+
+
 
         $user->notify(new EmailNotification(
-                'Требуется оплата участия',
-            $user['name'],
-            "Спешим сообщить, что Ваши произведения как нельзя лучше подходят для сборника '" . collection::where('id',$collection_id)->value('title') . '! ' .
-            "Сразу после оплаты (" . $participation['total_price'] . " рублей с учетом скидки) Вы будете включены в список авторов сборника и будете получать уведомления о всех этапах его публикации. " .
-            "Оплата происходит в автоматическом режиме. Для этого необходимо нажать кнопку 'Оплатить " . $participation['total_price'] . " руб.' на странице Вашего участия:",
-            "Перейти к оплате",
+                $email_subject,
+                $user['name'],
+                $email_text,
+                "Перейти к заявке",
                 route('homePortal') . "/myaccount/collections/" . $collection_id . "/participation/" . $request->pat_id . '#payment_block')
         );
 
         \Illuminate\Support\Facades\Notification::send($user, new UserNotification(
-            'Смена статуса участия в сборнике!',
+                'Смена статуса участия в сборнике!',
                 route('homePortal') . "/myaccount/collections/" . $collection_id . "/participation/" . $request->pat_id)
         );
 
@@ -76,7 +93,6 @@ class ParticipationController extends Controller
     }
 
 
-
     public function new_participants()
     {
 
@@ -87,11 +103,12 @@ class ParticipationController extends Controller
 
     }
 
-    public function add_participation_comment(Request $request) {
+    public function add_participation_comment(Request $request)
+    {
         $participation = Participation::where('id', $request->participation_id)->first();
 
         Participation::where('id', $request->participation_id)->update(array(
-            'comment' =>  $request->comment
+            'comment' => $request->comment
         ));
 
         session()->flash('success', 'change_printorder');
@@ -123,7 +140,6 @@ class ParticipationController extends Controller
     }
 
 
-
     public function change_user_collection($participation_id, Request $request)
     {
 
@@ -138,7 +154,7 @@ class ParticipationController extends Controller
         ));
 
         // ---- Меняем сборник в печатном заказе ---- //
-        IF ($participation['printorder_id'] ?? 0 > 0) {
+        if ($participation['printorder_id'] ?? 0 > 0) {
             Printorder::where('id', $participation['printorder_id'])->update(array(
                 'collection_id' => $collection_to_update['id']
             ));
@@ -148,9 +164,9 @@ class ParticipationController extends Controller
         Chat::where('collection_id', $participation['collection_id'])
             ->where('user_created', $participation['user_id'])
             ->update(array(
-            'collection_id' => $collection_to_update['id'],
-            'title' => 'Личный чат по сборнику: ' . $collection_to_update['title']
-        ));
+                'collection_id' => $collection_to_update['id'],
+                'title' => 'Личный чат по сборнику: ' . $collection_to_update['title']
+            ));
 
 
         session()->flash('success', 'change_printorder');

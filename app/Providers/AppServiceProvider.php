@@ -37,6 +37,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+
+
+
+        $throttleRate = config('mail.throttleToMessagesPerMin');
+        if ($throttleRate) {
+            $throttlerPlugin = new \Swift_Plugins_ThrottlerPlugin($throttleRate, \Swift_Plugins_ThrottlerPlugin::MESSAGES_PER_MINUTE);
+            Mail::getSwiftMailer()->registerPlugin($throttlerPlugin);
+        }
+
         Paginator::useBootstrap();
 
         setlocale(LC_ALL, 'ru_RU.utf8');
@@ -57,28 +66,9 @@ class AppServiceProvider extends ServiceProvider
                 group by chat_id
             ) b ON m.chat_id = b.chat_id and m.updated_at = b.max_mes_upd
             where (m.flag_mes_read = 0 or m.flag_mes_read is null) and c.chat_status_id <> 3 and m.user_to = ' . Auth::user()->id;
-//select * from (
-//        SELECT c.*
-//
-//        ,u_cr.id as u_cr_id, u_cr.avatar as u_cr_avatar ,ifnull(u_cr.nickname, concat(u_cr.name, " ",u_cr.surname)) as u_cr_name
-//        ,u_to.id as u_to_id, u_to.avatar as u_to_avatar ,ifnull(u_to.nickname, concat(u_to.name, " ",u_to.surname)) as u_to_name
-//        ,(Row_Number() over (partition by c.id order by m.created_at desc)) as rn, m.text as last_mes_text, m.created_at as last_mes_created
-//        ,m.id as last_mes_id
-//        ,m.user_to as last_mes_to
-//        ,m.flag_mes_read
-//        FROM chats as c
-//        Join users as u_cr on u_cr.id = c.user_created
-//        Join users as u_to on u_to.id = c.user_to
-//        Left Join messages as m on m.chat_id = c.id
-//
-//        ) a
-//        where a.rn = 1
-//        and (a.flag_mes_read is null or a.flag_mes_read = 0)
-//        and a.last_mes_to = ' . Auth::user()->id . '
-//        order by last_mes_created desc';
 
 
-                $notifications = DB::select(DB::raw($this->query))[0]->noti_cnt;
+                $notifications = DB::select($this->query)[0]->noti_cnt;
             } else {
                 $notifications = null;
             }

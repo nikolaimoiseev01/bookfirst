@@ -17,31 +17,27 @@
 @section('content')
     <div class="account-header">
         <h1>Участие в сборниках</h1>
-        <a style="box-shadow: none;" href="{{route('actual_collections')}}" class="button">Актуальные сборники для участия</a>
+        <a href="{{route('actual_collections')}}" class="button">
+            Актуальные сборники для участия
+        </a>
     </div>
-    <div class="my-collections">
+    <div class="my_collections_wrap">
         @if(count($participations) == 0)
-            <div class="no-books-yet">
-                <h1>На данный момент у Вас нет сборников, в которых Вы участвуете.</h1>
-            </div>
+            <h1 class="no-access">На данный момент у Вас нет сборников, в которых Вы участвуете.</h1>
         @endif
         @foreach($participations as $participation)
 
-            <div class="container">
-                <div class="img-wrap">
-                    <img style="border: 1px #dbdbdb solid; border-radius: 9px;" width="200px" src="/{{$participation->collection['cover_2d']}}"
+            <div class="collection_wrap container">
+                    <img src="/{{$participation->collection['cover_2d']}}"
                          alt="">
-                </div>
-                <div class="right-wrap">
+                <div class="right_wrap">
                     <h3>{{$participation->collection['title']}}</h3>
                     <div class="info">
-                        <p style="margin-bottom:0;"><b>Статус участия:</b> {{$participation->pat_status['pat_status_title']}}</p>
+                        <p><b>Статус участия:</b> {{$participation->pat_status['pat_status_title']}}</p>
                         <p><b>Статус сборника:</b> {{$participation->collection->col_status['col_status']}}</p>
-                        <div class="book-links">
-                            <a style="text-align: center; width: 100%;" href="{{route('participation_index',['participation_id'=>$participation['id'],'collection_id'=>$participation['collection_id']])}}"
-                               class="fast-load button">Страница моего участия</a>
-                        </div>
                     </div>
+                    <a href="{{route('participation_index',['participation_id'=>$participation['id'],'collection_id'=>$participation['collection_id']])}}"
+                       class="button">Страница моего участия</a>
                 </div>
             </div>
         @endforeach

@@ -45,9 +45,11 @@ class TelegramNotification extends Notification
 
     public function toTelegram($notifiable)
     {
+
         return TelegramMessage::create()
             // Markdown supported.
-            ->content($this->title . "\n\n" . $this->text)
+
+            ->content(((ENV('APP_DEBUG')) ? "ТЕСТ \n\n" : '') . $this->title . "\n\n" . $this->text)
             ->button($this->button_text, $this->button_link);
     }
 }

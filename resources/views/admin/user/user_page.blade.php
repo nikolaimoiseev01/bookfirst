@@ -1,5 +1,5 @@
 @extends('layouts.admin_layout')
-@section('title', 'Добавить книгу')
+@section('title', $user['surname'] . ' ' . $user['name'])
 @section('content')
     <!-- Main content -->
     <section class="pt-4 content">
@@ -337,7 +337,7 @@
                                 </table>
 
                                 <div style="display:none" class="p-3 mt-3 border chat-create-admin">
-                                    @livewire('chat-create',['chat_title' => '', 'collection_id' => 0, 'own_book_id' => 0, 'user_to' => $user->id])
+                                    @livewire('account.chat.chat-create',['chat_title' => '', 'collection_id' => 0, 'own_book_id' => 0, 'user_to' => $user->id])
                                 </div>
                                 <a id="chat_add" style="width:200px;" class="mt-3 btn btn-outline-secondary">
                                     <i class="mr-2 fa fa-plus"></i> Создать чат</a>

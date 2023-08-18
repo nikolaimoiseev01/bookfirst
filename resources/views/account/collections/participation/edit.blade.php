@@ -25,7 +25,11 @@
             </ul>
         </div>
     @endif
-    @livewire('edit-participation', ['collection' => $collection, 'participation' => $participation])
+    @livewire('account.collection-participation.coll-application',
+    ['collection_id' => $collection->id,
+    'type'=>'edit',
+    'part_id' => $participation->id
+    ])
 
 @endsection
 

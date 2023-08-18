@@ -8,7 +8,7 @@
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="/admin/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="/admin_assets/plugins/fontawesome-free/css/all.min.css">
     <!-- jQuery -->
     <script src="/js/jquery.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -18,15 +18,15 @@
     <script src="https://cdn.jsdelivr.net/npm/gijgo@1.9.6/js/gijgo.min.js" type="text/javascript"></script>
     <link href="https://cdn.jsdelivr.net/npm/gijgo@1.9.6/css/gijgo.min.css" rel="stylesheet" type="text/css"/>
     <!-- Theme style -->
-    <link rel="stylesheet" href="/admin/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="/admin_assets/dist/css/adminlte.min.css">
     <!-- Custom css -->
-    <link rel="stylesheet" href="/admin/admin.css">
+    <link rel="stylesheet" href="/admin_assets/admin.css">
 
     <!-- SummerNote Text Editor -->
     <link rel="stylesheet" href="/plugins/summernote/summernote.min.css">
 
     <!-- iCheck for checkboxes and radio inputs -->
-    <link rel="stylesheet" href="/admin/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <link rel="stylesheet" href="/admin_assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
 
     <link rel="stylesheet" href="/plugins/filepond/filepond.css">
 
@@ -50,42 +50,14 @@
         }
     </style>
 
+        @vite(['resources/sass/admin.scss', 'resources/js/app.js'])
+
+
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
 
-<!-- preloader -->
-<div class="book-preloader-wrap">
-    <span style="display: none">Меняем статус...</span>
-    <div class="book-preloader">
-        <div class="inner">
-            <div class="left"></div>
-            <div class="middle"></div>
-            <div class="right"></div>
-        </div>
-        <ul>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-        </ul>
-    </div>
-</div>
-<!-- preloader -->
+<x-preloader mode="portal"/>
 
 
 <div class="wrapper">
@@ -94,7 +66,7 @@
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
         <a href="/" class="brand-link">
-            <img src="/admin/dist/img/AdminLTELogo.png" alt="/adminLTE Logo" class="brand-image img-circle elevation-3"
+            <img src="/admin_assets/dist/img/AdminLTELogo.png" alt="/adminLTE Logo" class="brand-image img-circle elevation-3"
                  style="opacity: .8">
             <h3>Первая Книга</h3>
         </a>
@@ -294,19 +266,19 @@
 <script src="/js/js.js"></script>
 
 <!-- Bootstrap 4 -->
-<script src="/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/admin_assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- Select2 -->
-<script src="/admin/plugins/select2/js/select2.full.min.js"></script>
+<script src="/admin_assets/plugins/select2/js/select2.full.min.js"></script>
 <!-- InputMask -->
-<script src="/admin/plugins/moment/moment.min.js"></script>
+<script src="/admin_assets/plugins/moment/moment.min.js"></script>
 <!-- date-picker -->
-<script src="/admin/plugins/daterangepicker/daterangepicker.js"></script>
+<script src="/admin_assets/plugins/daterangepicker/daterangepicker.js"></script>
 <!-- Tempusdominus Bootstrap 4 -->
-<script src="/admin/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+<script src="/admin_assets/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
 <!-- BS-Stepper -->
-<script src="/admin/plugins/bs-stepper/js/bs-stepper.min.js"></script>
+<script src="/admin_assets/plugins/bs-stepper/js/bs-stepper.min.js"></script>
 <!-- AdminLTE App -->
-<script src="/admin/dist/js/adminlte.min.js"></script>
+<script src="/admin_assets/dist/js/adminlte.min.js"></script>
 
 <script src="/plugins/filepond/filepond.js"></script>
 <!-- include FilePond jQuery adapter -->
@@ -546,7 +518,7 @@
     })
     // ------// Авто функции скрытия - показ блоков---------------------
 </script>
-<script src="/admin/admin.js"></script>
+<script src="/admin_assets/admin.js"></script>
 <script src="/js/sweetalert2.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
@@ -564,8 +536,16 @@
     })
     @endif
 </script>
+
+<script>
+    document.addEventListener('scroll_chats', function () {
+        scroll_chats()
+    });
+</script>
+
+
 @yield('page-js')
-@stack('scripts')
+@stack('page-js')
 
 </body>
 </html>

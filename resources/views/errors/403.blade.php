@@ -18,6 +18,4 @@
 
 @section('page-js')
 
-
-
 @endsection

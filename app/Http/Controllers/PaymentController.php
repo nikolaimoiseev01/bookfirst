@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\PaymentStatusEnum;
+use App\Models\award;
 use App\Models\Collection;
 use App\Models\digital_sale;
 use App\Models\own_book;
@@ -302,8 +303,10 @@ class PaymentController extends Controller
                         $Participation = Participation::where('id', (int)$metadata['participation_id'])->first();
                         $Collection = Collection::where('id', $Participation['collection_id'])->first();
                         $user = User::where('id', $Participation['user_id'])->first();
+                        $transaction = Transaction::where('id', $transactionId)->first();
 
-                        if ($Participation['paid_at'] === null) { // Это НОВАЯ оплата за сборник
+
+                        if ($transaction['status'] !== PaymentStatusEnum::CONFIRMED) { // Еще не подтверждали эту транзакцию
 
                             // Записываем время оплаты на строку участия
                             Participation::where('id', (int)$metadata['participation_id'])
@@ -311,6 +314,13 @@ class PaymentController extends Controller
                                     'paid_at' => Carbon::now('Europe/Moscow')->toDateTime(),
                                     'pat_status_id' => 3
                                 ));
+
+                            // Создаем награду юзеру
+                            award::create([
+                                'user_id' => $user['id'],
+                                'award_type_id' => 4,
+                                'collection_id' => $Collection['id']
+                            ]);
 
                             // Посылаем Email уведомление пользователю
                             $user->notify(new EmailNotification(
@@ -322,113 +332,20 @@ class PaymentController extends Controller
                                 "Ваша страница участия",
                                 $metadata['url_redirect']));
 
+                            $title = '💸 *Новая оплата по сборинку!* 💸';
+                            $text = '*Автор:* ' . $Participation['name'] . " " . $Participation['surname'] .
+                                "\n" . "*Сборник:* " . $Collection['title'] .
+                                "\n" . "*Сумма:* " . $notification['amount']['value'] . " руб.";
+
                             // Посылаем Telegram уведомление нам
                             Notification::route('telegram', '-506622812')
-                                ->notify(new TelegramNotification('💸 Новая оплата по сборинку! 💸', 'Автор: ' . $Participation['name'] . " " . $Participation['surname'] .
-                                    "\n" . "Сборник: " . $Collection['title'] .
-                                    "\n" . "Сумма: " . $Participation['total_price'] . " руб.",
+                                ->notify(new TelegramNotification($title,$text,
                                     "Его страница участия",
                                     route('user_participation', $Participation['id'])));
 
                         }
                     }
                     // --------------------------------------------------------------------------------------------------------------------------------
-
-                    // Участник создал/отредактировал print_order -------------------------------------------------------------------------------------------------
-                    if ((int)($metadata['col_adit_print_needed'] ?? null) > 0) { // Это доплата за печатные экземпляры
-
-                        $Participation = Participation::where('id', (int)$metadata['participation_id'])->first();
-                        $Collection = Collection::where('id', $Participation['collection_id'])->first();
-                        $user = User::where('id', $Participation['user_id'])->first();
-
-                        if (Transaction::where('id', $transactionId)->value('status') === 'CREATED') { // Это НОВАЯ доплата за печатные экземпляры
-
-                            if ($metadata['col_adit_print_type'] === 'create') {// Это новый заказ
-
-                                // ---- Создаем новый Заказ печатных! ---- //
-                                $new_PrintOrder = new PrintOrder();
-                                $new_PrintOrder->collection_id = $Collection['id'];
-                                $new_PrintOrder->user_id = (int)$metadata['user_id'];
-                                $new_PrintOrder->books_needed = (int)($metadata['col_adit_print_needed'] ?? null);
-                                $new_PrintOrder->send_to_name = $metadata['col_adit_send_to_name'];
-                                $new_PrintOrder->send_to_tel = $metadata['col_adit_send_to_tel'];
-                                $new_PrintOrder->send_to_address = $metadata['col_adit_send_to_address'];
-                                $new_PrintOrder->save();
-                                // ----------------------------------------------------------- //
-
-                                // обновляем строчку участия
-                                Participation::where('id', (int)$metadata['participation_id'])
-                                    ->update(array(
-                                        'paid_at' => Carbon::now('Europe/Moscow')->toDateTime(),
-                                        'print_price' => $Participation['print_price'] + (int)$notification['amount']['value'],
-                                        'total_price' => $Participation['total_price'] + (int)$notification['amount']['value'],
-                                        'printorder_id' => $new_PrintOrder->id,
-                                    ));
-
-                                // Посылаем Email уведомление пользователю
-                                $user->notify(new EmailNotification(
-                                    'Оплата подтверждена!',
-                                    $user['name'],
-                                    "Отлично, вы успешно оплатили печатные экземпляры сборника '" . $Collection['title'] . "'. " .
-                                    "Вся подробная информация об издании сборника и вашем процессе указана на странице участия:",
-                                    "Ваша страница участия",
-                                    $metadata['url_redirect']));
-
-                                // Посылаем Telegram уведомление нам
-                                Notification::route('telegram', '-506622812')
-                                    ->notify(new TelegramNotification('💸 Доплатил за печатные экземпляры! 💸',
-                                        'Автор: ' . $Participation['name'] . " " . $Participation['surname'] .
-                                        "\n" . "Сборник: " . $Collection['title'] .
-                                        "\n" . "Сумма: " . (int)$notification['amount']['value'] . " руб.",
-                                        "Его страница участия",
-                                        route('user_participation', $Participation['id'])));
-
-                            }
-
-                            if ($metadata['col_adit_print_type'] === 'edit') {// Это редактирование старого заказа
-
-                                PrintOrder::where('id', $Participation['printorder_id'])
-                                    ->update(array(
-                                        'books_needed' => (int)($metadata['col_adit_print_needed'] ?? null),
-                                        'send_to_name' => $metadata['col_adit_send_to_name'],
-                                        'send_to_tel' => $metadata['col_adit_send_to_tel'],
-                                        'send_to_address' => $metadata['col_adit_send_to_address'],
-                                    ));
-
-                                // обновляем строчку участия
-                                Participation::where('id', (int)$metadata['participation_id'])
-                                    ->update(array(
-                                        'paid_at' => Carbon::now('Europe/Moscow')->toDateTime(),
-                                        'print_price' => $Participation['print_price'] + (int)$notification['amount']['value'],
-                                        'total_price' => $Participation['total_price'] + (int)$notification['amount']['value'],
-                                    ));
-
-
-
-
-                                // Посылаем Email уведомление пользователю
-                                $user->notify(new EmailNotification(
-                                    'Оплата подтверждена!',
-                                    $user['name'],
-                                    "Отлично, вы успешно заказли дополнительные печатные экземпляры сборника '" . $Collection['title'] . "'. " .
-                                    "Вся подробная информация об издании сборника и вашем процессе указана на странице участия:",
-                                    "Ваша страница участия",
-                                    $metadata['url_redirect']));
-
-                                // Посылаем Telegram уведомление нам
-                                Notification::route('telegram', '-506622812')
-                                    ->notify(new TelegramNotification('💸 Доплатил за печатные экземпляры! 💸',
-                                        'Автор: ' . $Participation['name'] . " " . $Participation['surname'] .
-                                        "\n" . "Сборник: " . $Collection['title'] .
-                                        "\n" . "Сумма: " . (int)$notification['amount']['value'] . " руб.",
-                                        "Его страница участия",
-                                        route('user_participation', $Participation['id'])));
-
-                            }
-
-                        }
-                    }
-
 
                     // Автор оплатил все кроме печати -------------------------------------------------------------------------------------------------
                     if ((int)($metadata['own_book_id'] ?? null) > 0 && (string)($metadata['own_book_payment_type'] ?? null) == 'Without_Print') { // Это оплата за книгу (БЕЗ ПЕЧАТИ)
@@ -450,16 +367,16 @@ class PaymentController extends Controller
                             $user->notify(new EmailNotification(
                                 'Оплата подтверждена!',
                                 $user['name'],
-                                "Отлично, вы успешно оплатили работу с макетами по книге: '" . $own_book['title'] .
-                                "'. Следующие шаги Вы всегда сможете отсеживать на странице издания:",
+                                "Отлично, вы успешно оплатили работу с макетами по книге: \"" . $own_book['title'] .
+                                "\". Следующие шаги Вы всегда сможете отсеживать на странице издания:",
                                 "Страница издания",
                                 $metadata['url_redirect']));
 
                             // Посылаем Telegram уведомление нам
                             Notification::route('telegram', '-506622812')
-                                ->notify(new TelegramNotification('💸 Новая оплата по книге! 💸', 'Автор: ' . $own_book['author'] . "(юзер: " . $user['name'] . " " . $user['surname'] . ")" .
-                                    "\n" . "Книга: " . $own_book['title'] .
-                                    "\n" . "Сумма: " . ($own_book['total_price'] - $own_book['print_price']) . " руб. (печать у него на " . $own_book['print_price'] . " руб.)",
+                                ->notify(new TelegramNotification('💸 Новая оплата по книге! 💸',
+                                    '*Книга*: ' . $own_book['author'] . ": \"" . $own_book['title'] . "\"" .
+                                    "\n" . "*Сумма:* " . ($own_book['total_price'] - $own_book['print_price']) . " руб. (печать у него на " . $own_book['print_price'] . " руб.)",
                                     "Его страница издания",
                                     route('own_books_page', $own_book['id'])));
                         }
@@ -486,16 +403,16 @@ class PaymentController extends Controller
                             $user->notify(new EmailNotification(
                                 'Оплата подтверждена!',
                                 $user['name'],
-                                "Отлично, вы успешно оплатили печать книги: '" . $own_book['title'] .
-                                "'. Следующие шаги Вы всегда сможете отсеживать на странице издания:",
+                                "Отлично, вы успешно оплатили печать книги: \"" . $own_book['title'] .
+                                "\". Следующие шаги Вы всегда сможете отсеживать на странице издания:",
                                 "Страница издания",
                                 $metadata['url_redirect']));
 
                             // Посылаем Telegram уведомление нам
                             Notification::route('telegram', '-506622812')
-                                ->notify(new TelegramNotification('💸 Новая оплата по печати книги! 💸', 'Автор: ' . $own_book['author'] . "(юзер: " . $user['name'] . " " . $user['surname'] .
-                                    "\n" . "Книга: " . $own_book['title'] .
-                                    "\n" . "Сумма: " . ($own_book['print_price']) . " руб.",
+                                ->notify(new TelegramNotification('💸 Новая оплата по печати книги! 💸',
+                                    '*Книга:* ' . $own_book['author'] . ": \"" . $own_book['title'] . "\"" .
+                                    "\n" . "*Сумма:* " . ($own_book['print_price']) . " руб.",
                                     "Его страница издания",
                                     route('own_books_page', $own_book['id'])));
                         }
@@ -506,6 +423,7 @@ class PaymentController extends Controller
                     if ((int)($metadata['print_id'] ?? 0) > 0) { // Это оплата за пересылку
 
                         $print_order = Printorder::where('id', (int)$metadata['print_id'])->first();
+
                         $user = User::where('id', $print_order['user_id'])->first();
                         if ($print_order['paid_at'] === null) {  // Это НОВАЯ оплата
                             // Записываем время оплаты на строку отправления
@@ -526,7 +444,7 @@ class PaymentController extends Controller
                             // Посылаем Telegram уведомление нам
                             Notification::route('telegram', '-506622812')
                                 ->notify(new TelegramNotification('💸 Новая оплата по пересылке! 💸',
-                                    "Сумма: " . ($print_order['send_price']) . " руб.",
+                                    "*Сумма:* " . ($print_order['send_price']) . " руб.",
                                     "В админку",
                                     route('homeAdmin')));
                         }

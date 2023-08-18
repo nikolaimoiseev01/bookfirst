@@ -11,59 +11,37 @@
 
 
 @section('content')
-    <div class="content">
-        @include('layouts.parts.user_portal_header')
+    <div class="page_content_wrap social_work_page_wrap">
 
-        <div class="work_block">
+        <x-social.user-page-header :user="$user"></x-social.user-page-header>
+
+        <div class="work_wrap">
+            <h2 class="work_name">{{$work['title']}}  </h2>
+            <p>{!! nl2br($work['text']) !!}</p>
             <div>
-                <h2>{{$work['title']}}  </h2>
+                <img style="max-width: 300px;" src="{{$work['picture']}}" alt="">
             </div>
-
-            <div>
-                <p>{!! nl2br($work['text']) !!}</p>
-                <div style="margin-top: 20px;">
-                    <img style="max-width: 300px;" src="{{$work['picture']}}" alt="">
-                </div>
-
-            </div>
-            {{App::setLocale('ru')}}
-            <div>
+            <div class="info_wrap">
                 <p>
                     <b>Рубрика:</b>
-                    <span style="">
                     @if ($work['work_type_id'] == 999)
-                            {{Str::lower($work->work_topic['name'])}}
-                        @elseif ($work['work_topic_id'] == 999)
-                            {{Str::lower($work->work_type['name'])}}
-                        @else
-                            {{Str::lower($work->work_type['name'])}}/{{Str::lower($work->work_topic['name'])}}
-                        @endif
-
-
-                </span>
+                        {{Str::lower($work->work_topic['name'])}}
+                    @elseif ($work['work_topic_id'] == 999)
+                        {{Str::lower($work->work_type['name'])}}
+                    @else
+                        {{Str::lower($work->work_type['name'] ?? 'не определено')}}/{{Str::lower($work->work_topic['name'] ?? 'не определено')}}
+                    @endif
                 </p>
 
-                <br>
+                <p><b>Опубликовано:</b>{{ Date::parse($work['created_at'])->format('j F Y') }} </p>
 
-                <p>
-                    <b>Опубликовано:</b>
-                    <span
-                        style=""> {{ Date::parse($work['created_at'])->format('j F Y') }}</span>
-                </p>
-
-                <br>
-
-                <div style="display: flex;     align-items: center;">
-                    <p style="margin-right: 10px;">
-                        <b>Нравится:</b>
-                        @livewire('like-button', ['work_id' => $work->id])
-                    </p>
+                <div class="like_wrap"><p><b>Нравится:</b></p>
+                    @livewire('social.like-button', ['work_id' => $work->id])
                 </div>
-
 
             </div>
         </div>
 
 
-        @livewire('work-comments', ['work_id' => $work['id']])
+        @livewire('social.work-comments', ['work_id' => $work['id']])
 @endsection

@@ -16,7 +16,13 @@
     </style>
     <div class="account-header">
         <h1>Избранные авторы</h1>
+        @if(count($sub_users) == 0)
+            <div class="buttons_wrap">
+                <a href="{{route('social.all_works_feed')}}" class="button">Наши авторы</a>
+            </div>
+        @endif
     </div>
+
     <div class="user_found_block">
         @foreach($sub_users as $sub_user)
             <div class="container">
@@ -44,6 +50,10 @@
     <div>
         {{$sub_users->links()}}
     </div>
+
+    @if(count($sub_users) == 0)
+        <h4 class="no-access">Вы еще не подписывались на авторов</h4>
+    @endif
 
 @endsection
 @section('content')

@@ -13,7 +13,7 @@
 @section('page-title')
     <div class="account-header">
         <h1>Архивные вопросы</h1>
-        <a class="link fast-load" href="{{route('all_chats')}}">Активные вопросы</a>
+        <a class="button" href="{{route('all_chats')}}">Активные вопросы</a>
     </div>
 @endsection
 @section('content')
@@ -23,7 +23,7 @@
             <h1>На данный момент архивные чаты отсутствуют</h1>
         </div>
     @else
-    @livewire('my-chats',['chat_group' => 2])
+    @livewire('account.my-chats',['chat_group' => 2])
     @endif
 
 @endsection

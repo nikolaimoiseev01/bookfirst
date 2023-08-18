@@ -6,12 +6,12 @@
 
 @section('page-title')
     <div class="account-header">
-        <h1>Добавление произведений из файла</h1>
+        <h1>Добавление произведения из файла</h1>
     </div>
 @endsection
 
 @section('content')
-    @livewire('create-work-from-doc')
+    @livewire('account.work.create-work-from-doc')
 @endsection
 
 @section('page-js')

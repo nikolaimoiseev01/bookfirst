@@ -44,14 +44,6 @@
     p {
         font-size: 22px;
     }
-
-    .button {
-        font-size: 18px !important;
-        display: flex;
-        width: fit-content;
-        justify-content: center;
-        margin: auto;
-    }
 }
 
 @media screen and (max-width: 700px) {

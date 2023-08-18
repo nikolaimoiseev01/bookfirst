@@ -12,4 +12,8 @@ class own_books_works extends Model
     public function Work() {
         return $this->belongsTo(Work::class);
     }
+
+    public function own_book() {
+        return $this->belongsTo(own_book::class);
+    }
 }

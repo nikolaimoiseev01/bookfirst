@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\award;
 use App\Models\Chat;
 use App\Models\chat_status;
 use App\Models\own_book;
@@ -183,7 +184,7 @@ class OwnBookController extends Controller
                         'Процесс издания книги',
                         $user['name'],
                         "Проверили Ваши файлы и готовы сказать, что мы с радостью можем начать процесс издания Вашей книги '" . own_book::where('id', $request->own_book_id)->value('title') . "'!" .
-                        "\nНа текущий момент издание имеет общий статус: '" . own_book_status::where('id', $request->own_book_status_id)->value('status_title') . "." .
+                        "\nНа текущий момент издание имеет общий статус: \"" . own_book_status::where('id', $request->own_book_status_id)->value('status_title') . "\"." .
                         "\nТак сразу после оплаты стоимости издания мы начнём работу с макетами и пришлём первые варианты в течение 11-ти календарных дней. " .
                         "Всю подробную информацию об издании Вы всегда можете отслеживать на специальной странице издания книги.",
                         "Страница издания",
@@ -201,11 +202,18 @@ class OwnBookController extends Controller
                 $user->notify(new EmailNotification(
                         'Процесс издания завершен!',
                         $user['name'],
-                        "С радостью сообщаем, что процесс издания Вашей книги '" . own_book::where('id', $request->own_book_id)->value('title') . "' завершен! " .
-                        "Всю подробную информацию об издании Вы всегда можете отслеживать на специальной странице издания книги. Сотрудничать с Вами было одно удовольствие, и мы с радостью ждем Вас для издания следующих книг, а также для участия в наших сборниках! Мы будем очень признательны, если Вы оставите отзыв о нашей деятельности в нашей группе ВК: vk.com/topic-122176261_35858257",
+                        "С радостью сообщаем, что процесс издания Вашей книги \"" . own_book::where('id', $request->own_book_id)->value('title') . "\" завершен! " .
+                        "Всю подробную информацию Вы всегда сможете отслеживать на специальной странице издания книги. Сотрудничать с Вами было одно удовольствие, и мы с радостью ждем Вас для издания следующих книг, а также для участия в наших сборниках! Мы будем очень признательны, если Вы оставите отзыв в нашей группе ВК: vk.com/topic-122176261_35858257",
                         "Страница издания",
                         route('book_page', $this->own_book['id']))
                 );
+
+                // Создаем награду юзеру
+                award::create([
+                    'user_id' => $user['id'],
+                    'award_type_id' => 5,
+                    'collection_id' => $this->own_book['id']
+                ]);
 
                 \Illuminate\Support\Facades\Notification::send($user, new UserNotification(
                         'Смена статуса издания книги!',
@@ -217,7 +225,7 @@ class OwnBookController extends Controller
                 $user->notify(new EmailNotification(
                         'Процесс издания книги',
                         $user['name'],
-                        "Спешим сообщить, что произошла смена статуса издания Вашей книги: '" . own_book::where('id', $request->own_book_id)->value('title') . "'." .
+                        "Спешим сообщить, что произошла смена статуса издания Вашей книги: \"" . own_book::where('id', $request->own_book_id)->value('title') . "\"." .
                         "\nНа текущий момент издание имеет общий статус: '" . own_book_status::where('id', $request->own_book_status_id)->value('status_title') . "'. Всю подробную информацию об издании Вы всегда можете отслеживать на специальной странице издания книги.",
                         "Страница издания",
                         route('book_page', $this->own_book['id']))
@@ -255,7 +263,7 @@ class OwnBookController extends Controller
             $user->notify(new EmailNotification(
                     'Процесс издания книги',
                     $user['name'],
-                    "Спешим сообщить, что произошла смена статуса работы по внутреннему блоку Вашей книги: '" . own_book::where('id', $request->own_book_id)->value('title') . "." .
+                    "Спешим сообщить, что произошла смена статуса работы по внутреннему блоку Вашей книги: \"" . own_book::where('id', $request->own_book_id)->value('title') . "\"." .
                     "\nНа текущий момент внутренний блок имеет статус: '" . own_book_inside_status::where('id', $request->own_book_inside_status_id)->value('status_title') . "'. Всю подробную информацию об издании Вы всегда можете отслеживать на специальной странице издания книги.",
                     "Страница издания",
                     route('book_page', $own_book['id']))

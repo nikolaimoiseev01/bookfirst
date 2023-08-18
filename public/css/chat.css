@@ -1,3 +1,8 @@
+:root {
+    --social_blue: #66A2E5FF;
+}
+
+
 .all_chats_block {
     display: flex;
     max-height: 700px;
@@ -66,7 +71,7 @@
 }
 
 .cur_chat_header_block {
-   display: flex;
+    display: flex;
     align-items: center;
     flex-wrap: wrap;
     /*margin-bottom: 15px;*/

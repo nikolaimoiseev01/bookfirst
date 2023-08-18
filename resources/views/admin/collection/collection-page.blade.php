@@ -807,7 +807,7 @@
                                 </form>
                             </div>
                             <div class="card-body p-0">
-                                @livewire('admin-print-order-table',['collection_id'=>$collection['id']])
+                                @livewire('admin.admin-print-order-table',['collection_id'=>$collection['id']])
                             </div>
                             <!-- /.card-body -->
                         </div>

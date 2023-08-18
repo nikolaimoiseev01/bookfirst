@@ -16,7 +16,7 @@
 @endsection
 
 @section('content')
-@livewire('create-own-book')
+@livewire('account.own-book.create-own-book')
 @endsection
 
 @section('paje-js')

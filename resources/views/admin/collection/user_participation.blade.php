@@ -450,7 +450,7 @@
                                 <div id="book_chat" style="margin: 0 0 30px 0; width: 100%; max-width: 2000px;"
                                      class="chat">
                                     <div style="margin: 0; width: 100%; max-width: 2000px;" class="container">
-                                        @livewire('chat',['chat_id'=>$chat->id])
+                                        @livewire('account.chat.chat',['chat_id'=>$chat->id, 'new_chat_user_id'=>null])
                                     </div>
                                 </div>
                                 {{-- // Чат книги --}}

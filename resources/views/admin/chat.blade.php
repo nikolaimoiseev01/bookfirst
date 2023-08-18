@@ -69,7 +69,9 @@
                 <div id="book_chat" style="width: 100%; max-width: 2000px;" class="chat">
                     <div style="margin: 0; width: 100%; max-width: 2000px;" class="container">
 
-                        @livewire('chat',['chat_id'=>$chat['id']])
+                        <livewire:account.chat.chat key="{{ rand() }}"
+                                                    :chat_id="$chat['id'] ?? null"
+                                                    :new_chat_user_id="null"/>
                     </div>
                 </div>
             </div>

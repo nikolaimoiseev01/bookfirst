@@ -11,7 +11,7 @@
 @endsection
 
 @section('content')
-    @livewire('create-work')
+    @livewire('account.work.work-form', ['form_type' => 'create', 'work_id' => null])
 @endsection
 
 @section('page-js')

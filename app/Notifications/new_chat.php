@@ -71,9 +71,10 @@ class new_chat extends Notification
 
     public function toTelegram($notifiable)
     {
+
         return TelegramMessage::create()
             // Markdown supported.
-            ->content("📌Открыт новый чат!📌".
+            ->content(((ENV('APP_DEBUG')) ? "ТЕСТ \n\n " : '') . "📌Открыт новый чат!📌".
                 "\n\n**Автор:** ". $this->name . " ". $this->surname .
                 "\n**Тема:** ". $this->title .
                 "\n**Сообщение:** " . $this->message

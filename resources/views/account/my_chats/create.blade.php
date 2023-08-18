@@ -15,7 +15,7 @@
 @endsection
 
 @section('content')
-        @livewire('chat-create',['chat_title' => $chat_title, 'collection_id' => $collection_id, 'own_book_id' => 0, 'user_to' => 2])
+        @livewire('account.chat.chat-create',['chat_title' => $chat_title, 'collection_id' => $collection_id, 'own_book_id' => 0, 'user_to' => 2])
         <a style="display: none" id="back" href="/myaccount/chats" class="fast-load">Кнопка назад</a>
 @endsection
 

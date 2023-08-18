@@ -1,7 +1,6 @@
 @extends('layouts.admin_layout')
 @section('title', $own_book->user['surname'])
 @section('content')
-    <link rel="stylesheet" href="/css/chat.css">
     <!-- Content Header (Page header) -->
     <div class="content-header">
         <div class="container-fluid">
@@ -419,14 +418,14 @@
                         <div class="tab-pane active" id="inside">
                             <div class="row">
                                 <div class="pr-2 col-sm-6">
-                                    @if ($own_book['inside_type'] == 'системой')
+                                    @if ($own_book['inside_type'] == 'by_system')
                                         <h3>Автор загрузил произведения из системы:</h3>
                                         @foreach($own_book->own_books_works as $work)
                                             <h3>{{$loop->index + 1}}. {{$work->work['title']}}</h3>
                                             <p>{{$work->work['text']}}</p>
                                         @endforeach
                                     @endif
-                                    @if ($own_book['inside_type'] == 'файлами')
+                                    @if ($own_book['inside_type'] == 'by_file')
                                         <h3>Автор загрузил файлы:</h3>
                                         @foreach($inside_files as $file)
                                             <h3 style="font-size: 1.3em">{{$loop->index + 1}}. <a
@@ -1199,7 +1198,7 @@
                                          class="chat">
                                         <div style="margin: 0; width: 100%; max-width: 2000px;" class="container">
 
-                                            @livewire('chat',['chat_id'=>$chat->id])
+                                            @livewire('account.chat.chat',['chat_id'=>$chat->id, 'new_chat_user_id'=>null])
 
                                         </div>
                                     </div>

@@ -1,44 +1,12 @@
 @extends('layouts.portal_layout')
 
-@section('page-style')
-    <style>
-        .login-buttons-wrap {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-        }
-
-        @media screen and (max-width: 1000px) {
-            .login-buttons-wrap button {
-                margin: inherit;
-            }
-
-            @media screen and (max-width: 500px) {
-                .login-buttons-wrap {
-                    flex-direction: column;
-                    align-items: center;
-                }
-
-                .login-buttons-wrap button {
-                    margin-bottom: 10px;
-                }
-            }
-        }
-    </style>
-@endsection
-
 @section('content')
-    <div style="
-    display: flex;
-    justify-content: center;"
-         class="content">
-        <div class="log_reg_wrap">
-            <div class="nav go-to">
-                <a href="/login" class="current"><h2>Вход</h2></a>
-                <a href="/register"><h2>Регистрация</h2></a>
-            </div>
+    <div class="log_reg_page_wrap page_content_wrap">
+        <div class="header_wrap">
+            <h2>Восстановление пароля</h2>
+        </div>
 
-            <div class="login_register_list">
+
                 <form method="POST" id="login" action="{{ route('password.email') }}" id="login" class="test">
                     @csrf
 
@@ -63,8 +31,8 @@
                             </ul>
                         </div>
                     @endif
-                    <div style="padding-bottom:20px;" class="input">
-                        <p>Email</p><br>
+                    <div class="input-group">
+                        <p>Email</p>
                         <input
                             id="email"
                             type="email"
@@ -77,17 +45,15 @@
                         >
                     </div>
 
-                    <div class="login-buttons-wrap">
+                    <div class="login_buttons_wrap">
                         <button id="form_login" class="show_preloader_on_click preloader_button button" type="submit">
                             <span class="button__text">Напомнить пароль</span>
                         </button>
 
-                        <a style="float:right;" class="link" href="/login">Войти</a>
+                        <a class="link" href="/login">Войти</a>
                     </div>
 
                 </form>
-            </div>
-        </div>
     </div>
 
 @endsection

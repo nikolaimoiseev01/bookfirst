@@ -57,18 +57,14 @@ class SocialController extends Controller
     {
         $user_id = intval($request->user_id);
         $user = User::where('id', $user_id)->first();
-        $user_stat_readers = user_subscription::where('subscribed_to_user_id', $user_id)->get();
-        $user_stat_reads = user_subscription::where('user_id', $user_id)->get();
+
         $works = Work::where('user_id', $user_id)->get();
-        $awards = award::where('user_id', $user_id)->get();
+
         $last_other_works = Work::inRandomOrder()->limit(5)->get();
 
 //        $user_wallet = UserWallet::where('user_id', Auth::user()->id)->first();
         return view('social.user_page', [
             'user' => $user,
-            'awards' => $awards,
-            'user_stat_readers' => $user_stat_readers,
-            'user_stat_reads' => $user_stat_reads,
             'works' => $works,
             'last_other_works' => $last_other_works
         ]);
@@ -130,15 +126,6 @@ class SocialController extends Controller
     public function all_works_feed()
     {
         $works = Work::where('user_id', '<>', 2)->withcount('work_like')->get();
-//        $works = Work::where('user_id', '<>', 2)->get();
-//        $query = 'select w.id, w.user_id, u.name, u.nickname, u.surname, u.avatar, wt.id as work_topic_id, wt.name as topic_name, w.title, w.text, w.created_at, w.work_type_id, w.picture, count(wl.id) as work_like_count, count(wc.id) as work_comment_count from works w
-//                  left join work_likes wl on wl.work_id = w.id
-//                  left join work_comments wc on wc.work_id = w.id
-//                  left join users u on u.id = w.user_Id
-//                  left join work_topics wt on wt.id = w.work_topic_id
-//                  group by  w.id, w.user_id, u.name, u.nickname, u.surname, u.avatar, wt.id, wt.name, w.title, w.text, w.created_at, w.work_type_id, w.picture';
-//
-//        $works = collect(DB::select(DB::raw($query)));
         return view('social.all_works_feed', [
             'works' => $works,
         ]);

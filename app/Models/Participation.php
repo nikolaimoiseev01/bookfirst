@@ -9,6 +9,12 @@ class Participation extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'chat_id',
+        'printorder_id'
+    ];
+
+
     public function user() {
         return $this->belongsTo(User::class);
     }
@@ -39,6 +45,10 @@ class Participation extends Model
 
     public function vote() {
         return $this->hasmany(vote::class);
+    }
+
+    public function Transaction() {
+        return $this->hasmany(Transaction::class);
     }
 
 }

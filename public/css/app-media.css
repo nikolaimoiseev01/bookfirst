@@ -165,19 +165,6 @@
     }
 }
 
-@media screen and (max-height: 1030px) {
-    .account-content {
-        margin-bottom: 200px;
-    }
-}
-
-@media screen and (max-width: 726px) {
-.header-button-wrap {
-    margin-bottom: 20px;
-    display: flex;
-    margin-left: 0 !important;
-}
-}
 
 @media screen and (max-width: 720px) {
     .app_menu_text {

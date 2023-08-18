@@ -48,10 +48,23 @@
                     });
                 }
 
+
+                setTimeout(function() {
+                    console.log('test232');
+                    $('.list-wrap').css('height', 'auto')
+                }, 1000);
+
+
+
+
+
+
                 // Don't behave like a regular link
                 // Stop propegation and bubbling
                 return false;
             });
+
+
         };
         base.init();
     };
