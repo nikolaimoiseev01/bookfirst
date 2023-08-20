@@ -1941,6 +1941,10 @@
             @include media-mobiles-480 {
                 flex-direction: column;
             }
+
+            img {
+                max-height: 131px;
+            }
         }
 
         a {
