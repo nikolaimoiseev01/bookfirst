@@ -7,7 +7,7 @@
 /public/img/avatars
 /public/img/work_pics
 /public/storage
-/storage/*.key
+/storage
 /vendor
 .env
 .env.backup
