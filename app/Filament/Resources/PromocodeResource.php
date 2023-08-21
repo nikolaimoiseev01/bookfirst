@@ -4,7 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PromocodeResource\Pages;
 use App\Filament\Resources\PromocodeResource\RelationManagers;
-use App\Models\Promocode;
+use App\Models\promocode;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
