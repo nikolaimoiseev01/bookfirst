@@ -2166,6 +2166,32 @@
     }
 }
 
+.archive_chats_wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+
+    .chat_wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        padding: 10px;
+
+
+        h4 {
+            font-size: 20px;
+        }
+
+        p {
+            color: $color-grey;
+            font-size: 18px;
+            font-style: italic;
+        }
+    }
+
+
+}
+
 .collapsible {
     height: 0;
     overflow: hidden;

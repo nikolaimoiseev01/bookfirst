@@ -1,4 +1,4 @@
-<div class="chat_wrap">
+<div class="chat_wrap @if($chat['chat_status_id'] === "3") container closed @endif">
 
 
     <div class="messages_wrap">
@@ -40,8 +40,8 @@
 
                         @if (count($message->message_file) > 0)
                             <div class="attach_wrap">
-                                <h2 class="title">Прикрепленные
-                                    файлы:</h2>
+                                <h4 class="title">Прикрепленные
+                                    файлы:</h4>
                                 <div class="files_wrap">
                                     @foreach($message->message_file as $message_file)
                                         <a class="file_wrap" download href="/{{$message_file['file']}}">
@@ -72,15 +72,15 @@
         @endif
     </div>
 
-    @if($chat['chat_status_id'] ?? null <> 3) {{-- Если есть какой-то статус у чата и он не закрыт--}}
+    @if($chat['chat_status_id'] !== "3") {{-- Если есть какой-то статус у чата и он не закрыт--}}
 
     <x-chat-textarea model="text"
                      placeholder="Введите сообщение"
                      attachable="true" sendable="true"></x-chat-textarea>
 
     @else
-        <div class="chat-closed">
-            <p style="margin-right:20px;">Этот чат закрыт</p>
+        <div class="closed_info">
+            <p> Этот чат закрыт</p>
             <a class="button" wire:click.prevent="reopenChat({{$chat['id']}})">
                 Открыть чат заново
             </a>

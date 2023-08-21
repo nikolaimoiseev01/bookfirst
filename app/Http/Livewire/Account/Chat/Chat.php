@@ -54,7 +54,7 @@ class Chat extends Component
         session()->flash('show_modal', 'yes');
         session()->flash('alert_type', 'success');
         session()->flash('alert_title', 'Вопрос открыт снова!');
-        return redirect($this->currentUrl);
+        return redirect(route('all_chats') . '?cur_chat_id=' . $chat_id);
     }
 
     public function add_template($id) {

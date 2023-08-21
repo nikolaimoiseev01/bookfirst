@@ -18,12 +18,20 @@
 @endsection
 @section('content')
 
-    @if ($chats_check === 0)
-        <div class="no-books-yet">
-            <h1>На данный момент архивные чаты отсутствуют</h1>
-        </div>
+    @if (!$chats)
+        <h1 class="no-access">На данный момент архивные чаты отсутствуют</h1>
     @else
-    @livewire('account.my-chats',['chat_group' => 2])
+        <div class="archive_chats_wrap">
+            @foreach($chats as $chat)
+
+                <div class="container chat_wrap">
+                        <h4 class="title">{{Str::limit($chat['title'], 30)}}</h4>
+                        <p>Создан: {{ Date::parse($chat['created_at'])->format('j F Y') }}</p>
+                    <a class="link" href="{{route('chat',$chat['id'])}}">Подробнее</a>
+                </div>
+
+            @endforeach
+        </div>
     @endif
 
 @endsection

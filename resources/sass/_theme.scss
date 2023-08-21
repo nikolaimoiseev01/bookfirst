@@ -2285,6 +2285,27 @@ footer {
             width: 100%;
         }
     }
+
+    &.closed {
+        max-width: 600px;
+        height: fit-content;
+        max-height: 700px;
+
+        .closed_info {
+            display: flex;
+            gap: 10px;
+            flex-direction: column;
+
+            p {
+                color: $color-grey;
+                margin: auto;
+            }
+
+            a {
+                width: 100%;
+            }
+        }
+    }
 }
 
 .input_file_wrap {

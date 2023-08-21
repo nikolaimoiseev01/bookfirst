@@ -58,14 +58,15 @@ class ChatController extends Controller
 
     public function archive()
     {
-        $chats_check = Chat::where('chat_status_id', 3)
+        $chats = Chat::where('chat_status_id', 3)
             ->where(function($q) {
                 $q->where('user_to', Auth::user()->id)
                     ->orWhere('user_created', Auth::user()->id);
             })
             ->get();
+
         return view('account/my_chats/archive', [
-          'chats_check'=>$chats_check,
+          'chats'=>$chats,
         ]);
     }
 
