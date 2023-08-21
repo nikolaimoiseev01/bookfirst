@@ -11,7 +11,7 @@
         <div class="info_wrap">
             @if($participation->collection['col_status_id'] >= 2 && !($participation['paid_at'] ?? null)) {{-- Если сборник уже пошел издаваться --}}
             <p class="no-access">
-                К сожалению, Вы пропустили срок оплаты участия, из-за не были включены в сборник!
+                К сожалению, Вы пропустили срок оплаты участия, из-за чего не были включены в сборник.
             </p>
             @elseif(!($participation->printorder ?? null)) {{-- Если не было заказа--}}
             <div class="no-access">
