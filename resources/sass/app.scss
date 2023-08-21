@@ -1875,7 +1875,8 @@
     .collection_wrap {
         gap: 20px;
         padding: 20px;
-        width: 600px;
+        width: max-content;
+        max-width: 620px;
 
         @include media-tablets-768 {
             width: inherit;
