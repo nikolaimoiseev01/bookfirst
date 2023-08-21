@@ -537,6 +537,8 @@
 
 <script src="/plugins/summernote/summernote.min.js"></script>
 
+<script src="/plugins/autolinker/autolinker.min.js"></script>
+
 <script>
     @if (session('success'))
     Swal.fire({
