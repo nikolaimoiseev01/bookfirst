@@ -14,7 +14,7 @@
                 у Вас будет возможность прочитать все блоки сборника и проголосовать за лучшего на Ваш взгляд.
             </p>
 
-            @elseif ($collection['col_status_id'] >= 2 && ($participation['pat_status_id'] === 1 || $participation['pat_status_id'] === 99)) {{-- Если сборник поехал, но клиент не прошел оплату --}}
+            @elseif ($collection['col_status_id'] >= 2 && ($participation['pat_status_id'] <= 2 || $participation['pat_status_id'] === 99)) {{-- Если сборник поехал, но клиент не прошел оплату --}}
             <p class="no-access">Из-за отсутствия оплаты Вы не были включены в список участников.</p>
 
             @elseif($collection['col_status_id'] >= 2) {{-- Если сборник в предварительной проверке --}}
