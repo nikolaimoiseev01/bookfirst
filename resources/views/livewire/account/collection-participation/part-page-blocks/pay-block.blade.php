@@ -35,11 +35,28 @@
                                    style="display:none" class="form-control"
                                    id="pat_id">
 
-                            <button id="btn-submit" type="submit"
-                                    style="height: fit-content; max-width:250px;"
-                                    class="pay-button button">
-                                Оплатить {{$participation['total_price']  - $already_paid_amount}} руб.
-                            </button>
+                            <div class="buttons_wrap">
+                                <button id="btn-submit" type="submit"
+                                        style="height: fit-content; max-width:250px;"
+                                        class="pay-button button">
+                                    Оплатить {{$participation['total_price']  - $already_paid_amount}} руб.
+                                </button>
+
+                                <a class="foreign_pay link yellow">Для переводов из-за границы</a>
+                            </div>
+
+                            @push('page-js')
+                                <script>
+                                    $(".foreign_pay").on('click', function (event) {
+                                        event.preventDefault();
+                                        Swal.fire({
+                                        html: '<p>Если вы не можете оплатить через автоматическую форму, например, по причине наличия только заграничного счета, можно сделать прямой перевод по любым реквизитам из списка по ссылке ниже (в том числе есть счета в иностранных банках). Как только перевод будет сделан, пожалуйста, напишите, нам об этом в чате сверху страницы. Тогда мы вручную сменим статус участия.</p><div class="buttons_wrap"><a class="button" download href="/admin_files/Реквизиты Первая Книга.pdf">Реквизиты</a></div>',
+                                        // icon: 'info',
+                                        showConfirmButton: false,
+                                        })
+                                    });
+                                </script>
+                            @endpush
                         </form>
 
                     </div>

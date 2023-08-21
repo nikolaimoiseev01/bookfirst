@@ -2671,6 +2671,8 @@
                         display: flex;
                         justify-content: center;
 
+
+
                         .pay-button {
                             color: #ffa500;
                             background: white;
@@ -2682,6 +2684,13 @@
                                 background: $color-yellow;
                                 color: $color-white;
                             }
+                        }
+
+                        .buttons_wrap {
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                            gap: 10px;
                         }
                     }
                 }
