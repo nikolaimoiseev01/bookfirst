@@ -8,10 +8,7 @@
             <h2>{{$page_title}}</h2>
         </div>
         <div class="info_wrap">
-            {{$collection['col_status_id']}}
-            {{$participation['pat_status_id']}}
-
-            @if ($collection['col_status_id'] >= 2 && ($participation['pat_status_id'] === 1 || $participation['pat_status_id'] === 9))
+            @if ($collection['col_status_id'] >= 2 && ($participation['pat_status_id'] === 1 || $participation['pat_status_id'] === 99))
 
 
                 <p class="no-access">Из-за отсутствия оплаты Вы не были включены в список участников.</p>
