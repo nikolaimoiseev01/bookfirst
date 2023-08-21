@@ -86,10 +86,10 @@
         @endforeach
     </div>
 
-    @if(count($works_orig ?? []) > 0)
+    @if(count($works ?? []) > 0)
         <div class="load_more_wrap">
-            <p>Загружено {{count($works)}} из {{count($works_orig)}}</p>
-            @if(count($works) < count($works_orig))
+            <p>Загружено {{$loaded_cnt}} из {{$total_cnt}}</p>
+            @if($loaded_cnt < $total_cnt)
                 <a wire:click.prevent="load_more()" class="link show_preloader_on_click">
                     Еще
                 </a>

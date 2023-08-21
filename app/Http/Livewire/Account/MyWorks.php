@@ -39,7 +39,13 @@ class MyWorks extends Component
                 $search = mb_strtolower($this->search_input);
                 return preg_match("/$search/", mb_strtolower($q['title'])) || preg_match("/$search/", mb_strtolower($q['text']));
             });
-        })->take($this->take_num);
+        });
+
+        $this->total_cnt = count($this->works);
+
+        $this->works = $this->works->take($this->take_num);
+
+        $this->loaded_cnt = count($this->works);
 
         return view('livewire.account.my-works');
     }
