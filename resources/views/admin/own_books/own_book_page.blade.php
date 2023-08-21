@@ -418,7 +418,7 @@
                         <div class="tab-pane active" id="inside">
                             <div class="row">
                                 <div class="pr-2 col-sm-6">
-                                    @if ($own_book['inside_type'] == 'by_system')
+                                    @if ($own_book['inside_type'] == 'by_system' || $own_book['inside_type'] == 'системой')
                                         <h3>Автор загрузил произведения из системы:</h3>
                                         @foreach($own_book->own_books_works as $work)
                                             <h3>{{$loop->index + 1}}. {{$work->work['title']}}</h3>
