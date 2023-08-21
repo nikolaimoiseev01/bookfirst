@@ -15,6 +15,10 @@ class MyWorks extends Component
     public $works;
     public $works_orig;
     public $search_input;
+    public $take_num = 10;
+
+    public $total_cnt;
+    public $loaded_cnt;
 
 
     protected $listeners = ['delete_work'];
@@ -35,7 +39,7 @@ class MyWorks extends Component
                 $search = mb_strtolower($this->search_input);
                 return preg_match("/$search/", mb_strtolower($q['title'])) || preg_match("/$search/", mb_strtolower($q['text']));
             });
-        });
+        })->take($this->take_num);
 
         return view('livewire.account.my-works');
     }
@@ -111,5 +115,9 @@ class MyWorks extends Component
         $this->search_input = null;
     }
 
+    public function load_more() {
+        $this->take_num += 10;
+        $this->dispatchBrowserEvent('trigger_all_js');
+    }
 
 }

@@ -3,7 +3,7 @@
     <div class="account-header">
         <h1>Мои произведения</h1>
 
-       <div class="buttons_wrap">
+        <div class="buttons_wrap">
             @if(count($works) > 0)
                 <x-input.search-bar
                     model="search_input"
@@ -85,6 +85,17 @@
             </div>
         @endforeach
     </div>
+
+    @if(count($works_orig ?? []) > 0)
+        <div class="load_more_wrap">
+            <p>Загружено {{count($works)}} из {{count($works_orig)}}</p>
+            @if(count($works) < count($works_orig))
+                <a wire:click.prevent="load_more()" class="link show_preloader_on_click">
+                    Еще
+                </a>
+            @endif
+        </div>
+    @endif
 
     {{--        {{ $works->links() }}--}}
 </div>

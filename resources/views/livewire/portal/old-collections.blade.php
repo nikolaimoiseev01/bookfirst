@@ -47,7 +47,6 @@
                         Еще
                     </a>
                 </div>
-
             @endif
 
         @else
