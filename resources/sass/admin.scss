@@ -347,3 +347,34 @@ textarea {
 .link {
     @include preloader;
 }
+
+.templates_block_wrap {
+    position: relative;
+
+    .templates_wrap {
+        position: absolute;
+        bottom: 60px;
+        border: 1px grey solid;
+        border-radius: 10px;
+        z-index: 999;
+        left: 0;
+        background: white;
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+
+        p {
+            margin: 0;
+            cursor: pointer;
+            padding: 5px;
+            transition: all .1s ease-in-out;
+
+            &:hover {
+                background: grey;
+                color: white;
+                transition: all .1s ease-in-out;
+            }
+        }
+
+    }
+}

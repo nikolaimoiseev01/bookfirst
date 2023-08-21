@@ -16,7 +16,7 @@
         "arielmejiadev/larapex-charts": "^6.0.0",
         "barryvdh/laravel-elfinder": "^0.5.2",
         "consoletvs/charts": "6.*",
-        "filament/filament": "^2.0",
+        "filament/filament": "^2.17",
         "guzzlehttp/guzzle": "^7.0.1",
         "inertiajs/inertia-laravel": "^0.6.9",
         "jenssegers/date": "^4.0",
@@ -36,6 +36,7 @@
         "yoomoney/yookassa-sdk-php": "^2.1"
     },
     "require-dev": {
+        "doctrine/dbal": "^3.6",
         "fakerphp/faker": "^1.9.1",
         "laravel/breeze": "^1.10",
         "laravel/sail": "^1.0.1",

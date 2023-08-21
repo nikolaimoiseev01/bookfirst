@@ -87,6 +87,18 @@
         </div>
     @endif
 
+    @if(Auth::user()->hasRole('admin'))
+        <div x-data="{ show_templates: false }" class="templates_block_wrap">
+            <a @click="show_templates = !show_templates" class="w-25 mt-3 mb-3 btn btn-primary">Шаблоны</a>
+            <div @mousedown.outside="show_templates = false" x-show="show_templates" class="templates_wrap">
+                @foreach($templates as $template)
+                    <p wire:click.prevent="add_template({{$template['id']}})">{{$template['title']}}</p>
+                @endforeach
+
+            </div>
+        </div>
+    @endif
+
 
     @push('page-js')
         @once

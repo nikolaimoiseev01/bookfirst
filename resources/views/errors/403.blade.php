@@ -12,8 +12,14 @@
 
 
 
+
+
 @section('content')
-<h2 style="font-size: 40px;">Войдите в аккаунт админа, чтобы просматривать эту страницу!</h2>
+    <div class="account-content">
+
+        <h2 style="font-size: 40px;">Войдите в аккаунт админа, чтобы просматривать эту страницу!</h2>
+
+    </div>
 @endsection
 
 @section('page-js')

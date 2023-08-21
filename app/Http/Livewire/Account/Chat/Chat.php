@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Account\Chat;
 
 use App\Models\Message;
 use App\Models\message_file;
+use App\Models\MessageTemplate;
 use App\Models\Participation;
 use App\Models\User;
 use App\Notifications\EmailNotification;
@@ -31,6 +32,7 @@ class Chat extends Component
     public $chat;
     public $flg_chat_creation;
     public $new_chat_user;
+    public $templates;
 
     protected $listeners = [
         'new_message',
@@ -55,8 +57,15 @@ class Chat extends Component
         return redirect($this->currentUrl);
     }
 
+    public function add_template($id) {
+        $template_text = MessageTemplate::where('id', $id)->first();
+        $this->text = $this->text . $template_text['text'];
+    }
+
     public function mount($chat_id, $new_chat_user_id)
     {
+
+        $this->templates = MessageTemplate::orderBy('id')->get();
 
         if ($chat_id) { // Если работаем с уже существующим чатом
 

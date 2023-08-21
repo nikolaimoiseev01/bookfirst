@@ -82,7 +82,7 @@
     @yield('content')
     <x-footer mode="social"/>
 @else
-    <x-preloader mode="portal"/>
+                    <x-preloader mode="portal"/>
     <x-header-portal/>
     @yield('content')
     <x-footer mode="portal"/>

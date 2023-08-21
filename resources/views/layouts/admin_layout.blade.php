@@ -239,6 +239,15 @@
                         </a>
                     </li>
 
+                    <li class="nav-item">
+                        <a href="/admin" class="nav-link">
+                            <i class="nav-icon fas fa-users"></i>
+                            <p>
+                                Новая админка
+                            </p>
+                        </a>
+                    </li>
+
 
                 </ul>
             </nav>
@@ -287,6 +296,8 @@
 <script src="/plugins/filepond/filepond-plugin-file-validate-size.min.js"></script>
 <!-- include FilePond file-validate-type adapter -->
 <script src="/plugins/filepond/filepond-plugin-file-validate-type.min.js"></script>
+
+<script src="//unpkg.com/alpinejs"></script>
 
 <!-- Page specific script -->
 <script>

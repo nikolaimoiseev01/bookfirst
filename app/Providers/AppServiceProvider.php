@@ -68,9 +68,9 @@ class AppServiceProvider extends ServiceProvider
             where (m.flag_mes_read = 0 or m.flag_mes_read is null) and c.chat_status_id <> 3 and m.user_to = ' . Auth::user()->id;
 
 
-                $notifications = DB::select($this->query)[0]->noti_cnt;
+                $custom_notifications = DB::select($this->query)[0]->noti_cnt;
             } else {
-                $notifications = null;
+                $custom_notifications = null;
             }
 //            dd($notifications);
             $new_participants = Participation::where('pat_status_id', 1)->count();
@@ -118,7 +118,7 @@ class AppServiceProvider extends ServiceProvider
             $user_id_logged_in = Auth::user()->id ?? 0;
 
             $view->with([
-                'notifications' => $notifications,
+                'custom_notifications' => $custom_notifications,
                 'new_participants' => $new_participants,
                 'new_chats' => $new_chats,
                 'own_books_alert' => $own_books_alert,
