@@ -425,7 +425,7 @@
                                             <p>{{$work->work['text']}}</p>
                                         @endforeach
                                     @endif
-                                    @if ($own_book['inside_type'] == 'by_file')
+                                    @if ($own_book['inside_type'] == 'by_file' || $own_book['inside_type'] == 'файлами')
                                         <h3>Автор загрузил файлы:</h3>
                                         @foreach($inside_files as $file)
                                             <h3 style="font-size: 1.3em">{{$loop->index + 1}}. <a
