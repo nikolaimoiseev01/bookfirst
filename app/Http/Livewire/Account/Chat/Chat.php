@@ -181,8 +181,8 @@ class Chat extends Component
 
             if (Auth::user()->hasRole('admin')) { // Если пишет АДМИН
 
-                if ($this->chat['id'] === '1') { // Если ждет ответа поддержки
-                    $this->chat->update(array('chat_status_id' => '2')); // Ставим статус "ответ получен"
+                if ($this->chat['chat_status_id'] === '1') { // Если ждет ответа поддержки
+                    $this->chat->update(['chat_status_id' => '2']); // Ставим статус "ответ получен"
                 }
 
                 if ($chat->collection_id > 0) { // Если общаются по участию в сборнике
