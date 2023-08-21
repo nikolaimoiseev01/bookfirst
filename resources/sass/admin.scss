@@ -372,19 +372,24 @@ textarea {
         display: flex;
         flex-direction: column;
         padding: 10px;
+        max-height: 250px;
+        overflow: auto;
 
         p {
             margin: 0;
             cursor: pointer;
             padding: 5px;
             transition: all .1s ease-in-out;
+            border-radius: 5px;
 
             &:hover {
-                background: grey;
-                color: white;
+                background: $color-green-light;
+                color: $color-white;
                 transition: all .1s ease-in-out;
             }
         }
+
+        @include custom_scroll;
 
     }
 }

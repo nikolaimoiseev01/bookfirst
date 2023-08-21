@@ -5,7 +5,7 @@
     "src": "resources/js/app.js"
   },
   "resources/sass/admin.scss": {
-    "file": "assets/admin-3ef50dac.css",
+    "file": "assets/admin-47b2218c.css",
     "isEntry": true,
     "src": "resources/sass/admin.scss"
   },
