@@ -356,6 +356,11 @@ textarea {
 .templates_block_wrap {
     position: relative;
 
+    a {
+        width: fit-content !important;
+        color: white !important;
+    }
+
     .templates_wrap {
         position: absolute;
         bottom: 60px;
