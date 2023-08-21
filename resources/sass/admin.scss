@@ -20,6 +20,7 @@
     border-radius: 15px;
     transition: all .1s;
 
+
     .chat_wrap {
         width: 100%;
         display: flex;
@@ -44,6 +45,9 @@
             margin-top: 10px !important;
             margin-bottom: 20px;
             flex: 1;
+
+
+            @include custom_scroll;
 
 
             .no-access {
