@@ -10,11 +10,8 @@
         <div class="info_wrap">
 
 
-            @if ($collection['col_status_id'] >= 2 && $participation['pat_status_id'] <= 2)
-                <p class="no-access">Сейчас сборник проходит предварительную проверку, но из-за отсутствия оплаты Вы не
-                    были
-                    включены в список участников.
-                </p>
+            @if ($collection['col_status_id'] >= 2 && ($participation['pat_status_id'] === 1 || $participation['pat_status_id'] === 9))
+                <p class="no-access">Из-за отсутствия оплаты Вы не были включены в список участников.</p>
             @elseif($collection['col_status_id'] === 1)
 
                 <p class="no-access">Предварительная проверка сборника станет
