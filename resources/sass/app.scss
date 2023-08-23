@@ -640,6 +640,7 @@
     @include media-laptops-1024 {
         padding-right: 0;
         margin-top: 50px;
+        justify-content: center;
     }
 
     img {
@@ -673,6 +674,10 @@
         margin-left: 6%;
         z-index: 1;
         padding-top: 50px;
+
+        @include media-laptops-1024 {
+            margin-left: 0;
+        }
 
 
         .container {
