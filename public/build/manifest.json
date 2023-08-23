@@ -10,7 +10,7 @@
     "src": "resources/sass/admin.scss"
   },
   "resources/sass/app.scss": {
-    "file": "assets/app-737d11ae.css",
+    "file": "assets/app-7ce480de.css",
     "isEntry": true,
     "src": "resources/sass/app.scss"
   }

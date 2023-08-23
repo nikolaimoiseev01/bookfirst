@@ -291,6 +291,7 @@
 
         @include media-desktops-1200 {
             height: auto;
+            justify-content: center;
         }
 
         .woman {
@@ -302,7 +303,8 @@
             max-height: 70vh;
 
             @include media-laptops-1024 {
-                margin-right: 0;
+                margin: 0;
+                max-width: 50vw;
             }
         }
     }
