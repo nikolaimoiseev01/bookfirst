@@ -680,6 +680,10 @@
             justify-content: space-between;
             flex-wrap: wrap;
             gap: 20px;
+
+            @include media-mobiles-480 {
+                flex-direction: column;
+            }
         }
     }
 
