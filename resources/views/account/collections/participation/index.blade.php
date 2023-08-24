@@ -57,9 +57,7 @@
                     Чат по моему изданию
                 </a>
                 @if($chat['flg_chat_read'] === 0)
-                    <div style="margin-left: 20px;">
-                        @livewire('account.chat.chat-question-check',['chat_id'=>$chat->id])
-                    </div>
+                    @livewire('account.chat.chat-question-check',['chat_id'=>$chat->id])
                 @endif
             </div>
             <div id="book_chat">
