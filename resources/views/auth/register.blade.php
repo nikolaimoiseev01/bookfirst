@@ -191,8 +191,6 @@
         utm_source_cookie = getCook('utm_source');
         utm_medium_cookie = getCook('utm_medium');
 
-        console.log(utm_source_cookie)
-
         $('#utm_source').val(utm_source_cookie);
         $('#utm_medium').val(utm_medium_cookie);
     </script>
