@@ -84,7 +84,7 @@ class ParticipationController extends Controller
                 'participation' => $participation,
                 'pat_statuses' => $pat_statuses,
                 'printorder' => $printorder,
-                'chat_id' => $chat['id'],
+                'chat' => $chat,
                 'voted_to' => $voted_to,
                 'votes_for_me' => $votes_for_me,
                 'chat_question_check' => $chat_question_check,

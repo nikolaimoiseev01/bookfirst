@@ -52,18 +52,19 @@
         </div>
         {{-- // Общая информация о заявке--}}
         <div class="chat_block_wrap">
-            <a id="chat_button" class="button">
-                Чат по моему изданию
-            </a>
-            {{--            @if($chat_question_check)--}}
-            {{--                <div style="margin-left: 20px;">--}}
-            {{--                    @livewire('account.chat.chat-question-check',['mes_id'=>$last_mes_id])--}}
-            {{--                </div>--}}
-            {{--            @endif--}}
-
+            <div class="buttons_wrap">
+                <a id="chat_button" class="button">
+                    Чат по моему изданию
+                </a>
+                @if($chat['flg_chat_read'] === 0)
+                    <div style="margin-left: 20px;">
+                        @livewire('account.chat.chat-question-check',['chat_id'=>$chat->id])
+                    </div>
+                @endif
+            </div>
             <div id="book_chat">
                 <div class="container">
-                    @livewire('account.chat.chat',['chat_id'=>$chat_id, 'new_chat_user_id'=>null])
+                    @livewire('account.chat.chat',['chat_id'=>$chat->id, 'new_chat_user_id'=>null])
                 </div>
             </div>
         </div>

@@ -2093,15 +2093,6 @@
                 }
             }
 
-            .unread_mark {
-                width: 10px;
-                height: 10px;
-                color: #ffffff;
-                background: #e16464;
-                border-radius: 100%;
-                margin-right: 10px;
-                display: block;
-            }
 
             .admin_chats_block {
                 /*padding-bottom: 10px;*/
@@ -2471,9 +2462,17 @@
     .chat_block_wrap {
         width: 100%;
 
-        #chat_button {
-            width: 100%;
+        .buttons_wrap {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+
+            #chat_button {
+                width: 100%;
+            }
         }
+
 
         #book_chat {
             margin-top: 20px;
@@ -2682,7 +2681,6 @@
                     form {
                         display: flex;
                         justify-content: center;
-
 
 
                         .pay-button {

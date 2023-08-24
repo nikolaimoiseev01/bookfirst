@@ -2308,6 +2308,16 @@ footer {
     }
 }
 
+.unread_mark {
+    width: 10px;
+    height: 10px;
+    color: #ffffff;
+    background: #e16464;
+    border-radius: 100%;
+    margin-right: 10px;
+    display: block;
+}
+
 .input_file_wrap {
     input {
         display: none;
