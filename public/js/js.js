@@ -118,7 +118,6 @@ function trigger_all_js() {
 
 //region -- Прелоадер
     window.onload = function () {
-        console.log()
         $('.preloader_wrap').addClass('preloaded_hiding');
         window.setTimeout(function () {
             $('.preloader_wrap').addClass('preloaded_loaded');
