@@ -118,7 +118,6 @@ function trigger_all_js() {
 
 //region -- Прелоадер
     window.onload = function () {
-        console.log('t')
         $('.preloader_wrap').addClass('preloaded_hiding');
         window.setTimeout(function () {
             $('.preloader_wrap').addClass('preloaded_loaded');
@@ -233,13 +232,16 @@ function trigger_all_js() {
     }
 
     function getParameters() {
+
         let urlString = window.location.toString();
         let paramString = urlString.split('?')[1];
         let queryString = new URLSearchParams(paramString);
         for (let pair of queryString.entries()) {
+
             if (pair[0] == 'utm_source') {
                 utm_source = pair[1]
                 document.cookie = "utm_source=" + utm_source;
+
             } else if (pair[0] == 'utm_medium') {
                 utm_medium = pair[1]
                 document.cookie = "utm_medium=" + utm_medium;
@@ -250,6 +252,8 @@ function trigger_all_js() {
 
     utm_source_cookie = getCook('utm_source');
     utm_medium_cookie = getCook('utm_medium');
+
+
 
     if (utm_source_cookie === '') {
         getParameters();
@@ -285,7 +289,6 @@ function trigger_all_js() {
 $('.cus-dropdown').click(function (e) {
     e.preventDefault();
     e.stopPropagation();
-    console.log("test");
     $('.cus-dropdown').not(this).each(function () {
         $(this).removeClass('expanded');
         $(this).removeClass('overflow-auto');

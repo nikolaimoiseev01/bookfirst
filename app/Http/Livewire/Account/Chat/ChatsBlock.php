@@ -53,7 +53,7 @@ class ChatsBlock extends Component
         ,m.last_mes_text, m.last_mes_created
         ,m.last_mes_id
         ,m.last_mes_to
-        ,m.flag_mes_read
+        ,c.flg_chat_read
         FROM chats as c
         JOIN users as u_cr on u_cr.id = c.user_created
         JOIN users as u_to on u_to.id = c.user_to
@@ -82,7 +82,7 @@ class ChatsBlock extends Component
     {
 
         // Проверяем, есть ли вообще чаты у пользователя?
-        $this->user_chats_all_check = \App\Models\Chat::where('user_created',  Auth::user()->id)->orWhere('user_to',  Auth::user()->id)->get();
+        $this->user_chats_all_check = \App\Models\Chat::where('user_created', Auth::user()->id)->orWhere('user_to', Auth::user()->id)->get();
 
 
         // Создаем текущий чат
@@ -218,12 +218,13 @@ class ChatsBlock extends Component
 
         // Находим последний чат в выбранной категории
         $this->cur_chat_id = \App\Models\Chat::where('flg_admin_chat', $this->flg_admin_chat)
-            ->where(function ($query) {
-                $query->where('user_to', '=', Auth::user()->id)
-                    ->orWhere('user_created', '=', Auth::user()->id);
-            })
-            ->orderBy('updated_at', 'desc')
-            ->first()['id'] ?? null;
+                ->where(function ($query) {
+                    $query->where('user_to', '=', Auth::user()->id)
+                        ->orWhere('user_created', '=', Auth::user()->id);
+                })
+                ->where('chat_status_id', '<>', '3')
+                ->orderBy('updated_at', 'desc')
+                ->first()['id'] ?? null;
 
         // При обновлении чата тригерим загрузку файла на всякий случай
         $this->dispatchBrowserEvent('filepond_trigger');

@@ -1,6 +1,4 @@
-<div class="chat_wrap @if($chat['chat_status_id'] === "3") container closed @endif">
-
-
+<div class="chat_wrap @if(($chat['chat_status_id'] ?? '0') === '3') container closed @endif">
     <div class="messages_wrap">
         @if($flg_chat_creation) {{-- Если это полностью новый чат --}}
         <div class="no_messages_alert no-access">
@@ -72,7 +70,7 @@
         @endif
     </div>
 
-    @if($chat['chat_status_id'] !== "3") {{-- Если есть какой-то статус у чата и он не закрыт--}}
+    @if($chat['chat_status_id'] ?? 0 !== "3") {{-- Если есть какой-то статус у чата и он не закрыт--}}
 
     <x-chat-textarea model="text"
                      placeholder="Введите сообщение"

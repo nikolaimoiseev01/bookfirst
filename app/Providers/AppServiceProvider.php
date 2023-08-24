@@ -39,7 +39,6 @@ class AppServiceProvider extends ServiceProvider
     {
 
 
-
         $throttleRate = config('mail.throttleToMessagesPerMin');
         if ($throttleRate) {
             $throttlerPlugin = new \Swift_Plugins_ThrottlerPlugin($throttleRate, \Swift_Plugins_ThrottlerPlugin::MESSAGES_PER_MINUTE);
@@ -54,25 +53,22 @@ class AppServiceProvider extends ServiceProvider
 
 
         view()->composer('*', function ($view) {
-            if (Auth::user()->id ?? null) {
-                $this->query = '
-            SELECT
-            count(distinct m.chat_id) as noti_cnt
-            FROM messages m
-            join chats c on m.chat_id = c.id
-            JOIN (
-                SELECT chat_id,  MAX(m.updated_at) AS max_mes_upd
-                FROM messages m
-                group by chat_id
-            ) b ON m.chat_id = b.chat_id and m.updated_at = b.max_mes_upd
-            where (m.flag_mes_read = 0 or m.flag_mes_read is null) and c.chat_status_id <> 3 and m.user_to = ' . Auth::user()->id;
+
+            $check_filament = (str_contains($view->name(), 'Macros')) || (str_contains($view->name(), 'component') || (str_contains($view->name(), 'filament')));
 
 
-                $custom_notifications = DB::select($this->query)[0]->noti_cnt;
+            if (Auth::user()) {
+                $custom_notifications = Chat::where('flg_chat_read', 0)
+                    ->where(function ($query) {
+                        $query->where('user_to', Auth::user()->id)
+                            ->orWhere('user_created', Auth::user()->id);
+                    })
+                    ->where('chat_status_id', '<>', '3')->distinct('chats.id')->count('chats.id');
             } else {
                 $custom_notifications = null;
             }
-//            dd($notifications);
+
+
             $new_participants = Participation::where('pat_status_id', 1)->count();
             $new_chats = Chat::where('chat_status_id', 1)
                 ->where(function ($query) {
@@ -99,21 +95,12 @@ class AppServiceProvider extends ServiceProvider
                 ->count();
             //...with this variable
 
-            if(isset($_SERVER['REQUEST_URI']))  {
+            if (isset($_SERVER['REQUEST_URI'])) {
                 $urlParts = explode('/', $_SERVER['REQUEST_URI']);
                 $subdomain = $urlParts[1];
             } else {
                 $subdomain = 'Default';
             }
-
-
-//            if (isset($_SERVER['HTTP_HOST']) && !empty($_SERVER['HTTP_HOST'])) {
-//                $urlParts = explode('.', $_SERVER['HTTP_HOST']);
-//                $subdomain = $urlParts[0];
-//            } else {
-//                $subdomain = "";
-//            }
-
 
             $user_id_logged_in = Auth::user()->id ?? 0;
 
@@ -125,6 +112,7 @@ class AppServiceProvider extends ServiceProvider
                 'subdomain' => $subdomain,
                 'user_id_logged_in' => $user_id_logged_in
             ]);
+
         });
 
 

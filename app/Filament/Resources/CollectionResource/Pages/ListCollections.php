@@ -10,6 +10,9 @@ class ListCollections extends ListRecords
 {
     protected static string $resource = CollectionResource::class;
 
+    protected static ?string $title = 'Наши сборники';
+
+
     protected function getActions(): array
     {
         return [

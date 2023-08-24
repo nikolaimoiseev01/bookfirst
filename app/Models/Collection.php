@@ -9,8 +9,22 @@ class Collection extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     public function col_status() {
             return $this->belongsTo(Col_status::class);
+    }
+
+    public function Participation() {
+        return $this->hasMany(Participation::class);
+    }
+
+    public function Printorder() {
+        return $this->hasMany(Printorder::class);
+    }
+
+    public function preview_comment() {
+        return $this->hasMany(preview_comment::class);
     }
 
     public function digital_sale() {

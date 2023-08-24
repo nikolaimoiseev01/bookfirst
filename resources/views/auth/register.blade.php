@@ -179,9 +179,20 @@
 
 @endsection
 
-@section('page-js')
+@push('page-js')
 
     <script>
+        function getCook(cookiename) {
+            // Get name followed by anything except a semicolon
+            var cookiestring = RegExp(cookiename + "=[^;]+").exec(document.cookie);
+            // Return everything after the equal sign, or an empty string if the cookie name not found
+            return decodeURIComponent(!!cookiestring ? cookiestring.toString().replace(/^[^=]+./, "") : "");
+        }
+        utm_source_cookie = getCook('utm_source');
+        utm_medium_cookie = getCook('utm_medium');
+
+        console.log(utm_source_cookie)
+
         $('#utm_source').val(utm_source_cookie);
         $('#utm_medium').val(utm_medium_cookie);
     </script>
@@ -235,4 +246,4 @@
     </script>
 
 
-@endsection
+@endpush

@@ -44,20 +44,21 @@
     </style>
 
 
-
-    <div id="mes_{{$mes_id}}" class=" tooltip_custom_block">
+    @if($chat['flg_chat_read'] === 0)
+        <div id="chat_to_read_{{$chat['id']}}" class=" tooltip_custom_block">
         <span class="tooltip_custom unread_mark">
         </span>
 
-        <div class="tooltip_custom_shown">
-{{--            Последнее сообщение - от издательства--}}
-            <a wire:click.prevent="hide_message()" style="font-size: 16px;" class="link">Прочитать</a>
+            <div class="tooltip_custom_shown">
+                {{--            Последнее сообщение - от издательства--}}
+                <a wire:click.prevent="hide_message()" style="font-size: 16px;" class="link">Прочитать</a>
+            </div>
         </div>
-    </div>
+    @endif
 
     <script>
-        document.addEventListener('hide_mes_notification', event => {
-            $('#mes_' + event.detail.mes_id).hide();
+        document.addEventListener('hide_chat_notification', event => {
+            $('#chat_to_read_' + event.detail.chat_id).hide();
             $('#chat_button').css('width', '100%');
         });
     </script>

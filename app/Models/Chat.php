@@ -11,6 +11,7 @@ class Chat extends Model
 
     protected $fillable = [
         'chat_status_id',
+        'flg_chat_read'
     ];
 
 

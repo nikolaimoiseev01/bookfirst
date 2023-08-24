@@ -57,7 +57,8 @@ class Chat extends Component
         return redirect(route('all_chats') . '?cur_chat_id=' . $chat_id);
     }
 
-    public function add_template($id) {
+    public function add_template($id)
+    {
         $template_text = MessageTemplate::where('id', $id)->first();
         $this->text = $this->text . $template_text['text'];
     }
@@ -181,8 +182,14 @@ class Chat extends Component
 
             if (Auth::user()->hasRole('admin')) { // Если пишет АДМИН
 
+                $this->chat->update([
+                    'flg_chat_read' => 0 // Чат становится непрочитанным
+                ]);
+
                 if ($this->chat['chat_status_id'] === '1') { // Если ждет ответа поддержки
-                    $this->chat->update(['chat_status_id' => '2']); // Ставим статус "ответ получен"
+                    $this->chat->update([
+                        'chat_status_id' => '2' // Ставим статус "ответ получен"
+                    ]);
                 }
 
                 if ($chat->collection_id > 0) { // Если общаются по участию в сборнике
@@ -222,7 +229,10 @@ class Chat extends Component
 
                 $user_from = User::where('id', $this->user_from)->first();
 
-                \App\Models\Chat::where('id', $this->chat_id)->update(array('chat_status_id' => '1', 'flag_hide_question' => 0));
+                \App\Models\Chat::where('id', $this->chat_id)->update([
+                    'chat_status_id' => '1',
+                    'flg_chat_read' => 1
+                ]);
 
                 // Посылаем Telegram уведомление нам
                 if (!ENV('APP_DEBUG')) {

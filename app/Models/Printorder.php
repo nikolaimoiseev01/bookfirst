@@ -25,7 +25,7 @@ class Printorder extends Model
 
     public function Participation()
     {
-        return $this->belongsTo(Participation::class)->orderBy('send_to_name', 'desc');
+        return $this->belongsTo(Participation::class);
     }
 
 

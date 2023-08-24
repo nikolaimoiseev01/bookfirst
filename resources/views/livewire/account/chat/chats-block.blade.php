@@ -47,7 +47,7 @@
                              class="@if($chat['id'] === $cur_chat_id ?? null) active @endif chat_to_select">
                             @if(($chat['flag_mes_read'] === 0 || $chat['flag_mes_read'] === null) && $chat['last_mes_to'] === \Illuminate\Support\Facades\Auth::user()->id)
 
-                                <livewire:account.chat.chat-question-check :mes_id="$chat->last_mes_id"
+                                <livewire:account.chat.chat-question-check :chat_id="$chat->id"
                                                                            :wire:key="$loop->index">
                                     @endif
 
