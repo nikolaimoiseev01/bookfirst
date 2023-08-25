@@ -194,6 +194,7 @@ Route::middleware(['role:admin'])->prefix('admin_panel')->group(function () {
     Route::get('/user/{user_id}', [\App\Http\Controllers\Admin\UserController::class, 'user_page'])->name('user_page');
     Route::post('/add_user_award/{user_id}', [\App\Http\Controllers\Admin\UserController::class, 'add_user_award'])->name('add_user_award');
     Route::resource('collection', \App\Http\Controllers\Admin\CollectionController::class,);
+    Route::post('/collection/move_to_another_collection', [App\Http\Controllers\Admin\CollectionController::class, 'move_to_another_collection'])->name('move_to_another_collection');
     Route::get('/promocodes', [\App\Http\Controllers\Admin\PromocodeController::class, 'index'])->name('promocodes_page');
     Route::post('/add_winner/{collection_id}', [App\Http\Controllers\Admin\CollectionController::class, 'add_winner'])->name('add_winner');
     Route::get('/collections/participation/{participation_id}', [App\Http\Controllers\Admin\ParticipationController::class, 'user_participation'])->name('user_participation');

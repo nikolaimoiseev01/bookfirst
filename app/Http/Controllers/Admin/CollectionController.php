@@ -161,6 +161,50 @@ class CollectionController extends Controller
 
     }
 
+    public function move_to_another_collection(Request $request)
+    {
+        $collection_id_from = $request->collection_from;
+        $collection_to = Collection::where('id', $request->collection_to)->first();
+
+        $participants = Participation::where('collection_id', $collection_id_from)->where('pat_status_id', 2)->get();
+
+        foreach ($participants as $participantion) {
+
+            $participation_check = Participation::where('user_id', $participantion['user_id'])->where('collection_id', $collection_to['id'])->first();
+
+            if (!($participation_check ?? null)) {
+
+                // ---- Меняем сборник в участии ---- //
+                Participation::where('id', $participantion['id'])->update(array(
+                    'collection_id' => $collection_to['id']
+                ));
+
+                // ---- Меняем сборник в печатном заказе ---- //
+                if ($participation['printorder_id'] ?? 0 > 0) {
+                    Printorder::where('id', $participantion['printorder_id'])->update(array(
+                        'collection_id' => $collection_to['id']
+                    ));
+                }
+
+                // ---- Меняем сборник в чате ---- //
+                Chat::where('collection_id', $participantion['collection_id'])
+                    ->where('user_created', $participantion['user_id'])
+                    ->update(array(
+                        'collection_id' => $collection_to['id'],
+                        'title' => 'Личный чат по сборнику: ' . $collection_to['title']
+                    ));
+            }
+        }
+
+        session()->flash('success', 'change_printorder');
+        session()->flash('alert_type', 'success');
+        session()->flash('alert_title', 'Успешно!');
+        session()->flash('alert_text', 'Перенесли всех неоплаченных в следующий сборник!');
+
+        return redirect()->back();
+
+    }
+
 
     public function create_col_file(Request $request)
     {
@@ -354,6 +398,9 @@ class CollectionController extends Controller
             ->get();
         $emails_sent = EmailSent::where('collection_id', $collection->id)->get();
         $winners = collection_winner::where('collection_id', $collection->id)->orderBy('place', 'asc')->get();
+
+        $collections_to_update = Collection::OrderBy('created_at', 'desc')->get();
+
         return view('admin.collection.collection-page', [
             'collection' => $collection,
             'col_statuses' => $col_statuses,
@@ -365,6 +412,7 @@ class CollectionController extends Controller
             'winners_candidates' => $winners_candidates,
             'emails_sent' => $emails_sent,
             'winners' => $winners,
+            'collections_to_update' => $collections_to_update,
         ]);
     }
 

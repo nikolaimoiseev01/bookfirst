@@ -206,22 +206,69 @@
                                     <li class="nav-item"><a class="nav-link" href="#all_emails"
                                                             data-toggle="tab">Email всем</a>
                                     </li>
-                                    <li class="ml-auto nav-item">
-                                        <form
-                                            id="chat"
-                                            enctype="multipart/form-data"
-                                            method="get"
-                                            action="{{route('create_col_file')}}"
-                                            class="ml-auto">
-                                            @csrf
-                                            <input style="display: none" type="number" id="col_id" name="col_id"
-                                                   value="{{$collection['id']}}">
-                                            <button id="chat_form" style="width:fit-content; position: relative;"
-                                                    class="button btn btn-block bg-gradient-primary">
-                                                <span class="button__text">Скачать верстку!</span>
+
+                                    <div style="gap: 20px;" class="ml-auto d-flex">
+
+
+                                        <div class="d-flex align-items-center">
+
+                                            <div style="display: none" id="change_user_collection_form_wrap">
+                                                <form class="d-flex ml-3" style="align-items: center;"
+                                                      action="{{ route('move_to_another_collection') }}" method="POST"
+                                                      enctype="multipart/form-data"
+                                                >
+                                                    @csrf
+
+                                                    <input style="display: none;" type="text" id="collection_from" name="collection_from"
+                                                           value="{{$collection['id']}}">
+
+                                                    <select
+                                                        style="padding: 0 0 0 10px; height: 33px; width: fit-content;"
+                                                        id="collection_to" class="form-control"
+                                                        name="collection_to">
+                                                        @foreach($collections_to_update as $collection_to_update)
+                                                            <option
+                                                                value="{{$collection_to_update['id']}}">{{$collection_to_update['title']}}</option>
+                                                        @endforeach
+                                                    </select>
+
+                                                    <button id="btn-submit" type="submit"
+                                                            style="height: fit-content; max-height: 30px; max-width:150px;"
+                                                            data-status-from="{{$collection['title']}}"
+                                                            class="change_status ml-3 d-flex align-items-center justify-content-center btn btn-outline-primary"
+                                                    >
+                                                        Перевести
+                                                    </button>
+                                                </form>
+                                            </div>
+
+                                            <button style="max-width: fit-content"
+                                                    data-form="change_user_collection" type="button"
+                                                    class="button btn btn-block bg-gradient-primary change_status_button"
+                                            >
+                                                Перенести участников
+
                                             </button>
-                                        </form>
-                                    </li>
+                                        </div>
+
+
+                                        <li class="nav-item">
+                                            <form
+                                                id="chat"
+                                                enctype="multipart/form-data"
+                                                method="get"
+                                                action="{{route('create_col_file')}}"
+                                                class="ml-auto">
+                                                @csrf
+                                                <input style="display: none" type="number" id="col_id" name="col_id"
+                                                       value="{{$collection['id']}}">
+                                                <button id="chat_form" style="width:fit-content; position: relative;"
+                                                        class="button btn btn-block bg-gradient-primary">
+                                                    <span class="button__text">Скачать верстку!</span>
+                                                </button>
+                                            </form>
+                                        </li>
+                                    </div>
                                 </ul>
                             </div>
 

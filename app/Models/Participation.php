@@ -11,7 +11,8 @@ class Participation extends Model
 
     protected $fillable = [
         'chat_id',
-        'printorder_id'
+        'printorder_id',
+        'pat_status_id'
     ];
 
 
