@@ -19,8 +19,7 @@
                 @else
                     @if ($own_book['own_book_status_id'] === 2)
                         <div class="pay_info_wrap">
-                            <p>После создания или редактирования заявки нам необходимо ее подтвердить.
-                                После подтверждения (до 3-х рабочих дней) оплата станет доступна.</p>
+                            <p>Отлично! Все файлы проверены. Мы готовы начать процесс издания сразу после оплаты.</p>
                             <form
                                 action="{{ route('payment.create_own_book_payment',[$own_book['id'], 'Without_Print', $own_book['total_price'] - $own_book['print_price']]) }}"
                                 method="POST"
