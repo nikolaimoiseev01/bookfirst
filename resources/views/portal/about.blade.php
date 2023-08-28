@@ -25,25 +25,25 @@
                 содержания, а также регистрации книги, присвоения ей уникального номера ISBN, а также ее размещения на
                 всемирных книжных интернет площадках (Amazon.com, Ozon.ru, Books.ru и т. д.).</p>
 
-{{--            <div class="official_info_wrap">--}}
-{{--                <div class="rights-docs">--}}
-{{--                    <h4>Правовая информация:</h4>--}}
-{{--                    <a href="/admin_files/Договор публичной оферты на оказание услуг по публикации.pdf"--}}
-{{--                       download class="link">--}}
-{{--                        Договор публикации--}}
-{{--                    </a><br>--}}
-{{--                    <a href="/admin_files/Договор на издание книги.pdf"--}}
-{{--                       download class="link">Договор на издание книги</a>--}}
-{{--                </div>--}}
-{{--                <div class="rights-info">--}}
-{{--                    <h4>Юридическое лицо:</h4>--}}
-{{--                    <p><i>ОГРНИП 321100100001571<br>--}}
-{{--                            ИНН 100126488117<br>--}}
-{{--                            Е-mail: main@pervajakniga.ru<br>--}}
-{{--                            Веб-сайт: pervajakniga.ru</i>--}}
-{{--                    </p>--}}
-{{--                </div>--}}
-{{--            </div>--}}
+            <div class="official_info_wrap">
+                <div class="rights-docs">
+                    <h4>Правовая информация:</h4>
+                    <a href="/admin_files/Договор публичной оферты на оказание услуг по публикации.pdf"
+                       download class="link">
+                        Договор публикации
+                    </a><br>
+                    <a href="/admin_files/Договор на издание книги.pdf"
+                       download class="link">Договор на издание книги</a>
+                </div>
+                <div class="rights-info">
+                    <h4>Юридическое лицо:</h4>
+                    <p><i>ОГРНИП 321100100001571<br>
+                            ИНН 100126488117<br>
+                            Е-mail: main@pervajakniga.ru<br>
+                            Веб-сайт: pervajakniga.ru</i>
+                    </p>
+                </div>
+            </div>
         </div>
 
 
