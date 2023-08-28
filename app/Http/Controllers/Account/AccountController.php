@@ -23,7 +23,7 @@ class AccountController extends Controller
     }
 
     public function own_books() {
-        $own_books = own_book::where('user_id', Auth::user()->id)->get();
+        $own_books = own_book::where('user_id', Auth::user()->id)->where('own_book_status_id', '<>', 99)->get();
         return view('account/own_books/index', [
             'own_books' => $own_books,
         ]);
