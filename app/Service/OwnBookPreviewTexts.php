@@ -25,9 +25,18 @@ class OwnBookPreviewTexts
         $text_app_check = '
             <p class="no-access">
                 На данный момент идет проверка заявки.
-                Как только начнутся работы с макетами, здесь будут указаны сроки работы.
+                Как только мы начнем работу с макетами, здесь будут указаны сроки выполнения.
             </p>
         ';
+
+        $text_app_pay = '
+            <p class="no-access">
+                На данный момент мы проверили и утвредили все файлы для издания.
+                Для начала работ с макетами необходимо произвести оплату в блоке выше.
+                Как только мы начнем работу с макетами, здесь будут указаны сроки выполнения.
+            </p>
+        ';
+
 
         $text_dev = '
             <p class="no-access">
@@ -88,6 +97,8 @@ class OwnBookPreviewTexts
 
         if ($own_book['own_book_status_id'] === 1) {
             $text = $text_app_check;
+        } elseif ($own_book['own_book_status_id'] === 2) {
+            $text = $text_app_pay;
         } elseif ($status_id === 1) {
             $text = $text_dev;
         } elseif ($status_id === 2) {
