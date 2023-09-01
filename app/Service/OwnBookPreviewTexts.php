@@ -22,6 +22,13 @@ class OwnBookPreviewTexts
             $type_2 = 'обложку';
         }
 
+        $text_app_check = '
+            <p class="no-access">
+                На данный момент идет проверка заявки.
+                Как только начнутся работы с макетами, здесь будут указаны сроки работы.
+            </p>
+        ';
+
         $text_dev = '
             <p class="no-access">
                 На данный момент идет работа над материалами. Предварительные варианты появятся здесь
@@ -79,7 +86,9 @@ class OwnBookPreviewTexts
             </p>
         ';
 
-        if ($status_id === 1) {
+        if ($own_book['own_book_status_id'] === 1) {
+            $text = $text_app_check;
+        } elseif ($status_id === 1) {
             $text = $text_dev;
         } elseif ($status_id === 2) {
             $text = $text_check;
