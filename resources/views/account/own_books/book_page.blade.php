@@ -54,7 +54,6 @@
         </div>
 
         {{-- Чат книги --}}
-        @if ($chat_id > 0)
             <div class="chat_block_wrap">
                 <a id="chat_button" class="button">
                     Чат по моему изданию
@@ -68,7 +67,6 @@
                     </div>
                 </div>
             </div>
-        @endif
 
 
         <div class="participation-wrap">
