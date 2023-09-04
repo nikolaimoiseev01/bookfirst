@@ -180,7 +180,7 @@
                                 </h2>
                                 @foreach($user->work as $work)
 
-                                    <a href="{{route('work_page', $work['id'])}}" target="_blank">
+                                    <a href="{{route('social.work_page', $work['id'])}}" target="_blank">
                                         <h3>{{$loop->index + 1}}. {{$work['title']}}</h3>
                                     </a>
 
