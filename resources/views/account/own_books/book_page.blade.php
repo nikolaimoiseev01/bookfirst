@@ -59,12 +59,9 @@
                 <a id="chat_button" class="button">
                     Чат по моему изданию
                 </a>
-                {{--            @if($chat_question_check)--}}
-                {{--                <div style="margin-left: 20px;">--}}
-                {{--                    @livewire('account.chat.chat-question-check',['mes_id'=>$last_mes_id])--}}
-                {{--                </div>--}}
-                {{--            @endif--}}
-
+                @if($chat['flg_chat_read'] === 0)
+                    @livewire('account.chat.chat-question-check',['chat_id'=>$chat_id])
+                @endif
                 <div id="book_chat">
                     <div class="container">
                         @livewire('account.chat.chat',['chat_id'=>$chat_id, 'new_chat_user_id'=>null])
