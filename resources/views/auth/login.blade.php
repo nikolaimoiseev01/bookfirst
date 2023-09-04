@@ -58,6 +58,25 @@
                 @endif
             </div>
 
+            <div class="other_logins_wrap">
+                <p>Войти через соц.сети: </p>
+
+                <div class="buttons_wrap">
+                    <a href="{{route('sign_vk')}}" class="button">
+                        <img src="/img/VK Logo.svg" alt="">
+                    </a>
+                    {{--                <a href="{{route('sign_ok')}}" class="button">Войти через OK</a>--}}
+                    <a href="{{route('sign_google')}}" class="button">
+                        <img src="/img/Google Logo.svg" alt="">
+                    </a>
+                    <a href="{{route('sign_facebook')}}" class="button">
+                        <img src="/img/Facebook Logo.svg" alt="">
+                    </a>
+                </div>
+
+
+            </div>
+
         </form>
     </div>
 @endsection

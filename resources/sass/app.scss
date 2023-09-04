@@ -76,6 +76,31 @@
             }
         }
 
+        .other_logins_wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+
+
+            .buttons_wrap {
+                display: flex;
+                gap: 10px;
+                a {
+                    border: none;
+                    padding: 0;
+
+                    img {
+                        width: 30px;
+                        height: 30px;
+                    }
+
+                    &:hover {
+                        background: none;
+                    }
+                }
+            }
+        }
+
 
     }
 }

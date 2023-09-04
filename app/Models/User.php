@@ -33,7 +33,11 @@ class User extends Authenticatable implements MustVerifyEmail, FilamentUser
         'surname',
         'nickname',
         'email',
+        'email_verified_at',
         'password',
+        'avatar',
+        'google_id',
+        'avatar_cropped',
         'reg_utm_source',
         'reg_utm_medium'
     ];

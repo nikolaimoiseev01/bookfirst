@@ -43,6 +43,18 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
         'participations' => $participations,
     ]);
 })->middleware(['auth', 'signed'])->name('verification.verify');
+
+Route::get('/sign-in/vkontakte', [\App\Http\Controllers\Auth\LoginController::class, 'sign_vk'])->name('sign_vk');
+Route::get('/sign-in/vkontakte/callback', [\App\Http\Controllers\Auth\LoginController::class, 'callback_vk'])->name('callback_vk');
+
+Route::get('/sign-in/ok', [\App\Http\Controllers\Auth\LoginController::class, 'sign_ok'])->name('sign_ok');
+Route::get('/sign-in/ok/callback', [\App\Http\Controllers\Auth\LoginController::class, 'callback_ok'])->name('callback_ok');
+
+Route::get('/sign-in/google', [\App\Http\Controllers\Auth\LoginController::class, 'sign_google'])->name('sign_google');
+Route::get('/sign-in/google/callback', [\App\Http\Controllers\Auth\LoginController::class, 'callback_google'])->name('callback_google');
+
+Route::get('/sign-in/facebook', [\App\Http\Controllers\Auth\LoginController::class, 'sign_facebook'])->name('sign_facebook');
+Route::get('/sign-in/facebook/callback', [\App\Http\Controllers\Auth\LoginController::class, 'callback_facebook'])->name('callback_facebook');
 // ---------  Регистрация --------- //
 
 
