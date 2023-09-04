@@ -12,6 +12,7 @@ class MessageTemplate extends Model
     protected $fillable = [
         'title',
         'text',
+        'template_type'
     ];
 
 }

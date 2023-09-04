@@ -65,30 +65,28 @@ class AppServiceProvider extends ServiceProvider
             }
 
 
-            if (Auth::user()) {
-                $custom_notifications = Chat::where('flg_chat_read', 0)
+            if ($subdomain !== 'admin') { // В новой админке не хотим все это грузить
+                if (Auth::user()) {
+                    $custom_notifications = Chat::where('flg_chat_read', 0)
+                        ->where(function ($query) {
+                            $query->where('user_to', Auth::user()->id)
+                                ->orWhere('user_created', Auth::user()->id);
+                        })
+                        ->where('chat_status_id', '<>', '3')->distinct('chats.id')->count('chats.id');
+                } else {
+                    $custom_notifications = null;
+                }
+
+
+                $new_chats = Chat::where('chat_status_id', 1)
                     ->where(function ($query) {
-                        $query->where('user_to', Auth::user()->id)
-                            ->orWhere('user_created', Auth::user()->id);
+                        $query->where('user_created', '=', 2)
+                            ->orWhere('user_to', '=', 2);
                     })
-                    ->where('chat_status_id', '<>', '3')->distinct('chats.id')->count('chats.id');
-            } else {
-                $custom_notifications = null;
+                    ->count();
             }
 
-
-            $new_chats = Chat::where('chat_status_id', 1)
-                ->where(function ($query) {
-                    $query->where('user_created', '=', 2)
-                        ->orWhere('user_to', '=', 2);
-                })
-                ->count();
-
-            //...with this variable
-
-
-
-            if($subdomain==="admin_panel") {
+            if ($subdomain === "admin_panel") { // Грузим для старой админки
 
                 $own_books_alert = own_book::where('own_book_status_id', 1)
                     ->orwhere(function ($q) {
@@ -115,11 +113,11 @@ class AppServiceProvider extends ServiceProvider
 
 
             $view->with([
-                'custom_notifications' => $custom_notifications,
+                'custom_notifications' => $custom_notifications ?? null,
                 'new_participants' => $new_participants ?? null,
-                'new_chats' => $new_chats,
+                'new_chats' => $new_chats ?? null,
                 'own_books_alert' => $own_books_alert ?? null,
-                'subdomain' => $subdomain,
+                'subdomain' => $subdomain ?? null,
                 'user_id_logged_in' => $user_id_logged_in
             ]);
 

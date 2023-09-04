@@ -25,11 +25,17 @@ class MessageTemplateResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\TextInput::make('template_type')
+                    ->required()
+                    ->label('Тип')
+                    ->maxLength(255),
                 Forms\Components\TextInput::make('title')
                     ->required()
+                    ->label('Название')
                     ->maxLength(255),
                 Forms\Components\TextInput::make('text')
                     ->required()
+                    ->label('Текст')
                     ->maxLength(255),
             ]);
     }
@@ -38,9 +44,10 @@ class MessageTemplateResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('title'),
-                Tables\Columns\TextColumn::make('text'),
-                Tables\Columns\TextColumn::make('created_at')
+                Tables\Columns\TextColumn::make('template_type')->label('Тип'),
+                Tables\Columns\TextColumn::make('title')->label('Название'),
+                Tables\Columns\TextColumn::make('text')->label('Текст'),
+                Tables\Columns\TextColumn::make('created_at')->label('Создан')
                     ->dateTime(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime(),

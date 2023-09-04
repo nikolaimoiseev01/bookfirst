@@ -33,6 +33,7 @@ class Chat extends Component
     public $flg_chat_creation;
     public $new_chat_user;
     public $templates;
+    public $template_type = null;
 
     protected $listeners = [
         'new_message',
@@ -56,6 +57,20 @@ class Chat extends Component
         session()->flash('alert_title', 'Вопрос открыт снова!');
         return redirect(route('all_chats') . '?cur_chat_id=' . $chat_id);
     }
+
+    public function choose_template_type($template_type)
+    {
+        if ($template_type === 'all') {
+            $this->template_type = null;
+            $this->templates = MessageTemplate::get();
+        } else {
+            $this->template_type = $template_type;
+            $this->templates = MessageTemplate::where('template_type', $template_type)->get();
+//            dd($this->templates);
+        }
+
+    }
+
 
     public function add_template($id)
     {
