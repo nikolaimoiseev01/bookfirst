@@ -180,7 +180,10 @@
                                 </h2>
                                 @foreach($user->work as $work)
 
-                                    <h3>{{$loop->index + 1}}. {{$work['title']}}</h3>
+                                    <a href="{{route('work_page', $work['id'])}}" target="_blank">
+                                        <h3>{{$loop->index + 1}}. {{$work['title']}}</h3>
+                                    </a>
+
                                     <p style="color:grey">Загружено {{$work['upload_type']}}: {{ Date::parse($work['created_at'])->addHours(3)->format('j F Y') }}</p>
                                     <p>{!! nl2br($work['text']) !!}</p>
                                 @endforeach
