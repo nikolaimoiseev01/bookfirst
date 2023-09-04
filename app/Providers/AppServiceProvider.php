@@ -90,10 +90,6 @@ class AppServiceProvider extends ServiceProvider
 
             if($subdomain==="admin_panel") {
 
-                $users_online = User::where('last_seen', '>', now()->subMinute(5)->toDateTimeString())->count();
-                $users_total = User::count();
-
-
                 $own_books_alert = own_book::where('own_book_status_id', 1)
                     ->orwhere(function ($q) {
                         $q->where('own_book_status_id', 5)
@@ -124,9 +120,7 @@ class AppServiceProvider extends ServiceProvider
                 'new_chats' => $new_chats,
                 'own_books_alert' => $own_books_alert ?? null,
                 'subdomain' => $subdomain,
-                'user_id_logged_in' => $user_id_logged_in,
-                'users_online' => $users_online ?? null,
-                'users_total' => $users_total ?? null
+                'user_id_logged_in' => $user_id_logged_in
             ]);
 
         });

@@ -26,10 +26,12 @@ class UserController extends Controller
         $users_amt = User::count();
         $subscribers_amt = subscriber::count();
         $users = User::orderBy('created_at', 'desc')->paginate(50);
+        $users_online = User::where('last_seen', '>', now()->subMinute(5)->toDateTimeString())->count();
         return view('admin.user.index', [
             'users' => $users,
             'users_amt' => $users_amt,
-            'subscribers_amt' => $subscribers_amt
+            'subscribers_amt' => $subscribers_amt,
+            'users_online' => $users_online
         ]);
     }
 

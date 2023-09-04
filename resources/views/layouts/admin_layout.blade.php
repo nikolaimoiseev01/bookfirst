@@ -184,7 +184,7 @@
                         <a href="{{ route('user.index') }}" class="nav-link">
                             <i class="nav-icon fas fa-users"></i>
                             <p>
-                                Пользователи ({{$users_online}}/{{$users_total}})
+                                Пользователи
                             </p>
                         </a>
                     </li>
