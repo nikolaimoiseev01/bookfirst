@@ -59,6 +59,7 @@ class MessageTemplateResource extends Resource
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
+            ->defaultSort('template_type')
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
