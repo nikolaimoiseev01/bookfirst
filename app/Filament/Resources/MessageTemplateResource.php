@@ -33,10 +33,9 @@ class MessageTemplateResource extends Resource
                     ->required()
                     ->label('Название')
                     ->maxLength(255),
-                Forms\Components\TextInput::make('text')
+                Forms\Components\Textarea::make('text')
                     ->required()
-                    ->label('Текст')
-                    ->maxLength(255),
+                    ->label('Текст'),
             ]);
     }
 
