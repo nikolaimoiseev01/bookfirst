@@ -44,44 +44,22 @@ class Chat extends Component
 
     public function render()
     {
+        $this->templates = MessageTemplate::orderBy('template_type')
+            ->orderBy('title', 'asc')
+            ->when($this->template_type, function ($q, $role) {
+                return $q->where('template_type', $this->template_type);
+            })
+            ->get();
+
         $this->chat = \App\Models\Chat::where('id', $this->chat_id)->first();
         return view('livewire.account.chat.chat');
 
     }
 
-    public function reopenChat($chat_id)
-    {
-        \App\Models\Chat::where('id', $chat_id)->update(array('chat_status_id' => '2'));
-        session()->flash('show_modal', 'yes');
-        session()->flash('alert_type', 'success');
-        session()->flash('alert_title', 'Вопрос открыт снова!');
-        return redirect(route('all_chats') . '?cur_chat_id=' . $chat_id);
-    }
-
-    public function choose_template_type($template_type)
-    {
-        if ($template_type === 'all') {
-            $this->template_type = null;
-            $this->templates = MessageTemplate::get();
-        } else {
-            $this->template_type = $template_type;
-            $this->templates = MessageTemplate::where('template_type', $template_type)->get();
-//            dd($this->templates);
-        }
-
-    }
-
-
-    public function add_template($id)
-    {
-        $template_text = MessageTemplate::where('id', $id)->first();
-        $this->text = $this->text . $template_text['text'];
-    }
 
     public function mount($chat_id, $new_chat_user_id)
     {
 
-        $this->templates = MessageTemplate::orderBy('id')->get();
 
         if ($chat_id) { // Если работаем с уже существующим чатом
 
@@ -102,6 +80,31 @@ class Chat extends Component
             $this->flg_chat_creation = true;
         }
 
+    }
+
+    public function reopenChat($chat_id)
+    {
+        \App\Models\Chat::where('id', $chat_id)->update(array('chat_status_id' => '2'));
+        session()->flash('show_modal', 'yes');
+        session()->flash('alert_type', 'success');
+        session()->flash('alert_title', 'Вопрос открыт снова!');
+        return redirect(route('all_chats') . '?cur_chat_id=' . $chat_id);
+    }
+
+    public function choose_template_type($template_type)
+    {
+        if ($template_type === 'all') {
+            $this->template_type = null;
+        } else {
+            $this->template_type = $template_type;
+        }
+
+    }
+
+    public function add_template($id)
+    {
+        $template_text = MessageTemplate::where('id', $id)->first();
+        $this->text = $this->text . $template_text['text'];
     }
 
 
