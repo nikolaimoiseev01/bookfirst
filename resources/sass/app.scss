@@ -85,6 +85,7 @@
             .buttons_wrap {
                 display: flex;
                 gap: 10px;
+
                 a {
                     border: none;
                     padding: 0;
@@ -3095,8 +3096,19 @@
 
 .own_book_account_page_wrap {
 
-    #chat_button {
+    .chat_block_wrap {
         width: 100%;
+
+        .buttons_wrap {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+
+            #chat_button {
+                width: 100%;
+            }
+        }
     }
 
     #book_chat .chat_wrap {
