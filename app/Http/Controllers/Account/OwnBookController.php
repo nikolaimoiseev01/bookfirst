@@ -21,11 +21,11 @@ class OwnBookController extends Controller
     public function book_page($request)
     {
         $own_book = own_book::where('id', $request)->first();
-        $chat_id = Chat::where('own_book_id', $own_book['id'])->value('id');
+        $chat = Chat::where('own_book_id', $own_book['id'])->get();
         return
             view('account.own_books.book_page', [
                 'own_book' => $own_book,
-                'chat_id' => $chat_id
+                'chat' => $chat
             ]);
     }
 
