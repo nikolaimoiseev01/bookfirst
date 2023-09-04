@@ -57,11 +57,13 @@ class LoginController extends Controller
 //dd($user->avatar);
 
         $user = User::firstOrCreate([
-            'email' => $user->email
+            'email' => $user->email,
+            'reg_type' => 'vk',
         ], [
             'email' => $user->email,
             'name' => $user->user['first_name'],
             'surname' => $user->user['last_name'],
+            'reg_type' => 'vk',
             'password' => Hash::make(Str::random(24)),
             'email_verified_at' => Carbon::now()->toDateTimeString(),
             'avatar' => $user->avatar,
@@ -95,20 +97,19 @@ class LoginController extends Controller
     public function sign_ok()
     {
         return Socialite::driver('odnoklassniki')->redirect();
-
-//        dd(env('ODNOKLASSNIKI_REDIRECT_URI'));
     }
 
     public function callback_ok()
     {
         $user = Socialite::driver('odnoklassniki')->stateless()->user();
-        dd($user);
 
         $user = User::firstOrCreate([
-            'email' => $user->email
+            'email' => $user->email,
+            'reg_type' => 'ok',
         ], [
             'email' => $user->email,
             'name' => $user->user['first_name'],
+            'reg_type' => 'ok',
             'surname' => $user->user['last_name'],
             'password' => Hash::make(Str::random(24)),
             'email_verified_at' => Carbon::now()->toDateTimeString(),
@@ -151,11 +152,13 @@ class LoginController extends Controller
         $user = Socialite::driver('google')->stateless()->user();
 
         $user = User::firstOrCreate([
-            'email' => $user->email
+            'email' => $user->email,
+            'reg_type' => 'google'
         ], [
             'email' => $user->email,
             'name' => $user->user['given_name'],
             'surname' => $user->user['family_name'],
+            'reg_type' => 'google',
             'password' => Hash::make(Str::random(24)),
             'email_verified_at' => Carbon::now()->toDateTimeString(),
             'avatar' => $user->avatar,

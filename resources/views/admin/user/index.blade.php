@@ -5,7 +5,7 @@
     <div class="content-header">
         <div class="container-fluid">
             <div class="align-items-center row mb-2">
-                    <h1 class="m-0">Наши пользователи ({{$users_amt}})</h1>
+                    <h1 class="m-0">Наши пользователи ({{$users_amt}}). {{$users->where('last_seen','>', now()->subMinutes(5)->getTimestamp())->count()}} в онлайне</h1>
 
                 <a class="ml-3 btn btn-outline-info" href="{{route('subscribers_index')}}">Подписчики ({{$subscribers_amt}})</a>
                 <style>
@@ -82,6 +82,9 @@
                             <th scope="col" style="text-align: center;">
                                 Reg_utm_source
                             </th>
+                            <th scope="col" style="text-align: center;">
+                                Reg_type
+                            </th>
 
 
                         </tr>
@@ -113,6 +116,9 @@
                                 </td>
                                 <td data-label="UTM Source" style="text-align: center;">
                                     {{$user['reg_utm_source']}}
+                                </td>
+                                <td data-label="UTM Source" style="text-align: center;">
+                                    {{$user['reg_type']}}
                                 </td>
                             </tr>
 

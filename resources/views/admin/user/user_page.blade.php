@@ -93,6 +93,13 @@
                                             </td>
                                         </tr>
 
+                                        <tr>
+                                            <td style="font-weight: bold">Reg_type</td>
+                                            <td>
+                                                {{$user['reg_type']}}
+                                            </td>
+                                        </tr>
+
 
 
                                         </tbody>
