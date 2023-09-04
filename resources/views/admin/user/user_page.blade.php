@@ -100,6 +100,14 @@
                                             </td>
                                         </tr>
 
+                                        <tr>
+                                            <td style="font-weight: bold">Последний онлайн</td>
+                                            <td>
+                                                {{ Date::parse($user['last_seen'])->addHours(3)->format('j F H:i') }}
+                                            </td>
+                                        </tr>
+
+
 
 
                                         </tbody>

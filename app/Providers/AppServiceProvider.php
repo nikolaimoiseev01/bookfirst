@@ -90,8 +90,9 @@ class AppServiceProvider extends ServiceProvider
 
             if($subdomain==="admin_panel") {
 
-                $users_online = User::where('last_seen', '>', now()->subMinute(5)->toDateTimeString())->count();
+                $users_online = User::where('last_seen', '>', now()->subMinute(5)->toDateTimeString())->get();
                 $users_total = User::count();
+
 
                 $own_books_alert = own_book::where('own_book_status_id', 1)
                     ->orwhere(function ($q) {
