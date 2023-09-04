@@ -82,6 +82,7 @@ class RegisterController extends Controller
             'surname' => $data['surname'],
             'nickname' => $data['nickname'],
             'email' => $data['email'],
+            'reg_type' => 'self',
             'password' => Hash::make($data['password']),
             'reg_utm_source' => $data['utm_source'],
             'reg_utm_medium' => $data['utm_medium'],
