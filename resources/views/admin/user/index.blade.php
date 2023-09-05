@@ -86,7 +86,7 @@
                                 Reg_type
                             </th>
                             <th scope="col" style="text-align: center;">
-                                Reg_type
+                                Последний онлайн
                             </th>
 
 
