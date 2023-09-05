@@ -35,6 +35,9 @@ class PayBlock extends Component
         } elseif ($this->participation['pat_status_id'] === 3) { // Успешно оплатил
             $this->status_color = 'green';
             $this->page_title = 'Оплата успешно подтверждена';
+        } elseif ($this->participation['pat_status_id'] === 99) { // Успешно оплатил
+            $this->status_color = 'grey';
+            $this->page_title = 'Оплата участия';
         };
 
         $found_status = $status->get_status('.pay_block_wrap', $this->status_color);
