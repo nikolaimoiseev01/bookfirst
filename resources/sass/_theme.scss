@@ -1707,20 +1707,6 @@ footer {
                 width: fit-content;
             }
 
-            &.active-nav-item {
-                span {
-                    background: #fff;
-                    color: #47af98;
-                }
-
-                background: #47af98;
-                color: white !important;
-
-                svg {
-                    fill: white !important;
-                }
-            }
-
 
             svg {
                 width: 22px;
@@ -1746,8 +1732,25 @@ footer {
                 margin-left: 15px;
                 position: absolute;
                 right: 0;
-                top: -10px;
+                top: 50%;
+                transform: translate(-50%, 0);
                 border: 1px #47af98 solid;
+            }
+
+
+            &.active-nav-item {
+                span {
+                    background: #fff;
+                    color: #47af98;
+                    top: -10px;
+                }
+
+                background: #47af98;
+                color: white !important;
+
+                svg {
+                    fill: white !important;
+                }
             }
 
 
