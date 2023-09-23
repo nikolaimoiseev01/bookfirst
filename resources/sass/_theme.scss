@@ -1710,6 +1710,11 @@ footer {
                 span {
                     background: #fff;
                     color: #47af98;
+
+                    position: absolute;
+                    right: 0;
+                    top: -10px;
+                    border: 1px #47af98 solid;
                 }
 
                 background: #47af98;
