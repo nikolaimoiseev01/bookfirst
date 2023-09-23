@@ -2508,7 +2508,8 @@
                 width: 100%;
 
                 .messages_wrap {
-                    max-height: 400px;
+                    max-height: 600px;
+                    height: fit-content;
                 }
             }
         }
