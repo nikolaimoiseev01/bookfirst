@@ -14,12 +14,12 @@
             max-width: 180px;
             line-height: 22px;
             border-radius: 5px;
-            bottom: 5px;
+            bottom: 15px;
             content: attr(title);
             text-decoration: none;
             padding: 1px 5px;
             visibility: hidden;
-            left: 280%;
+            /*left: 280%;*/
             border: 1px #d2d2d2 solid;
             z-index: -5;
             -webkit-transform: translateX(-50%);
