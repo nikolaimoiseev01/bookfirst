@@ -144,7 +144,7 @@ class CollectionController extends Controller
         foreach ($authors as $key => $author) {
             $print = Printorder::where('id', $author['printorder_id'])->first();
             $sheet->setCellValue("A" . ($key + 2), $print['send_to_name']);
-            $sheet->setCellValue("B" . ($key + 2), $print['send_to_address'] . '; Тел.: ' . $print['send_to_tel']);
+            $sheet->setCellValue("B" . ($key + 2), print_address($print['id']));
             $sheet->setCellValue("C" . ($key + 2), $print['books_needed']);
         }
 
