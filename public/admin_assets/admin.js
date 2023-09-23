@@ -17,10 +17,7 @@ $(document).ready(function () {
     });
 })
 
-// Просто убираем прелоадер для админки
-console.log(45)
-$('.preloader_wrap').addClass('preloaded_loaded');
-$('.preloader_wrap').removeClass('preloaded_hiding');
+
 // window.onload = function () {
 //     $('.book-preloader-wrap').addClass('preloaded_hiding');
 //     window.setTimeout(function () {
