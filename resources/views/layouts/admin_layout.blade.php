@@ -57,7 +57,7 @@
 
 <body class="hold-transition sidebar-mini layout-fixed">
 
-<x-preloader mode="portal"/>
+{{--<x-preloader mode="portal"/>--}}
 
 
 <div class="wrapper">
