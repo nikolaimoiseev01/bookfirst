@@ -57,7 +57,12 @@
 
 <body class="hold-transition sidebar-mini layout-fixed">
 
-<x-preloader mode="portal"/>
+<div style="display: none;" class="admin_preloader_block_wrap">
+    <x-preloader mode="portal"/>
+</div>
+
+{{--<x-preloader mode="portal"/>--}}
+
 
 
 <div class="wrapper">
@@ -272,7 +277,7 @@
 </div>
 <!-- ./wrapper -->
 
-{{--<script src="/js/js.js"></script>--}}
+<script src="/js/js.js"></script>
 
 <!-- Bootstrap 4 -->
 <script src="/admin_assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -361,12 +366,13 @@
         }).then((result) => {
             if (result.isConfirmed) {
 
-                $('.book-preloader-wrap').removeClass('preloaded_loaded');
-                $('.book-preloader-wrap').css('opacity', '0');
-                $('.book-preloader-wrap').css('background', '#fdfeffcc');
-                $('.book-preloader-wrap span').show(100);
+                $('.preloader_wrap').removeClass('preloaded_loaded');
+                $('.preloader_wrap').css('opacity', '0');
+                $('.preloader_wrap').css('background', '#fdfeffcc');
+                $('.preloader_wrap span').show(100);
                 window.setTimeout(function () {
-                    $('.book-preloader-wrap').css('opacity', '1');
+                    $('.preloader_wrap').css('opacity', '1'); $('.admin_preloader_block_wrap').show();
+                    $('.admin_preloader_block_wrap').show();
                 }, 10);
                 form.submit();
             }
@@ -387,13 +393,14 @@
         }).then((result) => {
             if (result.isConfirmed) {
 
-                $('.book-preloader-wrap').removeClass('preloaded_loaded');
-                $('.book-preloader-wrap').css('opacity', '0');
-                $('.book-preloader-wrap').css('background', '#fdfeffcc');
-                $('.book-preloader-wrap span').html("Посылаем Email каждому...");
-                $('.book-preloader-wrap span').show(100);
+                $('.preloader_wrap').removeClass('preloaded_loaded');
+                $('.preloader_wrap').css('opacity', '0');
+                $('.preloader_wrap').css('background', '#fdfeffcc');
+                $('.preloader_wrap span').html("Посылаем Email каждому...");
+                $('.preloader_wrap span').show(100);
                 window.setTimeout(function () {
-                    $('.book-preloader-wrap').css('opacity', '1');
+                    $('.preloader_wrap').css('opacity', '1'); $('.admin_preloader_block_wrap').show();
+
                 }, 10);
                 form.submit();
             }
@@ -414,13 +421,13 @@
         }).then((result) => {
             if (result.isConfirmed) {
 
-                $('.book-preloader-wrap').removeClass('preloaded_loaded');
-                $('.book-preloader-wrap').css('opacity', '0');
-                $('.book-preloader-wrap').css('background', '#fdfeffcc');
-                $('.book-preloader-wrap span').html("Обновляем сборник...");
-                $('.book-preloader-wrap span').show(100);
+                $('.preloader_wrap').removeClass('preloaded_loaded');
+                $('.preloader_wrap').css('opacity', '0');
+                $('.preloader_wrap').css('background', '#fdfeffcc');
+                $('.preloader_wrap span').html("Обновляем сборник...");
+                $('.preloader_wrap span').show(100);
                 window.setTimeout(function () {
-                    $('.book-preloader-wrap').css('opacity', '1');
+                    $('.preloader_wrap').css('opacity', '1'); $('.admin_preloader_block_wrap').show();
                 }, 10);
                 form.submit();
             }
@@ -428,13 +435,13 @@
     });
 
     $('.create_chat').on('click', function (e) {
-                $('.book-preloader-wrap').removeClass('preloaded_loaded');
-                $('.book-preloader-wrap').css('opacity', '0');
-                $('.book-preloader-wrap').css('background', '#fdfeffcc');
-                $('.book-preloader-wrap span').html("Создаем чат...");
-                $('.book-preloader-wrap span').show(100);
+                $('.preloader_wrap').removeClass('preloaded_loaded');
+                $('.preloader_wrap').css('opacity', '0');
+                $('.preloader_wrap').css('background', '#fdfeffcc');
+                $('.preloader_wrap span').html("Создаем чат...");
+                $('.preloader_wrap span').show(100);
                 window.setTimeout(function () {
-                    $('.book-preloader-wrap').css('opacity', '1');
+                    $('.preloader_wrap').css('opacity', '1'); $('.admin_preloader_block_wrap').show();
                 }, 10);
     });
 </script>
@@ -532,7 +539,6 @@
 <script src="/admin_assets/admin.js"></script>
 <script>
     // Просто убираем прелоадер для админки
-    console.log(45)
     $('.preloader_wrap').addClass('preloaded_loaded');
     $('.preloader_wrap').removeClass('preloaded_hiding');
 </script>
