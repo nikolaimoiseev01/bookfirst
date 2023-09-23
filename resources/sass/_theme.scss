@@ -1707,6 +1707,7 @@ footer {
             }
 
             &.active-nav-item {
+                position: relative;
                 span {
                     background: #fff;
                     color: #47af98;
