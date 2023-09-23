@@ -57,7 +57,7 @@
 
 <body class="hold-transition sidebar-mini layout-fixed">
 
-{{--<x-preloader mode="portal"/>--}}
+<x-preloader mode="portal"/>
 
 
 <div class="wrapper">
@@ -272,7 +272,7 @@
 </div>
 <!-- ./wrapper -->
 
-<script src="/js/js.js"></script>
+{{--<script src="/js/js.js"></script>--}}
 
 <!-- Bootstrap 4 -->
 <script src="/admin_assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
