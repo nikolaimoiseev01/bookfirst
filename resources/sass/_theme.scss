@@ -1701,21 +1701,16 @@ footer {
             padding: 5px 10px 5px 10px;
             border-radius: 8px;
             transition: all 0.1s;
+            position: relative;
 
             @media(max-width: $media-laptops-1024) {
                 width: fit-content;
             }
 
             &.active-nav-item {
-                position: relative;
                 span {
                     background: #fff;
                     color: #47af98;
-
-                    position: absolute;
-                    right: 0;
-                    top: -10px;
-                    border: 1px #47af98 solid;
                 }
 
                 background: #47af98;
@@ -1749,6 +1744,10 @@ footer {
                 color: #fff;
                 font-size: 16px;
                 margin-left: 15px;
+                position: absolute;
+                right: 0;
+                top: -10px;
+                border: 1px #47af98 solid;
             }
 
 
