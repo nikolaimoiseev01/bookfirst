@@ -17,13 +17,13 @@ $(document).ready(function () {
     });
 })
 
-window.onload = function () {
-    $('.book-preloader-wrap').addClass('preloaded_hiding');
-    window.setTimeout(function () {
-        $('.book-preloader-wrap').addClass('preloaded_loaded');
-        $('.book-preloader-wrap').removeClass('preloaded_hiding');
-    }, 500);
-}
+// window.onload = function () {
+//     $('.book-preloader-wrap').addClass('preloaded_hiding');
+//     window.setTimeout(function () {
+//         $('.book-preloader-wrap').addClass('preloaded_loaded');
+//         $('.book-preloader-wrap').removeClass('preloaded_hiding');
+//     }, 500);
+// }
 
 function elFinderBrowser(callback, value, meta) {
     tinymce.activeEditor.windowManager.openUrl({
