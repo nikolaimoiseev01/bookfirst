@@ -1733,8 +1733,13 @@ footer {
                 position: absolute;
                 right: 0;
                 top: 50%;
-                transform: translate(-50%, 0);
+                transform: translate(-50%, -50%);
                 border: 1px #47af98 solid;
+
+                @include media-laptops-1024 {
+                    top: -10px;
+                    transform: initial;
+                }
             }
 
 
