@@ -2497,8 +2497,7 @@ footer {
             width: 100%;
             display: flex;
             gap: 5px;
-            align-items: center;
-            justify-content: flex-start;
+            align-items: flex-start;
 
             input {
                 width: 100%;
