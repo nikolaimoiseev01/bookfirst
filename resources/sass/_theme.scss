@@ -2473,14 +2473,21 @@ footer {
 
     .name_wrap {
         display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
+
+        @include media-tablets-768 {
+            flex-direction: column;
+        }
+
 
         .desc {
             margin-left: auto;
             font-size: 18px;
             font-style: italic;
             color: $color-grey;
+
+            @include media-tablets-768 {
+                margin-left: initial;
+            }
         }
     }
 
