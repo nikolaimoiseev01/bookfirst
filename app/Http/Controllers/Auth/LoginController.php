@@ -54,11 +54,11 @@ class LoginController extends Controller
     public function callback_vk()
     {
         $user = Socialite::driver('vkontakte')->stateless()->user();
-        dd($user);
+//        dd($user);
 
         $user = User::firstOrCreate([
-            'email' => $user->email,
-            'reg_type' => 'vk',
+            'email' => $user->email
+//            'reg_type' => 'vk',
         ], [
             'email' => $user->email,
             'name' => $user->user['first_name'],
