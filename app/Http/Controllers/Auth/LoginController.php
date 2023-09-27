@@ -70,7 +70,6 @@ class LoginController extends Controller
             'avatar_cropped' => $user->avatar
         ]);
 
-        dd($user);
 
 
         $user->assignRole('user');
@@ -88,6 +87,9 @@ class LoginController extends Controller
             $text = "Вы успешно создали аккаунт через VK! Для учетной записи (email: {$user->email}) был сгенерирован случайный пароль. Если входить через ВК, он не нужен. Но для возможности входа через email его необходимо сменить в настройках аккаунта.";
         } else {
             $text = "Вы успешно вошли через VK! У вас уже был аккаунт на нашем сайте. В него теперь можно входить по email или через VK.";
+            $user->update([
+                'reg_type' => 'vk'
+            ]);
         }
         session()->flash('alert_text', $text);
 
@@ -154,8 +156,7 @@ class LoginController extends Controller
         $user = Socialite::driver('google')->stateless()->user();
 
         $user = User::firstOrCreate([
-            'email' => $user->email,
-            'reg_type' => 'google'
+            'email' => $user->email
         ], [
             'email' => $user->email,
             'name' => $user->user['given_name'],
@@ -183,6 +184,9 @@ class LoginController extends Controller
             $text = "Вы успешно создали аккаунт через Google! Для учетной записи (email: {$user->email}) был сгенерирован случайный пароль. Если входить через Google, он не нужен. Но для возможности входа через email его необходимо сменить в настройках аккаунта.";
         } else {
             $text = "Вы успешно вошли через Google! У вас уже был аккаунт на нашем сайте. В него теперь можно входить по email или через Google.";
+            $user->update([
+                'reg_type' => 'google'
+            ]);
         }
         session()->flash('alert_text', $text);
 
