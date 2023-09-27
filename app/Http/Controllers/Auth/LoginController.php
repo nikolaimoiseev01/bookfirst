@@ -70,6 +70,8 @@ class LoginController extends Controller
             'avatar_cropped' => $user->avatar
         ]);
 
+        dd($user);
+
 
         $user->assignRole('user');
 
