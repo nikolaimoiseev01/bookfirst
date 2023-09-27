@@ -204,8 +204,6 @@ class LoginController extends Controller
     {
         $user = Socialite::driver('facebook')->stateless()->user();
 
-        dd($user);
-
         $user = User::firstOrCreate([
             'email' => $user->email
         ], [
@@ -217,6 +215,8 @@ class LoginController extends Controller
             'avatar' => $user->avatar,
             'avatar_cropped' => $user->avatar
         ]);
+
+
 
 
         $user->assignRole('user');
