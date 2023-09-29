@@ -800,9 +800,7 @@
                                         <tr>
                                             <td style="font-weight: bold">Отправить на адрес</td>
                                             <td>
-                                                ФИО: {{$own_book->printorder['send_to_name']}}<br>
-                                                Адрес: {{$own_book->printorder['send_to_address']}} <br>
-                                                Телефон: {{$own_book->printorder['send_to_tel']}}
+                                                {{print_address($own_book['printorder_id'])}}
                                             </td>
                                         </tr>
                                         <tr>
