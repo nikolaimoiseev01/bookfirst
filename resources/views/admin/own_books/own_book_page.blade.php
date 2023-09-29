@@ -800,7 +800,7 @@
                                         <tr>
                                             <td style="font-weight: bold">Отправить на адрес</td>
                                             <td>
-                                                {{print_address($own_book['printorder_id'])}}
+                                                {{print_address($own_book->printorder['id'])}}
                                             </td>
                                         </tr>
                                         <tr>
