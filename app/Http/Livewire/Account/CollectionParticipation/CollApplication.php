@@ -356,7 +356,7 @@ class CollApplication extends Component
 
         $text = "*Автор:* " . $author_name .
             "\n*Страниц:* " . $this->pages . " стр. (" . $this->price_part . ' ₽)' .
-            "\n*Промокод:* " . $promocode .
+            "\n*Промокод:* " . str_replace('_', '', $promocode) .
             "\n*Печать:* " . $print .
             "\n*Проверка:* " . $check .
             "\n\n*ИТОГО:* " . $this->price_total . " руб.";
