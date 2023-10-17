@@ -57,7 +57,7 @@
                     <a id="chat_button" class="button">
                         Чат по моему изданию
                     </a>
-                    @if($chat['flg_chat_read'] ?? null === 0)
+                    @if($chat['flg_chat_read'] === 0)
                         @livewire('account.chat.chat-question-check',['chat_id'=>$chat->id])
                     @endif
                 </div>
