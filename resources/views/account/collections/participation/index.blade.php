@@ -56,13 +56,13 @@
                 <a id="chat_button" class="button">
                     Чат по моему изданию
                 </a>
-                @if($chat['flg_chat_read'] === 0)
+                @if($chat['flg_chat_read'] ?? null === 0)
                     @livewire('account.chat.chat-question-check',['chat_id'=>$chat->id])
                 @endif
             </div>
             <div id="book_chat">
                 <div class="container">
-                    @livewire('account.chat.chat',['chat_id'=>$chat->id, 'new_chat_user_id'=>null])
+                    @livewire('account.chat.chat',['chat_id'=>$chat->id ?? null, 'new_chat_user_id'=>null])
                 </div>
             </div>
         </div>
