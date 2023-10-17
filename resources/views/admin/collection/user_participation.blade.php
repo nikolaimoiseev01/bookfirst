@@ -296,7 +296,7 @@
                                         <tr>
                                             <td style="font-weight: bold">Адресс</td>
                                             <td>
-                                                {{$participation->printorder['send_to_address'] ?? 'Нет печати'}}
+                                                {{print_address($participation->printorder['id']) ?? 'Нет печати'}}
                                             </td>
                                         </tr>
                                         <tr>
