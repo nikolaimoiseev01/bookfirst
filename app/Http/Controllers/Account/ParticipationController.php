@@ -66,7 +66,7 @@ class ParticipationController extends Controller
 
         $last_mes_id = $chat_question_check['id'] ?? null;
 
-        $chat_question_check =  Message::where('chat_id', $chat['id'])->get() ?? null;
+        $chat_question_check =  Message::where('chat_id', $chat['id'] ?? null)->get() ?? null;
         if ($chat_question_check) {
             $chat_question_check = Message::where('chat_id', $chat['id'] ?? null)->latest('created_at')->first();
             $chat_question_check = ($chat_question_check['user_from'] ?? 0 == 2 && $chat['flag_hide_question'] ?? 0 <> 1);
