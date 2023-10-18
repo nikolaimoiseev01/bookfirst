@@ -807,14 +807,9 @@
                                             <td style="font-weight: bold">Формат обложки:</td>
                                             <td>
                                                 @if($own_book->printorder['cover_type'] == 'soft')
-                                                    Мягкая,
+                                                    Мягкая
                                                 @elseif($own_book->printorder['cover_type'] == 'hard')
-                                                    Твердая,
-                                                @endif
-                                                @if($own_book->printorder['cover_color'] == 1)
-                                                    цветная
-                                                @elseif($own_book->printorder['cover_color'] == 0)
-                                                    черно-белая
+                                                    <b style="color: red">Твердая</b>
                                                 @endif
                                             </td>
                                         </tr>
