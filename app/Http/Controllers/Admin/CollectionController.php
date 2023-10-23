@@ -492,9 +492,9 @@ class CollectionController extends Controller
             }
 
 
-            // Посылаем уведомление всем пользователям
+            // Посылаем уведомление всем оплатившим пользователям
             if (!ENV('APP_DEBUG')) {
-                $users_from_participation = Participation::where('collection_id', $collection->id)->get('user_id')->toArray();
+                $users_from_participation = Participation::where('collection_id', $collection->id)->where('pat_status_id', 3) ->get('user_id')->toArray();
                 $users = User::whereIn('id', $users_from_participation)->get();
                 foreach ($users as $user) {
                     $button_link = route('homePortal') . "/myaccount/collections/" . $collection->id . "/participation/" . Participation::where([['user_id', $user->id], ['collection_id', $collection->id]])->value('id');
