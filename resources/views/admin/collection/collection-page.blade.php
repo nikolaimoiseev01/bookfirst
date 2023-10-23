@@ -289,6 +289,7 @@
                                                 <th scope="col">Страниц</th>
                                                 <th scope="col">Экземпляров</th>
                                                 <th scope="col">Промокод</th>
+                                                <th scope="col">Стоимость проверки</th>
                                                 <th scope="col">Общая сумма</th>
                                                 <th scope="col">Создан</th>
                                                 <th scope="col">Обновлен</th>
@@ -331,6 +332,9 @@
                                                     </td>
                                                     <td data-label="Промокод" style="text-align: center;">
                                                         {{$participation['promocode']}}
+                                                    </td>
+                                                    <td data-label="Стоимость проверки" style="text-align: center;">
+                                                        {{$participation['check_price']}} руб.
                                                     </td>
                                                     <td data-label="Общая сумма" style="text-align: center;">
                                                         {{$participation['total_price']}} руб.
