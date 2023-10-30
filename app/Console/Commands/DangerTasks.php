@@ -31,7 +31,7 @@ class DangerTasks extends Command
      */
     public function handle()
     {
-        $debug_mode = True;
+        $debug_mode = False;
         $message_arrays = [];
         $priskazki = [
             'Вы поглятидите, что делается!',
