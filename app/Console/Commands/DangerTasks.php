@@ -85,13 +85,6 @@ class DangerTasks extends Command
                     $text = "*ПРОСРОЧКА!* *{$title_short}* нужно было сверстать *{$col_deadline}*. Дней просрочки: " . $deadline_days * -1;
                 }
 
-                if ($text ?? null) {
-                    array_push($message_arrays, [
-                        'title' => "🔥 *{$random_priskazka}*",
-                        'text' => $text
-                    ]);
-                }
-
             } elseif ($collection['col_status_id'] == 2) {
                 $col_deadline = Date::parse($collection->col_date3)->format('j F');
                 $deadline_days = Date::parse($col_deadline)->diff(Date::now());
@@ -102,13 +95,6 @@ class DangerTasks extends Command
                     $text = "*{$title_short}* нужно отправлять в печать до *{$col_deadline}*. Осталось дней: {$deadline_days}";
                 elseif ($deadline_days < 0) {
                     $text = "*ПРОСРОЧКА!* *{$title_short}* нужно было отправить в печать до *{$col_deadline}*. Дней просрочки: " . $deadline_days * -1;
-                }
-
-                if ($text ?? null) {
-                    array_push($message_arrays, [
-                        'title' => "🔥 *{$random_priskazka}*",
-                        'text' => $text
-                    ]);
                 }
 
             } elseif ($collection['col_status_id'] == 3) {
@@ -123,13 +109,13 @@ class DangerTasks extends Command
                     $text = "*ПРОСРОЧКА!* *{$title_short}* должен был быть напечатан до *{$col_deadline}*. Дней просрочки: " . $deadline_days * -1;
                 }
 
-                if ($text ?? null) {
-                    array_push($message_arrays, [
-                        'title' => "🔥 *{$random_priskazka}*",
-                        'text' => $text
-                    ]);
-                }
+            }
 
+            if ($text ?? null) {
+                array_push($message_arrays, [
+                    'title' => "🔥 *{$random_priskazka}*",
+                    'text' => $text
+                ]);
             }
 
 
