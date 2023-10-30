@@ -49,7 +49,7 @@ class CollectionController extends Controller
             ->Join('col_statuses', 'collections.col_status_id', '=', 'col_statuses.id')
             ->select('collections.*', 'col_statuses.col_status',
                 DB::raw('sum((CASE WHEN participations.pat_status_id = 1 THEN 1 ELSE 0 END)) AS new_participants'),
-                DB::raw('count(participations.id) AS total_participants')
+                DB::raw('sum(CASE WHEN participations.pat_status_id = 3 THEN 1 ELSE 0 END) AS total_participants')
             )
             ->where('col_status_id', '<>', 9)
             ->groupBy('collections.id')
