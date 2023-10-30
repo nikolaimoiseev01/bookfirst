@@ -67,6 +67,8 @@ class DangerTasks extends Command
 
         foreach ($collections as $collection) {
 
+            $text = null;
+
             $random_priskazka = $priskazki[array_rand($priskazki)];
             $title_short = str_replace(array('Современный', 'Поэзии', 'Сокровенные', '.', ' '), "", $collection->title);
             $title_short = str_replace(array('Выпуск'), " ", $title_short);
