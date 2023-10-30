@@ -64,6 +64,7 @@ class DangerTasks extends Command
 
         //region -- Идем по каждому сборнику, чтобы напомнить про дедлайны
         $collections = Collection::where('col_status_id', '<>', 9)->get();
+
         foreach ($collections as $collection) {
 
             $random_priskazka = $priskazki[array_rand($priskazki)];
@@ -94,19 +95,20 @@ class DangerTasks extends Command
                     $text = "*ПРОСРОЧКА!* *{$title_short}* нужно было отправить в печать до *{$col_deadline}*. Дней просрочки: " . $deadline_days * -1;
                 }
 
-            } elseif ($collection['col_status_id'] == 3) {
-                $col_deadline = Date::parse($collection->col_date4)->format('j F');
-                $deadline_days = Date::parse($col_deadline)->diff(Date::now());
-                // Если разница положительна (deadline в будущем), инвертируем значение
-                $deadline_days = $deadline_days->days * ($deadline_days->invert === 0 ? -1 : 1);
-
-                if ($deadline_days < 3 && $deadline_days >= 0)
-                    $text = "Позвонить Светлане! *{$title_short}* должен быть напечатан до *{$col_deadline}*. Осталось дней: {$deadline_days}";
-                elseif ($deadline_days < 0) {
-                    $text = "*ПРОСРОЧКА!* *{$title_short}* должен был быть напечатан до *{$col_deadline}*. Дней просрочки: " . $deadline_days * -1;
-                }
-
             }
+//            elseif ($collection['col_status_id'] == 3) {
+//                $col_deadline = Date::parse($collection->col_date4)->format('j F');
+//                $deadline_days = Date::parse($col_deadline)->diff(Date::now());
+//                // Если разница положительна (deadline в будущем), инвертируем значение
+//                $deadline_days = $deadline_days->days * ($deadline_days->invert === 0 ? -1 : 1);
+//
+//                if ($deadline_days < 3 && $deadline_days >= 0)
+//                    $text = "Позвонить Светлане! *{$title_short}* должен быть напечатан до *{$col_deadline}*. Осталось дней: {$deadline_days}";
+//                elseif ($deadline_days < 0) {
+//                    $text = "*ПРОСРОЧКА!* *{$title_short}* должен был быть напечатан до *{$col_deadline}*. Дней просрочки: " . $deadline_days * -1;
+//                }
+//
+//            }
 
             if ($text ?? null) {
                 array_push($message_arrays, [
