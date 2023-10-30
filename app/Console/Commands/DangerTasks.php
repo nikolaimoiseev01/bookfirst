@@ -65,7 +65,7 @@ class DangerTasks extends Command
         //region -- Идем по каждому сборнику, чтобы напомнить про дедлайны
         $collections = Collection::where('col_status_id', '<>', 9)->get();
 
-        dd($collections->count());
+        dd($collections);
 
         foreach ($collections as $collection) {
 
