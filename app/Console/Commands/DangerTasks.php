@@ -31,7 +31,7 @@ class DangerTasks extends Command
      */
     public function handle()
     {
-        $debug_mode = False;
+        $debug_mode = True;
         $message_arrays = [];
         $priskazki = [
             'Вы поглятидите, что делается!',
@@ -61,6 +61,7 @@ class DangerTasks extends Command
             'Без тебя не справлюсь, Крис!',
             'Кристинка, что делать? '
         ];
+        $deadline_days_threshold = 5;
 
         //region -- Идем по каждому сборнику, чтобы напомнить про дедлайны
         $collections = Collection::where('col_status_id', '<>', 9)->get() ?? null;
@@ -80,7 +81,7 @@ class DangerTasks extends Command
                     // Если разница положительна (deadline в будущем), инвертируем значение
                     $deadline_days = $deadline_days->days * ($deadline_days->invert === 0 ? -1 : 1);
 
-                    if ($deadline_days < 3 && $deadline_days >= 0)
+                    if ($deadline_days < $deadline_days_threshold && $deadline_days >= 0)
                         $text = "*{$title_short}* нужно сверстать до *{$col_deadline}*. Осталось дней: {$deadline_days}";
                     elseif ($deadline_days < 0) {
                         $text = "*ПРОСРОЧКА!* *{$title_short}* нужно было сверстать *{$col_deadline}*. Дней просрочки: " . $deadline_days * -1;
@@ -92,7 +93,7 @@ class DangerTasks extends Command
                     // Если разница положительна (deadline в будущем), инвертируем значение
                     $deadline_days = $deadline_days->days * ($deadline_days->invert === 0 ? -1 : 1);
 
-                    if ($deadline_days < 3 && $deadline_days >= 0)
+                    if ($deadline_days < $deadline_days_threshold && $deadline_days >= 0)
                         $text = "*{$title_short}* нужно отправлять в печать до *{$col_deadline}*. Осталось дней: {$deadline_days}";
                     elseif ($deadline_days < 0) {
                         $text = "*ПРОСРОЧКА!* *{$title_short}* нужно было отправить в печать до *{$col_deadline}*. Дней просрочки: " . $deadline_days * -1;
@@ -104,7 +105,7 @@ class DangerTasks extends Command
                     // Если разница положительна (deadline в будущем), инвертируем значение
                     $deadline_days = $deadline_days->days * ($deadline_days->invert === 0 ? -1 : 1);
 
-                    if ($deadline_days < 3 && $deadline_days >= 0)
+                    if ($deadline_days < $deadline_days_threshold && $deadline_days >= 0)
                         $text = "Позвонить Светлане! *{$title_short}* должен быть напечатан до *{$col_deadline}*. Осталось дней: {$deadline_days}";
                     elseif ($deadline_days < 0) {
                         $text = "*ПРОСРОЧКА!* *{$title_short}* должен был быть напечатан до *{$col_deadline}*. Дней просрочки: " . $deadline_days * -1;
@@ -167,13 +168,14 @@ class DangerTasks extends Command
 
         if ($own_book_covers) {
             foreach ($own_book_covers as $key => $own_book) {
+                $text_own_book_covers = null;
                 $deadline_days = Date::parse($own_book['cover_deadline'])->diff(Date::now());
                 // Если разница положительна (deadline в будущем), инвертируем значение
                 $deadline_days = $deadline_days->days * ($deadline_days->invert === 0 ? -1 : 1);
 
                 $random_priskazka_kris = $priskazki_kris[array_rand($priskazki_kris)];
 
-                if ($deadline_days < 3 && $deadline_days >= 0)
+                if ($deadline_days < $deadline_days_threshold && $deadline_days >= 0)
                     $text_own_book_covers = "У автора *" . $own_book['author'] . "* нужно делать обложку! " . "Срок до {$own_book['cover_deadline']}. Осталось дней: {$deadline_days}";
                 elseif ($deadline_days < 0) {
                     $text_own_book_covers = "*ПРОСРОЧКА!* У автора *" . $own_book['author'] . "* нужно было делать обложку! " . "Дней просрочки: " . $deadline_days * -1;
@@ -191,13 +193,14 @@ class DangerTasks extends Command
 
         if ($own_book_insides) {
             foreach ($own_book_insides as $key => $own_book) {
+                $text_own_book_insides = null;
                 $deadline_days = Date::parse($own_book['cover_deadline'])->diff(Date::now());
                 // Если разница положительна (deadline в будущем), инвертируем значение
                 $deadline_days = $deadline_days->days * ($deadline_days->invert === 0 ? -1 : 1);
 
                 $random_priskazka = $priskazki[array_rand($priskazki)];
 
-                if ($deadline_days < 3 && $deadline_days >= 0)
+                if ($deadline_days < $deadline_days_threshold && $deadline_days >= 0)
                     $text_own_book_insides = "У автора *" . $own_book['author'] . "* нужно делать макет! " . "Срок до {$own_book['cover_deadline']}. Осталось дней: {$deadline_days}";
                 elseif ($deadline_days < 0) {
                     $text_own_book_insides = "*ПРОСРОЧКА!* У автора *" . $own_book['author'] . "* нужно было делать макет! " . "Дней просрочки: " . $deadline_days * -1;
