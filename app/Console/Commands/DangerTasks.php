@@ -179,7 +179,7 @@ class DangerTasks extends Command
                     $text_own_book_covers = "*ПРОСРОЧКА!* У автора *" . $own_book['author'] . "* нужно было делать обложку! " . "Дней просрочки: " . $deadline_days * -1;
                 }
 
-                if ($text_kris ?? null) {
+                if ($text_own_book_covers ?? null) {
                     array_push($message_arrays, [
                         'title' => "🔥 *{$random_priskazka_kris}*",
                         'text' => $text_own_book_covers
@@ -203,7 +203,7 @@ class DangerTasks extends Command
                     $text_own_book_insides = "*ПРОСРОЧКА!* У автора *" . $own_book['author'] . "* нужно было делать макет! " . "Дней просрочки: " . $deadline_days * -1;
                 }
 
-                if ($text_kris ?? null) {
+                if ($text_own_book_insides ?? null) {
                     array_push($message_arrays, [
                         'title' => "🔥 *{$random_priskazka}*",
                         'text' => $text_own_book_insides
