@@ -28,7 +28,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('DangerTasks')
             ->timezone('Europe/Moscow')
             ->dailyAt('09:30')
-            ->dailyAt('15:00')
+            ->dailyAt('16:12')
             ->dailyAt('18:00')
             ->dailyAt('21:00');
     }
