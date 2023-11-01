@@ -154,7 +154,7 @@ class DangerTasks extends Command
 
         if ($text_kris ?? null) {
             array_push($message_arrays, [
-                'title' => "🔥 *{$random_priskazka_kris}*",
+                'title' => "🖌 *{$random_priskazka_kris}*",
                 'text' => $text_kris
             ]);
         }
@@ -183,7 +183,7 @@ class DangerTasks extends Command
 
                 if ($text_own_book_covers ?? null) {
                     array_push($message_arrays, [
-                        'title' => "🔥 *{$random_priskazka_kris}*",
+                        'title' => "🖌 *{$random_priskazka_kris}*",
                         'text' => $text_own_book_covers
                     ]);
                 }
