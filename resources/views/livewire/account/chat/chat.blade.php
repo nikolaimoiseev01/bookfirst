@@ -19,13 +19,33 @@
 
                 <div class="message_wrap">
 
-                    <p class="message_title">
-                        @if($message['user_from'] === 2)
-                            Поддержка
-                        @else
-                            {{App\Models\User::where('id',$message['user_from'])->value('name')}}
+                    <div class="title_wrap">
+                        <p class="message_title">
+                            @if($message['user_from'] === 2)
+                                Поддержка
+                            @else
+                                {{App\Models\User::where('id',$message['user_from'])->value('name')}}
+                            @endif
+                        </p>
+                        @if(Auth::user()->id == 2 && $message['user_from'] === 2)
+                            <div class="edit_buttons_wrap">
+                                @if($editing_message_id == $message['id'])
+                                    <i wire:click="save_message()" class="save far fa-save"></i>
+                                @else
+                                    <i wire:click="edit_message({{$message['id']}})" class="fas edit fa-pen"></i>
+                                    <i wire:click="delete_confirm({{$message['id']}})" class="fas delete fa-times"></i>
+                                @endif
+                            </div>
                         @endif
-                    </p>
+                    </div>
+
+                    @if(Auth::user()->id == 2 && $editing_message_id == $message['id'])
+                        <div class="message_edit_wrap">
+                            <x-chat-textarea model="editing_text"
+                                             placeholder="Введите сообщение"
+                                             attachable="false" sendable="false"></x-chat-textarea>
+                        </div>
+                    @endif
 
                     <div style="background:
                     @if($message['user_from'] === Auth::user()->id)

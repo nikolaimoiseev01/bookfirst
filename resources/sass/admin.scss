@@ -69,11 +69,49 @@
                 position: relative;
                 width: fit-content;
 
-
-                .message_title {
-                    font-size: 18px;
-                    margin: 0;
+                .message_edit_wrap {
+                    margin: 10px 0;
                 }
+
+                .title_wrap {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+
+                    .edit_buttons_wrap {
+                        display: flex;
+                        flex-direction: row;
+                        gap: 10px;
+                        padding-right: 10px;
+                        opacity: 0;
+                        transition: all .3s;
+                        .edit {
+                            font-size: 14px;
+                            cursor: pointer;
+                        }
+                        .delete {
+                            font-size: 16px;
+                            cursor: pointer;
+                        }
+                        .save {
+                            font-size: 16px;
+                            cursor: pointer;
+                        }
+                    }
+                    .message_title {
+                        font-size: 18px;
+                        margin: 0;
+                    }
+                }
+
+
+                &:hover {
+                    .edit_buttons_wrap {
+                        opacity: 1;
+                        transition: all .3s;
+                    }
+                }
+
 
                 .message_body {
                     border-radius: 15px;

@@ -9,6 +9,10 @@ class Message extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'text'
+    ];
+
     public function message_file() {
         return $this->hasMany(message_file::class);
     }

@@ -34,9 +34,12 @@ class Chat extends Component
     public $new_chat_user;
     public $templates;
     public $template_type = null;
+    public $editing_message_id;
+    public $editing_text;
 
     protected $listeners = [
         'new_message',
+        'delete_message',
         'refreshChat' => '$refresh'
     ];
 
@@ -276,6 +279,48 @@ class Chat extends Component
         $this->text = '';
 
 
+    }
+
+    public function edit_message($message_id)
+    {
+        $this->editing_message_id = $message_id;
+        $message = Message::where('id', $message_id)->first();
+        $this->editing_text = $message['text'];
+    }
+
+    public function delete_confirm($message_id)
+    {
+        $this->dispatchBrowserEvent('swal:confirm', [
+            'type' => 'warning',
+            'title' => 'Уверены, что хотите удалить сообщение?',
+            'onconfirm' => 'delete_message',
+            'id' => $message_id
+        ]);
+    }
+
+
+    public function delete_message($message_id)
+    {
+        $message = Message::where('id', $message_id)->first();
+        $message->delete();
+        $this->messages = Message::where('chat_id', $this->chat_id)->with('message_file')->get();
+    }
+
+    public function save_message()
+    {
+
+        $message = Message::where('id', $this->editing_message_id)->first();
+
+        $message->update([
+            'text' => $this->editing_text
+        ]);
+
+        $this->editing_message_id = null;
+
+        $this->messages = Message::where('chat_id', $this->chat_id)->with('message_file')->get();
+
+        $this->dispatchBrowserEvent('update_js');
+        $this->dispatchBrowserEvent('scroll_chats');
     }
 
 }

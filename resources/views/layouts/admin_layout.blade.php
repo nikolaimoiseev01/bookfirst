@@ -472,15 +472,23 @@
     })
 
     window.addEventListener('swal:confirm', event => {
+        console.log(event.detail.onconfirm)
         Swal.fire({
             title: event.detail.title,
+            // icon: 'warning',
+            html: event.detail.html,
             showDenyButton: true,
             showCancelButton: false,
             confirmButtonText: `Все верно`,
             denyButtonText: `Отменить`,
         }).then((result) => {
             if (result.isConfirmed) {
-                window.livewire.emit('delete', event.detail.id)
+                if(event.detail.id) {
+                    window.livewire.emit(event.detail.onconfirm, event.detail.id)
+                } else {
+                    window.livewire.emit(event.detail.onconfirm)
+                }
+
             }
         })
     })
