@@ -144,7 +144,7 @@
                         </div>
                     </div>
                     <div class="cover_wrap">
-                        <img src="{{$collection['cover_3d']}}" alt="">
+                        <img src="{{config('app.url') . '/' . $collection['cover_3d']}}" alt="">
                     </div>
                     <div class="info_wrap">
                         <h3> {{$collection['title']}}</h3>
@@ -161,7 +161,7 @@
 
             <div class="container">
                 <div class="cover_wrap">
-                    <img src="/img/own_book_example_cover.png" alt="">
+                    <img src="{{config('app.url')}}/img/own_book_example_cover.png" alt="">
                 </div>
                 <div class="info_wrap">
                     <h3> Ваша собственная книга</h3>

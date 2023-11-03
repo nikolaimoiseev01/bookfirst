@@ -25,7 +25,7 @@
                             </div>
                         </div>
                         <div class="cover_wrap">
-                            <img src="/{{$collection['cover_3d']}}" alt="">
+                            <img src="{{config('app.url') . '/' . $collection['cover_3d']}}" alt="">
                         </div>
                         <div class="info_wrap">
                             <h3> {{$collection['title']}}</h3>

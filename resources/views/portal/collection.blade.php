@@ -24,7 +24,7 @@
             </div>
             <div class="collection-block">
                 <div style="display: flex; align-items: center;">
-                    <img class="cover" src="/{{$collection['cover_3d']}}" alt="">
+                    <img class="cover" src="{{config('app.url') . '/' . $collection['cover_3d']}}" alt="">
                 </div>
                 <div class="right-collection-info">
                     <div class="col-text">
