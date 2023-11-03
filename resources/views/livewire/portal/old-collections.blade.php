@@ -13,7 +13,7 @@
                 <div class="collection_wrap container">
                     @if($collection['cover_3d'])
                         <img data-effect="mfp-zoom-in" width="200px"
-                             src="{{config('app.url') . '/' . $collection['cover_3d']}}"
+                             src="{{urlencode(config('app.url') . '/' . $collection['cover_3d'])}}"
                              alt="">
                     @endif
                     <div class="right_wrap">
