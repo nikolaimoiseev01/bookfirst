@@ -98,20 +98,21 @@ class CollectionController extends Controller
      */
     public function store(Request $request)
     {
-        File::makeDirectory('admin_files/Collections/' . $request->title);
+
+        File::makeDirectory('admin_files/Collections/' . $request->folder_name);
         $new_col = new Collection();
         $new_col->title = $request->title;
         $new_col->col_desc = $request->col_desc;
-        $new_col->cover_2d = 'admin_files/Collections/' . $request->title . '/' . $request->cover_2d->getClientOriginalName();
-        $new_col->cover_3d = 'admin_files/Collections/' . $request->title . '/' . $request->cover_3d->getClientOriginalName();
+        $new_col->cover_2d = 'admin_files/Collections/' . $request->folder_name . '/' . $request->cover_2d->getClientOriginalName();
+        $new_col->cover_3d = 'admin_files/Collections/' . $request->folder_name . '/' . $request->cover_3d->getClientOriginalName();
         $new_col->col_status_id = 1;
         $new_col->col_date1 = $request->col_date1;
         $new_col->col_date2 = $request->col_date2;
         $new_col->col_date3 = $request->col_date3;
         $new_col->col_date4 = $request->col_date4;
         $new_col->save();
-        $request->cover_2d->move(public_path('admin_files/Collections/' . $request->title . '/'), $request->cover_2d->getClientOriginalName());
-        $request->cover_3d->move(public_path('admin_files/Collections/' . $request->title . '/'), $request->cover_3d->getClientOriginalName());
+        $request->cover_2d->move(public_path('admin_files/Collections/' . $request->folder_name . '/'), $request->cover_2d->getClientOriginalName());
+        $request->cover_3d->move(public_path('admin_files/Collections/' . $request->folder_name . '/'), $request->cover_3d->getClientOriginalName());
         return redirect()->back()->withSuccess('Книга была добавлена!');
     }
 

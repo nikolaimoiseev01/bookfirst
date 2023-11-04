@@ -563,8 +563,9 @@ class OwnBookController extends Controller
                 'cover_price' => intval($request->cover_price),
                 'print_price' => intval($request->print_price),
                 'promo_price' => intval($request->promo_price),
-                'total_price' => intval($request->text_check_price) + intval($request->text_design_price) + intval($request->cover_price) + intval($request->print_price) + intval($request->promo_price) + 500,
+                'total_price' => intval($request->text_check_price) + intval($request->text_design_price) + intval($request->cover_price) + intval($request->print_price) + intval($request->promo_price) + 300,
             ));
+
             session()->flash('success', 'change_printorder');
             session()->flash('alert_type', 'success');
             session()->flash('alert_title', 'Все цены были успешно изменены!');

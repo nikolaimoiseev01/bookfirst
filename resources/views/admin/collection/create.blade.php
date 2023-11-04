@@ -37,6 +37,11 @@
                                                    placeholder="Название сборника" required>
                                         </div>
                                         <div class="mb-2">
+                                            Имя папки
+                                            <input type="text" name="folder_name" class="form-control"
+                                                   placeholder="Имя папки" required>
+                                        </div>
+                                        <div class="mb-2">
                                             Статус
                                             <select name="col_status_id" class="form-control">
                                                 @foreach ($col_statuses as $col_status)
