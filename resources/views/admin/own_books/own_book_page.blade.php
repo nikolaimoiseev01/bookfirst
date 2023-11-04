@@ -967,7 +967,7 @@
                                             <tr>
                                                 <td style="font-weight: bold">ISBN</td>
                                                 <td>
-                                                    500 руб.
+                                                    300 руб.
                                                 </td>
                                             </tr>
                                             <form id="save_own_book_prices"
