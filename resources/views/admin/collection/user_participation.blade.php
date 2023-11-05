@@ -250,6 +250,12 @@
                                             </td>
                                         </tr>
                                         <tr>
+                                            <td style="font-weight: bold">Промокод</td>
+                                            <td>
+                                                {{$participation['promocode'] ?? 'Без промокода'}}
+                                            </td>
+                                        </tr>
+                                        <tr>
                                             <td style="font-weight: bold">Количество работ</td>
                                             <td>
                                                 {{$participation['works_number']}}
