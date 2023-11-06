@@ -43,6 +43,12 @@
                                                    class="form-control" id="exampleInputEmail1"
                                                    placeholder="Название сборника" required>
                                         </div>
+                                        <div class="mb-2">
+                                            Имя папки
+                                            <input type="text" name="folder_name"
+                                                   class="form-control" id="exampleInputEmail1"
+                                                   placeholder="Имя папки" required>
+                                        </div>
                                         <div class="mb-2"> Обложка 2d
                                             <input type="file" name="cover_2d"
                                                    class="d-none form-control custom-file-input" id="cover_2d"
