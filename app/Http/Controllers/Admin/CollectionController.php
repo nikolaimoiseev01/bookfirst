@@ -428,13 +428,18 @@ class CollectionController extends Controller
     {
 
         App::setLocale('ru');
-
+//dd($request->folder_name);
 
         if (($request->col_status_id === "2") && $collection->pre_var === null && !$request->file('pre_var')) {
             session()->flash('success', 'change_printorder');
             session()->flash('alert_type', 'error');
             session()->flash('alert_title', 'Что-то пошло не так :(');
             session()->flash('alert_text', 'Сначала нужно загрузить файл предварительного варианта!');
+        } elseif (!$request->folder_name) {
+            session()->flash('success', 'change_printorder');
+            session()->flash('alert_type', 'error');
+            session()->flash('alert_title', 'Что-то пошло не так :(');
+            session()->flash('alert_text', 'Укажите название папки!');
         } else {
 
             // Сохраняем файлы из формы
