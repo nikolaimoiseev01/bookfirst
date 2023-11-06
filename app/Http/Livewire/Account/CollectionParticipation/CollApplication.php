@@ -372,14 +372,45 @@ class CollApplication extends Component
 
             $old_works = Participation_work::where('participation_id', $this->participation['id'])->pluck('work_id')->toArray();
             $new_works = collect($this->works)->pluck('id')->toArray();
+            $participation = Participation::where('id', $this->participation['id'])->first();
+
+            $comparison = [];
+
+            // Запоминаем все старые значения
+            $old_name = $participation['name'];
+            $old_surname = $participation['surname'];
+            $old_nickname = $participation['nickname'];
+            $old_works_number = $participation['works_number'];
+            $old_price_check = $participation['price_check'];
+
+            if($old_name != $this->name) {
+                array_push($comparison, "*Имя.* Было '{$old_name}', стало '{$this->name}'");
+            }
+            if($old_surname != $this->surname) {
+                array_push($comparison, "*Фамилия.* Было '{$old_surname}', стало '{$this->surname}'");
+            }
+            if($old_nickname != $this->nickname) {
+                array_push($comparison, "*Псевдоним.* Было '{$old_nickname}', стало '{$this->nickname}'");
+            }
+            if($old_works_number != count($this->works)) {
+                array_push($comparison, "*Кол-во работ.* Было {$old_works_number}, стало " . count($this->works));
+            }
+            if($old_price_check != $this->price_check) {
+                array_push($comparison, "*Стоимость проверки.* Было " . $old_price_check ?? 0 . ", стало " . $this->price_check);
+            }
+
+
 
             if (($this->participation['total_price'] === $this->price_total)
                 && $this->participation['pat_status_id'] > 2
                 && $old_works == $new_works) { // Если цена осталась неизменна, и он уже оплатил, а работы не поменялись
                 $pat_status_id = 3;
-            } elseif ($this->participation['total_price'] !== $this->price_total && $old_works == $new_works && $this->participation['pat_status_id'] >= 2) { // Если цена изменилась, но не менялись произведения
+            }
+            // Если цена изменилась, но не менялись произведения
+            elseif ($this->participation['total_price'] !== $this->price_total && $old_works == $new_works && $this->participation['pat_status_id'] >= 2) {
                 $pat_status_id = 2;
-            } else {
+            }
+            else {
                 $pat_status_id = 1;
             }
 
@@ -399,10 +430,42 @@ class CollApplication extends Component
             ]);
 
             // Редактируем заказ печатных экземпляров
-
             $print_order_old = $this->participation->printorder; // Был уже заказ печатных?
 
+
             if ($print_order_old) { // Уже был
+
+                // Запоминаем все старые значения
+                $old_prints = $print_order_old['books_needed'];
+                $old_send_to_name = $print_order_old['send_to_name'];
+                $old_send_to_tel = $print_order_old['send_to_tel'];
+                $old_send_to_address = $print_order_old['send_to_address'];
+                $old_send_to_country = $print_order_old['send_to_country'];
+                $old_send_to_city = $print_order_old['send_to_city'];
+                $old_send_to_index = $print_order_old['send_to_index'];
+
+                if($old_prints != $this->prints) {
+                    array_push($comparison, "*Кол-во экземпляров.* Было {$old_prints}, стало " .  $this->prints);
+                }
+                if($old_send_to_name != $this->send_to_name) {
+                    array_push($comparison, "*Имя получателя.* Было '{$old_send_to_name}', стало '{$this->send_to_name}'");
+                }
+                if($old_send_to_tel != $this->send_to_tel) {
+                    array_push($comparison, "*Телефон.* Было '{$old_send_to_tel}', стало '{$this->send_to_tel}'");
+                }
+                if($old_send_to_address != $this->send_to_address) {
+                    array_push($comparison, "*Адрес.* Было '{$old_send_to_address}', стало '{$this->send_to_address}'");
+                }
+                if($old_send_to_country != $this->send_to_country) {
+                    array_push($comparison, "*Страна.* Было '{$old_send_to_country}', стало '{$this->send_to_country}'");
+                }
+                if($old_send_to_city != $this->send_to_city) {
+                    array_push($comparison, "*Город.* Было '{$old_send_to_city}', стало '{$this->send_to_city}'");
+                }
+                if($old_send_to_index != $this->send_to_index) {
+                    array_push($comparison, "*Индекс.* Было '{$old_send_to_index}', стало '{$this->send_to_index}'");
+                }
+
                 if ($this->print_need ?? null) { // Редактируем, если нужен
                     PrintOrder::where('id', $print_order_old['id'])->update([
                         'books_needed' => $this->prints,
@@ -415,6 +478,7 @@ class CollApplication extends Component
                     ]);
                 } else { // Удаляем, раз не нужно (оплаченный не удалится по ошибкам в проверке
                     PrintOrder::where('id', $print_order_old['id'])->delete();
+                    array_push($comparison, "*Заказ печатных.* Был, а теперь нет.");
                     Participation::where('id', $this->participation['id'])->update([
                         'printorder_id' => null,
                     ]);
@@ -422,6 +486,8 @@ class CollApplication extends Component
 
             } else { // Еще не было -> создаем, если нужно
                 if ($this->print_need ?? null) {
+                    array_push($comparison, "*Добавилась печать.* Раньше не было");
+
                     $new_PrintOrder = new PrintOrder();
                     $new_PrintOrder->participation_id = $this->participation['id'];
                     $new_PrintOrder->collection_id = $this->collection['id'];
@@ -451,15 +517,24 @@ class CollApplication extends Component
                 $new_participation_work->save();
             }
 
-            // Оповещение нам в телеграм
-            $title = '💥 *Изменение заявки в ' . $this->collection['title'] . '!* 💥';
-            $text = $this->get_notify_text();
-            $button_text = "Его страница участия";
-            $url = route('user_participation', 1);
 
-            // Посылаем Telegram уведомление нам
-            Notification::route('telegram', '-506622812')
-                ->notify(new TelegramNotification($title, $text, $button_text, $url));
+
+            if($comparison ?? null && $pat_status_id == 1) { // Если что-то поменялось и нужно апрувить
+                // Оповещение нам в телеграм
+                $nickname = ($this->nickname) ? ' (' . $this->nickname . ')' : null;
+                $author_name = $this->name . ' ' . $this->surname . $nickname;
+                $title = '💥 *Изменение заявки в ' . $this->collection['title'] . '!* 💥';
+                $text = "*Автор:* {$author_name} \n*Изменилось:* \n" . implode("\n", $comparison);
+                $button_text = "Его страница участия";
+                $url = route('user_participation', 1);
+
+                // Посылаем Telegram уведомление нам
+                Notification::route('telegram', '-506622812')
+                    ->notify(new TelegramNotification($title, $text, $button_text, $url));
+            }
+
+
+
 
             // Показываем успешно уведомление
             session()->flash('show_modal', 'yes');
