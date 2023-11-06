@@ -439,23 +439,23 @@ class CollectionController extends Controller
 
             // Сохраняем файлы из формы
             if (!is_null($request->file('cover_2d'))) {
-                $cover_2d = 'admin_files/Collections/' . $request->title . '/' . $request->file('cover_2d')->getClientOriginalName();
+                $cover_2d = 'admin_files/Collections/' . $request->folder_name . '/' . $request->file('cover_2d')->getClientOriginalName();
                 $collection->cover_2d = $cover_2d;
                 File::delete($collection->cover_2d);
-                $request->file('cover_2d')->move(public_path('admin_files/Collections/' . $request->title . '/'), $request->file('cover_2d')->getClientOriginalName());
+                $request->file('cover_2d')->move(public_path('admin_files/Collections/' . $request->folder_name . '/'), $request->file('cover_2d')->getClientOriginalName());
             }
             if (!is_null($request->file('cover_3d'))) {
-                $cover_3d = 'admin_files/Collections/' . $request->title . '/' . $request->file('cover_3d')->getClientOriginalName();
+                $cover_3d = 'admin_files/Collections/' . $request->folder_name . '/' . $request->file('cover_3d')->getClientOriginalName();
                 $collection->cover_3d = $cover_3d;
                 File::delete($collection->cover_3d);
-                $request->file('cover_3d')->move(public_path('admin_files/Collections/' . $request->title . '/'), $request->file('cover_3d')->getClientOriginalName());
+                $request->file('cover_3d')->move(public_path('admin_files/Collections/' . $request->folder_name . '/'), $request->file('cover_3d')->getClientOriginalName());
             }
 
             if (!is_null($request->file('pre_var'))) {
-                $pre_var = 'admin_files/Collections/' . $request->title . '/' . $request->file('pre_var')->getClientOriginalName();
+                $pre_var = 'admin_files/Collections/' . $request->folder_name . '/' . $request->file('pre_var')->getClientOriginalName();
                 File::delete($collection->pre_var);
                 $collection->pre_var = $pre_var;
-                $request->file('pre_var')->move(public_path('admin_files/Collections/' . $request->title . '/'), $request->file('pre_var')->getClientOriginalName());
+                $request->file('pre_var')->move(public_path('admin_files/Collections/' . $request->folder_name . '/'), $request->file('pre_var')->getClientOriginalName());
             }
 
 
