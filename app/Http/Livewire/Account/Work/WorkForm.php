@@ -91,7 +91,6 @@ class WorkForm extends Component
     public function storeWork(WorkStatService $work_stat)
     {
 
-
         // --------- Ищем ошибки в заполнении  --------- //
         $errors_array = [];
 
@@ -230,10 +229,17 @@ class WorkForm extends Component
             session()->flash('alert_type', 'success');
             session()->flash('alert_title', 'Отлично!');
 
-            if ($this->form_type == 'create') {
-                session()->flash('alert_text', 'Произведение успешно добавлено!');
+            if($this->back_after_work_adding['button_text'] == 'Сохранить и вернуться к заявке') {
+                $alert_postfix = ' Теперь их можно добавить в заявке (поле "Произведения для участия")';
             } else {
-                session()->flash('alert_text', 'Произведение успешно сохранено!');
+                $alert_postfix = '';
+            }
+
+
+            if ($this->form_type == 'create') {
+                session()->flash('alert_text', 'Произведение успешно добавлено!' . $alert_postfix);
+            } else {
+                session()->flash('alert_text', 'Произведение успешно сохранено!' . $alert_postfix);
             }
 
 

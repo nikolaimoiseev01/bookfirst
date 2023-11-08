@@ -207,7 +207,7 @@ class CreateOwnBook extends Component
 
         if ($this->book_title === $is_same_title & Auth::user()->id === $is_same_user) {
             array_push($this->error_texts, 'У Вас уже есть книга с точно таким же названием!');
-            array_push($this->error_fields, 'name');
+            array_push($this->error_fields, 'title');
         }
 
         if (!$this->author_name) {

@@ -144,10 +144,16 @@ class CreateWorkFromDoc extends Component
             $new_work->save();
         }
 
+        if($this->back_after_work_adding['button_text'] == 'Сохранить и вернуться к заявке') {
+            $alert_postfix = ' Теперь их можно добавить в заявке (поле "Произведения для участия")';
+        } else {
+            $alert_postfix = '';
+        }
 
         session()->flash('show_modal', 'yes');
         session()->flash('alert_type', 'success');
-        session()->flash('alert_title', 'Все произведения успешно добавлены!');
+        session()->flash('alert_title', 'Отлично!');
+        session()->flash('alert_text', 'Все произведения успешно добавлены!' . $alert_postfix);
 
         return redirect($this->back_after_work_adding['url']);
 
