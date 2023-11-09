@@ -817,7 +817,7 @@
                                             <td style="font-weight: bold">Цветность ВБ:</td>
                                             <td>
                                                 @if($own_book->printorder['color_pages'] > 0)
-                                                    Цветной
+                                                    <b style="color: red">Цветной</b>
                                                 @elseif($own_book->printorder['color_pages'] == 0)
                                                     Черно-белый
                                                 @endif
