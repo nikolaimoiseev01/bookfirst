@@ -27,7 +27,7 @@ class TrackBlock extends Component
             $this->status_color = 'grey';
         } elseif ($own_book_status_id === 4) {
             $this->status_color = 'yellow';
-        } elseif($own_book_status_id === 9 && $this->own_book->printorder['paid_at'] === null) {
+        } elseif($own_book_status_id === 9 && $this->own_book->printorder['paid_at'] ?? null === null) {
             $this->status_color = 'yellow';
         } else {
             $this->status_color = 'green';

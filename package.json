@@ -24,6 +24,7 @@
         "vite": "^4.3.9"
     },
     "dependencies": {
+        "@vitejs/plugin-vue": "^4.4.1",
         "autolinker": "^4.0.0",
         "autoprefixer": "10.4.5",
         "cropperjs": "^1.5.12",

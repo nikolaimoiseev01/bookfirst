@@ -29,9 +29,9 @@
                     <div class="d-flex align-items-center">
                         <h4 style="display: flow-root !important;" class="m-0">Статус общий:
                             <i @if($own_book['own_book_status_id'] == 1 || $own_book['own_book_status_id'] == 5)
-                               style="display: inline-block; color: #f74e4e;"
+                                   style="display: inline-block; color: #f74e4e;"
                                @elseif($own_book['own_book_status_id'] == 3)
-                               style="display: inline-block; color: #f39405;"
+                                   style="display: inline-block; color: #f39405;"
                                @endif
                                id="change_book_status_text">{{$own_book->own_book_status['status_title']}}</i>
                         </h4>
@@ -83,7 +83,8 @@
                                 <i id="change_book_inside_status_text">{{$own_book->own_book_inside_status['status_title']}}</i>
                                 @if($own_book['own_book_status_id'] == 3 & $own_book['own_book_inside_status_id'] == 1)
                                     <p>
-                                        (Срок: до {{ Date::parse($own_book['inside_deadline'])->addHours(3)->format('j F') }})
+                                        (Срок:
+                                        до {{ Date::parse($own_book['inside_deadline'])->addHours(3)->format('j F') }})
                                     </p>
                                 @endif
                             </h4>
@@ -137,7 +138,8 @@
                                 <i id="change_book_cover_status_text">{{$own_book->own_book_cover_status['status_title']}}</i>
                                 @if($own_book['own_book_status_id'] == 3 & $own_book['own_book_cover_status_id'] == 1)
                                     <p>
-                                        (Срок: до {{ Date::parse($own_book['cover_deadline'])->addHours(3)->format('j F') }})
+                                        (Срок:
+                                        до {{ Date::parse($own_book['cover_deadline'])->addHours(3)->format('j F') }})
                                     </p>
                                 @endif
                             </h4>
@@ -235,8 +237,12 @@
 
                     <div class="d-flex align-items-center">
                         <h4 class="mt-2">Вариант продвижения:
-                            <i id="change_promo_text">@if($own_book['promo_price'])за {{$own_book['promo_price']}}
-                                руб.@else не требуется @endif</i>
+                            <i id="change_promo_text">@if($own_book['promo_price'])
+                                    за {{$own_book['promo_price']}}
+                                    руб.
+                                @else
+                                    не требуется
+                                @endif</i>
                         </h4>
                         <div style="display: none" id="change_promo_form_wrap">
                             <form class="d-flex ml-3" style=" align-items: center;"
@@ -321,7 +327,8 @@
                         </button>
                     </div>
 
-                    <form style="gap: 20px;" class="d-flex flex-wrap align-items-center mt-2 gap-2" action="{{ route('add_own_book_comment',$own_book['id']) }}" method="POST"
+                    <form style="gap: 20px;" class="d-flex flex-wrap align-items-center mt-2 gap-2"
+                          action="{{ route('add_own_book_comment',$own_book['id']) }}" method="POST"
                           enctype="multipart/form-data"
                     >
                         @csrf
@@ -403,8 +410,9 @@
                         <li class="nav-item">
                             <a @if ($chat['chat_status_id'] == 1) style="padding-right: 22px;"
                                @endif  class="position-relative nav-link" href="#chat" data-toggle="tab">
-                                @if ($chat['chat_status_id'] == 1)<span style="right: 5px; top:11px;"
-                                                                        class="position-absolute right badge badge-danger">!</span>
+                                @if ($chat['chat_status_id'] == 1)
+                                    <span style="right: 5px; top:11px;"
+                                          class="position-absolute right badge badge-danger">!</span>
                                 @endif
                                 Чат по изданию
                             </a>
@@ -491,7 +499,11 @@
                                         @csrf
                                         <textarea style="font-size: 20px; min-height: 150px" type="text" name="desc"
                                                   class="mb-3 form-control" id="desc"
-                                                  aria-describedby="myInput">@if($own_book['own_book_desc']) {{$own_book['own_book_desc']}} @elseЕще не загружена@endif</textarea>
+                                                  aria-describedby="myInput">@if($own_book['own_book_desc'])
+                                                {{$own_book['own_book_desc']}}
+                                            @else
+                                                Еще не загружена
+                                            @endif</textarea>
 
                                         <button type="submit" class="btn btn-primary">Сохранить</button>
 
@@ -941,7 +953,8 @@
                                                    class="fas fa-save"></i>
                                             </a>
 
-                                            <a href="{{route('own_book_page')}}" target="_blank" id="change_finance_calc" style="display: none !important;"
+                                            <a href="{{route('own_book_page')}}" target="_blank"
+                                               id="change_finance_calc" style="display: none !important;"
                                                class="ml-3 p-0 d-flex align-items-center btn">
                                                 <i style="font-size: 20px;"
                                                    class="fas fa-calculator"></i>
@@ -1191,7 +1204,8 @@
                                          class="chat">
                                         <div style="margin: 0; width: 100%; max-width: 2000px;" class="container">
 
-                                            @livewire('account.chat.chat',['chat_id'=>$chat->id, 'new_chat_user_id'=>null])
+                                            @livewire('account.chat.chat',['chat_id'=>$chat->id,
+                                            'new_chat_user_id'=>null])
 
                                         </div>
                                     </div>
