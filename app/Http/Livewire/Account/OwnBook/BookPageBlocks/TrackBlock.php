@@ -26,7 +26,7 @@ class TrackBlock extends Component
         if($this->own_book['printorder_id'] > 0) {
             $printorder_paid_at = $this->own_book->printorder['paid_at'];
         } else {
-            $printorder_paid_at = null;
+            $printorder_paid_at = 'no_print';
         }
 
 
@@ -35,7 +35,6 @@ class TrackBlock extends Component
         } elseif ($own_book_status_id === 4) {
             $this->status_color = 'yellow';
         } elseif($own_book_status_id === 9 && $printorder_paid_at === null) {
-
             $this->status_color = 'yellow';
         } else {
             $this->status_color = 'green';
