@@ -23,11 +23,19 @@ class TrackBlock extends Component
     public function mount(PartPageBlockStatus $status)
     {
         $own_book_status_id = $this->own_book['own_book_status_id'];
+        if($this->own_book['printorder_id'] > 0) {
+            $printorder_paid_at = $this->own_book->printorder['paid_at'];
+        } else {
+            $printorder_paid_at = null;
+        }
+
+
         if ($own_book_status_id < 9 && $own_book_status_id !== 4) { // Почти на всех статусах показываем серым
             $this->status_color = 'grey';
         } elseif ($own_book_status_id === 4) {
             $this->status_color = 'yellow';
-        } elseif($own_book_status_id === 9 && $this->own_book->printorder['paid_at'] ?? null === null) {
+        } elseif($own_book_status_id === 9 && $printorder_paid_at === null) {
+
             $this->status_color = 'yellow';
         } else {
             $this->status_color = 'green';
