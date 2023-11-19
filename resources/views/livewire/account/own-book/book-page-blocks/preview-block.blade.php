@@ -22,7 +22,7 @@
                         <h2>Статус: <p><b>{{$status_title}}</b></p></h2>
                     @endif
                     {!! $text !!}
-                    @if($status_id > 1 && $status_id !== 9)
+                    @if($status_id > 1 && $status_id !== 9 && $status_id !== 99)
                         <a class="button {{$color}} download_preview"
                            href="/{{$chosen_type == 'inside' ? $own_book['inside_file'] : $own_book['cover_2d']}}"
                            download>
