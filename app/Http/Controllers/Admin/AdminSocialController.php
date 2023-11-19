@@ -100,9 +100,9 @@ WHERE dt.datetime between '2022-12-10' and sysdate()";
                 WHERE dt.datetime between DATE_SUB(sysdate(), INTERVAL 30 DAY) and sysdate()
                 order by dt.datetime asc";
 
-
-        $data_likes_and_comments = collect(DB::select(DB::raw($query_likes_and_comments)));
-
+//        dd($query_likes_and_comments);
+        $data_likes_and_comments = collect(DB::select($query_likes_and_comments));
+//dd($data_likes_and_comments);
 
         $query_works_uploaded = "
             select DATE_FORMAT(dt.datetime, '%d.%m') AS date,
@@ -122,7 +122,7 @@ WHERE dt.datetime between '2022-12-10' and sysdate()";
 
 
 
-        $data_works_uploaded = collect(DB::select(DB::raw($query_works_uploaded)));
+        $data_works_uploaded = collect(DB::raw($query_works_uploaded));
 
         $query_new_users = "select DATE_FORMAT(dt.datetime, '%d.%m') AS date,  cnt_users from dc_date dt
 
@@ -137,7 +137,7 @@ WHERE dt.datetime between '2022-12-10' and sysdate()";
                 order by dt.datetime asc";
 
 
-        $data_new_users = collect(DB::select(DB::raw($query_new_users)));
+        $data_new_users = collect(DB::raw($query_new_users));
 
 
 
