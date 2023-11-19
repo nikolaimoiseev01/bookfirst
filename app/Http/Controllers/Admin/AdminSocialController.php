@@ -122,7 +122,7 @@ WHERE dt.datetime between '2022-12-10' and sysdate()";
 
 
 
-        $data_works_uploaded = collect(DB::raw($query_works_uploaded));
+        $data_works_uploaded = collect(DB::select($query_works_uploaded));
 
         dd($data_works_uploaded);
 
@@ -139,7 +139,7 @@ WHERE dt.datetime between '2022-12-10' and sysdate()";
                 order by dt.datetime asc";
 
 
-        $data_new_users = collect(DB::raw($query_new_users));
+        $data_new_users = collect(DB::select($query_new_users));
 
 
 
