@@ -104,7 +104,8 @@
 
             </div>
 
-            <form style="gap: 20px;" class="d-flex flex-wrap  align-items-center mt-2 gap-2" action="{{ route('add_participation_comment',$participation['id']) }}" method="POST"
+            <form style="gap: 20px;" class="d-flex flex-wrap  align-items-center mt-2 gap-2"
+                  action="{{ route('add_participation_comment',$participation['id']) }}" method="POST"
                   enctype="multipart/form-data"
             >
                 @csrf
@@ -177,8 +178,10 @@
                         <li class="nav-item">
                             <a @if ($chat['chat_status_id'] == 1) style="padding-right: 22px;"
                                @endif  class="position-relative nav-link" href="#chat" data-toggle="tab">
-                                @if ($chat['chat_status_id'] == 1)<span style="right: 5px; top:11px;"
-                                                                        class="position-absolute right badge badge-danger">!</span>@endif
+                                @if ($chat['chat_status_id'] == 1)
+                                    <span style="right: 5px; top:11px;"
+                                          class="position-absolute right badge badge-danger">!</span>
+                                @endif
                                 Чат
                             </a>
                         </li>
@@ -191,10 +194,12 @@
                         <div class="tab-pane active" id="works">
                             @if($participation->participation_work)
                                 @foreach($participation->participation_work as $work)
-                                    <h3>{{$loop->index + 1}}. {{$work->work['title']}}</h3>
-                                    <p style="color:grey">Загружено {{$work->work['upload_type']}}
-                                        : {{ Date::parse($work->work['created_at'])->addHours(3)->format('j F Y') }}</p>
-                                    <p>{!! nl2br($work->work['text']) !!}</p>
+                                    @if($work->work)
+                                        <h3>{{$loop->index + 1}}. {{$work->work['title']}}</h3>
+                                        <p style="color:grey">Загружено {{$work->work['upload_type']}}
+                                            : {{ Date::parse($work->work['created_at'])->addHours(3)->format('j F Y') }}</p>
+                                        <p>{!! nl2br($work->work['text']) !!}</p>
+                                    @endif
                                 @endforeach
                             @else
                                 Автор удалил свои работы.
