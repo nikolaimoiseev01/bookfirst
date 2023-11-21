@@ -64,12 +64,12 @@
                 </h2>
                 <div class="works_wrap">
                     @foreach($participation->participation_work as $work)
-
-                        <div class="work_wrap container">
-                            <a class="link work_link" target="_blank"
-                               href="{{route('social.work_page', $work['work_id'])}}">{{$work->work['title']}}</a>
-                        </div>
-
+                        @if($work->work ?? null)
+                            <div class="work_wrap container">
+                                <a class="link work_link" target="_blank"
+                                   href="{{route('social.work_page', $work['work_id'])}}">{{$work->work['title']}}</a>
+                            </div>
+                        @endif
                     @endforeach
                 </div>
             </div>
