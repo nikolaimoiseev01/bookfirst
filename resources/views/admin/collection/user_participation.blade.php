@@ -194,7 +194,7 @@
                         <div class="tab-pane active" id="works">
                             @if($participation->participation_work)
                                 @foreach($participation->participation_work as $work)
-                                    @if($work->work)
+                                    @if($work->work ?? null)
                                         <h3>{{$loop->index + 1}}. {{$work->work['title']}}</h3>
                                         <p style="color:grey">Загружено {{$work->work['upload_type']}}
                                             : {{ Date::parse($work->work['created_at'])->addHours(3)->format('j F Y') }}</p>
