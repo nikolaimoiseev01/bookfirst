@@ -189,12 +189,17 @@
                     <div class="tab-content">
                         {{App::setLocale('ru')}}
                         <div class="tab-pane active" id="works">
-                            @foreach($participation->participation_work as $work)
-                                <h3>{{$loop->index + 1}}. {{$work->work['title']}}</h3>
-                                <p style="color:grey">Загружено {{$work->work['upload_type']}}
-                                    : {{ Date::parse($work->work['created_at'])->addHours(3)->format('j F Y') }}</p>
-                                <p>{!! nl2br($work->work['text']) !!}</p>
-                            @endforeach
+                            @if($participation->participation_work)
+                                @foreach($participation->participation_work as $work)
+                                    <h3>{{$loop->index + 1}}. {{$work->work['title']}}</h3>
+                                    <p style="color:grey">Загружено {{$work->work['upload_type']}}
+                                        : {{ Date::parse($work->work['created_at'])->addHours(3)->format('j F Y') }}</p>
+                                    <p>{!! nl2br($work->work['text']) !!}</p>
+                                @endforeach
+                            @else
+                                Автор удалил свои работы.
+                            @endif
+
                         </div>
                         <style>
                             @media screen and (max-width: 650px) {
