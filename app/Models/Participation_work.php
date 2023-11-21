@@ -9,6 +9,11 @@ class Participation_work extends Model
 {
     use HasFactory;
 
+    public function Participation() {
+        return $this->belongsTo(Participation::class);
+    }
+
+
     public function Work() {
         return $this->belongsTo(Work::class);
     }

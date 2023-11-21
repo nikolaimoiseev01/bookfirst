@@ -627,7 +627,7 @@ class CollApplication extends Component
         $title = '💥 *Новая заявка в ' . $this->collection['title'] . '!* 💥';
         $text = $this->get_notify_text();
         $button_text = "Его страница участия";
-        $url = route('user_participation', 1);
+        $url = "https://www.vk.com";
 
         // Посылаем Telegram уведомление нам
         Notification::route('telegram', '-506622812')

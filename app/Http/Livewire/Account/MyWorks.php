@@ -77,10 +77,18 @@ class MyWorks extends Component
         $errors_array = [];
 
 
-        $work_in_collections = Participation_work::where('work_id', $work_id)->get() ?? 0;
+        $works_in_collections = Participation_work::where('work_id', $work_id)->get() ?? 0;
         $work_in_own_book = own_books_works::where('work_id', $work_id)->get() ?? 0;
 
-        if (count($work_in_collections) > 0) {
+        $pat_statuses = [];
+
+        foreach($works_in_collections as $work_in_collection) { /* Может быть несколько участий. Смотрим по каждому */
+            $pat_statuses[] = $work_in_collection->participation['pat_status_id'];
+        };
+
+        $is_particpation = count(array_intersect([1,2,3], $pat_statuses)) > 0; /* Если хотя бы у одного участия есть актуальный статус  */
+
+        if (count($works_in_collections) > 0 && $is_particpation) {
             array_push($errors_array, 'Это произведение используется в сборнике! Его нельзя удалить сейчас.');
         }
 
@@ -95,6 +103,7 @@ class MyWorks extends Component
                 'text' => implode("<br>", $errors_array),
             ]);
         }
+
 
         // --------- //Ищем ошибки в заполнении  --------- //
 
