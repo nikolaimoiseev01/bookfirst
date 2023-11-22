@@ -397,7 +397,7 @@
                                                                 <select id="winner_participation_id"
                                                                         class="form-control"
                                                                         name="winner_participation_id">
-                                                                    @foreach($participations as $participation)
+                                                                    @foreach($participations->where('pat_status_id', 3) as $participation)
                                                                         <option value="{{$participation['id']}}">
                                                                             @if($participation['nickname'] <> null)
                                                                                 {{$participation['nickname']}}
