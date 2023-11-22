@@ -406,7 +406,6 @@
                                                                                 {{$participation->name}} {{$participation->surname}}
                                                                             @endif
                                                                         </option>
-                                                                        @endif
                                                                 </select>
 
                                                                 <button id="btn-submit" type="submit"
