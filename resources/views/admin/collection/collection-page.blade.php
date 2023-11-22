@@ -225,7 +225,8 @@
                                                 >
                                                     @csrf
 
-                                                    <input style="display: none;" type="text" id="collection_from" name="collection_from"
+                                                    <input style="display: none;" type="text" id="collection_from"
+                                                           name="collection_from"
                                                            value="{{$collection['id']}}">
 
                                                     <select
@@ -397,14 +398,16 @@
                                                                 <select id="winner_participation_id"
                                                                         class="form-control"
                                                                         name="winner_participation_id">
-                                                                    @foreach($participations->where('pat_status_id', 3) as $participation)
-                                                                        <option value="{{$participation['id']}}">
-                                                                            @if($participation['nickname'] <> null)
-                                                                                {{$participation['nickname']}}
-                                                                            @else
-                                                                                {{$participation->name}} {{$participation->surname}}
-                                                                            @endif
-                                                                        </option>
+                                                                    @foreach($participations as $participation)
+                                                                        @if($participation['pat_status_id'] == 3)
+                                                                            <option value="{{$participation['id']}}">
+                                                                                @if($participation['nickname'] <> null)
+                                                                                    {{$participation['nickname']}}
+                                                                                @else
+                                                                                    {{$participation->name}} {{$participation->surname}}
+                                                                                @endif
+                                                                            </option>
+                                                                        @endif
                                                                     @endforeach
                                                                 </select>
 
@@ -430,8 +433,6 @@
                                                                 @endif
                                                             </a>
                                                         @else
-
-
 
                                                             <form class="d-flex ml-3" style=" align-items: center;"
                                                                   action="{{ route('add_winner', $collection['id']) }}"
@@ -478,8 +479,6 @@
                                                                 @endif
                                                             </a>
                                                         @else
-
-
 
                                                             <form class="d-flex ml-3" style=" align-items: center;"
                                                                   action="{{ route('add_winner', $collection['id']) }}"
@@ -550,7 +549,6 @@
                                                                 {{$vote->user_from_nickname}}
                                                             </a>
 
-
                                                         @else
 
                                                             <a target="_blank"
@@ -564,7 +562,6 @@
                                                                href="{{route('user_participation', $vote->participation_id_to)}}">
                                                                 {{$vote->user_to_nickname}}
                                                             </a>
-
 
                                                         @else
                                                             <a target="_blank"
@@ -878,6 +875,5 @@
         <!-- /.card -->
 
     </div>
-
 
 @endsection
