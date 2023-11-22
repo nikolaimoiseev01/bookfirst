@@ -399,13 +399,14 @@
                                                                         class="form-control"
                                                                         name="winner_participation_id">
                                                                     @foreach($participations as $participation)
-                                                                        <option value="{{$participation['id']}}">
-                                                                            @if($participation['nickname'] <> null)
-                                                                                {{$participation['nickname']}}
-                                                                            @else
-                                                                                {{$participation->name}} {{$participation->surname}}
-                                                                            @endif
-                                                                        </option>
+                                                                            <option value="{{$participation['id']}}">
+                                                                                @if($participation['nickname'] <> null)
+                                                                                    {{$participation['nickname']}}
+                                                                                @else
+                                                                                    {{$participation->name}} {{$participation->surname}}
+                                                                                @endif
+                                                                            </option>
+                                                                    @endforeach
                                                                 </select>
 
                                                                 <button id="btn-submit" type="submit"
