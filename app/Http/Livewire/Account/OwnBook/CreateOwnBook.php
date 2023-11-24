@@ -200,8 +200,8 @@ class CreateOwnBook extends Component
         if ($this->pages == 0) {
             array_push($this->error_texts, "Не указано количество страниц (не загружен файл или они не определились автоматически)!");
             array_push($this->error_fields, 'pages');
-        } elseif ($this->pages < 30) {
-            array_push($this->error_texts, 'Минимальное количество страниц в собственной книге - 30.');
+        } elseif ($this->pages < 20) {
+            array_push($this->error_texts, 'Минимальное количество страниц в собственной книге - 20.');
             array_push($this->error_fields, 'pages');
         }
 
