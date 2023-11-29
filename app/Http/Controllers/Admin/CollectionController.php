@@ -54,7 +54,7 @@ class CollectionController extends Controller
             ->where('col_status_id', '<>', 9)
             ->groupBy('collections.id')
             ->orderBy('collections.created_at', 'desc')
-            ->paginate(5);
+            ->paginate(10);
 
 
         return view('admin.collection.index', [
