@@ -31,7 +31,7 @@ class OwnBookController extends Controller
 
     public function index()
     {
-        $own_books = own_book::orderBy('id', 'desc')->paginate(30);
+        $own_books = own_book::orderBy('id', 'desc')->paginate(60);
         $own_book_statuses = own_book_status::orderBy('id')->get();
         $own_book_inside_statuses = own_book_inside_status::orderBy('id')->get();
         $own_book_cover_statuses = own_book_cover_status::orderBy('id')->get();
@@ -44,7 +44,7 @@ class OwnBookController extends Controller
         ->join('own_book_cover_statuses', 'own_book_cover_statuses.id', '=', 'own_books.own_book_cover_status_id')
         ->select('own_books.*', 'chats.chat_status_id', 'own_book_statuses.status_title', 'own_book_inside_statuses.status_title as inside_status_title', 'own_book_cover_statuses.status_title as cover_status_title')
         ->orderBy('created_at', 'desc')
-        ->paginate(30)
+        ->paginate(60)
         ;
 
 //        $own_books = array_map(function ($own_books) {
