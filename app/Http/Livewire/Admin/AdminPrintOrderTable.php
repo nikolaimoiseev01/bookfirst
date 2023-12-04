@@ -66,10 +66,7 @@ class AdminPrintOrderTable extends Component
             Printorder::where('id', $print_order_id)->update([
                 'track_number' => $this->track_number[$print_order_id],
             ]);
-            $this->dispatchBrowserEvent('swal:modal', [
-                'type' => 'success',
-                'title' => 'Трек номер успешно добавлен!',
-                'text' => '']);
+
             $this->participations = Participation::where('collection_id', $this->collection_id)->where('pat_status_id', 3)->orderBy('surname')->get();
 // ----------------------------------------------------------- //
 
@@ -87,17 +84,15 @@ class AdminPrintOrderTable extends Component
                 'type' => 'error',
                 'title' => 'Что-то пошло не так',
                 'text' => 'Ни одно поле не должно быть пустым!',
-            ]);}
+            ]);
+        }
         else
         {
             // ---- Редактируем Заказ печатных! ---- //
             Printorder::where('id', $print_order_id)->update([
                 'send_price' => $this->send_price[$print_order_id],
             ]);
-            $this->dispatchBrowserEvent('swal:modal', [
-                'type' => 'success',
-                'title' => 'Цена пересылки успешно добавлена!',
-                'text' => '']);
+
             $this->participations = Participation::where('collection_id', $this->collection_id)->where('pat_status_id', 3)->orderBy('surname')->get();
 // ----------------------------------------------------------- //
 
