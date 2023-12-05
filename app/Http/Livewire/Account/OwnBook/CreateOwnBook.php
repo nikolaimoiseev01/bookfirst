@@ -14,6 +14,7 @@ use App\Notifications\TelegramNotification;
 use App\Service\OwnBookOutputsService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -305,165 +306,165 @@ class CreateOwnBook extends Component
     public function save_own_book()
     {
 
-        // ---- Сразу создаем нужные папки под книгу ---- //
-        $user_folder_inside = 'admin_files/own_books/user_id_' . Auth::user()->id . '/' . $this->book_title . '/ВЕРСТКА/От автора';
-        $user_folder_cover = 'admin_files/own_books/user_id_' . Auth::user()->id . '/' . $this->book_title . '/ОБЛОЖКА/От автора';
-        Storage::makeDirectory($user_folder_inside);
-        Storage::makeDirectory($user_folder_cover);
+//        Storage::makeDirectory($user_folder_inside);
+//        Storage::makeDirectory($user_folder_cover);
+        DB::transaction(function () { // Чтобы не записать ненужного
+
+            // ---- Записываем основную инфу ---- //
+            $new_own_book = new own_book();
+            $new_own_book->user_id = Auth::user()->id;
+            $new_own_book->author = $this->author_name;
+            $new_own_book->title = $this->book_title;
+            $new_own_book->own_book_status_id = 1;
+            $new_own_book->pages = $this->pages;
+            $new_own_book->color_pages = intval($this->pages_color);
+            $new_own_book->inside_type = $this->inside_type;
+            $new_own_book->own_book_inside_status_id = $this->inside_ready === '1' ? 9 : 1;
+            $new_own_book->own_book_cover_status_id = $this->cover_ready === '1' ? 9 : 1;
+            $new_own_book->cover_comment = $this->cover_comment;
+            $new_own_book->promo_type = $this->promo_type;
+
+            $new_own_book->need_design = $this->need_design;
+            $new_own_book->need_check = $this->need_check;
+
+            $new_own_book->text_design_price = $this->price_design;
+            $new_own_book->text_check_price = $this->price_check;
+            $new_own_book->inside_price = $this->price_inside;
+            $new_own_book->cover_price = $this->price_cover;
+            $new_own_book->promo_price = $this->price_promo;
+            $new_own_book->print_price = $this->price_print;
+            $new_own_book->total_price = $this->price_total;
+
+            // Делаем ссылку на постоянный внутренний блок PDF
+            $inside_file_path = 'admin_files/own_books/user_id_' . Auth::user()->id . '/' . $this->book_title . '/ВЕРСТКА' . '/ВБ_Main_' . $this->book_title . '.pdf';
+            $new_own_book->inside_file = $inside_file_path;
+            // ----------------------------
+
+            $new_own_book->save();
 
 
-        // ---- Записываем основную инфу ---- //
-        $new_own_book = new own_book();
-        $new_own_book->user_id = Auth::user()->id;
-        $new_own_book->author = $this->author_name;
-        $new_own_book->title = $this->book_title;
-        $new_own_book->own_book_status_id = 1;
-        $new_own_book->pages = $this->pages;
-        $new_own_book->color_pages = intval($this->pages_color);
-        $new_own_book->inside_type = $this->inside_type;
-        $new_own_book->own_book_inside_status_id = $this->inside_ready === '1' ? 9 : 1;
-        $new_own_book->own_book_cover_status_id = $this->cover_ready === '1' ? 9 : 1;
-        $new_own_book->cover_comment = $this->cover_comment;
-        $new_own_book->promo_type = $this->promo_type;
+            // ----------------------------------------------
 
-        $new_own_book->need_design = $this->need_design;
-        $new_own_book->need_check = $this->need_check;
+            // ---- Сразу создаем нужные папки под книгу ---- //
+            $user_folder_inside = 'admin_files/own_books/user_id_' . Auth::user()->id . '/' . $new_own_book->id . '/ВЕРСТКА/От автора';
+            $user_folder_cover = 'admin_files/own_books/user_id_' . Auth::user()->id . '/' . $new_own_book->id . '/ОБЛОЖКА/От автора';
 
-        $new_own_book->text_design_price = $this->price_design;
-        $new_own_book->text_check_price = $this->price_check;
-        $new_own_book->inside_price = $this->price_inside;
-        $new_own_book->cover_price = $this->price_cover;
-        $new_own_book->promo_price = $this->price_promo;
-        $new_own_book->print_price = $this->price_print;
-        $new_own_book->total_price = $this->price_total;
-
-        // Делаем ссылку на постоянный внутренний блок PDF
-        $inside_file_path = 'admin_files/own_books/user_id_' . Auth::user()->id . '/' . $this->book_title . '/ВЕРСТКА' . '/ВБ_Main_' . $this->book_title . '.pdf';
-        $new_own_book->inside_file = $inside_file_path;
-        // ----------------------------
-
-        $new_own_book->save();
-
-
-        // ----------------------------------------------
-
-
-        // Создаем папки для внутреннего блока и обложки
-        if (!File::exists($user_folder_inside)) {
-            File::makeDirectory($user_folder_inside, 0777, true);
-        }
-        if (!File::exists($user_folder_cover)) {
-            File::makeDirectory($user_folder_cover, 0777, true);
-        }
-        // ------------------------------------------------------------------
-
-        // ---- Сохраняем работы, если они файлом ---- //
-        if ($this->inside_type === 'by_file') {
-            foreach ($this->inside_files as $key => $doc_path) {
-                $file_name = substr($doc_path, strrpos($doc_path, '/') + 1);
-                $file_old_path = public_path($doc_path);
-                $file_new_path = $user_folder_inside . '/' . $key . '_' . $file_name;
-                File::move($file_old_path, $file_new_path);
-                $own_book_new_file = new own_book_files();
-                $own_book_new_file->own_book_id = $new_own_book->id;
-                $own_book_new_file->file_type = 'inside';
-                $own_book_new_file->file = substr($file_new_path, strpos($file_new_path, 'public'));
-                $own_book_new_file->save();
-                $old_folder = substr($doc_path, 0, strpos($doc_path, '/', strpos($doc_path, '/') + 1));
-                File::deleteDirectory(public_path($old_folder));
+            // Создаем папки для внутреннего блока и обложки
+            if (!File::exists($user_folder_inside)) {
+                File::makeDirectory($user_folder_inside, 0777, true);
             }
-        }
-
-        // ---- Сохраняем работы, если они из системы ---- //
-        if ($this->inside_type === 'by_system') {
-            foreach ($this->works as $work) {
-                $own_book_new_work = new own_books_works();
-                $own_book_new_work->own_book_id = $new_own_book->id;
-                $own_book_new_work->work_id = $work['id'];
-                $own_book_new_work->save();
+            if (!File::exists($user_folder_cover)) {
+                File::makeDirectory($user_folder_cover, 0777, true);
             }
-        }
+            // ------------------------------------------------------------------
 
-
-        // ---- Создаем файлы обложки и складируем их в own_book_files ---- //
-        if ($this->message_files && count($this->message_files) > 0) {
-            foreach ($this->message_files as $key => $doc_path) {
-                $file_name = substr($doc_path, strrpos($doc_path, '/') + 1);
-                $file_old_path = public_path($doc_path);
-                $file_new_path = $user_folder_cover . '/' . $key . '_' . $file_name;
-                File::move($file_old_path, $file_new_path);
-                $own_book_new_file = new own_book_files();
-                $own_book_new_file->own_book_id = $new_own_book->id;
-                $own_book_new_file->file_type = 'cover';
-                $own_book_new_file->file = substr($file_new_path, strpos($file_new_path, 'public'));
-                $own_book_new_file->save();
-                $old_folder = substr($doc_path, 0, strpos($doc_path, '/', strpos($doc_path, '/') + 1));
-                File::deleteDirectory(public_path($old_folder));
+            // ---- Сохраняем работы, если они файлом ---- //
+            if ($this->inside_type === 'by_file') {
+                foreach ($this->inside_files as $key => $doc_path) {
+                    $file_name = substr($doc_path, strrpos($doc_path, '/') + 1);
+                    $file_old_path = public_path($doc_path);
+                    $file_new_path = $user_folder_inside . '/' . $key . '_' . $file_name;
+                    File::move($file_old_path, $file_new_path);
+                    $own_book_new_file = new own_book_files();
+                    $own_book_new_file->own_book_id = $new_own_book->id;
+                    $own_book_new_file->file_type = 'inside';
+                    $own_book_new_file->file = substr($file_new_path, strpos($file_new_path, 'public'));
+                    $own_book_new_file->save();
+                    $old_folder = substr($doc_path, 0, strpos($doc_path, '/', strpos($doc_path, '/') + 1));
+                    File::deleteDirectory(public_path($old_folder));
+                }
             }
-        }
 
-        // ---- Создаем новый Заказ печатных экземпляров ---- //
-        if ($this->need_print) {
-
-            $new_PrintOrder = new PrintOrder();
-            $new_PrintOrder->own_book_id = $new_own_book->id;
-            $new_PrintOrder->user_id = Auth::user()->id;
-            $new_PrintOrder->books_needed = $this->prints;
-            $new_PrintOrder->cover_type = $this->cover_type;
-            $new_PrintOrder->color_pages = intval($this->pages_color);
-            $new_PrintOrder->inside_color = $this->inside_color;
-
-            $new_PrintOrder->send_to_name = $this->send_to_name;
-            $new_PrintOrder->send_to_tel = $this->send_to_tel;
-            $new_PrintOrder->send_to_country = $this->send_to_country;
-            $new_PrintOrder->send_to_city = $this->send_to_city;
-            $new_PrintOrder->send_to_address = $this->send_to_address;
-            $new_PrintOrder->send_to_index = $this->send_to_index;
-            $new_PrintOrder->save();
-
-        }
+            // ---- Сохраняем работы, если они из системы ---- //
+            if ($this->inside_type === 'by_system') {
+                foreach ($this->works as $work) {
+                    $own_book_new_work = new own_books_works();
+                    $own_book_new_work->own_book_id = $new_own_book->id;
+                    $own_book_new_work->work_id = $work['id'];
+                    $own_book_new_work->save();
+                }
+            }
 
 
-        // ---- Создаем ЧАТ ---- //
-        $new_chat = new Chat();
-        $new_chat->user_created = Auth::user()->id;
-        $new_chat->user_to = 2;
-        $new_chat->flg_admin_chat = 1;
-        $new_chat->title = 'Чат: ' . $this->book_title;
-        $new_chat->own_book_id = $new_own_book->id;
-        $new_chat->chat_status_id = 9;
-        $new_chat->save();
+            // ---- Создаем файлы обложки и складируем их в own_book_files ---- //
+            if ($this->message_files && count($this->message_files) > 0) {
+                foreach ($this->message_files as $key => $doc_path) {
+                    $file_name = substr($doc_path, strrpos($doc_path, '/') + 1);
+                    $file_old_path = public_path($doc_path);
+                    $file_new_path = $user_folder_cover . '/' . $key . '_' . $file_name;
+                    File::move($file_old_path, $file_new_path);
+                    $own_book_new_file = new own_book_files();
+                    $own_book_new_file->own_book_id = $new_own_book->id;
+                    $own_book_new_file->file_type = 'cover';
+                    $own_book_new_file->file = substr($file_new_path, strpos($file_new_path, 'public'));
+                    $own_book_new_file->save();
+                    $old_folder = substr($doc_path, 0, strpos($doc_path, '/', strpos($doc_path, '/') + 1));
+                    File::deleteDirectory(public_path($old_folder));
+                }
+            }
+
+            // ---- Создаем новый Заказ печатных экземпляров ---- //
+            if ($this->need_print) {
+
+                $new_PrintOrder = new PrintOrder();
+                $new_PrintOrder->own_book_id = $new_own_book->id;
+                $new_PrintOrder->user_id = Auth::user()->id;
+                $new_PrintOrder->books_needed = $this->prints;
+                $new_PrintOrder->cover_type = $this->cover_type;
+                $new_PrintOrder->color_pages = intval($this->pages_color);
+                $new_PrintOrder->inside_color = $this->inside_color;
+
+                $new_PrintOrder->send_to_name = $this->send_to_name;
+                $new_PrintOrder->send_to_tel = $this->send_to_tel;
+                $new_PrintOrder->send_to_country = $this->send_to_country;
+                $new_PrintOrder->send_to_city = $this->send_to_city;
+                $new_PrintOrder->send_to_address = $this->send_to_address;
+                $new_PrintOrder->send_to_index = $this->send_to_index;
+                $new_PrintOrder->save();
+
+            }
 
 
-        // Оповещение нам в телеграм
-        $title = '💥 Новая книга от ' . $this->author_name . '(юзер: ' . Auth::user()->book_title . ')! 💥';
-        $cover_text = ($this->cover_ready === '1') ? 'готовая от автора' : 'нужно делать';
-        $print_text = ($this->need_print) ?
-            $this->price_print . ' руб. ' . $this->prints . ' экз. '
-            . ($this->cover_type == 'soft' ? 'Мягкая' : 'Твердая')
-            . '. ВБ: ' . ($this->inside_color == '0' ? 'ч/б' : 'цветной (' . $this->pages_color . ' цветных страниц).')
-            : 'не нужна.';
-        $text = "*Книга:* " . $this->author_name . ': ' . $this->book_title . ' (' . $this->pages . ' стр.)' .
-            "\n*Редактура:* " . $this->price_inside . ' руб.' .
-            "\n*Обложка:* " . $cover_text .
-            "\n*Печать:* " . $print_text .
-            "\n*Промо:* " . $this->price_promo . ' руб.' .
-            "\n\n*Выручка:* " . $this->price_total . ' руб.';
-        $button_text = 'В админку';
-        $url = route('user_participation', 1);
+            // ---- Создаем ЧАТ ---- //
+            $new_chat = new Chat();
+            $new_chat->user_created = Auth::user()->id;
+            $new_chat->user_to = 2;
+            $new_chat->flg_admin_chat = 1;
+            $new_chat->title = 'Чат: ' . $this->book_title;
+            $new_chat->own_book_id = $new_own_book->id;
+            $new_chat->chat_status_id = 9;
+            $new_chat->save();
 
 
-        // Посылаем Telegram уведомление нам
-        Notification::route('telegram', '-506622812')
-            ->notify(new TelegramNotification($title, $text, $button_text, $url));
+            // Оповещение нам в телеграм
+            $title = '💥 Новая книга от ' . $this->author_name . '(юзер: ' . Auth::user()->book_title . ')! 💥';
+            $cover_text = ($this->cover_ready === '1') ? 'готовая от автора' : 'нужно делать';
+            $print_text = ($this->need_print) ?
+                $this->price_print . ' руб. ' . $this->prints . ' экз. '
+                . ($this->cover_type == 'soft' ? 'Мягкая' : 'Твердая')
+                . '. ВБ: ' . ($this->inside_color == '0' ? 'ч/б' : 'цветной (' . $this->pages_color . ' цветных страниц).')
+                : 'не нужна.';
+            $text = "*Книга:* " . $this->author_name . ': ' . $this->book_title . ' (' . $this->pages . ' стр.)' .
+                "\n*Редактура:* " . $this->price_inside . ' руб.' .
+                "\n*Обложка:* " . $cover_text .
+                "\n*Печать:* " . $print_text .
+                "\n*Промо:* " . $this->price_promo . ' руб.' .
+                "\n\n*Выручка:* " . $this->price_total . ' руб.';
+            $button_text = 'В админку';
+            $url = 'vk.com';
 
-        session()->flash('show_modal', 'yes');
-        session()->flash('alert_type', 'success');
-        session()->flash('alert_title', 'Книга успешно создана!');
-        session()->flash('alert_text', 'На этой странице отображается весь процесс издания Вашей книги: оплата, предварительные материалы, отслеживание книги после печати и т.д.');
-        return redirect('/myaccount/mybooks/' . $new_own_book->id . '/book_page');
 
+            // Посылаем Telegram уведомление нам
+            Notification::route('telegram', '-506622812')
+                ->notify(new TelegramNotification($title, $text, $button_text, $url));
 
+            session()->flash('show_modal', 'yes');
+            session()->flash('alert_type', 'success');
+            session()->flash('alert_title', 'Книга успешно создана!');
+            session()->flash('alert_text', 'На этой странице отображается весь процесс издания Вашей книги: оплата, предварительные материалы, отслеживание книги после печати и т.д.');
+            return redirect('/myaccount/mybooks/' . $new_own_book->id . '/book_page');
+
+        });
     }
 
 }
