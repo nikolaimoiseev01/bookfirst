@@ -6,16 +6,24 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="d-flex align-items-center bg-gradient-info card-header">
-                    <h1 style="margin-right: 20px; font-size: 25px;" class="card-title"><i>{{$user['name']}} {{$user['surname']}} @if($user['nickname'] <> '') (Псевдоним: {{$user['nickname']}}) @endif</i></h1>
+                    <h1 style="margin-right: 20px; font-size: 25px;" class="card-title">
+                        <i>{{$user['name']}} {{$user['surname']}} @if($user['nickname'] <> '')
+                                (Псевдоним: {{$user['nickname']}})
+                            @endif</i></h1>
                     @if(Cache::has('is_online' . $user['id']))
                         <span style="padding: 0 10px; border: 1px #51ff3e  solid; color: #51ff3e;"
                               class="user_now">В сети</span>
                     @else
                         <span style="padding: 0 10px; border: 1px white solid; color: white;" class="user_now"> Не в сети</span>
                     @endif
-                    <a style="margin-left: auto;" href="{{route('login_as', $user['id'])}}" class="btn btn-primary"> Войти в его аккаунт</a>
-                </div>
+                    <div style="margin-left: auto;">
+                        <a target="_blank" href="{{route('social.user_page', $user['id'])}}" class="btn btn-primary"> Страница в соц.
+                            сети</a>
+                        <a style="margin-left: 20px;" href="{{route('login_as', $user['id'])}}" class="btn btn-primary">
+                            Войти в его аккаунт</a>
+                    </div>
 
+                </div>
 
 
                 <div class="card-header p-2">
@@ -28,7 +36,8 @@
 
                         <li class="nav-item"><a class="nav-link" href="#participations" data-toggle="tab">Участие в
                                 сборниках</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#own_books" data-toggle="tab">Книги автора</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#own_books" data-toggle="tab">Книги автора</a>
+                        </li>
                         <li class="nav-item"><a class="nav-link" href="#awards" data-toggle="tab">Награды</a></li>
                         <li class="nav-item"><a class="nav-link" href="#chats" data-toggle="tab">Чаты</a></li>
                     </ul>
@@ -49,25 +58,25 @@
                                     <table class="table table-bordered">
                                         <tbody>
                                         <tr>
-                                            <td scope="col"  style="font-weight: bold">Фио</td>
+                                            <td scope="col" style="font-weight: bold">Фио</td>
                                             <td>
                                                 {{$user['name']}} {{$user['surname']}}
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td scope="col"  style="font-weight: bold">Псевдоним</td>
+                                            <td scope="col" style="font-weight: bold">Псевдоним</td>
                                             <td>
                                                 {{$user['nickname']}}
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td scope="col"  style="font-weight: bold">Email</td>
+                                            <td scope="col" style="font-weight: bold">Email</td>
                                             <td>
                                                 {{$user['email']}}
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td scope="col"  style="font-weight: bold">Аккаунт создан</td>
+                                            <td scope="col" style="font-weight: bold">Аккаунт создан</td>
                                             <td>
                                                 {{$user['created_at']}}
                                             </td>
@@ -108,14 +117,13 @@
                                         </tr>
 
 
-
-
                                         </tbody>
                                     </table>
                                 </div>
 
                                 <div class="col-md-6">
-                                    <form style="gap: 20px;" class="p-3 border align-items-center mt-2 gap-2" action="{{ route('add_user_comment',$user['id']) }}" method="POST"
+                                    <form style="gap: 20px;" class="p-3 border align-items-center mt-2 gap-2"
+                                          action="{{ route('add_user_comment',$user['id']) }}" method="POST"
                                           enctype="multipart/form-data"
                                     >
                                         @csrf
@@ -184,7 +192,8 @@
                                         <h3>{{$loop->index + 1}}. {{$work['title']}}</h3>
                                     </a>
 
-                                    <p style="color:grey">Загружено {{$work['upload_type']}}: {{ Date::parse($work['created_at'])->addHours(3)->format('j F Y') }}</p>
+                                    <p style="color:grey">Загружено {{$work['upload_type']}}
+                                        : {{ Date::parse($work['created_at'])->addHours(3)->format('j F Y') }}</p>
                                     <p>{!! nl2br($work['text']) !!}</p>
                                 @endforeach
                             @else
@@ -208,7 +217,8 @@
                                     </thead>
                                     <tbody>
                                     @foreach($user->participation as $participation)
-                                        <tr class="row_hover" onclick="document.location = '{{route('user_participation', ['participation_id' => $participation['id']])}}';">
+                                        <tr class="row_hover"
+                                            onclick="document.location = '{{route('user_participation', ['participation_id' => $participation['id']])}}';">
                                             <td style="text-align: center">{{$participation->collection['title']}}</td>
 
                                             <td style="text-align: center">
@@ -246,7 +256,8 @@
                                     </thead>
                                     <tbody>
                                     @foreach($user->own_book as $own_book)
-                                        <tr class="row_hover" onclick="document.location = '{{route('own_books_page', $own_book['id'])}}';">
+                                        <tr class="row_hover"
+                                            onclick="document.location = '{{route('own_books_page', $own_book['id'])}}';">
                                             <td style="text-align: center">{{$own_book['title']}}</td>
 
                                             <td style="text-align: center">
@@ -280,7 +291,8 @@
 
                                 <div style="display: none" id="change_user_award_form_wrap">
                                     <form class="d-flex ml-3" style="align-items: center;"
-                                          action="{{ route('add_user_award',['user_id' => $user['id']]) }}" method="POST"
+                                          action="{{ route('add_user_award',['user_id' => $user['id']]) }}"
+                                          method="POST"
                                           enctype="multipart/form-data"
                                     >
                                         @csrf
@@ -303,9 +315,10 @@
                                     </form>
                                 </div>
 
-                                <button style="display: flex; border: none; width: auto; padding: 3px 10px;max-width:150px"
-                                        data-form="change_user_award" type="button"
-                                        class="change_status_button ml-1 btn btn-outline-info btn-block btn-sm"
+                                <button
+                                    style="display: flex; border: none; width: auto; padding: 3px 10px;max-width:150px"
+                                    data-form="change_user_award" type="button"
+                                    class="change_status_button ml-1 btn btn-outline-info btn-block btn-sm"
                                 >
                                     <span style="margin-right: 20px;">Добавить награду</span>
                                     <i style="font-size: 20px;" class="fa fa-edit"></i>
@@ -341,9 +354,9 @@
                                             <td style="text-align: center">
                                                 <a
                                                     @if ($chat['collection_id'] > 0)
-                                                    href="/admin_panel/collections/participation/{{\App\Models\Participation::where('user_id', $chat['user_created'])->where('collection_id', $chat['collection_id'])->value('id')}}#chat"
+                                                        href="/admin_panel/collections/participation/{{\App\Models\Participation::where('user_id', $chat['user_created'])->where('collection_id', $chat['collection_id'])->value('id')}}#chat"
                                                     @else
-                                                    href="{{route('admin_chat', $chat['id'])}}"
+                                                        href="{{route('admin_chat', $chat['id'])}}"
                                                     @endif
                                                 >
                                                     <i class="fas fa-share"></i>
@@ -355,7 +368,8 @@
                                 </table>
 
                                 <div style="display:none" class="p-3 mt-3 border chat-create-admin">
-                                    @livewire('account.chat.chat-create',['chat_title' => '', 'collection_id' => 0, 'own_book_id' => 0, 'user_to' => $user->id])
+                                    @livewire('account.chat.chat-create',['chat_title' => '', 'collection_id' => 0,
+                                    'own_book_id' => 0, 'user_to' => $user->id])
                                 </div>
                                 <a id="chat_add" style="width:200px;" class="mt-3 btn btn-outline-secondary">
                                     <i class="mr-2 fa fa-plus"></i> Создать чат</a>
@@ -369,19 +383,18 @@
     </section>
 
 
-@section('page-js')
-    <script>
-        $('#chat_add').click(function () {
-            $('.chat-create-admin').toggle();
+    @section('page-js')
+        <script>
+            $('#chat_add').click(function () {
+                $('.chat-create-admin').toggle();
 
-            if($('.chat-create-admin').is(":visible")) {
-                $('#chat_add').html('<i class="mr-2 fa fa-times"></i> Отменить');
-            }
-            else {
-                $('#chat_add').html(' <i class="mr-2 fa fa-plus"></i> Создать чат');
-            }
-        })
-    </script>
-@endsection
+                if ($('.chat-create-admin').is(":visible")) {
+                    $('#chat_add').html('<i class="mr-2 fa fa-times"></i> Отменить');
+                } else {
+                    $('#chat_add').html(' <i class="mr-2 fa fa-plus"></i> Создать чат');
+                }
+            })
+        </script>
+    @endsection
 
 @endsection
