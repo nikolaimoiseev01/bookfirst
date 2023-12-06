@@ -39,7 +39,7 @@
     <meta name="theme-color" content="#ffffff">
 
     <!-- include libraries(jQuery, bootstrap) -->
-{{--    <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">--}}
+    {{--    <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">--}}
 
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
 
@@ -50,12 +50,73 @@
         }
     </style>
 
-        @vite(['resources/sass/admin.scss', 'resources/js/app.js'])
+    @vite(['resources/sass/admin.scss', 'resources/js/app.js'])
 
+    <script>
+        // Функция для установки куки
+        function setCookie(name, value, days) {
+            var expires = "";
+            if (days) {
+                var date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                expires = "; expires=" + date.toUTCString();
+            }
+            document.cookie = name + "=" + value + expires + "; path=/";
+        }
+
+        // Функция для получения значения куки
+        function getCookie(name) {
+            var nameEQ = name + "=";
+            var ca = document.cookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+        }
+
+        // Функция для включения/выключения темной темы
+        function toggleDarkMode() {
+            var body = document.body;
+            var labelDark = document.getElementById("labelDark");
+            if (labelDark.classList.contains("active")) {
+                body.classList.add("dark-mode");
+                setCookie("darkMode", "enabled", 365);
+            } else {
+                body.classList.remove("dark-mode");
+                setCookie("darkMode", "disabled", 365);
+            }
+        }
+
+        // Инициализация состояния темной темы при загрузке страницы
+        setTimeout(() => {
+            var labelDark = document.getElementById("labelDark");
+            var darkModeCookie = getCookie("darkMode");
+            var option_b1 = document.getElementById("option_b1");
+            var option_b2 = document.getElementById("option_b2");
+
+            if (darkModeCookie === "enabled") {
+                labelDark.click();
+                toggleDarkMode();
+                option_b1.removeAttribute("checked");
+                option_b2.setAttribute("checked", "checked");
+            }
+
+            document.body.removeAttribute("hidden");
+
+            // Привязка обработчика события для переключения темной темы
+            document.getElementById("labelDark").addEventListener("click", toggleDarkMode);
+            document.getElementById("labelLight").addEventListener("click", toggleDarkMode);
+        }, 3)
+
+
+
+    </script>
 
 </head>
 
-<body class="hold-transition sidebar-mini layout-fixed">
+<body hidden class="hold-transition sidebar-mini layout-fixed">
 
 <div style="display: none;" class="admin_preloader_block_wrap">
     <x-preloader mode="portal"/>
@@ -64,14 +125,14 @@
 {{--<x-preloader mode="portal"/>--}}
 
 
-
 <div class="wrapper">
 
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
         <a href="/" class="brand-link">
-            <img src="/admin_assets/dist/img/AdminLTELogo.png" alt="/adminLTE Logo" class="brand-image img-circle elevation-3"
+            <img src="/admin_assets/dist/img/AdminLTELogo.png" alt="/adminLTE Logo"
+                 class="brand-image img-circle elevation-3"
                  style="opacity: .8">
             <h3>Первая Книга</h3>
         </a>
@@ -119,7 +180,6 @@
                             </p>
                         </a>
                     </li>
-
 
 
                     <li class="nav-item">
@@ -231,7 +291,6 @@
                             </li>
 
 
-
                         </ul>
                     </li>
 
@@ -252,6 +311,16 @@
                             </p>
                         </a>
                     </li>
+
+
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label id="labelDark" class="btn bg-olive active">
+                            <input type="radio" name="options" id="option_b1" autocomplete="off" checked=""> Светлая
+                        </label>
+                        <label id="labelLight" class="btn bg-olive">
+                            <input type="radio" name="options" id="option_b2" autocomplete="off"> Темная
+                        </label>
+                    </div>
 
 
                 </ul>
@@ -310,7 +379,7 @@
         $(this).datepicker({
             uiLibrary: 'bootstrap4',
             format: 'yyyy-mm-dd',
-            onSelect: function(dateText) {
+            onSelect: function (dateText) {
                 console.log("Selected date: " + dateText + "; input's current value: " + this.value);
             }
         });
@@ -371,7 +440,8 @@
                 $('.preloader_wrap').css('background', '#fdfeffcc');
                 $('.preloader_wrap span').show(100);
                 window.setTimeout(function () {
-                    $('.preloader_wrap').css('opacity', '1'); $('.admin_preloader_block_wrap').show();
+                    $('.preloader_wrap').css('opacity', '1');
+                    $('.admin_preloader_block_wrap').show();
                     $('.admin_preloader_block_wrap').show();
                 }, 10);
                 form.submit();
@@ -399,7 +469,8 @@
                 $('.preloader_wrap span').html("Посылаем Email каждому...");
                 $('.preloader_wrap span').show(100);
                 window.setTimeout(function () {
-                    $('.preloader_wrap').css('opacity', '1'); $('.admin_preloader_block_wrap').show();
+                    $('.preloader_wrap').css('opacity', '1');
+                    $('.admin_preloader_block_wrap').show();
 
                 }, 10);
                 form.submit();
@@ -427,7 +498,8 @@
                 $('.preloader_wrap span').html("Обновляем сборник...");
                 $('.preloader_wrap span').show(100);
                 window.setTimeout(function () {
-                    $('.preloader_wrap').css('opacity', '1'); $('.admin_preloader_block_wrap').show();
+                    $('.preloader_wrap').css('opacity', '1');
+                    $('.admin_preloader_block_wrap').show();
                 }, 10);
                 form.submit();
             }
@@ -435,14 +507,15 @@
     });
 
     $('.create_chat').on('click', function (e) {
-                $('.preloader_wrap').removeClass('preloaded_loaded');
-                $('.preloader_wrap').css('opacity', '0');
-                $('.preloader_wrap').css('background', '#fdfeffcc');
-                $('.preloader_wrap span').html("Создаем чат...");
-                $('.preloader_wrap span').show(100);
-                window.setTimeout(function () {
-                    $('.preloader_wrap').css('opacity', '1'); $('.admin_preloader_block_wrap').show();
-                }, 10);
+        $('.preloader_wrap').removeClass('preloaded_loaded');
+        $('.preloader_wrap').css('opacity', '0');
+        $('.preloader_wrap').css('background', '#fdfeffcc');
+        $('.preloader_wrap span').html("Создаем чат...");
+        $('.preloader_wrap span').show(100);
+        window.setTimeout(function () {
+            $('.preloader_wrap').css('opacity', '1');
+            $('.admin_preloader_block_wrap').show();
+        }, 10);
     });
 </script>
 {{-------- // МЕНЯТЬ СТАТУС КНОПКА ----------}}
@@ -483,7 +556,7 @@
             denyButtonText: `Отменить`,
         }).then((result) => {
             if (result.isConfirmed) {
-                if(event.detail.id) {
+                if (event.detail.id) {
                     window.livewire.emit(event.detail.onconfirm, event.detail.id)
                 } else {
                     window.livewire.emit(event.detail.onconfirm)

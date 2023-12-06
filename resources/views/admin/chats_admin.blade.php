@@ -48,7 +48,7 @@
 
                             <tr
                                 @if($chat['chat_status_id'] === '1')
-                                style="background: #ffe7e7;"
+                                style="background: #ffe7e7; color: black;"
                                 @endif
                                 onclick="document.location = '' +
                                 @if ($chat['collection_id'] > 0)
