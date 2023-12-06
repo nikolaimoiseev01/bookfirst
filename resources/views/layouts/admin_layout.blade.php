@@ -95,12 +95,22 @@
             var darkModeCookie = getCookie("darkMode");
             var option_b1 = document.getElementById("option_b1");
             var option_b2 = document.getElementById("option_b2");
+            var chat_wrap = $(".chat .container")
+            var chat_text_area = $(".chat .container textarea")
 
             if (darkModeCookie === "enabled") {
                 labelDark.click();
                 toggleDarkMode();
                 option_b1.removeAttribute("checked");
                 option_b2.setAttribute("checked", "checked");
+
+                if(chat_wrap) {
+                    chat_wrap.css('background', '#454D55')
+                    chat_text_area.css('background', '#454D55')
+                    chat_text_area.css('color', 'white')
+
+                }
+
             }
 
             document.body.removeAttribute("hidden");
