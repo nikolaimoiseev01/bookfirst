@@ -223,7 +223,7 @@ class DangerTasks extends Command
 
                 $text_own_book_need_prints = "Нужно отправить в печать автора *{$own_book['author']}*! Ждет уже дней: {$deadline_days}";
 
-                if ($text_kris ?? null) {
+                if ($text_own_book_need_prints ?? null) {
                     array_push($message_arrays, [
                         'title' => "🔥 *{$random_priskazka}*",
                         'text' => $text_own_book_need_prints
