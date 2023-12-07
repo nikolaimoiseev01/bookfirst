@@ -323,12 +323,34 @@
                     </li>
 
 
-                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <style>
+                        .btn-group.btn-group-toggle {
+                            width: fit-content;
+                            padding-left: 16px;
+                        }
+                        .bg-olive.btn.active, .bg-olive.btn:active, .bg-olive.btn:not(:disabled):not(.disabled).active, .bg-olive.btn:not(:disabled):not(.disabled):active {
+                            background-color: #7992a8 !important;
+                            border-color: #454D55;
+                            color: #fff;
+                            padding: 0 10px;
+                            width: fit-content;
+                        }
+                        .bg-olive.btn:not(.active) {
+                            background-color: #454D55 !important;
+                            border-color: #454D55;
+                            color: #fff;
+                            padding: 0 10px;
+                            width: fit-content;
+                        }
+                    </style>
+                    <div class="btn-group d-block btn-group-toggle" data-toggle="buttons">
                         <label id="labelDark" class="btn bg-olive active">
-                            <input type="radio" name="options" id="option_b1" autocomplete="off" checked=""> Светлая
+                            <input type="radio" name="options" id="option_b1" autocomplete="off" checked="">
+                            <i style="font-size: 14px; color: yellow"  class="fas fa-regular fa-sun"></i>
                         </label>
                         <label id="labelLight" class="btn bg-olive">
-                            <input type="radio" name="options" id="option_b2" autocomplete="off"> Темная
+                            <input type="radio" name="options" id="option_b2" autocomplete="off">
+                            <i style="font-size: 14px;" class="fas fa-regular fa-moon"></i>
                         </label>
                     </div>
 
