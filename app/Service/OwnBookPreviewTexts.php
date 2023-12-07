@@ -15,7 +15,7 @@ class OwnBookPreviewTexts
         if ($chosen_type == 'inside') {
             $deadline = \Jenssegers\Date\Date::parse($own_book['inside_deadline'])->format('j F Y');
             $type = 'внутренний блок';
-            $type_2 = 'обложка';
+            $type_2 = 'внутренний блок';
         } else {
             $deadline = \Jenssegers\Date\Date::parse($own_book['cover_deadline'])->format('j F Y');
             $type = 'обложка';
@@ -73,7 +73,7 @@ class OwnBookPreviewTexts
 
         $text_ready = '
             <p>
-                Поздравляем! Вы успешно утвердили ' . $type_2 . '
+                Поздравляем! Вы успешно утвердили ' . $type_2 . '.
                 Как только будут утверждены обложка и внутренний блок, можно будет переходить к
                 следующим этапам издания.
             </p>
