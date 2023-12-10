@@ -82,6 +82,7 @@
             var labelDark = document.getElementById("labelDark");
             var chat_wrap = $(".chat .container")
             var chat_text_area = $(".chat .container textarea")
+            var templates_wrap = $(".templates_wrap")
             if (labelDark.classList.contains("active")) {
                 body.classList.add("dark-mode");
                 setCookie("darkMode", "enabled", 365);
@@ -89,6 +90,9 @@
                     chat_wrap.css('background', '#454D55')
                     chat_text_area.css('background', '#454D55')
                     chat_text_area.css('color', 'white')
+                    templates_wrap.css('background', '#454D55')
+                    templates_wrap.css('color', 'white')
+
                 }
             } else {
                 body.classList.remove("dark-mode");
@@ -97,6 +101,8 @@
                     chat_wrap.css('background', 'white')
                     chat_text_area.css('background', 'white')
                     chat_text_area.css('color', 'black')
+                    templates_wrap.css('background', 'white')
+                    templates_wrap.css('color', 'black')
                 }
             }
         }
