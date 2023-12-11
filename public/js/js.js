@@ -262,7 +262,7 @@ function trigger_all_js() {
 //endregion
 
 //region -- Новогодние снежинки
-new Snowflake1s({
+new Snowflakes({
     color: '#5ECDEF', // Default: "#5ECDEF"
     container: document.body, // Default: document.body
     count: 20, // 100 snowflakes. Default: 50
