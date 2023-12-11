@@ -1,4 +1,7 @@
 <footer class="footer @if($mode === 'social') social @endif">
+    @if($manvisible)
+        <img src="/img/man.svg" class="footer-man" alt="">
+    @endif
     <div class="footer-content">
         <div class="footer-company-info">
             Независимое издательство<br>

@@ -82,7 +82,7 @@
 
 </div>
 
-<x-footer mode="portal"/>
+<x-footer manvisible="true" mode="portal"/>
 
 <script src="/js/jquery.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -111,6 +111,7 @@
     FilePond.registerPlugin(FilePondPluginFileValidateSize);
 </script>
 
+<script src="https://unpkg.com/magic-snowflakes/dist/snowflakes.min.js"></script>
 
 <script>
 

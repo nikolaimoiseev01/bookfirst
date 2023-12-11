@@ -9,12 +9,16 @@ use Illuminate\View\Component;
 class Footer extends Component
 {
     public $mode;
+    public $manvisible;
     /**
      * Create a new component instance.
      */
-    public function __construct($mode)
+    public function __construct($manvisible, $mode)
     {
+
         $this->mode = $mode;
+        $this->manvisible = filter_var($manvisible, FILTER_VALIDATE_BOOLEAN);
+
     }
 
     /**

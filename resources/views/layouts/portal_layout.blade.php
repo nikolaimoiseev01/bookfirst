@@ -80,12 +80,12 @@
     <x-preloader mode="social"/>
     <x-header-social/>
     @yield('content')
-    <x-footer mode="social"/>
+    <x-footer manvisible="false" mode="social"/>
 @else
-                    <x-preloader mode="portal"/>
+    <x-preloader manvisible="false" mode="portal"/>
     <x-header-portal/>
     @yield('content')
-    <x-footer mode="portal"/>
+    <x-footer manvisible="false" mode="portal"/>
 @endif
 
 
@@ -100,7 +100,7 @@
 <script src="//unpkg.com/alpinejs"></script>
 
 <script src="/js/js.js"></script>
-
+<script src="https://unpkg.com/magic-snowflakes/dist/snowflakes.min.js"></script>
 
 {{--@if(!str_contains($subdomain, 'social'))--}}
 {{--<script>--}}
