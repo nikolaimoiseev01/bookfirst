@@ -78,4 +78,17 @@ class User extends Authenticatable implements MustVerifyEmail, FilamentUser
         return $this->hasmany(own_book::class);
     }
 
+    public function user_subscription() {
+        return $this->hasmany(user_subscription::class);
+    }
+
+    public function work_comment() {
+        return $this->hasmany(work_comment::class);
+    }
+
+    public function work_likes() {
+        return $this->hasmany(work_like::class);
+    }
+
+
 }

@@ -27,21 +27,20 @@ class SocialController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        $users = DB::table('users as u')
-            ->leftJoin('user_subscriptions as us', 'u.id', '=', 'us.subscribed_to_user_id')
-            ->leftJoin('work_comments as wc', 'u.id', '=', 'wc.user_id')
-            ->leftJoin('work_likes as wl', 'u.id', '=', 'wl.user_id_of_work')
-            ->leftJoin('works as w', 'u.id', '=', 'w.user_id')
-            ->select('u.id', 'u.name', 'u.surname', 'u.nickname', 'u.avatar', 'u.avatar_cropped',
-                DB::raw('count(distinct us.id) AS cnt_user_subs'),
-                DB::raw('count(distinct wc.id) AS cnt_user_comments'),
-                DB::raw('count(distinct wl.id) AS cnt_user_likes'),
-                DB::raw('count(distinct w.id) AS cnt_user_works')
+        $users = User::select(
+            'users.id',
+            'users.name',
+            'users.surname',
+            'users.nickname',
+            'users.avatar',
+            'users.avatar_cropped'
             )
-            ->where('u.id', '<>', 2)
-            ->groupBy('u.id')
+            ->withCount('user_subscription')
+                ->withCount('work_comment')
+                ->withCount('work_likes')
+                ->withCount('work')
             ->inRandomOrder()
-            ->limit(12)
+            ->take(12)
             ->get();
 
         //        $top_users =
@@ -87,7 +86,6 @@ class SocialController extends Controller
             ->get();
 
         $replies_check = DB::table('work_comments as a')
-
             ->select('a.parent_comment_id', DB::raw('count(a.id) AS replies_to_comment'))
             ->groupBy('a.parent_comment_id')
             ->where('a.work_id', $request->work_id)
@@ -130,7 +128,6 @@ class SocialController extends Controller
             'works' => $works,
         ]);
     }
-
 
 
 }

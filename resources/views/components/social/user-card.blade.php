@@ -12,20 +12,20 @@
     <div class="stat_wrap">
         <div class="tooltip" title="Подписчиков">
             <i class="fa-regular fa-user"></i>
-            <p>{{$user->cnt_user_subs}}</p>
+            <p>{{$user->user_subscription_count}}</p>
         </div>
 
         <div class="tooltip" title="Работ">
             <img src="/img/small_book.svg" alt="">
-            <p>{{$user->cnt_user_works}}</p>
+            <p>{{$user->work_count}}</p>
         </div>
         <div class="tooltip" title="Лайков">
             <i class="fa-regular fa-heart"> </i>
-            <p>{{$user->cnt_user_likes}}</p>
+            <p>{{$user->work_likes_count}}</p>
         </div>
         <div class="tooltip" title="Комментариев">
             <i class="fa-regular fa-comment"></i>
-            <p>{{$user->cnt_user_comments}}</p>
+            <p>{{$user->work_comment_count}}</p>
         </div>
     </div>
 </div>
