@@ -27,28 +27,50 @@ class SocialController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        $users_pre = User::select(
-            'users.id',
-            'users.name',
-            'users.surname',
-            'users.nickname',
-            'users.avatar',
-            'users.avatar_cropped'
-        )
-            ->where('id', '<>', 2)
-            ->inRandomOrder()
-            ->take(12)
-            ->get();
+        $users_sql = "select
+                      `users`.`id`,
+                      `users`.`name`,
+                      `users`.`surname`,
+                      `users`.`nickname`,
+                      `users`.`avatar`,
+                      `users`.`avatar_cropped`,
+                      (
+                        select
+                          count(*)
+                        from
+                          `user_subscriptions`
+                        where
+                          `users`.`id` = `user_subscriptions`.`user_id`
+                      ) as `user_subscription_count`,
+                      (
+                        select
+                          count(*)
+                        from
+                          `work_comments`
+                        where
+                          `users`.`id` = `work_comments`.`user_id`
+                      ) as `work_comment_count`,
+                      (
+                        select
+                          count(*)
+                        from
+                          `work_likes`
+                        where
+                          `users`.`id` = `work_likes`.`user_id`
+                      ) as `work_likes_count`,
+                      (
+                        select
+                          count(*)
+                        from
+                          `works`
+                        where
+                          `users`.`id` = `works`.`user_id`
+                      ) as `work_count`
+                    from
+                    (select * from users order by rand() limit 12) users";
 
+        $users = db::select($users_sql);
 
-
-        $users = User::select(db::raw('select * from users'))
-            ->withCount('user_subscription')
-            ->withCount('work_comment')
-            ->withCount('work_likes')
-            ->withCount('work');
-;
-//        dd($users);
 
         return view('social.index', [
             'last_works' => $last_works,
