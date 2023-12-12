@@ -27,23 +27,29 @@ class SocialController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        $users = User::select(
+        $users_pre = User::select(
             'users.id',
             'users.name',
             'users.surname',
             'users.nickname',
             'users.avatar',
             'users.avatar_cropped'
-            )
-            ->withCount('user_subscription')
-                ->withCount('work_comment')
-                ->withCount('work_likes')
-                ->withCount('work')
+        )
+            ->where('id', '<>', 2)
             ->inRandomOrder()
             ->take(12)
             ->get();
 
-        //        $top_users =
+
+
+        $users = User::select(db::raw('select * from users'))
+            ->withCount('user_subscription')
+            ->withCount('work_comment')
+            ->withCount('work_likes')
+            ->withCount('work');
+;
+//        dd($users);
+
         return view('social.index', [
             'last_works' => $last_works,
             'last_work_first' => $last_work_first,
