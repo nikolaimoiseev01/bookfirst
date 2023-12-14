@@ -1274,7 +1274,7 @@
                     transition: all 0.4s;
                 }
 
-                &:after {
+                &:not(.send_button):after {
                     position: absolute;
                     left: 0;
                     right: 0;
@@ -1511,6 +1511,61 @@
         }
     }
 
+}
+
+//endregion
+
+//region -- Страница собственной книги автора
+.own_book_user_page_wrap {
+    .col-text {
+        display: flex;
+        flex-direction: column;
+
+        h3 {
+            margin-bottom: 4px;
+        }
+    }
+
+    .col-info-block {
+        .list-wrap {
+            padding: 10px 20px;
+            .reviews_block_wrap {
+                .reviews_wrap {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 20px;
+                    .review_wrap {
+                        .header {
+                            display: flex;
+                            flex-direction: row;
+                            gap: 10px;
+                            align-items: center;
+                        }
+
+                        p {
+                            font-size: 20px;
+                        }
+                    }
+                }
+
+                .review_form {
+                    margin-bottom: 20px;
+
+                    .input_wrap, .header, .input_block, textarea {
+                        max-width: 600px;
+                    }
+
+                    .header {
+                        display: flex;
+                        justify-content: space-between;
+                    }
+                }
+            }
+        }
+
+
+
+    }
 }
 
 //endregion
@@ -4069,18 +4124,54 @@
         z-index: -1;
     }
 
-    .works_block_wrap {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 50px;
-        justify-content: space-between;
+    .works_books_block_wrap {
 
-        .user_works_wrap {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            flex: 1;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 40px;
+
+        .works_books_block {
             max-width: 900px;
+
+            .header {
+                margin-bottom: 20px;
+                display: flex;
+                flex-direction: row;
+                gap: 20px;
+
+                h3 {
+                    cursor: pointer;
+
+                    &.inactive {
+                        color: $color-grey;
+                        transition: all .1s ease-in-out;
+
+                        &:hover {
+                            color: $color-social-blue-light;
+                            transition: all .1s ease-in-out;
+                        }
+                    }
+
+                    &.active {
+                        color: $color-social-blue;
+                    }
+                }
+            }
+
+            .works_block_wrap {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 50px;
+                justify-content: space-between;
+
+            }
+        }
+
+        .books_block_wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
         }
 
         .other_works_wrap {
@@ -4094,6 +4185,7 @@
             }
         }
     }
+
 }
 
 // Страница всех работ
@@ -4246,6 +4338,30 @@
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
+        }
+    }
+}
+
+.own_book_card_small_wrap {
+    //padding: 20px;
+    display: flex;
+    flex-direction: column;
+    width: 180px;
+
+    img {
+        width: 100%;
+    }
+
+    .info_wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 10px;
+        flex: 1;
+        justify-content: space-between;
+
+        a {
+            width: 100%;
         }
     }
 }

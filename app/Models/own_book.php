@@ -51,4 +51,9 @@ class own_book extends Model
         return $this->hasOne(Printorder::class);
     }
 
+    public function own_book_review()
+    {
+        return $this->hasMany(OwnBookReview::class);
+    }
+
 }

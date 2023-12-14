@@ -74,7 +74,7 @@
         @if($users && count($users) > 0)
             <div class="found_block_wrap">
                 <div class="header_wrap">
-                    <h4> Пользователи ({{$users->total()}})</h4>
+                    <h4> Пользователи ({{count($users)}})</h4>
                     <a data-block="search_users"
                        class="search_show_hide link social">Свернуть</a>
                 </div>
@@ -83,7 +83,6 @@
                         <x-social.user-card :user="$user"/>
                     @endforeach
                 </div>
-                {{$users->links()}}
             </div>
         @endif
     </div>

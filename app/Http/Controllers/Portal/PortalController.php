@@ -55,6 +55,13 @@ class PortalController extends Controller
         ]);
     }
 
+    public function own_book_user_page($own_book_id) {
+        $own_book = own_book::where('id', $own_book_id)->first();
+        return view('portal.own_book_user_page', [
+            'own_book' => $own_book
+        ]);
+    }
+
     public function about() {
         return view('portal.about', [
         ]);

@@ -64,14 +64,6 @@ Route::get('/sign-in/facebook/callback', [\App\Http\Controllers\Auth\LoginContro
 
 // ---------  СОЦИАЛЬНАЯ СЕТЬ --------- //
 
-//Route::domain('social.' . env('APP_URL'))->group(function () {
-//    Route::get('/', [SocialController::class, 'index'])->name('social.home');
-//    Route::get('/user/{user_id}', [SocialController::class, 'user_page'])->name('social.user_page');
-//    Route::get('/work/{work_id}', [SocialController::class, 'work_page'])->name('social.work_page');
-//    Route::post('/create_work_comment', [WorkCommentsController::class, 'create_comment'])->name('social.create_comment');
-//
-//});
-
 Route::prefix('social')->group(function () {
 //    Route::get('/', function () {
 //        return 'Hello World';
@@ -96,6 +88,7 @@ Route::middleware([])->group(function () {
     Route::get('/', [PortalController::class, 'index'])->name('homePortal');
     Route::get('/collections/{collection_id}', [CollectionController::class, 'index'])->name('collection_page');
     Route::get('/own_book', [PortalController::class, 'own_book_page'])->name('own_book_page');
+    Route::get('/own_book/{own_book_id}', [PortalController::class, 'own_book_user_page'])->name('own_book_user_page');
 
     Route::get('/our_collections', [PortalController::class, 'old_collections'])->name('old_collections');
     Route::get('/our_collections/actual', [PortalController::class, 'actual_collections'])->name('actual_collections');

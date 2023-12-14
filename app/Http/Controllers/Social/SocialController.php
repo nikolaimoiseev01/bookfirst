@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Social;
 
 use App\Http\Controllers\Controller;
 use App\Models\award;
+use App\Models\own_book;
 use App\Models\User;
 use App\Models\user_subscription;
 use App\Models\UserWallet;
@@ -84,8 +85,8 @@ class SocialController extends Controller
     {
         $user_id = intval($request->user_id);
         $user = User::where('id', $user_id)->first();
-
         $works = Work::where('user_id', $user_id)->get();
+        $own_books = own_book::where('user_id', $user_id)->get();
 
         $last_other_works = Work::inRandomOrder()->limit(5)->get();
 
@@ -93,6 +94,7 @@ class SocialController extends Controller
         return view('social.user_page', [
             'user' => $user,
             'works' => $works,
+            'own_books' => $own_books,
             'last_other_works' => $last_other_works
         ]);
 

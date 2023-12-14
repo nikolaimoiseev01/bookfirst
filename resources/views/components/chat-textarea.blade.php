@@ -28,7 +28,7 @@
             @endif
 
             @if($sendable)
-                <a wire:click.prevent="new_message()" class="show_preloader_on_click link send_button tooltip"
+                <a wire:click.prevent="new_message()" class="show_preloader_on_click link send_button tooltip log_check"
                    title="Отправить">
                     <svg id="send_message_{{$chat['id'] ?? 999999}}" id="Capa_1" data-name="Capa 1"
                          xmlns="http://www.w3.org/2000/svg"

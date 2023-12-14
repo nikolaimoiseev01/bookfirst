@@ -226,7 +226,6 @@
                     function (event) {
                         event.stopImmediatePropagation();
                         event.preventDefault();
-                        console.log('show_add_comment')
                         if ($(this).html() === 'Добавить <i class="fa-solid fa-plus"></i>') {
                             $(this).html('Свернуть')
                         } else {
