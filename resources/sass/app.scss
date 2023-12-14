@@ -2175,6 +2175,11 @@
             }
 
 
+            @include media-tablets-768 {
+                height: fit-content;
+            }
+
+
             .admin_chats_block {
                 /*padding-bottom: 10px;*/
                 margin-bottom: 10px;
