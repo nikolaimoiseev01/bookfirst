@@ -113,18 +113,20 @@ class DangerTasks extends Command
 
                 }
 
+
+
                 if ($text ?? null) {
-                    array_push($message_arrays, [
+                    $message_arrays[] = [
                         'title' => "🔥 *{$random_priskazka}*",
                         'text' => $text
-                    ]);
+                    ];
                 }
 
 
             }
         }
 
-        //endregion
+       //endregion
 
 
         //region -- Оповещение Крис, что нет новых обложек
@@ -153,10 +155,10 @@ class DangerTasks extends Command
         }
 
         if ($text_kris ?? null) {
-            array_push($message_arrays, [
+            $message_arrays[] = [
                 'title' => "🖌 *{$random_priskazka_kris}*",
                 'text' => $text_kris
-            ]);
+            ];
         }
         //endregion
 
@@ -182,10 +184,10 @@ class DangerTasks extends Command
                 }
 
                 if ($text_own_book_covers ?? null) {
-                    array_push($message_arrays, [
+                    $message_arrays[] = [
                         'title' => "🖌 *{$random_priskazka_kris}*",
                         'text' => $text_own_book_covers
-                    ]);
+                    ];
                 }
             }
         }
@@ -207,10 +209,10 @@ class DangerTasks extends Command
                 }
 
                 if ($text_own_book_insides ?? null) {
-                    array_push($message_arrays, [
+                    $message_arrays[] = [
                         'title' => "🔥 *{$random_priskazka}*",
                         'text' => $text_own_book_insides
-                    ]);
+                    ];
                 }
             }
         }
@@ -224,10 +226,10 @@ class DangerTasks extends Command
                 $text_own_book_need_prints = "Нужно отправить в печать автора *{$own_book['author']}*! Ждет уже дней: {$deadline_days}";
 
                 if ($text_own_book_need_prints ?? null) {
-                    array_push($message_arrays, [
+                    $message_arrays[] = [
                         'title' => "🔥 *{$random_priskazka}*",
                         'text' => $text_own_book_need_prints
-                    ]);
+                    ];
                 }
             }
         }
@@ -245,7 +247,7 @@ class DangerTasks extends Command
                 foreach ($message_arrays as $message) {
                     Notification::route('telegram', '-506622812')
                         ->notify(new TelegramNotification($message['title'], $message['text'], "Админка", "vk1.com"));
-                    sleep(3);
+                    sleep(0.5);
                 }
             }
         }
