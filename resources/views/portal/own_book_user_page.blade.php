@@ -94,7 +94,7 @@
                 <div class="nav">
                     <a href="#reviews" class="cont_nav_item current">Отзывы</a>
                     @if($own_book['inside_file_cut'])
-                        <a href="#read_part" class="cont_nav_item">Читать фрагмент</a>
+                        <a href="#read_part" id="read_part_link" target="_blank" class="cont_nav_item">Читать фрагмент</a>
                     @endif
                     <a style="float: right;" href="{{route('help_own_book')}}" target="_blank">Издать свою</a>
                 </div>
@@ -118,5 +118,14 @@
 @push('page-js')
 
     <script src="/js/col-info-block.js"></script>
+
+    <script>
+        if(window.innerWidth < 768) {
+            var cut_file_path = "/{{ $own_book->inside_file_cut }}";
+            link = $('#read_part_link')
+            link.attr('href', cut_file_path)
+            link.removeClass('cont_nav_item')
+        }
+    </script>
 
 @endpush
