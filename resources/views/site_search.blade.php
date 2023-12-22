@@ -33,7 +33,7 @@
                             <div class="info_wrap">
                                 <p class="title">{{$own_book['author']}}</p>
                                 <p class="name">{{$own_book['title']}}</p>
-                                <a href="/own_books?search_input={{$own_book['title']}}"
+                                <a href="{{route('own_book_user_page', $own_book['id'])}}"
                                    target="_blank"
                                    class="button social">Подробнее</a>
                             </div>

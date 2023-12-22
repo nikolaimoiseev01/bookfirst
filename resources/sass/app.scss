@@ -1169,6 +1169,13 @@
                 p {
                     margin-top: 20px;
                 }
+
+                .buttons_wrap {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 20px;
+                    margin-top: 20px;
+                }
             }
 
 
@@ -1582,6 +1589,10 @@
         }
 
 
+    }
+
+    .col-card .row:last-child {
+        justify-content: flex-start !important;
     }
 }
 

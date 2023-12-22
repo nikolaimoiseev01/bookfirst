@@ -19,22 +19,10 @@
                         <h3 class="title">{{$own_book['title']}}</h3>
                         <p>{{$own_book['own_book_desc']}}</p>
                         <div class="buttons_wrap">
-                            <a @if ($own_book['amazon_link'])
-                               target="_blank" href="{{$own_book['amazon_link']}}"
-                               @endif
-                               class="@if (!$own_book['amazon_link']) no_amazon @endif button">
-                                Купить на Amazon
-                            </a>
 
-                            <form action="{{ route('payment.create_buying_own_book', $own_book['id'])}}"
-                                  method="POST"
-                                  enctype="multipart/form-data">
-                                @csrf
-                                <button href="{{route('my_digital_sales')}}" id="btn-submit" type="submit"
-                                        class="log_check pay-button button">
-                                    Электронная версия (100 руб.)
-                                </button>
-                            </form>
+
+                            <a href="{{route('own_book_user_page', $own_book['id'])}}" class="button">Подробнее</a>
+
                         </div>
                     </div>
                 </div>

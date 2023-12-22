@@ -83,6 +83,41 @@
 
         <div class="menu">
             <div class="menu_left_wrap">
+                <style>
+                    @media (max-width: 950px) {
+                        .fa-search {
+                            display: none;
+                        }
+                    }
+                </style>
+                <a data-for-modal="modal_site_search" class="show_modal"><i
+                        class="fa fa-search"></i></a>
+
+                <div style="display:none;" id="modal_site_search" class="cus-modal-container">
+                    <div class="search_modal_wrap">
+                        <h3>
+                            Поиск по всему сайту<br>
+                        </h3>
+                        <form action="{{ route('site_search', '') }}"
+
+                              id="search_site_input_form"
+                              method="get"
+                              enctype="multipart/form-data">
+                            @csrf
+
+                            <input type="text" class="social" id="search_site_input" name="search_input" required>
+                            <button class="button social white" type="submit">Искать</button>
+                            @push('page-js')
+                                <script>
+                                    $("#search_site_input").on('change', function (e) {
+                                        $("#search_site_input_form").attr("action", "/social/search/" + $(this).val());
+                                    });
+                                </script>
+                            @endpush
+                        </form>
+                    </div>
+                </div>
+
                 <div class="dropped_menu_wrap">
                     <a class="menu_link">Сборники</a>
                     <div class="box_wrap">
