@@ -68,7 +68,7 @@ class TestCommand extends Command
 
 
                 own_book::where('id', $own_book['id'])->update(array(
-                    'inside_file_cut' => $cut_file_path,
+                    'inside_file_cut' => $user_folder . 'ВБ_Main_' . $own_book['title'] . '_CUT.pdf',
                 ));
             }
 
