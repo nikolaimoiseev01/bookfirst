@@ -86,7 +86,7 @@ class SocialController extends Controller
         $user_id = intval($request->user_id);
         $user = User::where('id', $user_id)->first();
         $works = Work::where('user_id', $user_id)->get();
-        $own_books = own_book::where('user_id', $user_id)->get();
+        $own_books = own_book::where('user_id', $user_id)->where('own_book_status_id', '<=', 9)->get();
 
         $last_other_works = Work::inRandomOrder()->limit(5)->get();
 

@@ -4380,6 +4380,30 @@
     display: flex;
     flex-direction: column;
     width: 180px;
+    position: relative;
+    overflow: hidden;
+
+        .step {
+            position: absolute;
+
+            transform: rotate(45deg);
+            font-size: 18px;
+            padding: 0 30px;
+            color: white;
+
+            &.in_process {
+                background: $color-social-blue;
+                top: 22px;
+                right: -37px;
+            }
+
+            &.done {
+                background: $color-green;
+                top: 18px;
+                right: -32px;
+            }
+        }
+
 
     img {
         width: 100%;
