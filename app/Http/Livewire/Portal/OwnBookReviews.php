@@ -10,23 +10,30 @@ use Livewire\WithPagination;
 class OwnBookReviews extends Component
 {
     public $own_book;
-    public $reviews;
+    protected $reviews;
     public $stars;
     public $review_text = '';
 
+    public $show_input = false;
+
     use WithPagination;
+
+    public function paginationView()
+    {
+        return 'vendor.pagination.custom-pagination';
+    }
 
     public function render()
     {
-        $this->reviews =OwnBookReview::where('own_book_id', $this->own_book['id'])->paginate(3);
+        $reviews =OwnBookReview::where('own_book_id', $this->own_book['id'])->orderBy('created_at', 'desc')->paginate(5);
+//        dd($this->reviews);
         return view('livewire.portal.own-book-reviews', [
-            'reviews' => $this->reviews
+            'reviews' => $reviews
         ]);
     }
 
     public function mount($own_book)
     {
-
         $this->own_book = $own_book;
     }
 
@@ -67,7 +74,8 @@ class OwnBookReviews extends Component
 
                 $this->review_text = '';
                 $this->stars = null;
-                $this->reviews = OwnBookReview::where('own_book_id', $this->own_book['id'])->get();
+//                $this->reviews = OwnBookReview::where('own_book_id', $this->own_book['id'])->get();
+                $this->show_input = false;
 //                dd($this->reviews);
             }
         }

@@ -64,9 +64,7 @@ limit
     <last-used-providers />
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
-    <open-files>
-      <object connection-id="56026d58-7ba4-4880-91f4-8221405ba5e2" object-ref="consoles/pervajakniga" />
-    </open-files>
+    <open-files />
   </component>
   <component name="DBNavigator.Project.ExecutionManager">
     <retain-sticky-names value="false" />

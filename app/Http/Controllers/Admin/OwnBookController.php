@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use setasign\Fpdi\Fpdi;
 
 class OwnBookController extends Controller
 {
@@ -37,15 +38,14 @@ class OwnBookController extends Controller
         $own_book_cover_statuses = own_book_cover_status::orderBy('id')->get();
 
         $own_books = DB::table('own_books')
-        ->where('own_book_status_id', '<>', 9)
-        ->join('chats', 'own_books.id', '=', 'chats.own_book_id')
-        ->join('own_book_statuses', 'own_book_statuses.id', '=', 'own_books.own_book_status_id')
-        ->join('own_book_inside_statuses', 'own_book_inside_statuses.id', '=', 'own_books.own_book_inside_status_id')
-        ->join('own_book_cover_statuses', 'own_book_cover_statuses.id', '=', 'own_books.own_book_cover_status_id')
-        ->select('own_books.*', 'chats.chat_status_id', 'own_book_statuses.status_title', 'own_book_inside_statuses.status_title as inside_status_title', 'own_book_cover_statuses.status_title as cover_status_title')
-        ->orderBy('created_at', 'desc')
-        ->paginate(60)
-        ;
+            ->where('own_book_status_id', '<>', 9)
+            ->join('chats', 'own_books.id', '=', 'chats.own_book_id')
+            ->join('own_book_statuses', 'own_book_statuses.id', '=', 'own_books.own_book_status_id')
+            ->join('own_book_inside_statuses', 'own_book_inside_statuses.id', '=', 'own_books.own_book_inside_status_id')
+            ->join('own_book_cover_statuses', 'own_book_cover_statuses.id', '=', 'own_books.own_book_cover_status_id')
+            ->select('own_books.*', 'chats.chat_status_id', 'own_book_statuses.status_title', 'own_book_inside_statuses.status_title as inside_status_title', 'own_book_cover_statuses.status_title as cover_status_title')
+            ->orderBy('created_at', 'desc')
+            ->paginate(60);
 
 //        $own_books = array_map(function ($own_books) {
 //            return (array)$own_books;
@@ -68,7 +68,6 @@ class OwnBookController extends Controller
             'own_books' => $own_books,
         ]);
     }
-
 
     public function own_books_page(Request $request)
     {
@@ -139,11 +138,12 @@ class OwnBookController extends Controller
         return redirect()->back();
     }
 
-    public function add_own_book_comment(Request $request) {
+    public function add_own_book_comment(Request $request)
+    {
         $own_book = own_book::where('id', $request->own_book_id)->first();
 
         own_book::where('id', $request->own_book_id)->update(array(
-            'comment' =>  $request->comment
+            'comment' => $request->comment
         ));
 
         session()->flash('success', 'change_printorder');
@@ -166,8 +166,7 @@ class OwnBookController extends Controller
         $send_price = $printorder['send_price'] ?? null;
 
 
-        if ((is_null($track_number) || !($send_price > 1)) && $this->own_book['own_book_status_id'] === 6 && intval($request->own_book_status_id) === 9)
-        {
+        if ((is_null($track_number) || !($send_price > 1)) && $this->own_book['own_book_status_id'] === 6 && intval($request->own_book_status_id) === 9) {
             session()->flash('alert_type', 'error');
             session()->flash('alert_title', 'Статус не заменен!');
             session()->flash('alert_text', 'Не могу завершить печать, когда трек номер или цена отправления пустые');
@@ -215,6 +214,39 @@ class OwnBookController extends Controller
                     'collection_id' => $this->own_book['id']
                 ]);
 
+
+                // Создаем обрезанную версию ВБ
+
+                $pdfPath = $this->own_book['inside_file'];
+                $user_folder = 'admin_files/own_books/' . 'user_id_' . $this->own_book['user_id'] . '/' . $this->own_book['title'] . '/ВЕРСТКА/';
+                $cut_file_path = $user_folder . 'ВБ_Main_' . $this->own_book['title'] . '_CUT.pdf';
+
+                // Понимаем размер файла
+                $pdf = new Fpdi();
+                $pageCount = $pdf->setSourceFile($pdfPath);
+                $templateId = $pdf->importPage(1);
+                $size = $pdf->getTemplateSize($templateId);
+
+                // Создайте экземпляр Fpdi
+                $pdf = new Fpdi('P', 'mm', array(round($size['height']), round($size['width'])));
+
+                // Добавьте первые 10 страниц в новый PDF-документ
+                for ($page = 1; $page <= 10; $page++) {
+                    $pdf->AddPage();
+                    $pdf->setSourceFile($pdfPath);
+                    $template = $pdf->importPage($page);
+                    $size = $pdf->getTemplateSize($template);
+                    $pdf->useTemplate($template);
+                }
+
+                $pdf->output($cut_file_path,'F');
+
+                own_book::where('id', $this->own_book['id'])->update(array(
+                    'inside_file_cut' => $cut_file_path,
+                ));
+
+
+                // Нотификация у пользователя
                 \Illuminate\Support\Facades\Notification::send($user, new UserNotification(
                         'Смена статуса издания книги!',
                         route('book_page', $this->own_book['id']))
@@ -246,36 +278,35 @@ class OwnBookController extends Controller
 
     }
 
-    public
-    function change_book_inside_status(Request $request)
+    public function change_book_inside_status(Request $request)
     {
         session()->flash('success', 'change_printorder');
         $own_book = own_book::where('id', $request->own_book_id)->first();
 
 
-            own_book::where('id', $request->own_book_id)->update(array(
-                'own_book_inside_status_id' => $request->own_book_inside_status_id,
-            ));
+        own_book::where('id', $request->own_book_id)->update(array(
+            'own_book_inside_status_id' => $request->own_book_inside_status_id,
+        ));
 
-            $user = User::where('id', $request->user_id)->first();
+        $user = User::where('id', $request->user_id)->first();
 
 
-            $user->notify(new EmailNotification(
-                    'Процесс издания книги',
-                    $user['name'],
-                    "Спешим сообщить, что произошла смена статуса работы по внутреннему блоку Вашей книги: \"" . own_book::where('id', $request->own_book_id)->value('title') . "\"." .
-                    "\nНа текущий момент внутренний блок имеет статус: '" . own_book_inside_status::where('id', $request->own_book_inside_status_id)->value('status_title') . "'. Всю подробную информацию об издании Вы всегда можете отслеживать на специальной странице издания книги.",
-                    "Страница издания",
-                    route('book_page', $own_book['id']))
-            );
+        $user->notify(new EmailNotification(
+                'Процесс издания книги',
+                $user['name'],
+                "Спешим сообщить, что произошла смена статуса работы по внутреннему блоку Вашей книги: \"" . own_book::where('id', $request->own_book_id)->value('title') . "\"." .
+                "\nНа текущий момент внутренний блок имеет статус: '" . own_book_inside_status::where('id', $request->own_book_inside_status_id)->value('status_title') . "'. Всю подробную информацию об издании Вы всегда можете отслеживать на специальной странице издания книги.",
+                "Страница издания",
+                route('book_page', $own_book['id']))
+        );
 
-            \Illuminate\Support\Facades\Notification::send($user, new UserNotification(
-                    'Смена статуса внутреннего блока!',
-                    route('book_page', $own_book['id']))
-            );
+        \Illuminate\Support\Facades\Notification::send($user, new UserNotification(
+                'Смена статуса внутреннего блока!',
+                route('book_page', $own_book['id']))
+        );
 
-            session()->flash('alert_type', 'success');
-            session()->flash('alert_title', 'Статус успешно изменен!');
+        session()->flash('alert_type', 'success');
+        session()->flash('alert_title', 'Статус успешно изменен!');
 
 
         return redirect()->back();
@@ -283,14 +314,16 @@ class OwnBookController extends Controller
 
     }
 
-    public
-    function change_book_promo_type(Request $request)
+    public function change_book_promo_type(Request $request)
     {
         $promo_var = null;
 
         if ($request->promo_type > 0) {
             if ($request->promo_type == 500) {
-                $promo_var = 1;} else {$promo_var = 2;}
+                $promo_var = 1;
+            } else {
+                $promo_var = 2;
+            }
         }
 
 
@@ -318,49 +351,43 @@ class OwnBookController extends Controller
         return redirect()->back();
     }
 
-
-
-    public
-    function change_book_cover_status(Request $request)
+    public function change_book_cover_status(Request $request)
     {
         $own_book = own_book::where('id', $request->own_book_id)->first();
         session()->flash('success', 'change_printorder');
 
 
+        own_book::where('id', $request->own_book_id)->update(array(
+            'own_book_cover_status_id' => $request->own_book_cover_status_id,
+        ));
+
+        $user = User::where('id', $request->user_id)->first();
 
 
-            own_book::where('id', $request->own_book_id)->update(array(
-                'own_book_cover_status_id' => $request->own_book_cover_status_id,
-            ));
+        $user->notify(new EmailNotification(
+                'Процесс издания книги',
+                $user['name'],
+                "Спешим сообщить, что произошла смена статуса работы с обложкой по книге: '" . own_book::where('id', $request->own_book_id)->value('title') . "." .
+                "\nНа текущий момент обложка имеет статус: '" . own_book_cover_status::where('id', $request->own_book_cover_status_id)->value('status_title') . "'. Всю подробную информацию об издании Вы всегда можете отслеживать на специальной странице издания книги.",
+                "Страница издания",
+                route('book_page', $own_book['id']))
+        );
 
-            $user = User::where('id', $request->user_id)->first();
-
-
-            $user->notify(new EmailNotification(
-                    'Процесс издания книги',
-                    $user['name'],
-                    "Спешим сообщить, что произошла смена статуса работы с обложкой по книге: '" . own_book::where('id', $request->own_book_id)->value('title') . "." .
-                    "\nНа текущий момент обложка имеет статус: '" . own_book_cover_status::where('id', $request->own_book_cover_status_id)->value('status_title') . "'. Всю подробную информацию об издании Вы всегда можете отслеживать на специальной странице издания книги.",
-                    "Страница издания",
-                    route('book_page', $own_book['id']))
-            );
-
-            \Illuminate\Support\Facades\Notification::send($user, new UserNotification(
-                    'Смена статуса работы с обложкой!',
-                    route('book_page', $own_book['id']))
-            );
+        \Illuminate\Support\Facades\Notification::send($user, new UserNotification(
+                'Смена статуса работы с обложкой!',
+                route('book_page', $own_book['id']))
+        );
 
 
-            session()->flash('alert_type', 'success');
-            session()->flash('alert_title', 'Статус успешно изменен!');
+        session()->flash('alert_type', 'success');
+        session()->flash('alert_title', 'Статус успешно изменен!');
 
 
         return redirect()->back();
 
     }
 
-    public
-    function change_book_pages(Request $request)
+    public function change_book_pages(Request $request)
     {
         $own_book = own_book::where('id', $request->own_book_id)->first();
 
@@ -431,7 +458,6 @@ class OwnBookController extends Controller
         return redirect()->back();
     }
 
-
     public function update_own_book_track_number(Request $request)
     {
 
@@ -464,8 +490,7 @@ class OwnBookController extends Controller
         return redirect()->back();
     }
 
-    public
-    function change_preview_comment_status(Request $request)
+    public function change_preview_comment_status(Request $request)
     {
         $cur_status = preview_comment::where('id', $request->preview_comment_id)->value('status_done');
         $next_status = abs($cur_status - 1);
@@ -477,8 +502,7 @@ class OwnBookController extends Controller
 
     }
 
-    public
-    function change_all_preview_comment_status(Request $request)
+    public function change_all_preview_comment_status(Request $request)
     {
         $prev_comments = preview_comment::where('own_book_id', $request->own_book_id)
             ->where('own_book_comment_type', $request->comment_type)->update(['status_done' => 1]);
@@ -486,9 +510,7 @@ class OwnBookController extends Controller
         return redirect(url()->previous() . '#' . $request->comment_type);
     }
 
-
-    public
-    function update_own_book_inside(Request $request)
+    public function update_own_book_inside(Request $request)
     {
 
         $own_book = own_book::where('id', $request->own_book_id)->first();
@@ -511,8 +533,7 @@ class OwnBookController extends Controller
 
     }
 
-    public
-    function update_own_book_cover(Request $request)
+    public function update_own_book_cover(Request $request)
     {
 
 
@@ -542,9 +563,7 @@ class OwnBookController extends Controller
 
     }
 
-
-    public
-    function update_own_book_prices(Request $request)
+    public function update_own_book_prices(Request $request)
     {
         session()->flash('success', 'change_printorder');
         $own_book = own_book::where('id', $request->own_book_id)->first();
@@ -553,8 +572,7 @@ class OwnBookController extends Controller
             session()->flash('alert_type', 'error');
             session()->flash('alert_title', 'Ошибка!');
             session()->flash('alert_text', 'Не все цены заполнены!');
-        }
-        else {
+        } else {
 
             own_book::where('id', $request->own_book_id)->update(array(
                 'text_check_price' => intval($request->text_check_price),
@@ -570,9 +588,6 @@ class OwnBookController extends Controller
             session()->flash('alert_type', 'success');
             session()->flash('alert_title', 'Все цены были успешно изменены!');
         }
-
-
-
 
 
         return redirect()->back();

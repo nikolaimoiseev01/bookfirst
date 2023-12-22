@@ -167,6 +167,9 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/socialiteproviders/vkontakte" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/socialiteproviders/odnoklassniki" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/phpoffice/math" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/tecnickcom/tcpdf" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/setasign/fpdf" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/setasign/fpdi" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

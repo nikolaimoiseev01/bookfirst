@@ -3,7 +3,7 @@
         {{-- Если это звезды для выбора--}}
             @for ($i = 1; $i <= 5; $i++)
                 <input class="radio-input" type="radio" wire:model="{{$model}}" id="star{{$i}}" name="star-input"
-                       value="{{$i}}"/>
+                       value="{{6 - $i}}"/>
                 <label class="radio-label" for="star{{$i}}" title="{{$i}} stars">{{$i}} stars</label>
             @endfor
     @else

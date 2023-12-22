@@ -1144,6 +1144,7 @@
     .collection-block {
         display: flex;
         justify-content: space-between;
+        align-items: center;
         gap: 20px;
 
         @include media-laptops-1024 {
@@ -1172,11 +1173,15 @@
 
 
             .col-card {
+                display: flex;
+                align-items: center;
+
                 .container {
                     min-width: 340px;
                     max-width: 340px;
                     font-size: 20px;
                     flex-direction: column;
+                    height: fit-content;
 
                     @include media-tablets-768 {
                         min-width: inherit;
@@ -1529,27 +1534,40 @@
     .col-info-block {
         .list-wrap {
             padding: 10px 20px;
+
             .reviews_block_wrap {
                 .reviews_wrap {
                     display: flex;
                     flex-direction: column;
                     gap: 20px;
+                    margin-top: 20px;
+
                     .review_wrap {
                         .header {
                             display: flex;
                             flex-direction: row;
                             gap: 10px;
                             align-items: center;
+
+                            .time {
+                                font-size: 16px;
+                                color: #939393;
+                            }
                         }
 
                         p {
                             font-size: 20px;
                         }
                     }
+
+                    nav {
+                        display: flex;
+                        justify-content: center;
+                    }
                 }
 
                 .review_form {
-                    margin-bottom: 20px;
+                    //margin-bottom: 20px;
 
                     .input_wrap, .header, .input_block, textarea {
                         max-width: 600px;
@@ -1562,7 +1580,6 @@
                 }
             }
         }
-
 
 
     }

@@ -20,7 +20,7 @@
 
                 <div class="header">
                     <h3 :class="block=='works' ? 'active' : 'inactive'" @click="block='works'"> Произведения </h3>
-{{--                    <h3 :class="block=='books' ? 'active' : 'inactive'" @click="block='books'"> Собственные книги </h3>--}}
+                    <h3 :class="block=='books' ? 'active' : 'inactive'" @click="block='books'"> Собственные книги </h3>
                 </div>
 
 

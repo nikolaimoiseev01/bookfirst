@@ -10,7 +10,12 @@
                     <h3 class=" mt-2">
                         <b style="font-size: 28px;">{{$own_book['author']}}: {{$own_book['title']}}</b>
                     </h3>
+
+
                     <i style="margin-left: auto;">
+                        <a target="_blank" style="margin-right: 20px; color: #a8fffb" href="{{route('own_book_user_page', $own_book['id'])}}">
+                            <i>Страница на портале</i>
+                        </a>
 
                         <span style="font-size: 18px;">кем создан:
                             @if ($own_book['user_id'])

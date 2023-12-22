@@ -26,7 +26,7 @@
                     <div class="col-card">
                         <div class="container">
                             <div class="row">
-                                Кол-во страниц:&nbsp;<span>>{{$own_book['pages']}}</span>
+                                Кол-во страниц:&nbsp;<span>{{$own_book['pages']}}</span>
                             </div>
                             <div class="row">
                                 Первоначальный
@@ -48,8 +48,8 @@
                                 </span>
                             </div>
                             <div class="row">
-                                <a style="    font-size: 25px; padding: 3px 35px;" href="{{route('own_book_create')}}"
-                                   class="log_check button">Подать заявку!</a>
+                                <a href="{{route('own_book_create')}}"
+                                   class="log_check button">Купить эл. версию (100 руб.)</a>
                             </div>
 
 
@@ -71,7 +71,12 @@
                     <livewire:portal.own-book-reviews :own_book="$own_book"/>
 
                     <div id="read_part" class="hide">
-                        Читать фрагмент
+                        <iframe src ="/{{$own_book['inside_file_cut']}}"
+
+                                width="100%" height="600px"></iframe>
+
+
+
                     </div>
 
                 </div>
