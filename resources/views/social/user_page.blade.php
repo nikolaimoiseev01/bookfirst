@@ -25,9 +25,14 @@
 
 
                 <div x-show="block=='books'" class="books_block_wrap">
-                    @foreach($own_books as $own_book)
-                        <x-own-book-card-small :ownbook="$own_book"></x-own-book-card-small>
-                    @endforeach
+                    @if(count($own_books) > 0)
+                        @foreach($own_books as $own_book)
+                            <x-own-book-card-small :ownbook="$own_book"></x-own-book-card-small>
+                        @endforeach
+                    @else
+                        <p>Пока автор еще не издавал у нас книги. Но все еще впереди</p>
+                        <i class="fa-regular fa-face-smile"></i>
+                    @endif
                 </div>
 
                 <div x-show="block=='works'" class="works_block_wrap">
