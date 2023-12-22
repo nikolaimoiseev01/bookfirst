@@ -24,7 +24,7 @@
                 </div>
 
 
-                <div x-show="block=='books'" class="books_block_wrap">
+                <div x-show="block=='books'" class="books_block_wrap @if(count($own_books) == 0) no_books @endif">
                     @if(count($own_books) > 0)
                         @foreach($own_books as $own_book)
                             <x-own-book-card-small :ownbook="$own_book"></x-own-book-card-small>

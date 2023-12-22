@@ -4215,6 +4215,10 @@
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
+
+            &.no_books {
+                align-items: center;
+            }
         }
 
         .other_works_wrap {
