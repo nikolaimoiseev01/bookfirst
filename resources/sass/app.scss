@@ -1536,6 +1536,12 @@
         h3 {
             margin-bottom: 4px;
         }
+
+        .buttons_wrap, a {
+            @include media-tablets-768 {
+                justify-content: center;
+            }
+        }
     }
 
     .col-info-block {
@@ -1554,17 +1560,21 @@
                             display: flex;
                             flex-direction: row;
                             gap: 10px;
+                            flex-wrap: wrap;
                             align-items: center;
 
                             .time {
                                 font-size: 16px;
                                 color: #939393;
                             }
+
                         }
 
                         p {
                             font-size: 20px;
                         }
+
+
                     }
 
                     nav {
@@ -4383,26 +4393,26 @@
     position: relative;
     overflow: hidden;
 
-        .step {
-            position: absolute;
+    .step {
+        position: absolute;
 
-            transform: rotate(45deg);
-            font-size: 18px;
-            padding: 0 30px;
-            color: white;
+        transform: rotate(45deg);
+        font-size: 18px;
+        padding: 0 30px;
+        color: white;
 
-            &.in_process {
-                background: $color-social-blue;
-                top: 22px;
-                right: -37px;
-            }
-
-            &.done {
-                background: $color-green;
-                top: 18px;
-                right: -32px;
-            }
+        &.in_process {
+            background: $color-social-blue;
+            top: 22px;
+            right: -37px;
         }
+
+        &.done {
+            background: $color-green;
+            top: 18px;
+            right: -32px;
+        }
+    }
 
 
     img {
