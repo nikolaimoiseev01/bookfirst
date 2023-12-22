@@ -115,10 +115,16 @@
 
 <script>
     //region -- Новогодние снежинки
+    var count_snows = 20
+    if(window.innerWidth > 768) {
+        count_snows = 20
+    } else {
+        count_snows = 10
+    }
     new Snowflakes({
         color: '#5ECDEF', // Default: "#5ECDEF"
         container: document.body, // Default: document.body
-        count: 20, // 100 snowflakes. Default: 50
+        count: count_snows, // 100 snowflakes. Default: 50
         minOpacity: 0.4, // From 0 to 1. Default: 0.6
         maxOpacity: 0.8, // From 0 to 1. Default: 1
         minSize: 10, // Default: 10
