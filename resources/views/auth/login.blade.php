@@ -69,9 +69,9 @@
                     <a href="{{route('sign_google')}}" class="button">
                         <img src="/img/Google Logo.svg" alt="">
                     </a>
-{{--                    <a href="{{route('sign_facebook')}}" class="button">--}}
-{{--                        <img src="/img/Facebook Logo.svg" alt="">--}}
-{{--                    </a>--}}
+                    <a href="{{route('sign_ya')}}" class="button">
+                        <img src="/img/Yandex Logo.png" alt="">
+                    </a>
                 </div>
 
 

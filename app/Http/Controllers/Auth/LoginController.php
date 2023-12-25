@@ -240,4 +240,51 @@ class LoginController extends Controller
         Auth::loginUsingId($user['id']);
         return redirect()->route('collections');
     }
+
+    public function sign_ya()
+    {
+        return Socialite::driver('yandex')->redirect();
+
+    }
+
+    public function callback_ya()
+    {
+        $user = Socialite::driver('yandex')->stateless()->user();
+
+        $user = User::firstOrCreate([
+            'email' => $user->email
+        ], [
+            'email' => $user->email,
+            'name' => $user->user['first_name'],
+            'surname' => $user->user['last_name'],
+            'password' => Hash::make(Str::random(24)),
+            'email_verified_at' => Carbon::now()->toDateTimeString(),
+            'avatar' => $user->avatar,
+            'avatar_cropped' => $user->avatar
+        ]);
+
+
+
+
+        $user->assignRole('user');
+
+        session()->flash('show_modal', 'yes');
+        session()->flash('alert_type', 'success');
+        session()->flash('alert_title', 'Отлично!');
+
+        if ($user->wasRecentlyCreated) {
+
+            $user_wallet = new UserWallet;
+            $user_wallet->user_id = $user['id'];
+            $user_wallet->cur_amount = 0;
+            $user_wallet->save();
+            $text = "Вы успешно создали аккаунт через Yandex! Для учетной записи (email: {$user->email}) был сгенерирован случайный пароль. Если входить через Yandex, он не нужен. Но для возможности входа через email его необходимо сменить в настройках аккаунта.";
+        } else {
+            $text = "Вы успешно вошли через Yandex! У вас уже был аккаунт на нашем сайте. В него теперь можно входить по email или через Yandex.";
+        }
+        session()->flash('alert_text', $text);
+
+        Auth::loginUsingId($user['id']);
+        return redirect()->route('collections');
+    }
 }

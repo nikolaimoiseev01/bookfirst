@@ -50,6 +50,9 @@ Route::get('/sign-in/vkontakte/callback', [\App\Http\Controllers\Auth\LoginContr
 Route::get('/sign-in/ok', [\App\Http\Controllers\Auth\LoginController::class, 'sign_ok'])->name('sign_ok');
 Route::get('/sign-in/ok/callback', [\App\Http\Controllers\Auth\LoginController::class, 'callback_ok'])->name('callback_ok');
 
+Route::get('/sign-in/ya', [\App\Http\Controllers\Auth\LoginController::class, 'sign_ya'])->name('sign_ya');
+Route::get('/sign-in/ya/callback', [\App\Http\Controllers\Auth\LoginController::class, 'callback_ya'])->name('callback_ya');
+
 Route::get('/sign-in/google', [\App\Http\Controllers\Auth\LoginController::class, 'sign_google'])->name('sign_google');
 Route::get('/sign-in/google/callback', [\App\Http\Controllers\Auth\LoginController::class, 'callback_google'])->name('callback_google');
 
