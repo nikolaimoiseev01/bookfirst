@@ -172,7 +172,7 @@
 
                         <div style="width:100%; margin-top:20px; text-align: center">
                             <a class="link open_gif">Смотреть видео-пример</a>
-                            <img class="gif" src="/img/preview inside" alt="">
+                            <img class="gif" src="/img/preview_inside" alt="">
                         </div>
 
                         <h4 id="app_cover"
