@@ -421,13 +421,11 @@ textarea {
             margin: 0;
             cursor: pointer;
             padding: 5px;
-            transition: all .1s ease-in-out;
             border-radius: 5px;
 
             &:hover {
                 background: $color-green-light;
                 color: $color-white;
-                transition: all .1s ease-in-out;
             }
         }
 
