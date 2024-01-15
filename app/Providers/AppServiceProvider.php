@@ -104,7 +104,9 @@ class AppServiceProvider extends ServiceProvider
                             ->Where('own_book_cover_status_id', 1)
                             ->orWhere('own_book_cover_status_id', 3);;
                     })
-                    ->count();
+                    ->get();
+
+                dd($own_books_alert);
 
                 $new_participants = Participation::where('pat_status_id', 1)->count();
             };
