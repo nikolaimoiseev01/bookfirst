@@ -21,6 +21,7 @@ class MessageTemplateResource extends Resource
 
     protected static ?string $navigationLabel = 'Шаблоны сообщений';
 
+
     public static function form(Form $form): Form
     {
         return $form
@@ -58,10 +59,16 @@ class MessageTemplateResource extends Resource
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
+
             ->defaultSort('template_type')
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
+    }
+
+    protected function isTablePaginationEnabled(): bool
+    {
+        return false;
     }
 
     public static function getPages(): array
