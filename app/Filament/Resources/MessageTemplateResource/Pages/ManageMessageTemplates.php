@@ -18,4 +18,9 @@ class ManageMessageTemplates extends ManageRecords
             Actions\CreateAction::make(),
         ];
     }
+
+    protected function isTablePaginationEnabled(): bool
+    {
+        return false;
+    }
 }
