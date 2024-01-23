@@ -13,6 +13,7 @@ use App\Notifications\new_own_book;
 use App\Notifications\TelegramNotification;
 use App\Service\OwnBookOutputsService;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
@@ -168,10 +169,12 @@ class CreateOwnBook extends Component
                 $zip = new \PhpOffice\PhpWord\Shared\ZipArchive();
                 $zip->open($doc_path);//relative path to DOCX file
                 $xml = new \DOMDocument();
-                $xml->loadXML($zip->getFromName("docProps/app.xml"));
-                $page = $xml->getElementsByTagName('Pages')->item(0)->nodeValue ?? 1;
-                // Returns the number of pages according to app.xml
-                $this->pages += $page;
+                if ($zip->getFromName("docProps/app.xml")) {
+                    $xml->loadXML($zip->getFromName("docProps/app.xml"));
+                    $page = $xml->getElementsByTagName('Pages')->item(0)->nodeValue ?? 1;
+                    // Returns the number of pages according to app.xml
+                    $this->pages += $page;
+                }
             }
 
         }
@@ -444,9 +447,9 @@ class CreateOwnBook extends Component
                 . ($this->cover_type == 'soft' ? 'Мягкая' : 'Твердая')
                 . '. ВБ: ' . ($this->inside_color == '0' ? 'ч/б' : 'цветной (' . $this->pages_color . ' цветных страниц).')
                 : 'не нужна.';
-            $text = "*Автор:* " .  $this->author_name .
-                "\n*Название:* " .  $this->book_title .
-                "\n*Страниц:* " . $this->pages  .
+            $text = "*Автор:* " . $this->author_name .
+                "\n*Название:* " . $this->book_title .
+                "\n*Страниц:* " . $this->pages .
                 "\n*Редактура:* " . $this->price_inside . ' руб.' .
                 "\n*Обложка:* " . $cover_text .
                 "\n*Печать:* " . $print_text .
