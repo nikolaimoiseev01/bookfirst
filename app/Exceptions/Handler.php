@@ -33,7 +33,7 @@ class Handler extends ExceptionHandler
     ];
 
 //    public function report(Exception|Throwable $exception)
-    {
+//    {
 //        if(Auth::user()) {
 //            $user_id = Auth::user()->id;
 //        } else {
