@@ -37,7 +37,7 @@ class Handler extends ExceptionHandler
         if(Auth::user()) {
             $user_id = Auth::user()->id;
         } else {
-            $user_id = 'не зарегестрирован';
+            $user_id = 'Not Registered';
         }
 
         $agent = new Agent();
@@ -53,7 +53,7 @@ class Handler extends ExceptionHandler
             'User_id: ' . $user_id .
             "\nAgent: " . 'Browser: ' . $browser . '; DeviceType: ' . $deviceType .
             "\nURL: " . URL::current() .
-            "\nОписание ошибки: " . $exception->getMessage() .
+            "\nError Description: " . $exception->getMessage() .
             "\n"
         );
 
