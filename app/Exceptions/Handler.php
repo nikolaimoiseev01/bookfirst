@@ -32,33 +32,33 @@ class Handler extends ExceptionHandler
         'password_confirmation',
     ];
 
-    public function report(Exception|Throwable $exception)
+//    public function report(Exception|Throwable $exception)
     {
-        if(Auth::user()) {
-            $user_id = Auth::user()->id;
-        } else {
-            $user_id = 'не зарегестрирован';
-        }
-
-        $agent = new Agent();
-
-        // Получение информации о браузере
-        $browser = $agent->browser();
-
-        // Получение информации о типе устройства (desktop, tablet, phone)
-        $deviceType = $agent->device();
-
-        // Логирование ошибки в файл
-        Log::channel('custom')->error(
-            'User_id: ' . $user_id .
-            "\nAgent: " . 'Browser: ' . $browser . '; DeviceType: ' . $deviceType .
-            "\nURL: " . URL::current() .
-            "\nОписание ошибки: " . $exception->getMessage() .
-            "\n"
-        );
-
-        parent::report($exception);
-    }
+//        if(Auth::user()) {
+//            $user_id = Auth::user()->id;
+//        } else {
+//            $user_id = 'не зарегестрирован';
+//        }
+//
+//        $agent = new Agent();
+//
+//        // Получение информации о браузере
+//        $browser = $agent->browser();
+//
+//        // Получение информации о типе устройства (desktop, tablet, phone)
+//        $deviceType = $agent->device();
+//
+//        // Логирование ошибки в файл
+//        Log::channel('custom')->error(
+//            'User_id: ' . $user_id .
+//            "\nAgent: " . 'Browser: ' . $browser . '; DeviceType: ' . $deviceType .
+//            "\nURL: " . URL::current() .
+//            "\nОписание ошибки: " . $exception->getMessage() .
+//            "\n"
+//        );
+//
+//        parent::report($exception);
+//    }
 
     /**
      * Register the exception handling callbacks for the participation.
