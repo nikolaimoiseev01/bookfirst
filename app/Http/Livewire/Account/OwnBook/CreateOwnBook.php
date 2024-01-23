@@ -437,14 +437,16 @@ class CreateOwnBook extends Component
 
 
             // Оповещение нам в телеграм
-            $title = '💥 Новая книга от ' . $this->author_name . '(юзер: ' . Auth::user()->book_title . ')! 💥';
+            $title = '💥 Новая книга от ' . Auth::user()->name . ' ' . Auth::user()->surname . "!💥 ";
             $cover_text = ($this->cover_ready === '1') ? 'готовая от автора' : 'нужно делать';
             $print_text = ($this->need_print) ?
                 $this->price_print . ' руб. ' . $this->prints . ' экз. '
                 . ($this->cover_type == 'soft' ? 'Мягкая' : 'Твердая')
                 . '. ВБ: ' . ($this->inside_color == '0' ? 'ч/б' : 'цветной (' . $this->pages_color . ' цветных страниц).')
                 : 'не нужна.';
-            $text = "*Книга:* " . $this->author_name . ': ' . $this->book_title . ' (' . $this->pages . ' стр.)' .
+            $text = "*Автор:* " .  $this->author_name .
+                "\n*Название:* " .  $this->book_title .
+                "\n*Страниц:* " . $this->pages  .
                 "\n*Редактура:* " . $this->price_inside . ' руб.' .
                 "\n*Обложка:* " . $cover_text .
                 "\n*Печать:* " . $print_text .
