@@ -2,7 +2,12 @@
 
 namespace App\Exceptions;
 
+use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\URL;
+use Jenssegers\Agent\Agent;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -26,6 +31,34 @@ class Handler extends ExceptionHandler
         'password',
         'password_confirmation',
     ];
+
+    public function report(Exception|Throwable $exception)
+    {
+        if(Auth::user()) {
+            $user_id = Auth::user()->id;
+        } else {
+            $user_id = 'не зарегестрирован';
+        }
+
+        $agent = new Agent();
+
+        // Получение информации о браузере
+        $browser = $agent->browser();
+
+        // Получение информации о типе устройства (desktop, tablet, phone)
+        $deviceType = $agent->device();
+
+        // Логирование ошибки в файл
+        Log::channel('custom')->error(
+            'User_id: ' . $user_id .
+            "\nAgent: " . 'Browser: ' . $browser . '; DeviceType: ' . $deviceType .
+            "\nURL: " . URL::current() .
+            "\nОписание ошибки: " . $exception->getMessage() .
+            "\n"
+        );
+
+        parent::report($exception);
+    }
 
     /**
      * Register the exception handling callbacks for the participation.

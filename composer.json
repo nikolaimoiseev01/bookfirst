@@ -20,6 +20,7 @@
         "filament/filament": "^2.17",
         "guzzlehttp/guzzle": "^7.0.1",
         "inertiajs/inertia-laravel": "^0.6.9",
+        "jenssegers/agent": "^2.6",
         "jenssegers/date": "^4.0",
         "laravel-notification-channels/telegram": "^4.0",
         "laravel/fortify": "^1.16",

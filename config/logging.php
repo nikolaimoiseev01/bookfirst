@@ -91,6 +91,12 @@ return [
             'level' => env('LOG_LEVEL', 'debug'),
         ],
 
+        'custom' => [
+            'driver' => 'single', // Используйте 'daily' для ежедневного лога
+            'path' => storage_path('logs/Errors.log'),
+            'level' => 'error', // Уровень логирования (можете выбрать другой уровень по необходимости)
+        ],
+
         'null' => [
             'driver' => 'monolog',
             'handler' => NullHandler::class,
