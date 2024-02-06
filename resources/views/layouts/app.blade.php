@@ -87,6 +87,24 @@
 <script src="/js/jquery.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
+<script>
+    function preloader_hide() {
+        $('.preloader_wrap').addClass('preloaded_hiding');
+        window.setTimeout(function () {
+            $('.preloader_wrap').addClass('preloaded_loaded');
+            $('.preloader_wrap').removeClass('preloaded_hiding');
+        }, 500);
+    }
+
+    window.onload = function () {
+        preloader_hide()
+    }
+
+    setTimeout(function () { // хардкорно выключаем долгий прелоадер
+        preloader_hide()
+    }, 1500);
+</script>
+
 @livewireScripts
 <script src="/js/js.js"></script>
 <script src="/js/sweetalert2.js"></script>
