@@ -70,7 +70,6 @@
 </div>
 
 
-
 @if(str_contains($subdomain, 'social'))
     <style>
         *::-webkit-scrollbar-thumb {
@@ -88,9 +87,29 @@
     <x-footer manvisible="false" mode="portal"/>
 @endif
 
-
 <script src="/js/jquery.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+{{--Прелоадер--}}
+<script>
+    function preloader_hide() {
+        $('.preloader_wrap').addClass('preloaded_hiding');
+        window.setTimeout(function () {
+            $('.preloader_wrap').addClass('preloaded_loaded');
+            $('.preloader_wrap').removeClass('preloaded_hiding');
+        }, 500);
+    }
+
+    window.onload = function () {
+        preloader_hide()
+    }
+
+    setTimeout(function () { // хардкорно выключаем долгий прелоадер
+        preloader_hide()
+    }, 1500);
+</script>
+
+<script src="/js/js.js"></script>
 
 @livewireScripts
 
@@ -99,13 +118,13 @@
 
 <script src="//unpkg.com/alpinejs"></script>
 
-<script src="/js/js.js"></script>
+
 <script src="https://unpkg.com/magic-snowflakes/dist/snowflakes.min.js"></script>
 
 <script>
     //region -- Новогодние снежинки
     var count_snows = 20
-    if(window.innerWidth > 768) {
+    if (window.innerWidth > 768) {
         count_snows = 20
     } else {
         count_snows = 10

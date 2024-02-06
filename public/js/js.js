@@ -116,20 +116,6 @@ function trigger_all_js() {
     })
 //endregion
 
-//region -- Прелоадер
-    window.onload = function () {
-        $('.preloader_wrap').addClass('preloaded_hiding');
-        window.setTimeout(function () {
-            $('.preloader_wrap').addClass('preloaded_loaded');
-            $('.preloader_wrap').removeClass('preloaded_hiding');
-        }, 500);
-    }
-    window.setTimeout(function () { // хардкорно выключаем долгий прелоадер
-        $('.preloader_wrap').addClass('preloaded_loaded');
-        $('.preloader_wrap').removeClass('preloaded_hiding');
-    }, 4000);
-//endregion
-
 //region -- Плавная прокрутка
 // Select all links with hashes
     $('a[href*="#"]')
@@ -262,9 +248,7 @@ function trigger_all_js() {
 //endregion
 
 
-
 }
-
 
 
 //region -- Кастомный селект
@@ -309,7 +293,6 @@ $(document).click(function (e) {
 });
 
 //endregion
-
 
 
 //region -- Анимация кнопки лайк
