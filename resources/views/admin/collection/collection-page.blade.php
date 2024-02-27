@@ -728,6 +728,7 @@
                                 <table id="comments_table" class="table table-striped table-bordered">
                                     <thead>
                                     <tr>
+                                        <th>Создан</th>
                                         <th>Автор</th>
                                         <th>Псевдоним</th>
                                         <th>Страница</th>
@@ -739,6 +740,9 @@
                                     @foreach($pre_comments as $pre_comment)
 
                                         <tr>
+                                            <td style="width: 10%;  text-align: center;">
+                                                {{$pre_comment['created_at']}}
+                                            </td>
                                             <td style="width: 10%; text-align: center;">
                                                 <a target="_blank" class="ml-2"
                                                    href="{{route('user_participation', $pre_comment->participation['id'] )}}">
