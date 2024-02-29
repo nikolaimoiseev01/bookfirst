@@ -118,6 +118,8 @@
 
 <script src="//unpkg.com/alpinejs"></script>
 
+<script src="/plugins/cookies.js/cookies.min.js"></script>
+
 
 {{--<script src="https://unpkg.com/magic-snowflakes/dist/snowflakes.min.js"></script>--}}
 

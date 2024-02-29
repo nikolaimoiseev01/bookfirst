@@ -1158,6 +1158,71 @@ textarea {
 
 }
 
+.survey_small_wrap {
+    width: 100%;
+    padding: 8px 15px;
+    border: 1px $color-green solid;
+    border-radius: 10px;
+    position: relative;
+
+    .hideButton {
+        position: absolute;
+        right: -6px;
+        top: -8px;
+
+        svg {
+            width: 15px;
+
+            path {
+                fill: $color-danger-red !important;
+            }
+        }
+    }
+
+    .emoji {
+        font-size: 18px;
+    }
+
+    .step_1_wrap {
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+        flex-wrap: wrap;
+        align-items: center;
+
+        .title {
+            font-size: 24px;
+            color: $color-green;
+        }
+
+        .stars_block_wrap {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 5px;
+        }
+    }
+
+    .step_2_wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        .buttons_wrap {
+            margin-left: auto;
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+        }
+    }
+
+    .button {
+        flex: 1;
+        //font-size: 18px;
+    }
+
+}
+
 
 //endregion
 

@@ -2547,8 +2547,15 @@
     flex-direction: column;
     gap: 20px;
 
+    .top_links_wrap {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
     .help_link {
         margin-bottom: 10px;
+        width: fit-content;
     }
 
     .legend_wrap {

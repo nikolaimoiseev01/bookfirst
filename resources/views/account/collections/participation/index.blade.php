@@ -19,9 +19,12 @@
 
     <div class="part_index_page_wrap">
 
-        <a target="_blank" href="{{route('help_collection')}}#application_pay" class="help_link link">
-            Инструкция по этой странице
-        </a>
+        <livewire:surveys.col-application :participation="$participation"></livewire:surveys.col-application>
+
+
+
+
+
 
         {{-- Общая информация о заявке--}}
         <div class="legend_wrap">
