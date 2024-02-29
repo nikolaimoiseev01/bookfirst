@@ -60,7 +60,7 @@ class ColApplication extends Component
 
             // Оповещение нам в телеграм
             $title = '📊 *Новый ответ в опросе!* 📊';
-            $text = "*Автор:* {$this->participation['name']} \n*Оценка:* {$this->stars} из 5";
+            $text = "*Автор:* {$this->participation['name']} {$this->participation['surname']}\n*Оценка:* {$this->stars} из 5";
             $button_text = "Его страница участия";
             $url = "vk.com";
 
