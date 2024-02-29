@@ -4,8 +4,10 @@ namespace App\Http\Livewire\Surveys;
 
 use App\Models\Survey;
 use App\Models\Survey_text;
+use App\Notifications\TelegramNotification;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Response;
 use Livewire\Component;
 
@@ -55,6 +57,16 @@ class ColApplication extends Component
                 'title' => 'Спасибо!',
                 'text' => 'Вы помогаете нам стать лучше :)'
             ]);
+
+            // Оповещение нам в телеграм
+            $title = '📊 *Новый ответ в опросе!* 📊';
+            $text = "*Автор:* {$this->participation['name']} \n*Оценка:* {$this->stars} из 5";
+            $button_text = "Его страница участия";
+            $url = "vk.com";
+
+            // Посылаем Telegram уведомление нам
+            Notification::route('telegram', '-506622812')
+                ->notify(new TelegramNotification($title, $text, $button_text, $url));
 
             $this->emit('refreshSurveySmall');
         });
