@@ -17,7 +17,7 @@ class Survey_text extends Model
         'text'
     ];
 
-    public function survey() {
+    public function Survey() {
         return $this->belongsTo(Survey::class);
     }
 }
