@@ -342,8 +342,7 @@
                             {!! $own_book['comment'] !!}
                         </div>
                         <div style="display: none;" id="comment_text_edit">
-                            <textarea name="comment" id="summernote"
-                                      name="editordata">{{$own_book['comment']}}</textarea>
+                            <textarea name="comment" id="summernote">{{$own_book['comment']}}</textarea>
                             <button type="submit" class="mt-2 btn btn-primary">Обновить</button>
                         </div>
 
@@ -360,7 +359,7 @@
                                 margin: 0 !important;
                             }
                         </style>
-                        @push('scripts')
+                        @push('page-js')
                             <script>
                                 $(document).ready(function () {
                                     $('#summernote').summernote({

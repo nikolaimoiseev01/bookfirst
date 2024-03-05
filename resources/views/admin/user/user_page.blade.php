@@ -151,7 +151,7 @@
                                                 margin: 0 !important;
                                             }
                                         </style>
-                                        @push('scripts')
+                                        @push('page-js')
                                             <script>
                                                 $(document).ready(function () {
                                                     $('#summernote').summernote({
