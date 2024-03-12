@@ -433,7 +433,7 @@
                                     @if ($own_book['inside_type'] == 'by_system' || $own_book['inside_type'] == 'системой')
                                         <h3>Автор загрузил произведения из системы:</h3>
                                         @foreach($own_book->own_books_works as $work)
-                                            <a href="{{route('social.work_page', $work['id'])}}" target="_blank">
+                                            <a href="{{route('social.work_page', $work->work['id'])}}" target="_blank">
                                                 <h3>{{$loop->index + 1}}. {{$work->work['title']}}</h3>
                                             </a>
                                             <p>{{$work->work['text']}}</p>
