@@ -434,7 +434,7 @@
                                         <h3>Автор загрузил произведения из системы:</h3>
                                         @foreach($own_book->own_books_works as $work)
                                             <a href="{{route('social.work_page', $work['id'])}}" target="_blank">
-                                                <h3>{{$loop->index + 1}}. {{$work['title']}}</h3>
+                                                <h3>{{$loop->index + 1}}. {{$work->work['title']}}</h3>
                                             </a>
                                             <p>{{$work->work['text']}}</p>
                                         @endforeach
