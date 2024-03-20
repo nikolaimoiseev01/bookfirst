@@ -240,7 +240,7 @@
 
 
 /*li {*/
-/*    list-style-type: none;*/
+/*    list.blade.php-style-type: none;*/
 /*    padding: 0;*/
 /*}*/
 
@@ -1214,7 +1214,7 @@
 /*    width: 200px;*/
 /*    margin: 0;*/
 /*    padding: 50px 0 20px 0;*/
-/*    list-style: none;*/
+/*    list.blade.php-style: none;*/
 /*    background-color: #ffffff;*/
 /*    box-shadow: 1px 0px 6px rgba(0, 0, 0, .2);*/
 /*    z-index: 5;*/

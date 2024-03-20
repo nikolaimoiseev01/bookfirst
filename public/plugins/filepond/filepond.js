@@ -600,7 +600,7 @@
         // initial properties
         var initialProps = Object.assign({}, viewProps);
 
-        // list of all active animations
+        // list.blade.php of all active animations
         var animations = [];
 
         // setup animators
@@ -637,7 +637,7 @@
             // add getters and setters
             addGetSet([prop], [viewInternalAPI, viewExternalAPI], viewProps, true);
 
-            // add it to the list for easy updating from the _write method
+            // add it to the list.blade.php for easy updating from the _write method
             animations.push(animator);
         });
 
@@ -1020,7 +1020,7 @@
                 // state used for each instance
                 var state = {};
 
-                // list of writers that will be called to update this view
+                // list.blade.php of writers that will be called to update this view
                 var writers = [
                     write, // default writer
                 ];
@@ -1284,7 +1284,7 @@
                 // add mixin functionality
                 Object.keys(mixins)
                     .sort(function(a, b) {
-                        // move styles to the back of the mixin list (so adjustments of other mixins are applied to the props correctly)
+                        // move styles to the back of the mixin list.blade.php (so adjustments of other mixins are applied to the props correctly)
                         if (a === 'styles') {
                             return 1;
                         } else if (b === 'styles') {
@@ -3694,7 +3694,7 @@
             });
     };
 
-    // adds a new filter to the list
+    // adds a new filter to the list.blade.php
     var addFilter = function addFilter(key, cb) {
         return filters.push({ key: key, cb: cb });
     };
@@ -3770,8 +3770,8 @@
         checkValidity: [false, Type.BOOLEAN], // Enables custom validity messages
 
         // Where to put file
-        itemInsertLocationFreedom: [true, Type.BOOLEAN], // Set to false to always add items to begin or end of list
-        itemInsertLocation: ['before', Type.STRING], // Default index in list to add items that have been dropped at the top of the list
+        itemInsertLocationFreedom: [true, Type.BOOLEAN], // Set to false to always add items to begin or end of list.blade.php
+        itemInsertLocation: ['before', Type.STRING], // Default index in list.blade.php to add items that have been dropped at the top of the list.blade.php
         itemInsertInterval: [75, Type.INT],
 
         // Drag 'n Drop related
@@ -3809,8 +3809,8 @@
         labelInvalidField: ['Field contains invalid files', Type.STRING],
         labelFileWaitingForSize: ['Waiting for size', Type.STRING],
         labelFileSizeNotAvailable: ['Size not available', Type.STRING],
-        labelFileCountSingular: ['file in list', Type.STRING],
-        labelFileCountPlural: ['files in list', Type.STRING],
+        labelFileCountSingular: ['file in list.blade.php', Type.STRING],
+        labelFileCountPlural: ['files in list.blade.php', Type.STRING],
         labelFileLoading: ['Loading', Type.STRING],
         labelFileAdded: ['Added', Type.STRING], // assistive only
         labelFileLoadError: ['Error during load', Type.STRING],
@@ -5463,7 +5463,7 @@
                         completeFn();
                     }
                 },
-                // random delay as in a list of files you start noticing
+                // random delay as in a list.blade.php of files you start noticing
                 // files uploading at the exact same speed
                 allowMinimumUploadDuration ? getRandomNumber(750, 1500) : 0
             );
@@ -6349,7 +6349,7 @@
                     };
                 });
 
-                // loop over files, if file is in list, leave it be, if not, remove
+                // loop over files, if file is in list.blade.php, leave it be, if not, remove
                 // test if items should be moved
                 var activeItems = getActiveItems(state.items);
 
@@ -6367,7 +6367,7 @@
                 // add new files
                 activeItems = getActiveItems(state.items);
                 files.forEach(function(file, index) {
-                    // if file is already in list
+                    // if file is already in list.blade.php
                     if (
                         activeItems.find(function(item) {
                             return item.source === file.source || item.file === file.source;
@@ -6375,7 +6375,7 @@
                     )
                         return;
 
-                    // not in list, add
+                    // not in list.blade.php, add
                     dispatch(
                         'ADD_ITEM',
                         Object.assign({}, file, {
@@ -6576,7 +6576,7 @@
                     return;
                 }
 
-                // test if there's still room in the list of files
+                // test if there's still room in the list.blade.php of files
                 if (!hasRoomForItem(state)) {
                     // if multiple allowed, we can't replace
                     // or if only a single item is allowed but we're not allowed to replace it we exit
@@ -6672,10 +6672,10 @@
                     index = itemInsertLocation === 'before' ? -1 : state.items.length;
                 }
 
-                // add item to list
+                // add item to list.blade.php
                 insertItem(state.items, item, index);
 
-                // sort items in list
+                // sort items in list.blade.php
                 if (isFunction(itemInsertLocation) && source) {
                     sortItems(state, itemInsertLocation);
                 }
@@ -6963,7 +6963,7 @@
                 var success = data.success,
                     source = data.source;
 
-                // sort items in list
+                // sort items in list.blade.php
                 var itemInsertLocation = query('GET_ITEM_INSERT_LOCATION');
                 if (isFunction(itemInsertLocation) && source) {
                     sortItems(state, itemInsertLocation);
@@ -6977,7 +6977,7 @@
                 });
 
                 // item has been successfully loaded and added to the
-                // list of items so can now be safely returned for use
+                // list.blade.php of items so can now be safely returned for use
                 success(createItemAPI(item));
 
                 // if this is a local server file we need to show a different state
@@ -7144,7 +7144,7 @@
                     processNext();
 
                     // if origin is local, and we're instant uploading, trigger remove of original
-                    // as revert will remove file from list
+                    // as revert will remove file from list.blade.php
                     var server = state.options.server;
                     var instantUpload = state.options.instantUpload;
                     if (
@@ -7233,13 +7233,13 @@
                     // get id reference
                     var id = item.id;
 
-                    // archive the item, this does not remove it from the list
+                    // archive the item, this does not remove it from the list.blade.php
                     getItemById(state.items, id).archive();
 
                     // tell the view the item has been removed
                     dispatch('DID_REMOVE_ITEM', { error: null, id: id, item: item });
 
-                    // now the list has been modified
+                    // now the list.blade.php has been modified
                     listUpdated(dispatch, state);
 
                     // correctly removed
@@ -7836,7 +7836,7 @@
         },
     };
 
-    // make a list of buttons, we can then remove buttons from this list if they're disabled
+    // make a list.blade.php of buttons, we can then remove buttons from this list.blade.php if they're disabled
     var ButtonKeys = [];
     forin(Buttons, function(key) {
         ButtonKeys.push(key);
@@ -8785,7 +8785,7 @@
 
     var create$8 = function create(_ref) {
         var root = _ref.root;
-        // need to set role to list as otherwise it won't be read as a list by VoiceOver
+        // need to set role to list.blade.php as otherwise it won't be read as a list.blade.php by VoiceOver
         attr(root.element, 'role', 'list');
 
         root.ref.lastItemSpanwDate = Date.now();
@@ -9197,7 +9197,7 @@
     };
 
     /**
-     * Filters actions that are meant specifically for a certain child of the list
+     * Filters actions that are meant specifically for a certain child of the list.blade.php
      * @param child
      * @param actions
      */
@@ -9713,7 +9713,7 @@
                 }
             });
 
-            // Assign the DataTransfer files list to the file input
+            // Assign the DataTransfer files list.blade.php to the file input
             element.files = dataTransfer.files;
         } catch (err) {
             return false;
@@ -10891,7 +10891,7 @@
         var boundsHeight =
             currentLabelHeight + listMarginTop + listHeight.bounds + listMarginBottom;
 
-        // link list to label bottom position
+        // link list.blade.php to label bottom position
         list.translateY =
             Math.max(0, currentLabelHeight - list.rect.element.marginTop) - listItemMargin.top;
 
@@ -10933,14 +10933,14 @@
             panel.scalable = false;
             panel.height = height;
 
-            // available height for list
+            // available height for list.blade.php
             var listAvailableHeight =
                 // the height of the panel minus the label height
                 height -
                 currentLabelHeight -
-                // the room we leave open between the end of the list and the panel bottom
+                // the room we leave open between the end of the list.blade.php and the panel bottom
                 (listMarginBottom - listItemMargin.bottom) -
-                // if we're full we need to leave some room between the top of the panel and the list
+                // if we're full we need to leave some room between the top of the panel and the list.blade.php
                 (atMaxCapacity ? listMarginTop : 0);
 
             if (listHeight.visual > listAvailableHeight) {
@@ -10957,17 +10957,17 @@
             // fix height of panel
             panel.scalable = false;
 
-            // available height for list
+            // available height for list.blade.php
             var _listAvailableHeight =
                 // the height of the panel minus the label height
                 bounds.fixedHeight -
                 currentLabelHeight -
-                // the room we leave open between the end of the list and the panel bottom
+                // the room we leave open between the end of the list.blade.php and the panel bottom
                 (listMarginBottom - listItemMargin.bottom) -
-                // if we're full we need to leave some room between the top of the panel and the list
+                // if we're full we need to leave some room between the top of the panel and the list.blade.php
                 (atMaxCapacity ? listMarginTop : 0);
 
-            // set list height
+            // set list.blade.php height
             if (listHeight.visual > _listAvailableHeight) {
                 list.overflow = _listAvailableHeight;
             } else {
@@ -10986,17 +10986,17 @@
                 ? panelHeight
                 : panelHeight - listItemMargin.top - listItemMargin.bottom;
 
-            // available height for list
+            // available height for list.blade.php
             var _listAvailableHeight2 =
                 // the height of the panel minus the label height
                 panelHeight -
                 currentLabelHeight -
-                // the room we leave open between the end of the list and the panel bottom
+                // the room we leave open between the end of the list.blade.php and the panel bottom
                 (listMarginBottom - listItemMargin.bottom) -
-                // if we're full we need to leave some room between the top of the panel and the list
+                // if we're full we need to leave some room between the top of the panel and the list.blade.php
                 (atMaxCapacity ? listMarginTop : 0);
 
-            // set list height (if is overflowing)
+            // set list.blade.php height (if is overflowing)
             if (visualHeight > bounds.cappedHeight && listHeight.visual > _listAvailableHeight2) {
                 list.overflow = _listAvailableHeight2;
             } else {
@@ -11042,7 +11042,7 @@
         var visual = 0;
         var bounds = 0;
 
-        // get file list reference
+        // get file list.blade.php reference
         var scrollList = root.ref.list;
         var itemList = scrollList.childViews[0];
         var visibleChildren = itemList.childViews.filter(function(child) {
@@ -11199,7 +11199,7 @@
             );
 
             hopper.onload = function(items, position) {
-                // get item children elements and sort based on list sort
+                // get item children elements and sort based on list.blade.php sort
                 var list = root.ref.list.childViews[0];
                 var visibleChildren = list.childViews.filter(function(child) {
                     return child.rect.element.height;
@@ -11923,7 +11923,7 @@
                 removeFile: removeFile,
 
                 /**
-                 * Moves a file to a new location in the files list
+                 * Moves a file to a new location in the files list.blade.php
                  */
                 moveFile: function moveFile(query, index) {
                     return store.dispatch('MOVE_ITEM', { query: query, index: index });
@@ -11940,7 +11940,7 @@
                 processFiles: processFiles,
 
                 /**
-                 * Clears all files from the files list
+                 * Clears all files from the files list.blade.php
                  */
                 removeFiles: removeFiles,
 
@@ -11950,7 +11950,7 @@
                 prepareFiles: prepareFiles,
 
                 /**
-                 * Sort list of files
+                 * Sort list.blade.php of files
                  */
                 sort: function sort(compare) {
                     return store.dispatch('SORT', { compare: compare });

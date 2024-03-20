@@ -44,7 +44,7 @@ class PayBlock extends Component
 
 
         $this->status_icon = $found_status['status_icon'];
-        $this->page_style = $found_status['page_style'];;
+        $this->page_style = $found_status['page_style'];
     }
 
 }

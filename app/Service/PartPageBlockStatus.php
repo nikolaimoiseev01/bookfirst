@@ -21,6 +21,10 @@ class PartPageBlockStatus
             $status_color = '#cbcbcb';
             $status_color_shadow = 'box-shadow: 0 0 7px 1px rgba(0, 0, 0, 0.07);';
             $status_icon = '<img class="status_icon" src="/img/hourglass_grey.svg" type="image/svg+xml">';
+        } elseif ($color === 'blue') {
+            $status_color = '#578bcd';
+            $status_color_shadow = 'box-shadow: 0 0 7px 1px #578bcda1;';
+            $status_icon = '<img class="status_icon" src="/img/process_blue.svg" type="image/svg+xml">';
         } else {
             $status_color = '#cbcbcb';
             $status_color_shadow = 'box-shadow: 0 0 7px 1px rgba(0, 0, 0, 0.07);';

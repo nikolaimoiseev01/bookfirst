@@ -858,7 +858,7 @@ var ColorItem = function () {
     }
 
     /**
-     * Generates a list of colors using the given hue-based formula or the given array of hue values.
+     * Generates a list.blade.php of colors using the given hue-based formula or the given array of hue values.
      * Hue formulas can be extended using ColorItem.colorFormulas static property.
      *
      * @param {String|Number[]} formula Examples: 'complementary', 'triad', 'tetrad', 'splitcomplement', [180, 270]
@@ -5240,7 +5240,7 @@ var swizzle = __webpack_require__(18);
 
 var reverseNames = {};
 
-// create a list of reverse color names
+// create a list.blade.php of reverse color names
 for (var name in colorNames) {
 	if (colorNames.hasOwnProperty(name)) {
 		reverseNames[colorNames[name]] = name;

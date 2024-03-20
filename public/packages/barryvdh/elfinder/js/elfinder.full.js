@@ -287,7 +287,7 @@ var elFinder = function(elm, opts, bootCallback) {
 		heightBase = null,
 
 		/**
-		 * MIME type list(Associative array) handled as a text file
+		 * MIME type list.blade.php(Associative array) handled as a text file
 		 *
 		 * @type Object|null
 		 */
@@ -1849,7 +1849,7 @@ var elFinder = function(elm, opts, bootCallback) {
 	};
 
 	/**
-	 * Return list of file parents hashes include file hash
+	 * Return list.blade.php of file parents hashes include file hash
 	 *
 	 * @param  String  file hash
 	 * @return Array
@@ -4996,7 +4996,7 @@ var elFinder = function(elm, opts, bootCallback) {
 		}, self.options.uiOptions.cwd.listView.columnsCustomName);
 
 		/**
-		 * Gets the column name of cwd list view
+		 * Gets the column name of cwd list.blade.php view
 		 *
 		 * @param      String  key     The key
 		 * @return     String  The column name.
@@ -11456,13 +11456,13 @@ elFinder.prototype._options = {
 	cssClass : '',
 
 	/**
-	 * Active commands list. '*' means all of the commands that have been load.
+	 * Active commands list.blade.php. '*' means all of the commands that have been load.
 	 * If some required commands will be missed here, elFinder will add its
 	 *
 	 * @type Array
 	 */
 	commands : ['*'],
-	// Available commands list
+	// Available commands list.blade.php
 	//commands : [
 	//	'archive', 'back', 'chmod', 'colwidth', 'copy', 'cut', 'download', 'duplicate', 'edit', 'extract',
 	//	'forward', 'fullscreen', 'getfile', 'help', 'home', 'info', 'mkdir', 'mkfile', 'netmount', 'netunmount',
@@ -11519,7 +11519,7 @@ elFinder.prototype._options = {
 			// Where to open into : 'window'(default), 'tab' or 'tabs'
 			// 'tabs' opens in each tabs
 			into   : 'window',
-			// Default command list of action when select file
+			// Default command list.blade.php of action when select file
 			// String value that is 'Command Name' or 'Command Name1/CommandName2...'
 			selectAction : 'open'
 		},
@@ -11604,7 +11604,7 @@ elFinder.prototype._options = {
 			dialogWidth : void(0),
 			// dialog height, integer(px) or integer+'%' (example: 650, '80%' ...)
 			dialogHeight : void(0),
-			// list of allowed mimetypes to edit of text files
+			// list.blade.php of allowed mimetypes to edit of text files
 			// if empty - any text files can be edited
 			mimes : [],
 			// MIME-types to unselected as default of "File types to enable with "New file"" in preferences
@@ -11895,7 +11895,7 @@ elFinder.prototype._options = {
 			prefs: null,
 			// language setting  see preference.js : build()
 			langs: null,
-			// Command list of action when select file
+			// Command list.blade.php of action when select file
 			// Array value are 'Command Name' or 'Command Name1/CommandName2...'
 			selectActions : ['open', 'edit/download', 'resize/edit/download', 'download', 'quicklook']
 		}
@@ -11936,7 +11936,7 @@ elFinder.prototype._options = {
 	getFileCallback : null,
 
 	/**
-	 * Default directory view. icons/list
+	 * Default directory view. icons/list.blade.php
 	 *
 	 * @type String
 	 * @default "icons"
@@ -12094,7 +12094,7 @@ elFinder.prototype._options = {
 				// 		kind : 'Mime type'
 				// }
 				columnsCustomName : {},
-				// fixed list header colmun
+				// fixed list.blade.php header colmun
 				fixedHeader : true
 			},
 
@@ -12131,7 +12131,7 @@ elFinder.prototype._options = {
 			//// Template placeholders replacement rules for overwrite. see ui/cwd.js replacement
 			//replacement : {
 			//	tooltip : function(f, fm) {
-			//		var list = fm.viewType == 'list', // current view type
+			//		var list.blade.php = fm.viewType == 'list.blade.php', // current view type
 			//			query = fm.searchStatus.state == 2, // is in search results
 			//			title = fm.formatDate(f) + (f.size > 0 ? ' ('+fm.formatSize(f.size)+')' : ''),
 			//			info  = '';
@@ -12140,7 +12140,7 @@ elFinder.prototype._options = {
 			//		} else {
 			//			info = f.tooltip? fm.escape(f.tooltip).replace(/\r/g, '&#13;') : '';
 			//		}
-			//		if (list) {
+			//		if (list.blade.php) {
 			//			info += (info? '&#13;' : '') + fm.escape(f.name);
 			//		}
 			//		return info? info + '&#13;' + title : title;
@@ -12276,7 +12276,7 @@ elFinder.prototype._options = {
 	fancyDateFormat : '',
 
 	/**
-	 * Style of file mode at cwd-list, info dialog
+	 * Style of file mode at cwd-list.blade.php, info dialog
 	 * 'string' (ex. rwxr-xr-x) or 'octal' (ex. 755) or 'both' (ex. rwxr-xr-x (755))
 	 *
 	 * @type {String}
@@ -13084,7 +13084,7 @@ elFinder.prototype.command = function(fm) {
 
 
 	/**
-	 * With argument check given files hashes and return list of existed files hashes.
+	 * With argument check given files hashes and return list.blade.php of existed files hashes.
 	 * Without argument return selected files hashes.
 	 *
 	 * @param  Array|String|void  hashes
@@ -15608,7 +15608,7 @@ $.fn.elfindercwd = function(fm, options) {
 			},
 
 			/**
-			 * Return selected files hashes list
+			 * Return selected files hashes list.blade.php
 			 *
 			 * @return Array
 			 */
@@ -16351,7 +16351,7 @@ $.fn.elfindercwd = function(fm, options) {
 			/**
 			 * Load thumbnails from backend.
 			 *
-			 * @param  Array|void reloads  hashes list for reload thumbnail items
+			 * @param  Array|void reloads  hashes list.blade.php for reload thumbnail items
 			 * @return void
 			 */
 			loadThumbnails = function(reloads) {
@@ -16720,13 +16720,13 @@ $.fn.elfindercwd = function(fm, options) {
 						tableHeader = null;
 					}
 
-					cwd.removeClass('elfinder-cwd-view-icons elfinder-cwd-view-list')
+					cwd.removeClass('elfinder-cwd-view-icons elfinder-cwd-view-list.blade.php')
 						.addClass('elfinder-cwd-view-'+(list ? 'list' :'icons'))
 						.attr('style', '')
 						.css('height', 'auto');
 					bottomMarker.hide();
 
-					wrapper[list ? 'addClass' : 'removeClass']('elfinder-cwd-wrapper-list')._padding = parseInt(wrapper.css('padding-top')) + parseInt(wrapper.css('padding-bottom'));
+					wrapper[list ? 'addClass' : 'removeClass']('elfinder-cwd-wrapper-list.blade.php')._padding = parseInt(wrapper.css('padding-top')) + parseInt(wrapper.css('padding-bottom'));
 					if (fm.UA.iOS) {
 						wrapper.removeClass('overflow-scrolling-touch').addClass('overflow-scrolling-touch');
 					}
@@ -21578,9 +21578,9 @@ $.fn.elfindertree = function(fm, opts) {
 			},
 
 			/**
-			 * Return only dirs from files list
+			 * Return only dirs from files list.blade.php
 			 *
-			 * @param  Array   files list
+			 * @param  Array   files list.blade.php
 			 * @param  Boolean do check exists
 			 * @return Array
 			 */
@@ -21627,7 +21627,7 @@ $.fn.elfindertree = function(fm, opts) {
 			/**
 			 * Add new dirs in tree
 			 *
-			 * @param  Array  dirs list
+			 * @param  Array  dirs list.blade.php
 			 * @return void
 			 */
 			updateTree = function(dirs) {
@@ -22760,8 +22760,8 @@ $.fn.elfinderviewbutton = function(cmd) {
 			tm = requestAnimationFrame(function() {
 				var icons = cmd.value == 'icons';
 
-				icon.toggleClass('elfinder-button-icon-view-list', icons);
-				cmd.className = icons? 'view-list' : '';
+				icon.toggleClass('elfinder-button-icon-view-list.blade.php', icons);
+				cmd.className = icons? 'view-list.blade.php' : '';
 				cmd.title = cmd.fm.i18n(icons ? 'viewlist' : 'viewicons');
 				button.attr('title', cmd.title);
 				text.html(cmd.title);
@@ -23288,7 +23288,7 @@ elFinder.prototype.commands.chmod = function() {
 
 /**
  * @class  elFinder command "colwidth"
- * CWD list table columns width to auto
+ * CWD list.blade.php table columns width to auto
  *
  * @author Naoki Sawada
  **/
@@ -25308,7 +25308,7 @@ elFinder.prototype.commands.extract = function() {
 	this.variants = [];
 	this.disableOnSearch = true;
 
-	// Update mimes list on open/reload
+	// Update mimes list.blade.php on open/reload
 	fm.bind('open reload', function() {
 		mimes = fm.option('archivers')['extract'] || [];
 		if (fm.api > 2) {
@@ -28249,7 +28249,7 @@ elFinder.prototype.commands.preference = function() {
 				}
 				$.each(fm.options.themes, function(id, val) {
 					var opt = $('<option class="elfinder-theme-option-'+id+'" value="'+id+'">'+fm.i18n(id)+'</option>'),
-						dsc = $('<fieldset class="ui-widget ui-widget-content ui-corner-all elfinder-theme-list-'+id+'"><legend>'+fm.i18n(id)+'</legend><div><span class="elfinder-spinner"></span></div></fieldset>'),
+						dsc = $('<fieldset class="ui-widget ui-widget-content ui-corner-all elfinder-theme-list.blade.php-'+id+'"><legend>'+fm.i18n(id)+'</legend><div><span class="elfinder-spinner"></span></div></fieldset>'),
 						tm;
 					themeSel.append(opt);
 					list.append(dsc);
@@ -35032,7 +35032,7 @@ elFinder.prototype.commands.sort = function() {
 		});
 	})
 	.bind('cwdrender', function() {
-		var cols = $(fm.cwd).find('div.elfinder-cwd-wrapper-list table');
+		var cols = $(fm.cwd).find('div.elfinder-cwd-wrapper-list.blade.php table');
 		if (cols.length) {
 			$.each(fm.sortRules, function(name, value) {
 				var td = cols.find('thead tr td.elfinder-cwd-view-th-'+name);
@@ -35757,7 +35757,7 @@ elFinder.prototype.commands.upload = function() {
 
 /**
  * @class  elFinder command "view"
- * Change current directory view (icons/list)
+ * Change current directory view (icons/list.blade.php)
  *
  * @author Dmitry (dio) Levashov
  **/
@@ -35835,7 +35835,7 @@ elFinder.prototype.commands.view = function() {
 			raws.push(
 				{
 					label    : fm.i18n('viewlist'),
-					icon     : 'view-list',
+					icon     : 'view-list.blade.php',
 					callback : function() {
 						if (self.value !== 'list') {
 							self.exec();

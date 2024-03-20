@@ -901,7 +901,7 @@ function isModifierEnabled(modifiers, modifierName) {
  * It checks if the needed modifier is listed and enabled.
  * @method
  * @memberof Popper.Utils
- * @param {Array} modifiers - list of modifiers
+ * @param {Array} modifiers - list.blade.php of modifiers
  * @param {String} requestingName - name of requesting modifier
  * @param {String} requestedName - name of requested modifier
  * @returns {Boolean}
@@ -969,7 +969,7 @@ function removeEventListeners(reference, state) {
 }
 
 /**
- * Loop trough the list of modifiers and run them in order,
+ * Loop trough the list.blade.php of modifiers and run them in order,
  * each of them will then edit the data object.
  * @method
  * @memberof Popper.Utils
@@ -1007,7 +1007,7 @@ function runModifiers(modifiers, data, ends) {
  * @memberof Popper.Utils
  * @argument {Element} element - Element to apply the attributes to
  * @argument {Object} styles
- * Object with a list of properties and values which will be applied to the element
+ * Object with a list.blade.php of properties and values which will be applied to the element
  */
 function setAttributes(element, attributes) {
   Object.keys(attributes).forEach(function (prop) {
@@ -1026,7 +1026,7 @@ function setAttributes(element, attributes) {
  * @memberof Popper.Utils
  * @argument {Element} element - Element to apply the style to
  * @argument {Object} styles
- * Object with a list of properties and values which will be applied to the element
+ * Object with a list.blade.php of properties and values which will be applied to the element
  */
 function setStyles(element, styles) {
   Object.keys(styles).forEach(function (prop) {

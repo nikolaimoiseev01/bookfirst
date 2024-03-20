@@ -37,6 +37,8 @@ class Chat extends Component
     public $editing_message_id;
     public $editing_text;
 
+    public $cur_user_role;
+
     protected $listeners = [
         'new_message',
         'delete_message',
@@ -63,6 +65,8 @@ class Chat extends Component
     public function mount($chat_id, $new_chat_user_id)
     {
 
+        $this->cur_user_role = Auth::user()->getRoleNames()[0];
+
 
         if ($chat_id) { // Если работаем с уже существующим чатом
 
@@ -75,7 +79,7 @@ class Chat extends Component
             $this->chat_id = $chat_id;
             $this->currentUrl = url()->current();
             $this->dispatchBrowserEvent('update_hrefs');
-            if (Auth::user()->id == 2) {
+            if (in_array($this->cur_user_role, ['admin', 'ext_promotion_admin'])) {
                 $this->text = 'Здравствуйте, ' . $this->user_to['name'] . '!';
             };
         } else {
@@ -201,7 +205,7 @@ class Chat extends Component
             $user = User::where('id', $this->user_to)->first();
             $chat = \App\Models\Chat::where('id', $this->chat_id)->first();
 
-            if (Auth::user()->hasRole('admin')) { // Если пишет АДМИН
+            if (in_array($this->cur_user_role, ['admin', 'ext_promotion_admin'])) { // Если пишет АДМИН
 
                 $this->chat->update([
                     'flg_chat_read' => 0 // Чат становится непрочитанным
@@ -210,6 +214,10 @@ class Chat extends Component
                 if ($this->chat['chat_status_id'] === '1') { // Если ждет ответа поддержки
                     $this->chat->update([
                         'chat_status_id' => '2' // Ставим статус "ответ получен"
+                    ]);
+                } elseif($this->chat['chat_status_id'] === '9') { // Если был пустой
+                    $this->chat->update([
+                        'chat_status_id' => '4' // Ставим статус "ответ получен"
                     ]);
                 }
 

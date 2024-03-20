@@ -62,8 +62,8 @@
     cm.replaceSelections(replacements);
   };
 
-  // Auto-updating Markdown list numbers when a new item is added to the
-  // middle of a list
+  // Auto-updating Markdown list.blade.php numbers when a new item is added to the
+  // middle of a list.blade.php
   function incrementRemainingMarkdownListNumbers(cm, pos) {
     var startLine = pos.line, lookAhead = 0, skipCount = 0;
     var startItem = listRE.exec(cm.getLine(startLine)), startIndent = startItem[1];

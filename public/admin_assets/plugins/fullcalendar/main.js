@@ -1667,7 +1667,7 @@ var FullCalendar = (function (exports) {
         validRange: identity,
         visibleRange: identity,
         titleFormat: identity,
-        // only used by list-view, but languages define the value, so we need it in base options
+        // only used by list.blade.php-view, but languages define the value, so we need it in base options
         noEventsText: String,
     };
     // do NOT give a type here. need `typeof BASE_OPTION_DEFAULTS` to give real results.
@@ -8388,8 +8388,8 @@ var FullCalendar = (function (exports) {
         */
         Slicer.prototype.sliceEventRange = function (eventRange, extraArgs) {
             var dateRange = eventRange.range;
-            // hack to make multi-day events that are being force-displayed as list-items to take up only one day
-            if (this.forceDayIfListItem && eventRange.ui.display === 'list-item') {
+            // hack to make multi-day events that are being force-displayed as list.blade.php-items to take up only one day
+            if (this.forceDayIfListItem && eventRange.ui.display === 'list.blade.php-item') {
                 dateRange = {
                     start: dateRange.start,
                     end: addDays(dateRange.start, 1),
@@ -11486,7 +11486,7 @@ var FullCalendar = (function (exports) {
     });
     function hasListItemDisplay(seg) {
         var display = seg.eventRange.ui.display;
-        return display === 'list-item' || (display === 'auto' &&
+        return display === 'list.blade.php-item' || (display === 'auto' &&
             !seg.eventRange.def.allDay &&
             seg.firstCol === seg.lastCol && // can't be multi-day
             seg.isStart && // "
@@ -11867,7 +11867,7 @@ var FullCalendar = (function (exports) {
                         marginTop = segMarginTops[instanceId];
                     }
                     /*
-                    known bug: events that are force to be list-item but span multiple days still take up space in later columns
+                    known bug: events that are force to be list.blade.php-item but span multiple days still take up space in later columns
                     */
                     nodes.push(createElement("div", { className: 'fc-daygrid-event-harness' + (isAbsolute ? ' fc-daygrid-event-harness-abs' : ''), key: instanceId,
                         // in print mode when in mult cols, could collide
@@ -12527,7 +12527,7 @@ var FullCalendar = (function (exports) {
                     view: viewApi,
                 };
                 return (
-                // TODO: make reusable hook. used in list view too
+                // TODO: make reusable hook. used in list.blade.php view too
                 createElement(RenderHook, { hookProps: hookProps, classNames: options.allDayClassNames, content: options.allDayContent, defaultContent: renderAllDayInner, didMount: options.allDayDidMount, willUnmount: options.allDayWillUnmount }, function (rootElRef, classNames, innerElRef, innerContent) { return (createElement("td", { ref: rootElRef, className: [
                         'fc-timegrid-axis',
                         'fc-scrollgrid-shrink',
@@ -13586,11 +13586,11 @@ var FullCalendar = (function (exports) {
             var hookProps = __assign({ date: dateEnv.toDate(dayDate), view: viewApi, text: text,
                 sideText: sideText,
                 navLinkData: navLinkData }, dayMeta);
-            var classNames = ['fc-list-day'].concat(getDayClassNames(dayMeta, theme));
+            var classNames = ['fc-list.blade.php-day'].concat(getDayClassNames(dayMeta, theme));
             // TODO: make a reusable HOC for dayHeader (used in daygrid/timegrid too)
             return (createElement(RenderHook, { hookProps: hookProps, classNames: options.dayHeaderClassNames, content: options.dayHeaderContent, defaultContent: renderInnerContent$4, didMount: options.dayHeaderDidMount, willUnmount: options.dayHeaderWillUnmount }, function (rootElRef, customClassNames, innerElRef, innerContent) { return (createElement("tr", { ref: rootElRef, className: classNames.concat(customClassNames).join(' '), "data-date": formatDayString(dayDate) },
                 createElement("th", { colSpan: 3 },
-                    createElement("div", { className: 'fc-list-day-cushion ' + theme.getClass('tableCellShaded'), ref: innerElRef }, innerContent)))); }));
+                    createElement("div", { className: 'fc-list.blade.php-day-cushion ' + theme.getClass('tableCellShaded'), ref: innerElRef }, innerContent)))); }));
         };
         return ListViewHeaderRow;
     }(BaseComponent));
@@ -13599,8 +13599,8 @@ var FullCalendar = (function (exports) {
             ? { 'data-navlink': props.navLinkData, tabIndex: 0 }
             : {};
         return (createElement(Fragment, null,
-            props.text && (createElement("a", __assign({ className: "fc-list-day-text" }, navLinkAttrs), props.text)),
-            props.sideText && (createElement("a", __assign({ className: "fc-list-day-side-text" }, navLinkAttrs), props.sideText))));
+            props.text && (createElement("a", __assign({ className: "fc-list.blade.php-day-text" }, navLinkAttrs), props.text)),
+            props.sideText && (createElement("a", __assign({ className: "fc-list.blade.php-day-side-text" }, navLinkAttrs), props.sideText))));
     }
 
     var DEFAULT_TIME_FORMAT$1 = createFormatter({
@@ -13618,11 +13618,11 @@ var FullCalendar = (function (exports) {
             var seg = props.seg;
             var timeFormat = context.options.eventTimeFormat || DEFAULT_TIME_FORMAT$1;
             return (createElement(EventRoot, { seg: seg, timeText: "" // BAD. because of all-day content
-                , disableDragging: true, disableResizing: true, defaultContent: renderEventInnerContent, isPast: props.isPast, isFuture: props.isFuture, isToday: props.isToday, isSelected: props.isSelected, isDragging: props.isDragging, isResizing: props.isResizing, isDateSelecting: props.isDateSelecting }, function (rootElRef, classNames, innerElRef, innerContent, hookProps) { return (createElement("tr", { className: ['fc-list-event', hookProps.event.url ? 'fc-event-forced-url' : ''].concat(classNames).join(' '), ref: rootElRef },
+                , disableDragging: true, disableResizing: true, defaultContent: renderEventInnerContent, isPast: props.isPast, isFuture: props.isFuture, isToday: props.isToday, isSelected: props.isSelected, isDragging: props.isDragging, isResizing: props.isResizing, isDateSelecting: props.isDateSelecting }, function (rootElRef, classNames, innerElRef, innerContent, hookProps) { return (createElement("tr", { className: ['fc-list.blade.php-event', hookProps.event.url ? 'fc-event-forced-url' : ''].concat(classNames).join(' '), ref: rootElRef },
                 buildTimeContent(seg, timeFormat, context),
-                createElement("td", { className: "fc-list-event-graphic" },
-                    createElement("span", { className: "fc-list-event-dot", style: { borderColor: hookProps.borderColor || hookProps.backgroundColor } })),
-                createElement("td", { className: "fc-list-event-title", ref: innerElRef }, innerContent))); }));
+                createElement("td", { className: "fc-list.blade.php-event-graphic" },
+                    createElement("span", { className: "fc-list.blade.php-event-dot", style: { borderColor: hookProps.borderColor || hookProps.backgroundColor } })),
+                createElement("td", { className: "fc-list.blade.php-event-title", ref: innerElRef }, innerContent))); }));
         };
         return ListViewEventRow;
     }(BaseComponent));
@@ -13661,9 +13661,9 @@ var FullCalendar = (function (exports) {
                     text: context.options.allDayText,
                     view: context.viewApi,
                 };
-                return (createElement(RenderHook, { hookProps: hookProps, classNames: options.allDayClassNames, content: options.allDayContent, defaultContent: renderAllDayInner$1, didMount: options.allDayDidMount, willUnmount: options.allDayWillUnmount }, function (rootElRef, classNames, innerElRef, innerContent) { return (createElement("td", { className: ['fc-list-event-time'].concat(classNames).join(' '), ref: rootElRef }, innerContent)); }));
+                return (createElement(RenderHook, { hookProps: hookProps, classNames: options.allDayClassNames, content: options.allDayContent, defaultContent: renderAllDayInner$1, didMount: options.allDayDidMount, willUnmount: options.allDayWillUnmount }, function (rootElRef, classNames, innerElRef, innerContent) { return (createElement("td", { className: ['fc-list.blade.php-event-time'].concat(classNames).join(' '), ref: rootElRef }, innerContent)); }));
             }
-            return (createElement("td", { className: "fc-list-event-time" }, timeText));
+            return (createElement("td", { className: "fc-list.blade.php-event-time" }, timeText));
         }
         return null;
     }
@@ -13696,9 +13696,9 @@ var FullCalendar = (function (exports) {
             var _this = this;
             var _a = this, props = _a.props, context = _a.context;
             var extraClassNames = [
-                'fc-list',
+                'fc-list.blade.php',
                 context.theme.getClass('table'),
-                context.options.stickyHeaderDates !== false ? 'fc-list-sticky' : '',
+                context.options.stickyHeaderDates !== false ? 'fc-list.blade.php-sticky' : '',
             ];
             var _b = this.computeDateVars(props.dateProfile), dayDates = _b.dayDates, dayRanges = _b.dayRanges;
             var eventSegs = this.eventStoreToSegs(props.eventStore, props.eventUiBases, dayRanges);
@@ -13713,8 +13713,8 @@ var FullCalendar = (function (exports) {
                 text: options.noEventsText,
                 view: viewApi,
             };
-            return (createElement(RenderHook, { hookProps: hookProps, classNames: options.noEventsClassNames, content: options.noEventsContent, defaultContent: renderNoEventsInner, didMount: options.noEventsDidMount, willUnmount: options.noEventsWillUnmount }, function (rootElRef, classNames, innerElRef, innerContent) { return (createElement("div", { className: ['fc-list-empty'].concat(classNames).join(' '), ref: rootElRef },
-                createElement("div", { className: "fc-list-empty-cushion", ref: innerElRef }, innerContent))); }));
+            return (createElement(RenderHook, { hookProps: hookProps, classNames: options.noEventsClassNames, content: options.noEventsContent, defaultContent: renderNoEventsInner, didMount: options.noEventsDidMount, willUnmount: options.noEventsWillUnmount }, function (rootElRef, classNames, innerElRef, innerContent) { return (createElement("div", { className: ['fc-list.blade.php-empty'].concat(classNames).join(' '), ref: rootElRef },
+                createElement("div", { className: "fc-list.blade.php-empty-cushion", ref: innerElRef }, innerContent))); }));
         };
         ListView.prototype.renderSegList = function (allSegs, dayDates) {
             var _a = this.context, theme = _a.theme, options = _a.options;
@@ -13734,7 +13734,7 @@ var FullCalendar = (function (exports) {
                         }
                     }
                 }
-                return (createElement("table", { className: 'fc-list-table ' + theme.getClass('table') },
+                return (createElement("table", { className: 'fc-list.blade.php-table ' + theme.getClass('table') },
                     createElement("tbody", null, innerNodes)));
             }));
         };

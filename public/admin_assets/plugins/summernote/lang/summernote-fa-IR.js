@@ -1,14 +1,14 @@
 /*!
- * 
+ *
  * Super simple wysiwyg editor v0.8.18
  * https://summernote.org
- * 
- * 
+ *
+ *
  * Copyright 2013- Alan Hong. and other contributors
  * summernote may be freely distributed under the MIT license.
- * 
+ *
  * Date: 2020-05-20T16:47Z
- * 
+ *
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -241,8 +241,8 @@ return /******/ (function(modules) { // webpackBootstrap
         'justifyCenter': 'وسط چین',
         'justifyRight': 'راست چین',
         'justifyFull': 'Set full align',
-        'insertUnorderedList': 'Toggle unordered list',
-        'insertOrderedList': 'Toggle ordered list',
+        'insertUnorderedList': 'Toggle unordered list.blade.php',
+        'insertOrderedList': 'Toggle ordered list.blade.php',
         'outdent': 'Outdent on current paragraph',
         'indent': 'Indent on current paragraph',
         'formatPara': 'Change current block\'s format as a paragraph(P tag)',

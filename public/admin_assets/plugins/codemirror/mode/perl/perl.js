@@ -73,7 +73,7 @@ CodeMirror.defineMode("perl",function(){
                 ','                             :   4,
                 '=>'                            :   4,
                 '::'                            :   4,
-                                                        //   list operators (rightward)
+                                                        //   list.blade.php operators (rightward)
                 'not'                           :   4,
                 'and'                           :   4,
                 'or'                            :   4,
@@ -265,10 +265,10 @@ CodeMirror.defineMode("perl",function(){
                 'break'                         :1,     // - break out of a "given" block
                 caller                          :1,     // - get context of the current subroutine call
                 chdir                           :1,     // - change your current working directory
-                chmod                           :1,     // - changes the permissions on a list of files
+                chmod                           :1,     // - changes the permissions on a list.blade.php of files
                 chomp                           :1,     // - remove a trailing record separator from a string
                 chop                            :1,     // - remove the last character from a string
-                chown                           :1,     // - change the ownership on a list of files
+                chown                           :1,     // - change the ownership on a list.blade.php of files
                 chr                             :1,     // - get character this number represents
                 chroot                          :1,     // - make directory new root for path lookups
                 close                           :1,     // - close file (or pipe or socket) handle
@@ -334,14 +334,14 @@ CodeMirror.defineMode("perl",function(){
                 glob                            :1,     // - expand filenames using wildcards
                 gmtime                          :1,     // - convert UNIX time into record or string using Greenwich time
                 'goto'                          :1,     // - create spaghetti code
-                grep                            :1,     // - locate elements in a list test true against a given criterion
+                grep                            :1,     // - locate elements in a list.blade.php test true against a given criterion
                 hex                             :1,     // - convert a string to a hexadecimal number
                 'import'                        :1,     // - patch a module's namespace into your own
                 index                           :1,     // - find a substring within a string
                 'int'                           :1,     // - get the integer portion of a number
                 ioctl                           :1,     // - system-dependent device control system call
-                'join'                          :1,     // - join a list into a string using a separator
-                keys                            :1,     // - retrieve list of indices from a hash
+                'join'                          :1,     // - join a list.blade.php into a string using a separator
+                keys                            :1,     // - retrieve list.blade.php of indices from a hash
                 kill                            :1,     // - send a signal to a process or process group
                 last                            :1,     // - exit a block prematurely
                 lc                              :1,     // - return lower-case version of a string
@@ -355,7 +355,7 @@ CodeMirror.defineMode("perl",function(){
                 'log'                           :1,     // - retrieve the natural logarithm for a number
                 lstat                           :1,     // - stat a symbolic link
                 m                               :null,  // - match a string with a regular expression pattern
-                map                             :1,     // - apply a change to a list to get back a new list with the changes
+                map                             :1,     // - apply a change to a list.blade.php to get back a new list.blade.php with the changes
                 mkdir                           :1,     // - create a directory
                 msgctl                          :1,     // - SysV IPC message control operations
                 msgget                          :1,     // - get SysV IPC message queue
@@ -370,20 +370,20 @@ CodeMirror.defineMode("perl",function(){
                 opendir                         :1,     // - open a directory
                 ord                             :1,     // - find a character's numeric representation
                 our                             : 2,    // - declare and assign a package variable (lexical scoping)
-                pack                            :1,     // - convert a list into a binary representation
+                pack                            :1,     // - convert a list.blade.php into a binary representation
                 'package'                       :1,     // - declare a separate global namespace
                 pipe                            :1,     // - open a pair of connected filehandles
                 pop                             :1,     // - remove the last element from an array and return it
                 pos                             :1,     // - find or set the offset for the last/next m//g search
-                print                           :1,     // - output a list to a filehandle
-                printf                          :1,     // - output a formatted list to a filehandle
+                print                           :1,     // - output a list.blade.php to a filehandle
+                printf                          :1,     // - output a formatted list.blade.php to a filehandle
                 prototype                       :1,     // - get the prototype (if any) of a subroutine
                 push                            :1,     // - append one or more elements to an array
                 q                               :null,  // - singly quote a string
                 qq                              :null,  // - doubly quote a string
                 qr                              :null,  // - Compile pattern
                 quotemeta                       :null,  // - quote regular expression magic characters
-                qw                              :null,  // - quote a list of words
+                qw                              :null,  // - quote a list.blade.php of words
                 qx                              :null,  // - backquote quote a string
                 rand                            :1,     // - retrieve the next pseudorandom number
                 read                            :1,     // - fixed-length buffered input from a filehandle
@@ -398,7 +398,7 @@ CodeMirror.defineMode("perl",function(){
                 require                         :1,     // - load in external functions from a library at runtime
                 reset                           :1,     // - clear all variables of a given name
                 'return'                        :1,     // - get out of a function early
-                reverse                         :1,     // - flip a string or a list
+                reverse                         :1,     // - flip a string or a list.blade.php
                 rewinddir                       :1,     // - reset directory handle
                 rindex                          :1,     // - right-to-left substring search
                 rmdir                           :1,     // - remove a directory
@@ -431,7 +431,7 @@ CodeMirror.defineMode("perl",function(){
                 sleep                           :1,     // - block for some number of seconds
                 socket                          :1,     // - create a socket
                 socketpair                      :1,     // - create a pair of sockets
-                'sort'                          :1,     // - sort a list of values
+                'sort'                          :1,     // - sort a list.blade.php of values
                 splice                          :1,     // - add or remove elements anywhere in an array
                 'split'                         :1,     // - split up a string using a regexp delimiter
                 sprintf                         :1,     // - formatted print into a string
@@ -463,15 +463,15 @@ CodeMirror.defineMode("perl",function(){
                 undef                           :1,     // - remove a variable or function definition
                 unlink                          :1,     // - remove one link to a file
                 unpack                          :1,     // - convert binary structure into normal perl variables
-                unshift                         :1,     // - prepend more elements to the beginning of a list
+                unshift                         :1,     // - prepend more elements to the beginning of a list.blade.php
                 untie                           :1,     // - break a tie binding to a variable
                 use                             :1,     // - load in a module at compile time
                 utime                           :1,     // - set a file's last access and modify times
-                values                          :1,     // - return a list of the values in a hash
+                values                          :1,     // - return a list.blade.php of the values in a hash
                 vec                             :1,     // - test or set particular bits in a string
                 wait                            :1,     // - wait for any child process to die
                 waitpid                         :1,     // - wait for a particular child process to die
-                wantarray                       :1,     // - get void vs scalar vs list context of current subroutine call
+                wantarray                       :1,     // - get void vs scalar vs list.blade.php context of current subroutine call
                 warn                            :1,     // - print debugging info
                 when                            :1,     //
                 write                           :1,     // - print a picture record

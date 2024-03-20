@@ -1,14 +1,14 @@
 /*!
- * 
+ *
  * Super simple wysiwyg editor v0.8.18
  * https://summernote.org
- * 
- * 
+ *
+ *
  * Copyright 2013- Alan Hong. and other contributors
  * summernote may be freely distributed under the MIT license.
- * 
+ *
  * Date: 2020-05-20T16:47Z
- * 
+ *
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -312,8 +312,8 @@ external_root_jQuery_commonjs2_jquery_commonjs_jquery_amd_jquery_default.a.exten
       h6: 'Header 6'
     },
     lists: {
-      unordered: 'Unordered list',
-      ordered: 'Ordered list'
+      unordered: 'Unordered list.blade.php',
+      ordered: 'Ordered list.blade.php'
     },
     options: {
       help: 'Help',
@@ -365,8 +365,8 @@ external_root_jQuery_commonjs2_jquery_commonjs_jquery_amd_jquery_default.a.exten
       'justifyCenter': 'Set center align',
       'justifyRight': 'Set right align',
       'justifyFull': 'Set full align',
-      'insertUnorderedList': 'Toggle unordered list',
-      'insertOrderedList': 'Toggle ordered list',
+      'insertUnorderedList': 'Toggle unordered list.blade.php',
+      'insertOrderedList': 'Toggle ordered list.blade.php',
       'outdent': 'Outdent on current paragraph',
       'indent': 'Indent on current paragraph',
       'formatPara': 'Change current block\'s format as a paragraph(P tag)',
@@ -740,7 +740,7 @@ function lists_all(array, pred) {
   return true;
 }
 /**
- * returns true if the value is present in the list.
+ * returns true if the value is present in the list.blade.php.
  */
 
 
@@ -757,7 +757,7 @@ function contains(array, item) {
   return false;
 }
 /**
- * get sum from a list
+ * get sum from a list.blade.php
  *
  * @param {Array} array - array
  * @param {Function} fn - iterator
@@ -788,7 +788,7 @@ function from(collection) {
   return result;
 }
 /**
- * returns whether list is empty or not
+ * returns whether list.blade.php is empty or not
  */
 
 
@@ -890,10 +890,10 @@ function prev(array, item) {
 /**
  * @class core.list
  *
- * list utils
+ * list.blade.php utils
  *
  * @singleton
- * @alternateClassName list
+ * @alternateClassName list.blade.php
  */
 
 
@@ -2682,7 +2682,7 @@ var range_WrappedRange = /*#__PURE__*/function () {
     this.ec = ec;
     this.eo = eo; // isOnEditable: judge whether range is on editable or not
 
-    this.isOnEditable = this.makeIsOn(dom.isEditable); // isOnList: judge whether range is on list node or not
+    this.isOnEditable = this.makeIsOn(dom.isEditable); // isOnList: judge whether range is on list.blade.php node or not
 
     this.isOnList = this.makeIsOn(dom.isList); // isOnAnchor: judge whether range is on anchor node or not
 
@@ -3951,7 +3951,7 @@ var Style_Style = /*#__PURE__*/function () {
           'font-family': document.queryCommandValue('fontname') || styleInfo['font-family']
         });
       } catch (e) {} // eslint-disable-next-line
-      // list-style-type to list-style(unordered, ordered)
+      // list.blade.php-style-type to list.blade.php-style(unordered, ordered)
 
 
       if (!rng.isOnList()) {
@@ -4004,13 +4004,13 @@ var Bullet_Bullet = /*#__PURE__*/function () {
     key: "insertOrderedList",
 
     /**
-     * toggle ordered list
+     * toggle ordered list.blade.php
      */
     value: function insertOrderedList(editable) {
       this.toggleList('OL', editable);
     }
     /**
-     * toggle unordered list
+     * toggle unordered list.blade.php
      */
 
   }, {
@@ -4092,7 +4092,7 @@ var Bullet_Bullet = /*#__PURE__*/function () {
       rng.select();
     }
     /**
-     * toggle list
+     * toggle list.blade.php
      *
      * @param {String} listName - OL or UL
      */
@@ -4107,14 +4107,14 @@ var Bullet_Bullet = /*#__PURE__*/function () {
         includeAncestor: true
       });
       var bookmark = rng.paraBookmark(paras);
-      var clustereds = lists.clusterBy(paras, func.peq2('parentNode')); // paragraph to list
+      var clustereds = lists.clusterBy(paras, func.peq2('parentNode')); // paragraph to list.blade.php
 
       if (lists.find(paras, dom.isPurePara)) {
         var wrappedParas = [];
         external_root_jQuery_commonjs2_jquery_commonjs_jquery_amd_jquery_default.a.each(clustereds, function (idx, paras) {
           wrappedParas = wrappedParas.concat(_this3.wrapList(paras, listName));
         });
-        paras = wrappedParas; // list to paragraph or change list style
+        paras = wrappedParas; // list.blade.php to paragraph or change list.blade.php style
       } else {
         var diffLists = rng.nodes(dom.isList, {
           includeAncestor: true
@@ -4150,7 +4150,7 @@ var Bullet_Bullet = /*#__PURE__*/function () {
 
       paras = paras.map(function (para) {
         return dom.isPurePara(para) ? dom.replace(para, 'LI') : para;
-      }); // append to list(<ul>, <ol>)
+      }); // append to list.blade.php(<ul>, <ol>)
 
       dom.appendChildNodes(listNode, paras);
 
@@ -4248,8 +4248,8 @@ var Bullet_Bullet = /*#__PURE__*/function () {
     /**
      * @method appendToPrevious
      *
-     * Appends list to previous list item, if
-     * none exist it wraps the list in a new list item.
+     * Appends list.blade.php to previous list.blade.php item, if
+     * none exist it wraps the list.blade.php in a new list.blade.php item.
      *
      * @param {HTMLNode} ListItem
      * @return {HTMLNode}
@@ -4263,7 +4263,7 @@ var Bullet_Bullet = /*#__PURE__*/function () {
     /**
      * @method findList
      *
-     * Finds an existing list in list item
+     * Finds an existing list.blade.php in list.blade.php item
      *
      * @param {HTMLNode} ListItem
      * @return {Array[]}
@@ -4279,7 +4279,7 @@ var Bullet_Bullet = /*#__PURE__*/function () {
     /**
      * @method findNextSiblings
      *
-     * Finds all list item siblings that follow it
+     * Finds all list.blade.php item siblings that follow it
      *
      * @param {HTMLNode} ListItem
      * @return {HTMLNode}
@@ -4354,7 +4354,7 @@ var Typing_Typing = /*#__PURE__*/function () {
      *
      * blockquoteBreakingLevel
      *   0 - No break, the new paragraph remains inside the quote
-     *   1 - Break the first blockquote in the ancestors list
+     *   1 - Break the first blockquote in the ancestors list.blade.php
      *   2 - Break all blockquotes, so that the new paragraph is not quoted (this is the default)
      */
 
@@ -5685,9 +5685,9 @@ var Editor_Editor = /*#__PURE__*/function () {
       return this.getLastRange();
     }
     /**
-     * create a new range from the list of elements
+     * create a new range from the list.blade.php of elements
      *
-     * @param {list} dom element list
+     * @param {list} dom element list.blade.php
      * @return {WrappedRange}
      */
 
@@ -7738,7 +7738,7 @@ var Buttons_Buttons = /*#__PURE__*/function () {
           className: 'note-align',
           children: [justifyLeft, justifyCenter, justifyRight, justifyFull]
         }), _this2.ui.buttonGroup({
-          className: 'note-list',
+          className: 'note-list.blade.php',
           children: [outdent, indent]
         })])]).render();
       });
@@ -9223,7 +9223,7 @@ var HelpDialog_HelpDialog = /*#__PURE__*/function () {
       var keyMap = this.options.keyMap[env.isMac ? 'mac' : 'pc'];
       return Object.keys(keyMap).map(function (key) {
         var command = keyMap[key];
-        var $row = external_root_jQuery_commonjs2_jquery_commonjs_jquery_amd_jquery_default()('<div><div class="help-list-item"></div></div>');
+        var $row = external_root_jQuery_commonjs2_jquery_commonjs_jquery_amd_jquery_default()('<div><div class="help-list.blade.php-item"></div></div>');
         $row.append(external_root_jQuery_commonjs2_jquery_commonjs_jquery_amd_jquery_default()('<label><kbd>' + key + '</kdb></label>').css({
           'width': 180,
           'margin-right': 10
@@ -10301,7 +10301,7 @@ var ui_button = renderer["a" /* default */].create('<button type="button" class=
     $node.addClass('note-codeview-keep');
   }
 });
-var dropdown = renderer["a" /* default */].create('<div class="note-dropdown-menu" role="list">', function ($node, options) {
+var dropdown = renderer["a" /* default */].create('<div class="note-dropdown-menu" role="list.blade.php">', function ($node, options) {
   var markup = Array.isArray(options.items) ? options.items.map(function (item) {
     var value = typeof item === 'string' ? item : item.value || '';
     var content = options.template ? options.template(item) : item;
@@ -10328,7 +10328,7 @@ var dropdown = renderer["a" /* default */].create('<div class="note-dropdown-men
     $node.addClass('note-codeview-keep');
   }
 });
-var dropdownCheck = renderer["a" /* default */].create('<div class="note-dropdown-menu note-check" role="list">', function ($node, options) {
+var dropdownCheck = renderer["a" /* default */].create('<div class="note-dropdown-menu note-check" role="list.blade.php">', function ($node, options) {
   var markup = Array.isArray(options.items) ? options.items.map(function (item) {
     var value = typeof item === 'string' ? item : item.value || '';
     var content = options.template ? options.template(item) : item;
@@ -10409,7 +10409,7 @@ var paragraphDropdownButton = function paragraphDropdownButton(opt) {
     className: 'note-align',
     children: opt.items[0]
   }), buttonGroup({
-    className: 'note-list',
+    className: 'note-list.blade.php',
     children: opt.items[1]
   })])]).render();
 };

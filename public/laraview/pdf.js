@@ -123,7 +123,7 @@ PDFJS.VERBOSITY_LEVELS = {
   infos: 5
 };
 
-// All the possible operations for an operator list.
+// All the possible operations for an operator list.blade.php.
 var OPS = PDFJS.OPS = {
   // Intentionally start from 1 so it is easy to spot bad operators that will be
   // 0's.
@@ -1550,7 +1550,7 @@ MessageHandler.prototype = {
    * Sends a message to the comObj to invoke the action with the supplied data.
    * @param {String} actionName Action to call.
    * @param {JSON} data JSON data to send.
-   * @param {Array} [transfers] Optional list of transfers/ArrayBuffers
+   * @param {Array} [transfers] Optional list.blade.php of transfers/ArrayBuffers
    */
   send: function messageHandlerSend(actionName, data, transfers) {
     var message = {
@@ -1564,7 +1564,7 @@ MessageHandler.prototype = {
    * Expects that other side will callback with the response.
    * @param {String} actionName Action to call.
    * @param {JSON} data JSON data to send.
-   * @param {Array} [transfers] Optional list of transfers/ArrayBuffers.
+   * @param {Array} [transfers] Optional list.blade.php of transfers/ArrayBuffers.
    * @returns {Promise} Promise to be resolved with response data.
    */
   sendWithPromise:
@@ -2207,7 +2207,7 @@ var PDFDocumentProxy = (function PDFDocumentProxyClosure() {
  */
 
 /**
- * PDF page operator list.
+ * PDF page operator list.blade.php.
  *
  * @typedef {Object} PDFOperatorList
  * @property {Array} fnArray - Array containing the operator functions.
@@ -2381,7 +2381,7 @@ var PDFPageProxy = (function PDFPageProxyClosure() {
 
     /**
      * @return {Promise} A promise resolved with an {@link PDFOperatorList}
-     * object that represents page's operator list.
+     * object that represents page's operator list.blade.php.
      */
     getOperatorList: function PDFPageProxy_getOperatorList() {
       function operatorListChanged() {
@@ -2463,7 +2463,7 @@ var PDFPageProxy = (function PDFPageProxyClosure() {
                                                             intent) {
       var intentState = this.intentStates[intent];
       // TODO Refactor RenderPageRequest to separate rendering
-      // and operator list logic
+      // and operator list.blade.php logic
       if (intentState.displayReadyCapability) {
         intentState.displayReadyCapability.resolve(transparency);
       }
@@ -2476,7 +2476,7 @@ var PDFPageProxy = (function PDFPageProxyClosure() {
                                                             intent) {
       var intentState = this.intentStates[intent];
       var i, ii;
-      // Add the new chunk to the current operator list.
+      // Add the new chunk to the current operator list.blade.php.
       for (i = 0, ii = operatorListChunk.length; i < ii; i++) {
         intentState.operatorList.fnArray.push(operatorListChunk.fnArray[i]);
         intentState.operatorList.argsArray.push(

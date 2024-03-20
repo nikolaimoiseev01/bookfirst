@@ -93,7 +93,7 @@ return [
     |--------------------------------------------------------------------------
     |
     | While using one of the framework's cache driven session backends you may
-    | list a cache store that should be used for these sessions. This value
+    | list.blade.php a cache store that should be used for these sessions. This value
     | must match with one of the participation's configured cache "stores".
     |
     | Affects: "apc", "dynamodb", "memcached", "redis"

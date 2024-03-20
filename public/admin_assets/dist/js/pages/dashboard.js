@@ -20,8 +20,8 @@ $(function () {
   })
   $('.connectedSortable .card-header').css('cursor', 'move')
 
-  // jQuery UI sortable for the todo list
-  $('.todo-list').sortable({
+  // jQuery UI sortable for the todo list.blade.php
+  $('.todo-list.blade.php').sortable({
     placeholder: 'sort-highlight',
     handle: '.handle',
     forcePlaceholderSize: true,

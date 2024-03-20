@@ -1414,7 +1414,11 @@
 
             }
 
-
+            &.ext_promotion_calc_wrap {
+                .price-total {
+                    margin-top: 0;
+                }
+            }
         }
 
         .dates-wrap {
@@ -2522,6 +2526,21 @@
 
     }
 
+    &.ext_promotion_application_wrap {
+        width: 100%;
+        max-width: 1000px;
+
+        .participation-inputs {
+            justify-content: space-between;
+        }
+
+        .participation-outputs {
+            .total_price_wrap {
+                margin-top: 0 !important;
+            }
+        }
+    }
+
     .buttons_wrap {
         display: flex;
         justify-content: space-between;
@@ -2588,6 +2607,25 @@
             }
         }
 
+    }
+
+    &.ext_promotion_index_page_wrap {
+        .legend_wrap {
+            flex-direction: column;
+
+            .right {
+                display: flex;
+                gap: 20px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+
+        .process_block_wrap {
+            h4 {
+                font-size: 30px;
+            }
+        }
     }
 
     .chat_block_wrap {

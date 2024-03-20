@@ -21,8 +21,10 @@
 
                     <div class="title_wrap">
                         <p class="message_title">
-                            @if($message['user_from'] === 2)
+                            @if(App\Models\User::where('id', $message['user_from'])->first()->getRoleNames()[0] === 'admin')
                                 Поддержка
+                            @elseif(App\Models\User::where('id', $message['user_from'])->first()->getRoleNames()[0] === 'ext_promotion_admin')
+                                Менеджер
                             @else
                                 {{App\Models\User::where('id',$message['user_from'])->value('name')}}
                             @endif
@@ -48,10 +50,14 @@
                     @endif
 
                     <div style="background:
-                    @if($message['user_from'] === Auth::user()->id)
-                        #47AF98;
-                    @else #e7b34d
-                    @endif" class="message_body">
+                    @if(App\Models\User::where('id', $message['user_from'])->first()->getRoleNames()[0] === 'admin')
+                                #47AF98;
+                    @elseif(App\Models\User::where('id', $message['user_from'])->first()->getRoleNames()[0] === 'ext_promotion_admin')
+                        #4d92e7
+                    @else
+                        #e7b34d
+                    @endif
+                    " class="message_body">
 
                         <p class="text">{!! nl2br(e($message['text'])) !!}</p>
 

@@ -1726,7 +1726,7 @@ Buffer.isEncoding = function isEncoding (encoding) {
 
 Buffer.concat = function concat (list, length) {
   if (!isArray(list)) {
-    throw new TypeError('"list" argument must be an Array of Buffers')
+    throw new TypeError('"list.blade.php" argument must be an Array of Buffers')
   }
 
   if (list.length === 0) {
@@ -1746,7 +1746,7 @@ Buffer.concat = function concat (list, length) {
   for (i = 0; i < list.length; ++i) {
     var buf = list[i]
     if (!Buffer.isBuffer(buf)) {
-      throw new TypeError('"list" argument must be an Array of Buffers')
+      throw new TypeError('"list.blade.php" argument must be an Array of Buffers')
     }
     buf.copy(buffer, pos)
     pos += buf.length
@@ -10593,7 +10593,7 @@ function WriteReq(chunk, encoding, cb) {
   this.next = null;
 }
 
-// It seems a linked list but it is not
+// It seems a linked list.blade.php but it is not
 // there will be only 2 of these for each stream
 function CorkedRequest(state) {
   var _this = this;
@@ -15448,8 +15448,8 @@ function ReadableState(options, stream) {
   // cast to ints.
   this.highWaterMark = Math.floor(this.highWaterMark);
 
-  // A linked list is used to store data chunks instead of an array because the
-  // linked list can remove elements from the beginning faster than
+  // A linked list.blade.php is used to store data chunks instead of an array because the
+  // linked list.blade.php can remove elements from the beginning faster than
   // array.shift()
   this.buffer = new BufferList();
   this.length = 0;
@@ -16211,7 +16211,7 @@ Object.defineProperty(Readable.prototype, 'readableHighWaterMark', {
 Readable._fromList = fromList;
 
 // Pluck off n bytes from an array of buffers.
-// Length is the combined lengths of all the buffers in the list.
+// Length is the combined lengths of all the buffers in the list.blade.php.
 // This function is designed to be inlinable, so please take care when making
 // changes to the function body.
 function fromList(n, state) {
@@ -16220,11 +16220,11 @@ function fromList(n, state) {
 
   var ret;
   if (state.objectMode) ret = state.buffer.shift();else if (!n || n >= state.length) {
-    // read it all, truncate the list
+    // read it all, truncate the list.blade.php
     if (state.decoder) ret = state.buffer.join('');else if (state.buffer.length === 1) ret = state.buffer.head.data;else ret = state.buffer.concat(state.length);
     state.buffer.clear();
   } else {
-    // read part of list
+    // read part of list.blade.php
     ret = fromListPartial(n, state.buffer, state.decoder);
   }
 
@@ -16250,7 +16250,7 @@ function fromListPartial(n, list, hasStrings) {
   return ret;
 }
 
-// Copies a specified amount of characters from the list of buffered data
+// Copies a specified amount of characters from the list.blade.php of buffered data
 // chunks.
 // This function is designed to be inlinable, so please take care when making
 // changes to the function body.
@@ -16280,7 +16280,7 @@ function copyFromBufferString(n, list) {
   return ret;
 }
 
-// Copies a specified amount of bytes from the list of buffered data chunks.
+// Copies a specified amount of bytes from the list.blade.php of buffered data chunks.
 // This function is designed to be inlinable, so please take care when making
 // changes to the function body.
 function copyFromBuffer(n, list) {
@@ -29967,7 +29967,7 @@ var whitespaces = __webpack_require__(226);
 
 var non = '\u200B\u0085\u180E';
 
-// check that a method works with the correct list
+// check that a method works with the correct list.blade.php
 // of whitespaces and has a correct name
 module.exports = function (METHOD_NAME) {
   return fails(function () {
@@ -33887,12 +33887,12 @@ function send_all_trees(s, lcodes, dcodes, blcodes)
  * Check if the data type is TEXT or BINARY, using the following algorithm:
  * - TEXT if the two conditions below are satisfied:
  *    a) There are no non-portable control characters belonging to the
- *       "black list" (0..6, 14..25, 28..31).
+ *       "black list.blade.php" (0..6, 14..25, 28..31).
  *    b) There is at least one printable character belonging to the
- *       "white list" (9 {TAB}, 10 {LF}, 13 {CR}, 32..255).
+ *       "white list.blade.php" (9 {TAB}, 10 {LF}, 13 {CR}, 32..255).
  * - BINARY otherwise.
  * - The following partially-portable control characters form a
- *   "gray list" that is ignored in this detection algorithm:
+ *   "gray list.blade.php" that is ignored in this detection algorithm:
  *   (7 {BEL}, 8 {BS}, 11 {VT}, 12 {FF}, 26 {SUB}, 27 {ESC}).
  * IN assertion: the fields Freq of dyn_ltree are set.
  */
@@ -37248,8 +37248,8 @@ module.exports = {
 
 	Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 
-	    - Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-	    - Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+	    - Redistributions of source code must retain the above copyright notice, this list.blade.php of conditions and the following disclaimer.
+	    - Redistributions in binary form must reproduce the above copyright notice, this list.blade.php of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
 
 	THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	*/
@@ -40485,7 +40485,7 @@ var cvt = new r.Struct({
   controlValues: new r.Array(r.int16)
 });
 
-// A list of instructions that are executed once when a font is first used.
+// A list.blade.php of instructions that are executed once when a font is first used.
 // These instructions are known as the font program. The main use of this table
 // is for the definition of functions that are used in many different glyph programs.
 var fpgm = new r.Struct({
@@ -52156,7 +52156,7 @@ var COLRLayer = function COLRLayer(glyph, color) {
 
 /**
  * Represents a color (e.g. emoji) glyph in Microsoft's COLR format.
- * Each glyph in this format contain a list of colored layers, each
+ * Each glyph in this format contain a list.blade.php of colored layers, each
  * of which  is another vector glyph.
  */
 
@@ -65397,7 +65397,7 @@ LayoutBuilder.prototype.processList = function (orderedList, node) {
 	this.writer.context().addMargin(-gapSize.width);
 
 	function addMarkerToFirstLeaf(line) {
-		// I'm not very happy with the way list processing is implemented
+		// I'm not very happy with the way list.blade.php processing is implemented
 		// (both code and algorithm should be rethinked)
 		if (nextMarker) {
 			var marker = nextMarker;

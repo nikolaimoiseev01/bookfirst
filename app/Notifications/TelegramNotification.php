@@ -27,8 +27,8 @@ class TelegramNotification extends Notification
     {
         $this->title = $title;
         $this->text = $text;
-        $this->button_text = $button_text;
-        $this->button_link = $button_link;
+        $this->button_text = $button_text ?? null;
+        $this->button_link = $button_link ?? null;
     }
 
     /**
@@ -46,10 +46,17 @@ class TelegramNotification extends Notification
     public function toTelegram($notifiable)
     {
 
-        return TelegramMessage::create()
-            // Markdown supported.
+        if($this->button_link ?? null) {
+            return TelegramMessage::create()
+                // Markdown supported.
 
-            ->content(((ENV('APP_DEBUG')) ? "ТЕСТ \n\n" : '') . $this->title . "\n\n" . $this->text)
-            ->button($this->button_text, $this->button_link);
+                ->content(((ENV('APP_DEBUG')) ? "ТЕСТ \n\n" : '') . $this->title . "\n\n" . $this->text)
+                ->button($this->button_text, $this->button_link);
+        } else {
+            return TelegramMessage::create()
+                // Markdown supported.
+                ->content(((ENV('APP_DEBUG')) ? "ТЕСТ \n\n" : '') . $this->title . "\n\n" . $this->text);
+        }
+
     }
 }

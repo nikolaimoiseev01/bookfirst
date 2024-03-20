@@ -28,7 +28,7 @@ var CustomStyle = (function CustomStyleClosure() {
 
   // As noted on: http://www.zachstronaut.com/posts/2009/02/17/
   //              animate-css-transforms-firefox-webkit.html
-  // in some versions of IE9 it is critical that ms appear in this list
+  // in some versions of IE9 it is critical that ms appear in this list.blade.php
   // before Moz
   var prefixes = ['ms', 'Moz', 'Webkit', 'O'];
   var _cache = {};

@@ -102,7 +102,7 @@ CodeMirror.defineMode("gfm", function(config, modeConfig) {
         // URLs
         // Taken from http://daringfireball.net/2010/07/improved_regex_for_matching_urls
         // And then (issue #1160) simplified to make it not crash the Chrome Regexp engine
-        // And then limited url schemes to the CommonMark list, so foo:bar isn't matched as a URL
+        // And then limited url schemes to the CommonMark list.blade.php, so foo:bar isn't matched as a URL
         state.combineTokens = true;
         return "link";
       }

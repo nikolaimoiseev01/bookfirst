@@ -328,7 +328,7 @@
     background-color: #ff5722
 }
 
-/* list view*/
+/* list.blade.php view*/
 .elfinder-cwd table thead td.ui-state-hover {
     background: #ddd;
 }

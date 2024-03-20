@@ -172,7 +172,7 @@ class ChatsBlock extends Component
 
 
         } elseif (count($this->user_chats) > 0 ?? null) { // Если есть какой-нибудь чат
-            $this->show_type = 'list';
+            $this->show_type = 'list.blade.php';
             if (!$this->cur_chat_id) { // Если никакой чат не выбран
                 $this->cur_chat_id = $this->user_chats[0]->id; // видим id последнего чата (по умолчанию личные)
             }
@@ -201,7 +201,7 @@ class ChatsBlock extends Component
 
     public function back_to_chats()
     {
-        $this->show_type = 'list';
+        $this->show_type = 'list.blade.php';
 
     }
 

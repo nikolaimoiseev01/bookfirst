@@ -3477,7 +3477,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
      | "M10,20L30,40"
      * Here we can see two commands: “M”, with arguments `(10, 20)` and “L” with arguments `(30, 40)`. Upper case letter mean command is absolute, lower case—relative.
      *
-     # <p>Here is short list of commands available, for more details see <a href="http://www.w3.org/TR/SVG/paths.html#PathData" title="Details of a path's data attribute's format are described in the SVG specification.">SVG path string format</a>.</p>
+     # <p>Here is short list.blade.php of commands available, for more details see <a href="http://www.w3.org/TR/SVG/paths.html#PathData" title="Details of a path's data attribute's format are described in the SVG specification.">SVG path string format</a>.</p>
      # <table><thead><tr><th>Command</th><th>Name</th><th>Parameters</th></tr></thead><tbody>
      # <tr><td>M</td><td>moveto</td><td>(x y)+</td></tr>
      # <tr><td>Z</td><td>closepath</td><td>(none)</td></tr>
@@ -4145,7 +4145,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
      * Raphael.easing_formulas
      [ property ]
      **
-     * Object that contains easing formulas for animation. You could extend it with your own. By default it has following list of easing:
+     * Object that contains easing formulas for animation. You could extend it with your own. By default it has following list.blade.php of easing:
      # <ul>
      #     <li>“linear”</li>
      #     <li>“&lt;” or “easeIn” or “ease-in”</li>
@@ -6292,7 +6292,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
      [ method ]
      **
      * Deprecated! Use @Element.transform instead.
-     * Adds rotation by given angle around given point to the list of
+     * Adds rotation by given angle around given point to the list.blade.php of
      * transformations of the element.
      > Parameters
      - deg (number) angle in degrees
@@ -6325,7 +6325,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
      [ method ]
      **
      * Deprecated! Use @Element.transform instead.
-     * Adds scale by given amount relative to given point to the list of
+     * Adds scale by given amount relative to given point to the list.blade.php of
      * transformations of the element.
      > Parameters
      - sx (number) horisontal scale amount
@@ -6361,7 +6361,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
      [ method ]
      **
      * Deprecated! Use @Element.transform instead.
-     * Adds translation by given amount to the list of transformations of the element.
+     * Adds translation by given amount to the list.blade.php of transformations of the element.
      > Parameters
      - dx (number) horisontal shift
      - dy (number) vertical shift
@@ -8004,13 +8004,13 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// Copyright (c) 2013 Adobe Systems Incorporated. All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 // http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -8182,7 +8182,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// Copyright (c)
 
      * If for some reasons you don’t like default separators (`.` or `/`) you can specify yours
      * here. Be aware that if you pass a string longer than one character it will be treated as
-     * a list of characters.
+     * a list.blade.php of characters.
 
      - separator (string) new separator. Empty string resets to default: `.` or `/`.
     \*/
@@ -8210,7 +8210,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// Copyright (c)
      - name (array) if you don’t want to use separators, you can use array of strings
      - f (function) event handler function
      **
-     = (function) returned function accepts a single numeric parameter that represents z-index of the handler. It is an optional feature and only used when you need to ensure that some subset of handlers will be invoked in a given order, despite of the order of assignment. 
+     = (function) returned function accepts a single numeric parameter that represents z-index of the handler. It is an optional feature and only used when you need to ensure that some subset of handlers will be invoked in a given order, despite of the order of assignment.
      > Example:
      | eve.on("mouse", eatIt)(2);
      | eve.on("mouse", scream);
@@ -8254,7 +8254,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// Copyright (c)
      **
      * Returns function that will fire given event with optional arguments.
      * Arguments that will be passed to the result function will be also
-     * concated to the list of final arguments.
+     * concated to the list.blade.php of final arguments.
      | el.onclick = eve.f("click", 1, 2);
      | eve.on("click", function (a, b, c) {
      |     console.log(a, b, c); // 1, 2, [event object]
@@ -8316,7 +8316,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// Copyright (c)
      * eve.off
      [ method ]
      **
-     * Removes given function from the list of event listeners assigned to given name.
+     * Removes given function from the list.blade.php of event listeners assigned to given name.
      * If no arguments specified all the events will be cleared.
      **
      > Arguments

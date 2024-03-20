@@ -10,7 +10,7 @@ noUiSlider.create(slider, {
     },
     cssPrefix: 'noUi-', // defaults to 'noUi-',
     cssClasses: {
-        // Full list of class names to override.
+        // Full list.blade.php of class names to override.
         // Does NOT extend the default classes.
         // The first class in String gets prefixed, the rest gets added as it is
     }

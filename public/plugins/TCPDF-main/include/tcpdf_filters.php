@@ -51,7 +51,7 @@
 class TCPDF_FILTERS {
 
 	/**
-	 * Define a list of available filter decoders.
+	 * Define a list.blade.php of available filter decoders.
 	 * @private static
 	 */
 	private static $available_filters = array('ASCIIHexDecode', 'ASCII85Decode', 'LZWDecode', 'FlateDecode', 'RunLengthDecode');
@@ -59,7 +59,7 @@ class TCPDF_FILTERS {
 // -----------------------------------------------------------------------------
 
 	/**
-	 * Get a list of available decoding filters.
+	 * Get a list.blade.php of available decoding filters.
 	 * @return array Array of available filter decoders.
 	 * @since 1.0.000 (2011-05-23)
 	 * @public static

@@ -177,7 +177,7 @@ $.widget = function( name, base, prototype ) {
 				child._proto );
 		} );
 
-		// Remove the list of existing child constructors from the old constructor
+		// Remove the list.blade.php of existing child constructors from the old constructor
 		// so the old child constructors can be garbage collected
 		delete existingConstructor._childConstructors;
 	} else {
@@ -5233,7 +5233,7 @@ var widgetsMenu = $.widget( "ui.menu", {
 			}
 		} );
 
-		// Don't refresh list items that are already adapted
+		// Don't refresh list.blade.php items that are already adapted
 		newItems = items.not( ".ui-menu-item, .ui-menu-divider" );
 		newWrappers = newItems.children()
 			.not( ".ui-menu" )
@@ -13196,7 +13196,7 @@ $.ui.ddmanager = {
 
 		var dropped = false;
 
-		// Create a copy of the droppables in case the list changes during the drop (#9116)
+		// Create a copy of the droppables in case the list.blade.php changes during the drop (#9116)
 		$.each( ( $.ui.ddmanager.droppables[ draggable.options.scope ] || [] ).slice(), function() {
 
 			if ( !this.options ) {
@@ -15209,7 +15209,7 @@ var widgetsSlider = $.widget( "ui.slider", $.ui.mouse, {
 
 //>>label: Sortable
 //>>group: Interactions
-//>>description: Enables items in a list to be sorted using the mouse.
+//>>description: Enables items in a list.blade.php to be sorted using the mouse.
 //>>docs: http://api.jqueryui.com/sortable/
 //>>demos: http://jqueryui.com/sortable/
 //>>css.structure: ../../themes/base/sortable.css
@@ -17379,7 +17379,7 @@ $.widget( "ui.tabs", {
 			) ).sort();
 		}
 
-		// Check for length avoids error when initializing empty list
+		// Check for length avoids error when initializing empty list.blade.php
 		if ( this.options.active !== false && this.anchors.length ) {
 			this.active = this._findActive( options.active );
 		} else {
@@ -17765,7 +17765,7 @@ $.widget( "ui.tabs", {
 		}
 	},
 
-	// Allow overriding how to find the list for rare usage scenarios (#7715)
+	// Allow overriding how to find the list.blade.php for rare usage scenarios (#7715)
 	_getList: function() {
 		return this.tablist || this.element.find( "ol, ul" ).eq( 0 );
 	},

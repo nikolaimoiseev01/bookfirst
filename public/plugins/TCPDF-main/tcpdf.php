@@ -721,19 +721,19 @@ class TCPDF {
 	protected $fgcolor;
 
 	/**
-	 * HTML PARSER: array of boolean values, true in case of ordered list (OL), false otherwise.
+	 * HTML PARSER: array of boolean values, true in case of ordered list.blade.php (OL), false otherwise.
 	 * @protected
 	 */
 	protected $listordered = array();
 
 	/**
-	 * HTML PARSER: array count list items on nested lists.
+	 * HTML PARSER: array count list.blade.php items on nested lists.
 	 * @protected
 	 */
 	protected $listcount = array();
 
 	/**
-	 * HTML PARSER: current list nesting level.
+	 * HTML PARSER: current list.blade.php nesting level.
 	 * @protected
 	 */
 	protected $listnum = 0;
@@ -745,7 +745,7 @@ class TCPDF {
 	protected $listindent = 0;
 
 	/**
-	 * HTML PARSER: current list indententation level.
+	 * HTML PARSER: current list.blade.php indententation level.
 	 * @protected
 	 */
 	protected $listindentlevel = 0;
@@ -1048,7 +1048,7 @@ class TCPDF {
 	protected $spot_colors = array();
 
 	/**
-	 * Symbol used for HTML unordered list items.
+	 * Symbol used for HTML unordered list.blade.php items.
 	 * @protected
 	 * @since 4.0.028 (2008-09-26)
 	 */
@@ -2948,7 +2948,7 @@ class TCPDF {
 
 	/**
 	 * Associates keywords with the document, generally in the form 'keyword1 keyword2 ...'.
-	 * @param string $keywords The list of keywords.
+	 * @param string $keywords The list.blade.php of keywords.
 	 * @public
 	 * @since 1.2
 	 * @see SetAuthor(), SetCreator(), SetSubject(), SetTitle()
@@ -2970,7 +2970,7 @@ class TCPDF {
 
 	/**
 	 * Whether to allow local file path in image html tags, when prefixed with file://
-	 * 
+	 *
 	 * @param bool $allowLocalFiles true, when local files should be allowed. Otherwise false.
 	 * @public
 	 * @since 6.4
@@ -4208,7 +4208,7 @@ class TCPDF {
 	}
 
 	/**
-	 * Fill the list of available fonts ($this->fontlist).
+	 * Fill the list.blade.php of available fonts ($this->fontlist).
 	 * @protected
 	 * @since 4.0.013 (2008-07-28)
 	 */
@@ -5607,7 +5607,7 @@ class TCPDF {
 	 */
 	protected function replaceChar($oldchar, $newchar) {
 		if ($this->isCharDefined($newchar)) {
-			// add the new char on the subset list
+			// add the new char on the subset list.blade.php
 			$this->CurrentFont['subsetchars'][$newchar] = true;
 			// return the new character
 			return $newchar;
@@ -12951,7 +12951,7 @@ class TCPDF {
 	 * @param string $name field name
 	 * @param int $w width
 	 * @param int $h height
-	 * @param array $values array containing the list of values.
+	 * @param array $values array containing the list.blade.php of values.
 	 * @param array $prop javascript field properties. Possible values are described on official Javascript for Acrobat API reference.
 	 * @param array $opt annotation parameters. Possible values are described on official PDF32000_2008 reference.
 	 * @param float $x Abscissa of the upper-left corner of the rectangle
@@ -13037,7 +13037,7 @@ class TCPDF {
 	 * @param string $name field name
 	 * @param int $w width
 	 * @param int $h height
-	 * @param array $values array containing the list of values.
+	 * @param array $values array containing the list.blade.php of values.
 	 * @param array $prop javascript field properties. Possible values are described on official Javascript for Acrobat API reference.
 	 * @param array $opt annotation parameters. Possible values are described on official PDF32000_2008 reference.
 	 * @param float $x Abscissa of the upper-left corner of the rectangle
@@ -16493,7 +16493,7 @@ class TCPDF {
 		$dom = array();
 		$dom[$key] = array();
 		// set inheritable properties fot the first void element
-		// possible inheritable properties are: azimuth, border-collapse, border-spacing, caption-side, color, cursor, direction, empty-cells, font, font-family, font-stretch, font-size, font-size-adjust, font-style, font-variant, font-weight, letter-spacing, line-height, list-style, list-style-image, list-style-position, list-style-type, orphans, page, page-break-inside, quotes, speak, speak-header, text-align, text-indent, text-transform, volume, white-space, widows, word-spacing
+		// possible inheritable properties are: azimuth, border-collapse, border-spacing, caption-side, color, cursor, direction, empty-cells, font, font-family, font-stretch, font-size, font-size-adjust, font-style, font-variant, font-weight, letter-spacing, line-height, list.blade.php-style, list.blade.php-style-image, list.blade.php-style-position, list.blade.php-style-type, orphans, page, page-break-inside, quotes, speak, speak-header, text-align, text-indent, text-transform, volume, white-space, widows, word-spacing
 		$dom[$key]['tag'] = false;
 		$dom[$key]['block'] = false;
 		$dom[$key]['value'] = '';
@@ -16680,9 +16680,9 @@ class TCPDF {
 						if (isset($dom[$key]['style']['font-family'])) {
 							$dom[$key]['fontname'] = $this->getFontFamilyName($dom[$key]['style']['font-family']);
 						}
-						// list-style-type
-						if (isset($dom[$key]['style']['list-style-type'])) {
-							$dom[$key]['listtype'] = trim(strtolower($dom[$key]['style']['list-style-type']));
+						// list.blade.php-style-type
+						if (isset($dom[$key]['style']['list.blade.php-style-type'])) {
+							$dom[$key]['listtype'] = trim(strtolower($dom[$key]['style']['list.blade.php-style-type']));
 							if ($dom[$key]['listtype'] == 'inherit') {
 								$dom[$key]['listtype'] = $dom[$parentkey]['listtype'];
 							}
@@ -18410,7 +18410,7 @@ Putting 1 is equivalent to putting 0 and calling Ln() just after. Default value:
 					}
 				}
 			} elseif (strlen($dom[$key]['value']) > 0) {
-				// print list-item
+				// print list.blade.php-item
 				if (!TCPDF_STATIC::empty_string($this->lispacer) AND ($this->lispacer != '^')) {
 					$this->SetFont($pfontname, $pfontstyle, $pfontsize);
 					$this->resetLastH();
@@ -18763,7 +18763,7 @@ Putting 1 is equivalent to putting 0 and calling Ln() just after. Default value:
 			$this->lMargin = $this->pagedim[$this->page]['olm'];
 			$this->rMargin = $this->pagedim[$this->page]['orm'];
 		}
-		// restore previous list state
+		// restore previous list.blade.php state
 		$this->cell_height_ratio = $prev_cell_height_ratio;
 		$this->listnum = $prev_listnum;
 		$this->listordered = $prev_listordered;
@@ -20369,7 +20369,7 @@ Putting 1 is equivalent to putting 0 and calling Ln() just after. Default value:
 	}
 
 	/**
-	 * Set custom width for list indentation.
+	 * Set custom width for list.blade.php indentation.
 	 * @param float $width width of the indentation. Use negative value to disable it.
 	 * @public
 	 * @since 4.2.007 (2008-11-12)
@@ -20487,9 +20487,9 @@ Putting 1 is equivalent to putting 0 and calling Ln() just after. Default value:
 	}
 
 	/**
-	 * Output an HTML list bullet or ordered item symbol
-	 * @param int $listdepth list nesting level
-	 * @param string $listtype type of list
+	 * Output an HTML list.blade.php bullet or ordered item symbol
+	 * @param int $listdepth list.blade.php nesting level
+	 * @param string $listtype type of list.blade.php
 	 * @param float $size current font size
 	 * @protected
 	 * @since 4.4.004 (2008-12-10)
@@ -20512,11 +20512,11 @@ Putting 1 is equivalent to putting 0 and calling Ln() just after. Default value:
 			$this->lispacer = '';
 			return;
 		} elseif ($listtype == '!') {
-			// set default list type for unordered list
+			// set default list.blade.php type for unordered list.blade.php
 			$deftypes = array('disc', 'circle', 'square');
 			$listtype = $deftypes[($listdepth - 1) % 3];
 		} elseif ($listtype == '#') {
-			// set default list type for ordered list
+			// set default list.blade.php type for ordered list.blade.php
 			$listtype = 'decimal';
 		} elseif (substr($listtype, 0, 4) == 'img|') {
 			// custom image type ('img|type|width|height|image.ext')

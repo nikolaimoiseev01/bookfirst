@@ -50,7 +50,7 @@
         // method results array
         var results = [];
 
-        // Execute for every item in the list
+        // Execute for every item in the list.blade.php
         var items = this.each(function () {
 
             // test if is create call

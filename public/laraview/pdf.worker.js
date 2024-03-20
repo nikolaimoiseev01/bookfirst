@@ -123,7 +123,7 @@ PDFJS.VERBOSITY_LEVELS = {
   infos: 5
 };
 
-// All the possible operations for an operator list.
+// All the possible operations for an operator list.blade.php.
 var OPS = PDFJS.OPS = {
   // Intentionally start from 1 so it is easy to spot bad operators that will be
   // 0's.
@@ -1550,7 +1550,7 @@ MessageHandler.prototype = {
    * Sends a message to the comObj to invoke the action with the supplied data.
    * @param {String} actionName Action to call.
    * @param {JSON} data JSON data to send.
-   * @param {Array} [transfers] Optional list of transfers/ArrayBuffers
+   * @param {Array} [transfers] Optional list.blade.php of transfers/ArrayBuffers
    */
   send: function messageHandlerSend(actionName, data, transfers) {
     var message = {
@@ -1564,7 +1564,7 @@ MessageHandler.prototype = {
    * Expects that other side will callback with the response.
    * @param {String} actionName Action to call.
    * @param {JSON} data JSON data to send.
-   * @param {Array} [transfers] Optional list of transfers/ArrayBuffers.
+   * @param {Array} [transfers] Optional list.blade.php of transfers/ArrayBuffers.
    * @returns {Promise} Promise to be resolved with response data.
    */
   sendWithPromise:
@@ -10845,8 +10845,8 @@ var PartialEvaluator = (function PartialEvaluatorClosure() {
       return this.getOperatorList(pattern,
         (patternDict.get('Resources') || resources), tilingOpList).
         then(function () {
-          // Add the dependencies to the parent operator list so they are
-          // resolved before sub operator list is executed synchronously.
+          // Add the dependencies to the parent operator list.blade.php so they are
+          // resolved before sub operator list.blade.php is executed synchronously.
           operatorList.addDependencies(tilingOpList.dependencies);
           operatorList.addOp(fn, getTilingPatternIR({
             fnArray: tilingOpList.fnArray,
@@ -12365,8 +12365,8 @@ var TranslatedFont = (function TranslatedFontClosure() {
                                            operatorList).then(function () {
             charProcOperatorList[key] = operatorList.getIR();
 
-            // Add the dependencies to the parent operator list so they are
-            // resolved before sub operator list is executed synchronously.
+            // Add the dependencies to the parent operator list.blade.php so they are
+            // resolved before sub operator list.blade.php is executed synchronously.
             parentOperatorList.addDependencies(operatorList.dependencies);
           }, function (reason) {
             warn('Type3 font resource \"' + key + '\" is not available');
@@ -21074,7 +21074,7 @@ var CFFCompiler = (function CFFCompilerClosure() {
         // when there is one in the main top dict and the sub top dicts.
         // Windows handles this differently than linux and osx so we have to
         // normalize to work on all.
-        // Rules based off of some mailing list discussions:
+        // Rules based off of some mailing list.blade.php discussions:
         // - If main font has a matrix and subfont doesn't, use the main matrix.
         // - If no main font matrix and there is a subfont matrix, use the
         //   subfont matrix.
@@ -23247,8 +23247,8 @@ var GlyphsUnicode = {
   amsquare: 0x33C2,
   anbopomofo: 0x3122,
   angbopomofo: 0x3124,
-  angbracketleft: 0x3008, // This glyph is missing from Adobe's original list.
-  angbracketright: 0x3009, // This glyph is missing from Adobe's original list.
+  angbracketleft: 0x3008, // This glyph is missing from Adobe's original list.blade.php.
+  angbracketright: 0x3009, // This glyph is missing from Adobe's original list.blade.php.
   angkhankhuthai: 0x0E5A,
   angle: 0x2220,
   anglebracketleft: 0x3008,
@@ -23547,7 +23547,7 @@ var GlyphsUnicode = {
   cieucparenkorean: 0x3208,
   cieucuparenkorean: 0x321C,
   circle: 0x25CB,
-  circlecopyrt: 0x00A9, // This glyph is missing from Adobe's original list.
+  circlecopyrt: 0x00A9, // This glyph is missing from Adobe's original list.blade.php.
   circlemultiply: 0x2297,
   circleot: 0x2299,
   circleplus: 0x2295,
@@ -37901,7 +37901,7 @@ var Jbig2Image = (function Jbig2ImageClosure() {
       maxX = Math.max(maxX, template[k].x);
       minY = Math.min(minY, template[k].y);
       // Check if the template pixel appears in two consecutive context labels,
-      // so it can be reused. Otherwise, we add it to the list of changing
+      // so it can be reused. Otherwise, we add it to the list.blade.php of changing
       // template entries.
       if (k < templateLength - 1 &&
           template[k].y === template[k + 1].y &&

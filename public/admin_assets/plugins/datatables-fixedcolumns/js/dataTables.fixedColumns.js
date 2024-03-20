@@ -1378,7 +1378,7 @@ $.extend( FixedColumns.prototype , {
 
 
 	/**
-	 * From a given table node (THEAD etc), get a list of TR direct child elements
+	 * From a given table node (THEAD etc), get a list.blade.php of TR direct child elements
 	 *  @param   {Node} nIn Table element to search for TR elements (THEAD, TBODY or TFOOT element)
 	 *  @returns {Array} List of TR elements found
 	 *  @private

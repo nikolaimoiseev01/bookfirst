@@ -106,6 +106,8 @@ Route::middleware([])->group(function () {
     Route::get('/help/collection', [PortalController::class, 'help_collection'])->name('help_collection');
     Route::get('/help/own_book', [PortalController::class, 'help_own_book'])->name('help_own_book');
 
+    Route::get('/ext_promotion', [PortalController::class, 'ext_promotion'])->name('ext_promotion');
+
 });
 // ----------------------------------------------
 
@@ -158,14 +160,18 @@ Route::middleware(['verified'])->prefix('myaccount')->group(function () {
     Route::get('/my_digital_sales', [App\Http\Controllers\Account\AccountController::class, 'digital_sales'])->name('my_digital_sales');
     Route::post('/make_donate', [App\Http\Controllers\Account\AccountController::class, 'make_donate'])->name('make_donate');
 
+    Route::get('/ext_promotion/apply', [App\Http\Controllers\Account\ExtPromotionController::class, 'application'])->name('make_ext_promotion');
+    Route::get('/ext_promotion/{id}', [App\Http\Controllers\Account\ExtPromotionController::class, 'index'])->name('index_ext_promotion');
+    Route::get('/ext_promotion', [App\Http\Controllers\Account\ExtPromotionController::class, 'my_ext_promotions'])->name('my_ext_promotions');
+
     // ---------  ОПЛАТА --------- //
     Route::post('/payments/create_part_payment/part_id={participation_id}/amount={amount}', [PaymentController::class, 'create_part_payment'])->name('payment.create_part_payment');
     Route::post('/payments/create_send_payment/print_id={print_id}/amount={amount}', [PaymentController::class, 'create_send_payment'])->name('payment.create_send_payment');
     Route::post('/payments/create_own_book_payment/own_book_id={own_book_id}/payment_type={payment_type}/amount={amount}', [PaymentController::class, 'create_own_book_payment'])->name('payment.create_own_book_payment');
     Route::post('/payments/create_buying_collection/collection_id={collection_id}', [PaymentController::class, 'create_buying_collection'])->name('payment.create_buying_collection');
     Route::post('/payments/create_buying_own_book/own_book_id={collection_id}', [PaymentController::class, 'create_buying_own_book'])->name('payment.create_buying_own_book');
-
     Route::post('/payments/create_points_payment', [PaymentController::class, 'create_points_payment'])->name('payment.create_points_payment');
+    Route::post('/payments/create_ext_promotion_payment/ext_promotion_id={ext_promotion_id}/amount={amount}', [PaymentController::class, 'create_ext_promotion_payment'])->name('payment.create_ext_promotion_payment');
     // ---------  // ОПЛАТА --------- //
 
 });
@@ -257,5 +263,13 @@ Route::middleware(['role:admin'])->prefix('admin_panel')->group(function () {
     Route::get('/search_user/{users_input}', [App\Http\Controllers\Admin\UserController::class, 'search_user'])->name('search_user');
     Route::get('/subscribers', [App\Http\Controllers\Admin\UserController::class, 'subscribers_index'])->name('subscribers_index');
     Route::get('/subscribers/get', [App\Http\Controllers\Admin\UserController::class, 'subscribers_download'])->name('subscribers_download');
+});
+
+Route::middleware(['role:ext_promotion_admin|admin'])->prefix('admin_panel')->group(function () {
+    Route::get('/ext_promotions', [App\Http\Controllers\Admin\ExtPromotionController::class, 'list'])->name('admin_ext_promotions');
+    Route::get('/ext_promotions/{id}', [App\Http\Controllers\Admin\ExtPromotionController::class, 'index'])->name('admin_ext_promotion');
+
+    Route::post('/change_ext_promotion_status/{id}', [App\Http\Controllers\Admin\ExtPromotionController::class, 'change_ext_promotion_status'])->name('change_ext_promotion_status');
+    Route::post('/add_ext_promotion_comment/{id}', [App\Http\Controllers\Admin\ExtPromotionController::class, 'add_ext_promotion_comment'])->name('add_ext_promotion_comment');
 });
 // ----------------------------------------------

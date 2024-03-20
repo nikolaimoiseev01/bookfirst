@@ -86,7 +86,7 @@
             if (labelDark.classList.contains("active")) {
                 body.classList.add("dark-mode");
                 setCookie("darkMode", "enabled", 365);
-                if(chat_wrap) {
+                if (chat_wrap) {
                     chat_wrap.css('background', '#454D55')
                     chat_text_area.css('background', '#454D55')
                     chat_text_area.css('color', 'white')
@@ -97,7 +97,7 @@
             } else {
                 body.classList.remove("dark-mode");
                 setCookie("darkMode", "disabled", 365);
-                if(chat_wrap) {
+                if (chat_wrap) {
                     chat_wrap.css('background', 'white')
                     chat_text_area.css('background', 'white')
                     chat_text_area.css('color', 'black')
@@ -129,7 +129,6 @@
             document.getElementById("labelDark").addEventListener("click", toggleDarkMode);
             document.getElementById("labelLight").addEventListener("click", toggleDarkMode);
         }, 3)
-
 
 
     </script>
@@ -165,6 +164,8 @@
                     data-accordion="false">
                     <!-- Add icons to the links using the .nav-icon class
                          with font-awesome or any other icon font library -->
+
+                    @role('admin')
                     <li class="nav-item">
                         <a href="{{ route('homeAdmin') }}" class="nav-link">
                             <i class="nav-icon fas fa-book-open"></i>
@@ -188,7 +189,22 @@
                             </p>
                         </a>
                     </li>
+                    @endrole
 
+                    <li class="nav-item">
+                        <a href="{{route('admin_ext_promotions')}}" class="nav-link">
+                            <i class="nav-icon fas fa-chart-line"></i>
+                            <p>
+                                Продвижения
+                                @if ($ext_promotion_to_action > 0)
+                                    <span class="right badge badge-danger">{{$ext_promotion_to_action}}</span>
+                                @endif
+                            </p>
+                        </a>
+                    </li>
+
+
+                    @role('admin')
                     <li class="nav-item">
                         <a href="{{ route('chats_admin') }}" class="nav-link">
                             <i class="nav-icon fas fa-comments"></i>
@@ -331,6 +347,7 @@
                             </p>
                         </a>
                     </li>
+                    @endrole
 
 
                     <style>
@@ -338,6 +355,7 @@
                             width: fit-content;
                             padding-left: 16px;
                         }
+
                         .bg-olive.btn.active, .bg-olive.btn:active, .bg-olive.btn:not(:disabled):not(.disabled).active, .bg-olive.btn:not(:disabled):not(.disabled):active {
                             background-color: #7992a8 !important;
                             border-color: #454D55;
@@ -345,6 +363,7 @@
                             padding: 0 10px;
                             width: fit-content;
                         }
+
                         .bg-olive.btn:not(.active) {
                             background-color: #454D55 !important;
                             border-color: #454D55;
@@ -356,7 +375,7 @@
                     <div class="btn-group d-block btn-group-toggle" data-toggle="buttons">
                         <label id="labelDark" class="btn bg-olive active">
                             <input type="radio" name="options" id="option_b1" autocomplete="off" checked="">
-                            <i style="font-size: 14px; color: yellow"  class="fas fa-regular fa-sun"></i>
+                            <i style="font-size: 14px; color: yellow" class="fas fa-regular fa-sun"></i>
                         </label>
                         <label id="labelLight" class="btn bg-olive">
                             <input type="radio" name="options" id="option_b2" autocomplete="off">

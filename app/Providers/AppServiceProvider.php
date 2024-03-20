@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Chat;
 use App\Models\Collection;
+use App\Models\ext_promotion;
 use App\Models\Message;
 use App\Models\own_book;
 use App\Models\Participation;
@@ -73,8 +74,11 @@ class AppServiceProvider extends ServiceProvider
                                 ->orWhere('user_created', Auth::user()->id);
                         })
                         ->where('chat_status_id', '<>', '3')->distinct('chats.id')->count('chats.id');
+
+                    $ext_promotion_to_pay = ext_promotion::where('user_id', Auth::user()->id)->where('ext_promotion_status_id', 2)->count();
                 } else {
                     $custom_notifications = null;
+                    $ext_promotion_to_pay = null;
                 }
 
 
@@ -109,6 +113,8 @@ class AppServiceProvider extends ServiceProvider
 //                dd($own_books_alert);
 
                 $new_participants = Participation::where('pat_status_id', 1)->count();
+
+                $ext_promotion_to_action = ext_promotion::where('ext_promotion_status_id', 1)->orWhere('ext_promotion_status_id', 3)->count();
             };
 
             $user_id_logged_in = Auth::user()->id ?? 0;
@@ -120,7 +126,9 @@ class AppServiceProvider extends ServiceProvider
                 'new_chats' => $new_chats ?? null,
                 'own_books_alert' => $own_books_alert ?? null,
                 'subdomain' => $subdomain ?? null,
-                'user_id_logged_in' => $user_id_logged_in
+                'user_id_logged_in' => $user_id_logged_in,
+                'ext_promotion_to_pay' => $ext_promotion_to_pay ?? null,
+                'ext_promotion_to_action' => $ext_promotion_to_action ?? null
             ]);
 
         });

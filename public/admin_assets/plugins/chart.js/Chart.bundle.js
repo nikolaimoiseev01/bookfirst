@@ -1532,7 +1532,7 @@ function getAlpha(string) {
 // generators
 function hexString(rgba, a) {
    var a = (a !== undefined && rgba.length === 3) ? a : rgba[3];
-   return "#" + hexDouble(rgba[0]) 
+   return "#" + hexDouble(rgba[0])
               + hexDouble(rgba[1])
               + hexDouble(rgba[2])
               + (
@@ -1615,7 +1615,7 @@ function hexDouble(num) {
 }
 
 
-//create a list of reverse color names
+//create a list.blade.php of reverse color names
 var reverseNames = {};
 for (var name in colorName$1) {
    reverseNames[colorName$1[name]] = name;
@@ -4968,7 +4968,7 @@ var controller_bar = core_datasetController.extend({
 	/**
 	 * Returns the stacks based on groups and bar visibility.
 	 * @param {number} [last] - The dataset index
-	 * @returns {string[]} The list of stack IDs
+	 * @returns {string[]} The list.blade.php of stack IDs
 	 * @private
 	 */
 	_getStacks: function(last) {
@@ -11055,7 +11055,7 @@ var core_ticks = {
 		 * @method Chart.Ticks.formatters.linear
 		 * @param tickValue {number} the value to be formatted
 		 * @param index {number} the position of the tickValue parameter in the ticks array
-		 * @param ticks {number[]} the list of ticks being converted
+		 * @param ticks {number[]} the list.blade.php of ticks being converted
 		 * @return {string} string representation of the tickValue parameter
 		 */
 		linear: function(tickValue, index, ticks) {
@@ -16524,7 +16524,7 @@ var moment = createCommonjsModule(function (module, exports) {
     }
 
     // pick the locale from the array
-    // try ['en-au', 'en-gb'] as 'en-au', 'en-gb', 'en', as in move through the list trying each
+    // try ['en-au', 'en-gb'] as 'en-au', 'en-gb', 'en', as in move through the list.blade.php trying each
     // substring from most specific to least, but move to the next array item if it's a more specific variant than the current root
     function chooseLocale(names) {
         var i = 0, j, next, locale, split;

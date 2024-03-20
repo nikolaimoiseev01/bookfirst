@@ -1647,7 +1647,7 @@
     };
 
     _proto._max = function _max(numbers) {
-      // Calculate the maximum number in a list
+      // Calculate the maximum number in a list.blade.php
       var max = 0;
       Object.keys(numbers).forEach(function (key) {
         if (numbers[key] > max) {
@@ -1957,7 +1957,7 @@
   var CLASS_NAME_ICON_CLOSE = 'fa-times';
   var CLASS_NAME_HEADER = 'nav-header';
   var CLASS_NAME_SEARCH_RESULTS = 'sidebar-search-results';
-  var CLASS_NAME_LIST_GROUP = 'list-group';
+  var CLASS_NAME_LIST_GROUP = 'list.blade.php-group';
   var SELECTOR_DATA_WIDGET$1 = '[data-widget="sidebar-search"]';
   var SELECTOR_SIDEBAR$1 = '.main-sidebar .nav-sidebar';
   var SELECTOR_NAV_LINK = '.nav-link';
@@ -2125,7 +2125,7 @@
         }
       }
 
-      return "<a href=\"" + link + "\" class=\"list-group-item\">\n        <div class=\"search-title\">\n          " + name + "\n        </div>\n        <div class=\"search-path\">\n          " + path + "\n        </div>\n      </a>";
+      return "<a href=\"" + link + "\" class=\"list.blade.php-group-item\">\n        <div class=\"search-title\">\n          " + name + "\n        </div>\n        <div class=\"search-path\">\n          " + path + "\n        </div>\n      </a>";
     };
 
     _proto._addNotFound = function _addNotFound() {
@@ -2439,7 +2439,7 @@
   var NAME$c = 'TodoList';
   var DATA_KEY$c = 'lte.todolist';
   var JQUERY_NO_CONFLICT$c = $__default['default'].fn[NAME$c];
-  var SELECTOR_DATA_TOGGLE$4 = '[data-widget="todo-list"]';
+  var SELECTOR_DATA_TOGGLE$4 = '[data-widget="todo-list.blade.php"]';
   var CLASS_NAME_TODO_LIST_DONE = 'done';
   var Default$a = {
     onCheck: function onCheck(item) {

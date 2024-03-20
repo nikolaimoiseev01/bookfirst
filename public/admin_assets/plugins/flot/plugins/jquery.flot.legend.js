@@ -76,7 +76,7 @@
             }
         }
 
-        // Generate html for icons and labels from a list of entries
+        // Generate html for icons and labels from a list.blade.php of entries
         for (i = 0; i < entries.length; ++i) {
             let columnIndex = i % options.legend.noColumns;
             entry = entries[i];
@@ -312,7 +312,7 @@
             '</symbol>' +
         '</defs>';
 
-    // Generate a list of legend entries in their final order
+    // Generate a list.blade.php of legend entries in their final order
     function getLegendEntries(series, labelFormatter, sorted) {
         var lf = labelFormatter,
             legendEntries = series.reduce(function(validEntries, s, i) {

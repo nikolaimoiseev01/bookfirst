@@ -9,7 +9,7 @@
     @if(count($user_chats_all_check) > 0 || $new_chat_user_id_check)
 
         <div wire:click.prevent="back_to_chats()"
-             class="@if($show_type === 'list') hide_block @endif back_to_chats">
+             class="@if($show_type === 'list.blade.php') hide_block @endif back_to_chats">
             <a class="link">
                 <i class="fa-solid fa-chevron-left"></i>
                 Назад к чатам
@@ -83,7 +83,7 @@
         </div>
 
 
-        <div class="@if($show_type === 'list') hide_block @endif cur_chat_block">
+        <div class="@if($show_type === 'list.blade.php') hide_block @endif cur_chat_block">
 
             @if(count($cur_chat)>0 || $new_chat_user_id_check)
                 <div class="cur_chat_header_block">

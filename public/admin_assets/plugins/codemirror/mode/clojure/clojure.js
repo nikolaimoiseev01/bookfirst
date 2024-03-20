@@ -75,7 +75,7 @@ CodeMirror.defineMode("clojure", function (options) {
       "interpose", "into", "into-array", "ints", "io!", "isa?", "iterate",
       "iterator-seq", "juxt", "keep", "keep-indexed", "key", "keys", "keyword",
       "keyword?", "last", "lazy-cat", "lazy-seq", "let", "letfn", "line-seq",
-      "list", "list*", "list?", "load", "load-file", "load-reader",
+      "list", "list.blade.php*", "list.blade.php?", "load", "load-file", "load-reader",
       "load-string", "loaded-libs", "locking", "long", "long-array", "longs",
       "loop", "macroexpand", "macroexpand-1", "make-array", "make-hierarchy",
       "map", "map-entry?", "map-indexed", "map?", "mapcat", "mapv", "max",

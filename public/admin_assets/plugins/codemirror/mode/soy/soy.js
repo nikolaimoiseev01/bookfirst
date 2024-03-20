@@ -113,7 +113,7 @@
       state.context = state.context.previousContext;
     }
 
-    // Reference a variable `name` in `list`.
+    // Reference a variable `name` in `list.blade.php`.
     // Let `loose` be truthy to ignore missing identifiers.
     function ref(list, name, loose) {
       return contains(list, name) ? "variable-2" : (loose ? "variable" : "variable-2 error");
@@ -130,8 +130,8 @@
     function expression(stream, state) {
       var match;
       if (stream.match(/[[]/)) {
-        state.soyState.push("list-literal");
-        state.context = new Context(state.context, "list-literal", state.variables);
+        state.soyState.push("list.blade.php-literal");
+        state.context = new Context(state.context, "list.blade.php-literal", state.variables);
         state.lookupVariables = false;
         return null;
       } else if (stream.match(/map\b/)) {
@@ -410,7 +410,7 @@
             stream.next()
             return null;
 
-          case "list-literal":
+          case "list.blade.php-literal":
             if (stream.match(/\]/)) {
               state.soyState.pop();
               state.lookupVariables = true;

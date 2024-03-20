@@ -125,7 +125,7 @@ var AutoFill = function( dt, opts )
 		background: $('<div class="dt-autofill-background"/>'),
 
 		/** @type {jQuery} Fill type chooser */
-		list: $('<div class="dt-autofill-list">'+this.s.dt.i18n('autoFill.info', '')+'<ul/></div>'),
+		list: $('<div class="dt-autofill-list.blade.php">'+this.s.dt.i18n('autoFill.info', '')+'<ul/></div>'),
 
 		/** @type {jQuery} DataTables scrolling container */
 		dtScroll: null,
@@ -479,7 +479,7 @@ $.extend( AutoFill.prototype, {
 				var id = dt.row( cell.index.row ).id();
 				idValues[ fieldName ][ id ] = cell.set;
 
-				// Keep a list of cells so we can activate the bubble editing
+				// Keep a list.blade.php of cells so we can activate the bubble editing
 				// with them
 				nodes.push( cell.index );
 			}
@@ -1078,7 +1078,7 @@ AutoFill.actions = {
 	},
 
 	// Special type that does not make itself available, but is added
-	// automatically by AutoFill if a multi-choice list is shown. This allows
+	// automatically by AutoFill if a multi-choice list.blade.php is shown. This allows
 	// sensible code reuse
 	cancel: {
 		available: function () {

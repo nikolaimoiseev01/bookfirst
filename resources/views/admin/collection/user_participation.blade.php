@@ -138,7 +138,7 @@
                         $(document).ready(function () {
                             $('#summernote').summernote({
                                 toolbar: [
-                                    // [groupName, [list of button]]
+                                    // [groupName, [list.blade.php of button]]
                                     ['style', ['bold', 'italic', 'underline']],
                                     // ['font', ['strikethrough', 'superscript', 'subscript']],
                                     ['fontsize', ['fontsize']],

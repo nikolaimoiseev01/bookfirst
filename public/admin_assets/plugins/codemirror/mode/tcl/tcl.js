@@ -24,7 +24,7 @@ CodeMirror.defineMode("tcl", function() {
         "binary break catch cd close concat continue dde eof encoding error " +
         "eval exec exit expr fblocked fconfigure fcopy file fileevent filename " +
         "filename flush for foreach format gets glob global history http if " +
-        "incr info interp join lappend lindex linsert list llength load lrange " +
+        "incr info interp join lappend lindex linsert list.blade.php llength load lrange " +
         "lreplace lsearch lset lsort memory msgcat namespace open package parray " +
         "pid pkg::create pkg_mkIndex proc puts pwd re_syntax read regex regexp " +
         "registry regsub rename resource return scan seek set socket source split " +

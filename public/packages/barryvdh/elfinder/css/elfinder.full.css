@@ -2,7 +2,7 @@
  * elFinder - file manager for web
  * Version 2.1.57 (2020-06-05)
  * http://elfinder.org
- * 
+ *
  * Copyright 2009-2020, Studio 42
  * Licensed under a 3-clauses BSD license
  */
@@ -467,7 +467,7 @@
 .elfinder-dialog-edit .elfinder-toast > div {
     width: 280px;
 }
- 
+
 .elfinder-edit-onlineconvert-button {
     display: inline-block;
     width: 180px;
@@ -513,7 +513,7 @@
 }
 
 /********************** COMMAND "SORT" ****************************/
-/* for list table header sort triangle icon */
+/* for list.blade.php table header sort triangle icon */
 div.elfinder-cwd-wrapper-list tr.ui-state-default td {
     position: relative;
 }
@@ -2406,7 +2406,7 @@ div.elfinder {
 
 /************************************  LIST VIEW ************************************/
 
-/*.elfinder-cwd-view-list { padding:0 0 4px 0; }*/
+/*.elfinder-cwd-view-list.blade.php { padding:0 0 4px 0; }*/
 
 .elfinder-cwd-wrapper.elfinder-cwd-fixheader .elfinder-cwd::after {
     display: none;

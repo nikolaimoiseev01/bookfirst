@@ -29,7 +29,7 @@ CodeMirror.defineMode("xquery", function() {
       ',': punctuation
     };
 
-    // a list of 'basic' keywords. For each add a property to kwObj with the value of
+    // a list.blade.php of 'basic' keywords. For each add a property to kwObj with the value of
     // {type: basic[i], style: "keyword"} e.g. 'after' --> {type: "after", style: "keyword"}
     var basic = ['after', 'all', 'allowing', 'ancestor', 'ancestor-or-self', 'any', 'array', 'as',
     'ascending', 'at', 'attribute', 'base-uri', 'before', 'boundary-space', 'by', 'case', 'cast',
@@ -53,7 +53,7 @@ CodeMirror.defineMode("xquery", function() {
     'weight', 'when', 'where', 'wildcards', 'window', 'with', 'without', 'word', 'words', 'xquery'];
     for(var i=0, l=basic.length; i < l; i++) { kwObj[basic[i]] = kw(basic[i]);};
 
-    // a list of types. For each add a property to kwObj with the value of
+    // a list.blade.php of types. For each add a property to kwObj with the value of
     // {type: "atom", style: "atom"}
     var types = ['xs:anyAtomicType', 'xs:anySimpleType', 'xs:anyType', 'xs:anyURI',
     'xs:base64Binary', 'xs:boolean', 'xs:byte', 'xs:date', 'xs:dateTime', 'xs:dateTimeStamp',

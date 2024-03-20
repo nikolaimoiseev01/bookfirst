@@ -6,6 +6,7 @@ use App\Enums\PaymentStatusEnum;
 use App\Models\award;
 use App\Models\Collection;
 use App\Models\digital_sale;
+use App\Models\ext_promotion;
 use App\Models\own_book;
 use App\Models\Participation;
 use App\Models\Printorder;
@@ -20,6 +21,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 use Jenssegers\Date\Date;
@@ -70,11 +72,11 @@ class PaymentController extends Controller
         $own_book_id = Printorder::where('id', $print_id)->value('own_book_id') ?? null;
 
         if ($collection_id > 0) { // Это оплата за пересылку сборника
-            $description = "Оплата пересылки сборника '" . Collection::where('id',$collection_id)->value('title') . "'";
+            $description = "Оплата пересылки сборника '" . Collection::where('id', $collection_id)->value('title') . "'";
         }
 
         if ($own_book_id > 0) { // Это оплата за пересылку книги
-            $description = "Оплата пересылки книги '" . own_book::where('id',$own_book_id)->value('title') . "'";
+            $description = "Оплата пересылки книги '" . own_book::where('id', $own_book_id)->value('title') . "'";
         }
 
         $url_redirect = url()->previous();
@@ -240,8 +242,41 @@ class PaymentController extends Controller
         }
     }
 
+    public function create_ext_promotion_payment($ext_promotion_id, $amount, Request $request, PaymentService $service)
+    {
 
 
+//        DB::transaction(function () use ($request, $ext_promotion_id, $amount, $service) { // Чтобы не записать ненужного
+            $user_id = Auth::user()->id;
+            $amount = $request->amount;
+            $description = "Оплата продвижения";
+            $url_redirect = url()->previous();
+
+            // Записываем данные транзакции
+            $transaction = new Transaction();
+            $transaction->user_id = $user_id;
+            $transaction->amount = $amount;
+            $transaction->bought_own_book_id = null;
+            $transaction->ext_promotion_id = $ext_promotion_id;
+            $transaction->description = $description;
+            $transaction->save();
+
+            if ($transaction) {
+                $link = $service->createPayment($amount, $description, $url_redirect, [
+                    'user_id' => Auth::user()->id,
+                    'transaction_id' => $transaction->id,
+                    'amount' => $amount,
+                    'ext_promotion_id' => $ext_promotion_id,
+                    'description' => $description,
+                    'url_redirect' => $url_redirect
+                ]);
+
+                if (isset($link)) {
+                    return redirect()->away($link);
+                }
+            }
+//        });
+    }
 
 
     public function callback(Request $request, PaymentService $service)
@@ -269,7 +304,6 @@ class PaymentController extends Controller
         Log::info('// $notification ENDED //');
 
 
-
         // Общая информация о транзакции
         // Добавляем ID от YOOKASSA
         $metadata = $notification['metadata'];
@@ -284,7 +318,6 @@ class PaymentController extends Controller
 
         }
         // -----------------------------------------------------------------
-
 
 
         if (isset($notification['status']) && $notification['status'] === 'succeeded') { // Если операция прошла успешно
@@ -339,7 +372,7 @@ class PaymentController extends Controller
 
                             // Посылаем Telegram уведомление нам
                             Notification::route('telegram', '-506622812')
-                                ->notify(new TelegramNotification($title,$text,
+                                ->notify(new TelegramNotification($title, $text,
                                     "Его страница участия",
                                     route('user_participation', $Participation['id'])));
 
@@ -382,7 +415,6 @@ class PaymentController extends Controller
                         }
                     }
                     // --------------------------------------------------------------------------------------------------------------------------------
-
 
                     // Автор оплатил печать книги -------------------------------------------------------------------------------------------------
                     if ((int)($metadata['own_book_id'] ?? null) > 0 && (string)($metadata['own_book_payment_type'] ?? null) == 'Print_only') { // Это оплата за печать книги
@@ -436,7 +468,7 @@ class PaymentController extends Controller
                             $user->notify(new EmailNotification(
                                 'Оплата подтверждена!',
                                 $user['name'],
-                                "Отлично, вы успешно оплатили стоимость пересылки заказанных печатных материалов!".
+                                "Отлично, вы успешно оплатили стоимость пересылки заказанных печатных материалов!" .
                                 "'. Следующие шаги Вы всегда сможете отсеживать на странице издания:",
                                 "Страница издания",
                                 $metadata['url_redirect']));
@@ -451,14 +483,12 @@ class PaymentController extends Controller
                     }
                     // --------------------------------------------------------------------------------------------------------------------------------
 
-
-
                     // Клиент купил электронный сбрник -------------------------------------------------------------------------------------------------
                     if ((int)($metadata['bought_collection_id'] ?? 0) > 0) { // Это покупка электронного варианта
 
                         $digital_sale = digital_sale::where('user_id', $metadata['user_id'])
-                                ->where('bought_collection_id', $metadata['bought_collection_id'])
-                                ->value('bought_collection_id') ?? 0;
+                            ->where('bought_collection_id', $metadata['bought_collection_id'])
+                            ->value('bought_collection_id') ?? 0;
 
 
                         $collection = Collection::where('id', $metadata['bought_collection_id'])->first();
@@ -498,8 +528,8 @@ class PaymentController extends Controller
                     if ((int)($metadata['bought_own_book_id'] ?? 0) > 0) { // Это покупка электронного варианта
 
                         $digital_sale = digital_sale::where('user_id', $metadata['user_id'])
-                                ->where('bought_own_book_id', $metadata['bought_own_book_id'])
-                                ->value('bought_own_book_id') ?? 0;
+                            ->where('bought_own_book_id', $metadata['bought_own_book_id'])
+                            ->value('bought_own_book_id') ?? 0;
 
 
                         $own_book = own_book::where('id', $metadata['bought_own_book_id'])->first();
@@ -552,27 +582,58 @@ class PaymentController extends Controller
                         $new_amount = $old_amount + $metadata['amount'];
 
 
-                            // Меняем баланс кошелька
-                            UserWallet::where('user_id', $user['id'])
-                                ->update(array(
-                                    'cur_amount' => $new_amount
-                                ));
-                            // -----------------------------------------------------------------
+                        // Меняем баланс кошелька
+                        UserWallet::where('user_id', $user['id'])
+                            ->update(array(
+                                'cur_amount' => $new_amount
+                            ));
+                        // -----------------------------------------------------------------
 
-                            // Посылаем Email уведомление автору
-                            $user->notify(new EmailNotification(
-                                'Вашу баланс успешно пополнен!',
-                                $user['name'],
-                                "Поздравляем! Платеж на пополнение баланса прошел успешно.",
-                                "Личный кабинет",
-                                $metadata['url_redirect']));
+                        // Посылаем Email уведомление автору
+                        $user->notify(new EmailNotification(
+                            'Вашу баланс успешно пополнен!',
+                            $user['name'],
+                            "Поздравляем! Платеж на пополнение баланса прошел успешно.",
+                            "Личный кабинет",
+                            $metadata['url_redirect']));
 
-                            // Посылаем Telegram уведомление нам
-                            Notification::route('telegram', '-506622812')
-                                ->notify(new TelegramNotification('💸 Новое зачисление в кабинет! 💸', "Юзер: " . $user['name'] . ' ' . $user['surname'] .
-                                    "\n" . "Сумма: " . $metadata['amount'] . " руб.",
-                                    "В админку",
-                                    route('homeAdmin')));
+                        // Посылаем Telegram уведомление нам
+                        Notification::route('telegram', '-506622812')
+                            ->notify(new TelegramNotification('💸 Новое зачисление в кабинет! 💸', "Юзер: " . $user['name'] . ' ' . $user['surname'] .
+                                "\n" . "Сумма: " . $metadata['amount'] . " руб.",
+                                "В админку",
+                                route('homeAdmin')));
+
+                    }
+                    // --------------------------------------------------------------------------------------------------------------------------------
+
+                    // Клиент оплачивает продвижение -------------------------------------------------------------------------------------------------
+                    if (($metadata['description'] ?? null) == 'Оплата продвижения' && Transaction::where('id', $transactionId)->value('status') === 'CREATED') { // Это пополнение кошелька
+                        $user = User::where('id', $metadata['user_id'])->first();
+                        $transaction = Transaction::where('id', $transactionId)->first();
+
+                        // Меняем статус продвижение на "Оплачено"
+                        ext_promotion::where('id', $transaction['ext_promotion_id'])
+                            ->update(array(
+                                'ext_promotion_status_id' => 3,
+                                'paid_at' => Carbon::now('Europe/Moscow')->toDateTime()
+                            ));
+                        // -----------------------------------------------------------------
+
+                        // Посылаем Email уведомление автору
+                        $user->notify(new EmailNotification(
+                            'Ваше продвижение успешно оплачено!',
+                            $user['name'],
+                            "Поздравляем! Платеж на продвижение прошел успешно.",
+                            "Личный кабинет",
+                            $metadata['url_redirect']));
+
+                        // Посылаем Telegram уведомление нам
+                        Notification::route('telegram', '-4120321987')
+                            ->notify(new TelegramNotification('💸 *Новая оплата на продвижение!* 💸', "*Автор:* " . $user['name'] . ' ' . $user['surname'] .
+                                "\n" . "*Сумма:* " . $metadata['amount'] . " руб.",
+                                null,
+                                null));
 
                     }
                     // --------------------------------------------------------------------------------------------------------------------------------

@@ -297,14 +297,14 @@ $pdf->writeHTML($html, true, false, true, false, '');
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-// test custom bullet points for list
+// test custom bullet points for list.blade.php
 
 // add a page
 $pdf->AddPage();
 
 $html = <<<EOF
-<h1>Test custom bullet image for list items</h1>
-<ul style="font-size:14pt;list-style-type:img|png|4|4|images/logo_example.png">
+<h1>Test custom bullet image for list.blade.php items</h1>
+<ul style="font-size:14pt;list.blade.php-style-type:img|png|4|4|images/logo_example.png">
 	<li>test custom bullet image</li>
 	<li>test custom bullet image</li>
 	<li>test custom bullet image</li>

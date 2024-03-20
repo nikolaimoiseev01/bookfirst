@@ -533,7 +533,7 @@ $.extend( $.validator, {
 			if ( errors ) {
 				var validator = this;
 
-				// Add items to error list and map
+				// Add items to error list.blade.php and map
 				$.extend( this.errorMap, errors );
 				this.errorList = $.map( this.errorMap, function( message, name ) {
 					return {
@@ -542,7 +542,7 @@ $.extend( $.validator, {
 					};
 				} );
 
-				// Remove items from success list
+				// Remove items from success list.blade.php
 				this.successList = $.grep( this.successList, function( element ) {
 					return !( element.name in errors );
 				} );
@@ -1001,7 +1001,7 @@ $.extend( $.validator, {
 						describedBy = errorID;
 					} else if ( !describedBy.match( new RegExp( "\\b" + this.escapeCssMeta( errorID ) + "\\b" ) ) ) {
 
-						// Add to end of list if not already present
+						// Add to end of list.blade.php if not already present
 						describedBy += " " + errorID;
 					}
 					$( element ).attr( "aria-describedby", describedBy );

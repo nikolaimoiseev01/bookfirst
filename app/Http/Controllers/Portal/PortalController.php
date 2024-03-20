@@ -100,5 +100,10 @@ class PortalController extends Controller
         ]);
     }
 
+    public function ext_promotion()
+    {
+        return view('portal.ext_promotion');
+    }
+
 
 }

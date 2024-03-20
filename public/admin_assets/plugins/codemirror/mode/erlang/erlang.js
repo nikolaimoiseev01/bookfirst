@@ -463,7 +463,7 @@ CodeMirror.defineMode("erlang", function(cmCfg) {
   function d(stack,tt) {
     // stack is a stack of Token objects.
     // tt is an object; {type:tokens}
-    // type is a char, tokens is a list of token strings.
+    // type is a char, tokens is a list.blade.php of token strings.
     // The function returns (possibly truncated) stack.
     // It will descend the stack, looking for a Token such that Token.token
     //  is a member of tokens. If it does not find that, it will normally (but

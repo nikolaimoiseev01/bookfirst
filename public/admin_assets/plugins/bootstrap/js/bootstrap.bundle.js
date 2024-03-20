@@ -2393,7 +2393,7 @@
   }
 
   /**
-   * Loop trough the list of modifiers and run them in order,
+   * Loop trough the list.blade.php of modifiers and run them in order,
    * each of them will then edit the data object.
    * @method
    * @memberof Popper.Utils
@@ -2650,7 +2650,7 @@
    * @memberof Popper.Utils
    * @argument {Element} element - Element to apply the style to
    * @argument {Object} styles
-   * Object with a list of properties and values which will be applied to the element
+   * Object with a list.blade.php of properties and values which will be applied to the element
    */
   function setStyles(element, styles) {
     Object.keys(styles).forEach(function (prop) {
@@ -2669,7 +2669,7 @@
    * @memberof Popper.Utils
    * @argument {Element} element - Element to apply the attributes to
    * @argument {Object} styles
-   * Object with a list of properties and values which will be applied to the element
+   * Object with a list.blade.php of properties and values which will be applied to the element
    */
   function setAttributes(element, attributes) {
     Object.keys(attributes).forEach(function (prop) {
@@ -2892,7 +2892,7 @@
    * It checks if the needed modifier is listed and enabled.
    * @method
    * @memberof Popper.Utils
-   * @param {Array} modifiers - list of modifiers
+   * @param {Array} modifiers - list.blade.php of modifiers
    * @param {String} requestingName - name of requesting modifier
    * @param {String} requestedName - name of requested modifier
    * @returns {Boolean}
@@ -3022,7 +3022,7 @@
    * - `bottom`
    * - `left`
    *
-   * Each placement can have a variation from this list:
+   * Each placement can have a variation from this list.blade.php:
    * - `-start`
    * - `-end`
    *
@@ -3271,7 +3271,7 @@
     // will use the other one
     var useHeight = ['right', 'left'].indexOf(basePlacement) !== -1;
 
-    // Split the offset string to obtain a list of values and operands
+    // Split the offset string to obtain a list.blade.php of values and operands
     // The regex addresses values with the plus or minus sign in front (+10, -20, etc)
     var fragments = offset.split(/(\+|\-)/).map(function (frag) {
       return frag.trim();
@@ -3287,7 +3287,7 @@
       console.warn('Offsets separated by white space(s) are deprecated, use a comma (,) instead.');
     }
 
-    // If divider is found, we divide the list of values and operands to divide
+    // If divider is found, we divide the list.blade.php of values and operands to divide
     // them by ofset X and Y.
     var splitRegex = /\s*,\s*|\s+/;
     var ops = divider !== -1 ? [fragments.slice(0, divider).concat([fragments[divider].split(splitRegex)[0]]), [fragments[divider].split(splitRegex)[1]].concat(fragments.slice(divider + 1))] : [fragments];
@@ -3736,7 +3736,7 @@
       /**
        * @prop {String|Array} behavior='flip'
        * The behavior used to change the popper's placement. It can be one of
-       * `flip`, `clockwise`, `counterclockwise` or an array with a list of valid
+       * `flip`, `clockwise`, `counterclockwise` or an array with a list.blade.php of valid
        * placements (with optional variations)
        */
       behavior: 'flip',
@@ -4022,7 +4022,7 @@
         _this.options.modifiers[name] = _extends$1({}, Popper.Defaults.modifiers[name] || {}, options.modifiers ? options.modifiers[name] : {});
       });
 
-      // Refactoring modifiers' list (Object => Array)
+      // Refactoring modifiers' list.blade.php (Object => Array)
       this.modifiers = Object.keys(this.options.modifiers).map(function (name) {
         return _extends$1({
           name: name
@@ -6304,10 +6304,10 @@
   var CLASS_NAME_DROPDOWN_ITEM = 'dropdown-item';
   var CLASS_NAME_ACTIVE$2 = 'active';
   var SELECTOR_DATA_SPY = '[data-spy="scroll"]';
-  var SELECTOR_NAV_LIST_GROUP = '.nav, .list-group';
+  var SELECTOR_NAV_LIST_GROUP = '.nav, .list.blade.php-group';
   var SELECTOR_NAV_LINKS = '.nav-link';
   var SELECTOR_NAV_ITEMS = '.nav-item';
-  var SELECTOR_LIST_ITEMS = '.list-group-item';
+  var SELECTOR_LIST_ITEMS = '.list.blade.php-group-item';
   var SELECTOR_DROPDOWN = '.dropdown';
   var SELECTOR_DROPDOWN_ITEMS = '.dropdown-item';
   var SELECTOR_DROPDOWN_TOGGLE = '.dropdown-toggle';
@@ -6591,10 +6591,10 @@
   var CLASS_NAME_FADE$4 = 'fade';
   var CLASS_NAME_SHOW$6 = 'show';
   var SELECTOR_DROPDOWN$1 = '.dropdown';
-  var SELECTOR_NAV_LIST_GROUP$1 = '.nav, .list-group';
+  var SELECTOR_NAV_LIST_GROUP$1 = '.nav, .list.blade.php-group';
   var SELECTOR_ACTIVE$2 = '.active';
   var SELECTOR_ACTIVE_UL = '> li > .active';
-  var SELECTOR_DATA_TOGGLE$4 = '[data-toggle="tab"], [data-toggle="pill"], [data-toggle="list"]';
+  var SELECTOR_DATA_TOGGLE$4 = '[data-toggle="tab"], [data-toggle="pill"], [data-toggle="list.blade.php"]';
   var SELECTOR_DROPDOWN_TOGGLE$1 = '.dropdown-toggle';
   var SELECTOR_DROPDOWN_ACTIVE_CHILD = '> .dropdown-menu .active';
   /**

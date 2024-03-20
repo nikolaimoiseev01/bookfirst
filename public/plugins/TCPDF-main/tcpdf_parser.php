@@ -453,7 +453,7 @@ class TCPDF_PARSER {
 			}
 			foreach ($sdata as $k => $row) {
 				switch ($row[0]) {
-					case 0: { // (f) linked list of free objects
+					case 0: { // (f) linked list.blade.php of free objects
 						break;
 					}
 					case 1: { // (n) objects that are in use but are not compressed

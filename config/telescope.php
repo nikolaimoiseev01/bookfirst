@@ -70,8 +70,8 @@ return [
     |--------------------------------------------------------------------------
     |
     | These middleware will be assigned to every Telescope route, giving you
-    | the chance to add your own middleware to this list or change any of
-    | the existing middleware. Or, you can simply stick with this list.
+    | the chance to add your own middleware to this list.blade.php or change any of
+    | the existing middleware. Or, you can simply stick with this list.blade.php.
     |
     */
 
@@ -86,7 +86,7 @@ return [
     |--------------------------------------------------------------------------
     |
     | The following array lists the URI paths and Artisan commands that will
-    | not be watched by Telescope. In addition to this list, some Laravel
+    | not be watched by Telescope. In addition to this list.blade.php, some Laravel
     | commands, like migrations and queue commands, are always ignored.
     |
     */
@@ -110,7 +110,7 @@ return [
     |
     | The following array lists the "watchers" that will be registered with
     | Telescope. The watchers gather the application's profile data when
-    | a request or task is executed. Feel free to customize this list.
+    | a request or task is executed. Feel free to customize this list.blade.php.
     |
     */
 

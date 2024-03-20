@@ -67,7 +67,7 @@ CodeMirror.defineMode("mirc", function() {
                             "flushini font fopen fseek fsend fserve fullname fwrite ghide gload gmove " +
                             "gopts goto gplay gpoint gqreq groups gshow gsize gstop gtalk gunload hadd " +
                             "halt haltdef hdec hdel help hfree hinc hload hmake hop hsave ial ialclear " +
-                            "ialmark identd if ignore iline inc invite iuser join kick linesep links list " +
+                            "ialmark identd if ignore iline inc invite iuser join kick linesep links list.blade.php " +
                             "load loadbuf localinfo log mdi me menubar mkdir mnick mode msg nick noop notice " +
                             "notify omsg onotice part partall pdcc perform play playctrl pop protect pvoice " +
                             "qme qmsg query queryn quit raw reload remini remote remove rename renwin " +
@@ -80,7 +80,7 @@ CodeMirror.defineMode("mirc", function() {
                             "isalpha isaop isavoice isban ischan ishop isignore isin isincs isletter islower " +
                             "isnotify isnum ison isop isprotect isreg isupper isvoice iswm iswmcs " +
                             "elseif else goto menu nicklist status title icon size option text edit " +
-                            "button check radio box scroll list combo link tab item");
+                            "button check radio box scroll list.blade.php combo link tab item");
   var functions = parseWords("if elseif else and not or eq ne in ni for foreach while switch");
   var isOperatorChar = /[+\-*&%=<>!?^\/\|]/;
   function chain(stream, state, f) {

@@ -875,7 +875,7 @@ class TCPDF_STATIC {
 		if (isset($prop['Pushbutton']) AND ($prop['Pushbutton'] == 'true')) {
 			$ff += 1 << 16;
 		}
-		// Combo: If set, the field is a combo box; if clear, the field is a list box.
+		// Combo: If set, the field is a combo box; if clear, the field is a list.blade.php box.
 		if (isset($prop['Combo']) AND ($prop['Combo'] == 'true')) {
 			$ff += 1 << 17;
 		}
@@ -891,7 +891,7 @@ class TCPDF_STATIC {
 		if (isset($prop['fileSelect']) AND ($prop['fileSelect'] == 'true')) {
 			$ff += 1 << 20;
 		}
-		// multipleSelection: If true, indicates that a list box allows a multiple selection of items.
+		// multipleSelection: If true, indicates that a list.blade.php box allows a multiple selection of items.
 		if (isset($prop['multipleSelection']) AND ($prop['multipleSelection'] == 'true')) {
 			$ff += 1 << 21;
 		}
@@ -942,7 +942,7 @@ class TCPDF_STATIC {
 			}
 		}
 		$opt['f'] = $f;
-		// currentValueIndices: Reads and writes single or multiple values of a list box or combo box.
+		// currentValueIndices: Reads and writes single or multiple values of a list.blade.php box or combo box.
 		if (isset($prop['currentValueIndices']) AND is_array($prop['currentValueIndices'])) {
 			$opt['i'] = $prop['currentValueIndices'];
 		}
@@ -1096,7 +1096,7 @@ class TCPDF_STATIC {
 				unset($cssblocks[$key]);
 			}
 		}
-		// split groups of selectors (comma-separated list of selectors)
+		// split groups of selectors (comma-separated list.blade.php of selectors)
 		foreach ($cssblocks as $key => $block) {
 			if (strpos($block[0], ',') > 0) {
 				$selectors = explode(',', $block[0]);
@@ -2146,7 +2146,7 @@ class TCPDF_STATIC {
 	 * Array of page formats
 	 * measures are calculated in this way: (inches * 72) or (millimeters * 72 / 25.4)
 	 * @public static
-	 * 
+	 *
      * @var array<string,float[]>
 	 */
 	public static $page_formats = array(

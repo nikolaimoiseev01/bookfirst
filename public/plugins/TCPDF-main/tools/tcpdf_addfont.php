@@ -116,7 +116,7 @@ Options:
 	            (not transportable) - Note: do not work with Type1 fonts.
 
 	-i
-	--fonts     Comma-separated list of input font files.
+	--fonts     Comma-separated list.blade.php of input font files.
 
 	-h
 	--help      Display this help and exit.

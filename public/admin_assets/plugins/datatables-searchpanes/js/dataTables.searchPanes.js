@@ -1174,7 +1174,7 @@
                 return;
             }
             var idx;
-            // For each pane, check that the loadedFilter list exists and is not null,
+            // For each pane, check that the loadedFilter list.blade.php exists and is not null,
             // find the id of each search item and set it to be selected.
             for (var i = 0; i < loadedFilter.searchPanes.panes.length; i++) {
                 if (loadedFilter.searchPanes.panes[i].id === this.s.index) {
@@ -1678,7 +1678,7 @@
                 if (!this.regenerating) {
                     for (var _d = 0, _e = this.s.panes; _d < _e.length; _d++) {
                         var pane = _e[_d];
-                        // Identify the pane where a selection or deselection has been made and add it to the list.
+                        // Identify the pane where a selection or deselection has been made and add it to the list.blade.php.
                         if (pane.s.selectPresent) {
                             this.s.selectionList.push({ index: pane.s.index, rows: pane.s.dtPane.rows({ selected: true }).data().toArray(), protect: false });
                             table.state.save();
@@ -1699,17 +1699,17 @@
                             pane.s.lastSelect = (pane.s.index === last);
                         }
                     }
-                    // Remove selections from the list from the pane where a deselect has taken place
+                    // Remove selections from the list.blade.php from the pane where a deselect has taken place
                     for (var i = 0; i < this.s.selectionList.length; i++) {
                         if (this.s.selectionList[i].index !== deselectIdx || this.s.selectionList[i].protect === true) {
                             var further = false;
-                            // Find out if this selection is the last one in the list for that pane
+                            // Find out if this selection is the last one in the list.blade.php for that pane
                             for (var j = i + 1; j < this.s.selectionList.length; j++) {
                                 if (this.s.selectionList[j].index === this.s.selectionList[i].index) {
                                     further = true;
                                 }
                             }
-                            // If there are no selections for this pane in the list then just push this one
+                            // If there are no selections for this pane in the list.blade.php then just push this one
                             if (!further) {
                                 newSelectionList.push(this.s.selectionList[i]);
                                 this.s.selectionList[i].protect = false;
@@ -1878,7 +1878,7 @@
         };
         /**
          * Prepares the panes for selections to be made when cascade is active and a deselect has occured
-         * @param newSelectionList the list of selections which are to be made
+         * @param newSelectionList the list.blade.php of selections which are to be made
          */
         SearchPanes.prototype._cascadeRegen = function (newSelectionList) {
             // Set this to true so that the actions taken do not cause this to run until it is finished
@@ -1902,7 +1902,7 @@
             }
             // Remake Selections
             this._makeCascadeSelections(newSelectionList);
-            // Set the selection list property to be the list without the selections from the deselect pane
+            // Set the selection list.blade.php property to be the list.blade.php without the selections from the deselect pane
             this.s.selectionList = newSelectionList;
             // The regeneration of selections is over so set it back to false
             for (var _b = 0, _c = this.s.panes; _b < _c.length; _b++) {
@@ -1926,7 +1926,7 @@
             return this._attachMessage();
         };
         /**
-         * Gets the selection list from the previous state and stores it in the selectionList Property
+         * Gets the selection list.blade.php from the previous state and stores it in the selectionList Property
          */
         SearchPanes.prototype._getState = function () {
             var loadedFilter = this.s.dt.state.loaded();
@@ -1936,7 +1936,7 @@
         };
         /**
          * Makes all of the selections when cascade is active
-         * @param newSelectionList the list of selections to be made, in the order they were originally selected
+         * @param newSelectionList the list.blade.php of selections to be made, in the order they were originally selected
          */
         SearchPanes.prototype._makeCascadeSelections = function (newSelectionList) {
             // make selections in the order they were made previously, excluding those from the pane where a deselect was made
@@ -2028,7 +2028,7 @@
                 this._startup(table);
             }
             else {
-                // Otherwise add the paneStartup function to the list of functions that are to be run when the table is initialised
+                // Otherwise add the paneStartup function to the list.blade.php of functions that are to be run when the table is initialised
                 // This will garauntee that the panes are initialised before the init event and init Complete callback is fired
                 this.s.dt.settings()[0].aoInitComplete.push({ fn: function () {
                         _this._startup(table);
@@ -2057,7 +2057,7 @@
             var table = this.s.dt;
             for (var _i = 0, _a = this.s.panes; _i < _a.length; _i++) {
                 var pane = _a[_i];
-                // Identify the pane where a selection or deselection has been made and add it to the list.
+                // Identify the pane where a selection or deselection has been made and add it to the list.blade.php.
                 if (pane.s.selectPresent) {
                     this.s.selectionList.push({ index: pane.s.index, rows: pane.s.dtPane.rows({ selected: true }).data().toArray(), protect: false });
                     table.state.save();
@@ -2074,7 +2074,7 @@
                     deselectPresent = true;
                 }
             }
-            // Build an updated list based on any selections or deselections added
+            // Build an updated list.blade.php based on any selections or deselections added
             if (!selectPresent) {
                 this.s.selectionList = [];
             }
@@ -2082,13 +2082,13 @@
                 var newSelectionList = [];
                 for (var i = 0; i < this.s.selectionList.length; i++) {
                     var further = false;
-                    // Find out if this selection is the last one in the list for that pane
+                    // Find out if this selection is the last one in the list.blade.php for that pane
                     for (var j = i + 1; j < this.s.selectionList.length; j++) {
                         if (this.s.selectionList[j].index === this.s.selectionList[i].index) {
                             further = true;
                         }
                     }
-                    // If there are no selections for this pane in the list then just push this one
+                    // If there are no selections for this pane in the list.blade.php then just push this one
                     if (!further &&
                         this.s.panes[this.s.selectionList[i].index].s.dtPane.rows({ selected: true }).data().toArray().length > 0) {
                         newSelectionList.push(this.s.selectionList[i]);
@@ -2215,7 +2215,7 @@
                 }
                 _this.s.filterPane = -1;
             });
-            // Whenever a state save occurs store the selection list in the state object
+            // Whenever a state save occurs store the selection list.blade.php in the state object
             this.s.dt.on('stateSaveParams.dtsp', function (e, settings, data) {
                 if (data.searchPanes === undefined) {
                     data.searchPanes = {};

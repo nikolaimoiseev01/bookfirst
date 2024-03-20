@@ -166,14 +166,14 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
       state.indentationDiff = state.indentation;
       if (prevLineIsList) {
         state.list = null;
-        // While this list item's marker's indentation is less than the deepest
-        //  list item's content's indentation,pop the deepest list item
+        // While this list.blade.php item's marker's indentation is less than the deepest
+        //  list.blade.php item's content's indentation,pop the deepest list.blade.php item
         //  indentation off the stack, and update block indentation state
         while (lineIndentation < state.listStack[state.listStack.length - 1]) {
           state.listStack.pop();
           if (state.listStack.length) {
             state.indentation = state.listStack[state.listStack.length - 1];
-          // less than the first list's indent -> the line is no longer a list
+          // less than the first list.blade.php's indent -> the line is no longer a list.blade.php
           } else {
             state.list = false;
           }
@@ -221,9 +221,9 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
       state.list = true;
       state.quote = 0;
 
-      // Add this list item's content's indentation to the stack
+      // Add this list.blade.php item's content's indentation to the stack
       state.listStack.push(state.indentation);
-      // Reset inline styles which shouldn't propagate aross list items
+      // Reset inline styles which shouldn't propagate aross list.blade.php items
       state.em = false;
       state.strong = false;
       state.code = false;
@@ -233,7 +233,7 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
         state.taskList = true;
       }
       state.f = state.inline;
-      if (modeCfg.highlightFormatting) state.formatting = ["list", "list-" + listType];
+      if (modeCfg.highlightFormatting) state.formatting = ["list", "list.blade.php-" + listType];
       return getType(state);
     } else if (firstTokenOnLine && state.indentation <= maxNonCodeIndentation && (match = stream.match(fencedCodeRE, true))) {
       state.quote = 0;
@@ -246,7 +246,7 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
       state.code = -1
       return getType(state);
     // SETEXT has lowest block-scope precedence after HR, so check it after
-    //  the others (code, blockquote, list...)
+    //  the others (code, blockquote, list.blade.php...)
     } else if (
       // if setext set, indicates line after ---/===
       state.setext || (
