@@ -45,8 +45,8 @@
 
 
                         <div style="width:100%; margin-top:20px; text-align: center">
-                            <a class="link open_gif">Смотреть видео-пример</a>
-                            <img class="gif" src="/img/help_ext_promotion_portal" alt="">
+                            <img style="max-width: 900px !important; display: inherit !important;" class="png gif"
+                                 src="/img/help_ext_promotion_portal.png" alt="">
                         </div>
                     </div>
 
