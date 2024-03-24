@@ -181,13 +181,13 @@
                                         <tr>
                                             <td style="font-weight: bold">Логин</td>
                                             <td>
-                                                {{$ext_promotion->user['login']}}
+                                                {{$ext_promotion['login']}}
                                             </td>
                                         </tr>
                                         <tr>
                                             <td style="font-weight: bold">Пароль</td>
                                             <td>
-                                                {{$ext_promotion->user['password']}}
+                                                {{$ext_promotion['password']}}
                                             </td>
                                         </tr>
                                         <tr>
