@@ -11,6 +11,26 @@
 
                 <div style="margin-bottom: 0;" class="participation-inputs-row">
                     <div class="input-group">
+                        <p>Сайт для продвижения</p>
+                        <select wire:model="site" id="site" name="site">
+                            <option value="stihi">stihi</option>
+                            <option value="proza">proza</option>
+                            <option value="chitalnya">chitalnya</option>
+                            <option value="poembook">poembook</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="participation-inputs-row">
+                    <div class="checkbox-group">
+                        <label><p>Ознакомлен и согласен с <a target="_blank" class="link" href="/ext_promotion_rules.pdf">правилами продвижения</a></p></label>
+                        <input wire:model="flg_affirmed" id="flg_affirmed" type="checkbox">
+                    </div>
+
+                </div>
+
+                <div x-show="$wire.flg_affirmed" class="participation-inputs-row">
+                    <div class="input-group">
                         <p>Логин от сайта*</p>
                         <input class="@if(in_array('login', $error_fields) && !$login) danger @endif"
                                wire:model.self="login"
@@ -21,17 +41,6 @@
                         <input class="@if(in_array('password', $error_fields) && !$password) danger @endif"
                                wire:model="password" type="text">
                     </div>
-
-                    <div class="input-group">
-                        <p>Сайт для продвижения</p>
-                        <select wire:model="site" id="site" name="site">
-                            <option value="stihi">stihi</option>
-                            <option value="proza">proza</option>
-                            <option value="chitalnya">chitalnya</option>
-                            <option value="poembook">poembook</option>
-                        </select>
-                    </div>
-
                 </div>
 
                 <div class="participation-inputs-row">
@@ -44,6 +53,9 @@
                 <div class="total_price_wrap participation-price">
 
                     <div class="number">
+                        @if(($promocode ?? null) && ($price_total > 00))
+                            <p class="old_price">{{$price_total / (100 - $promocode['discount']) * 100}}</p>
+                        @endif
                         <h1 id="total_price">{{$price_total}} руб.</h1>
                     </div>
                     <p class="price-desc">Итого</p>
@@ -84,7 +96,7 @@
                 </button>
                 <p style="font-size: 20px; color: #bdbdbd"><i>* - обязательны для заполнения</i></p>
             </div>
-            <a href="{{route('help_collection')}}" target="_blank" style="font-size: 20px;" class="link"><i>Нужна
+            <a href="{{route('help_ext_promotion')}}" target="_blank" style="font-size: 20px;" class="link"><i>Нужна
                     помощь</i></a>
         </div>
 

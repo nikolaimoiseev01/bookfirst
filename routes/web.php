@@ -105,6 +105,7 @@ Route::middleware([])->group(function () {
     Route::get('/help/account', [PortalController::class, 'help_account'])->name('help_account');
     Route::get('/help/collection', [PortalController::class, 'help_collection'])->name('help_collection');
     Route::get('/help/own_book', [PortalController::class, 'help_own_book'])->name('help_own_book');
+    Route::get('/help/ext_promotion', [PortalController::class, 'help_ext_promotion'])->name('help_ext_promotion');
 
     Route::get('/ext_promotion', [PortalController::class, 'ext_promotion'])->name('ext_promotion');
 

@@ -55,19 +55,20 @@
 
         </div>
         {{-- // Общая информация о заявке--}}
-        @if($chat ?? null)
+        @if($ext_promotion->chat ?? null)
             <div class="chat_block_wrap">
                 <div class="buttons_wrap">
                     <a id="chat_button" class="button">
-                        Чат по моему изданию
+                        Чат по моему продвижению
                     </a>
-                    @if($chat['flg_chat_read'] === 0)
-                        {{--                        @livewire('account.chat.chat-question-check',['chat_id'=>$chat->id])--}}
+                    @if($ext_promotion->chat['flg_chat_read'] === 0)
+                        @livewire('account.chat.chat-question-check',['chat_id'=>$ext_promotion->chat->id])
                     @endif
                 </div>
                 <div id="book_chat">
                     <div class="container">
-                        {{--                        @livewire('account.chat.chat',['chat_id'=>$chat->id ?? null, 'new_chat_user_id'=>null])--}}
+                        @livewire('account.chat.chat',['chat_id'=>$ext_promotion->chat->id ?? null,
+                        'new_chat_user_id'=>null])
                     </div>
                 </div>
             </div>

@@ -1525,6 +1525,10 @@
                 font-style: italic;
             }
         }
+
+        .secutity_wrap {
+            padding: 20px;
+        }
     }
 
 }
@@ -2532,6 +2536,7 @@
 
         .participation-inputs {
             justify-content: space-between;
+            gap: 20px;
         }
 
         .participation-outputs {
@@ -2610,6 +2615,8 @@
     }
 
     &.ext_promotion_index_page_wrap {
+        max-width: 714px;
+
         .legend_wrap {
             flex-direction: column;
 

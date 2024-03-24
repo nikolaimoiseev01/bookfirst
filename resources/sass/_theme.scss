@@ -104,6 +104,29 @@ p {
     }
 }
 
+ul {
+    list-style-type: circle;
+
+    li {
+        font-family: "Futura PT Light", serif;
+        color: #1c1c16;
+        font-size: 24px;
+        margin: 0;
+        position: relative;
+
+        @include preloader;
+
+        @include media-tablets-768 {
+            font-size: 22px;
+        }
+
+        @include media-mobiles-480 {
+            font-size: 20px;
+        }
+    }
+}
+
+
 label {
     position: relative;
     cursor: pointer;
@@ -1383,6 +1406,20 @@ header {
 
                     @media (max-width: 600px) {
                         width: 30px;
+                    }
+                }
+
+                &.active {
+                    &:after {
+                        bottom: -4px;
+                        content: "";
+                        display: block;
+                        height: 2px;
+                        position: absolute;
+                        background: #47af98;
+                        transition: width 0.3s ease 0s, left 0.3s ease 0s;
+                        width: 100%;
+                        left: 0;
                     }
                 }
 
@@ -3590,6 +3627,88 @@ footer {
     p {
         color: $color-grey;
     }
+}
+
+.alert_block_wrap {
+    position: fixed;
+    bottom: 10px;
+    padding: 10px 20px;
+    z-index: 99999;
+    border: 1px $color-green-light solid;
+    -webkit-animation: pulsate 1s ease-in-out;
+    -webkit-animation-iteration-count: infinite;
+    margin: 0 20px;
+
+    .mobile {
+        display: none;
+
+        @media (max-width: 600px) {
+            display: inherit;
+        }
+    }
+
+    .desktop {
+        @media (max-width: 600px) {
+            display: none;
+        }
+    }
+
+
+    &.hidden {
+        display: none;
+        bottom: -500px;
+    }
+
+    &.active {
+        display: inherit;
+    }
+
+    .alert_wrap {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        text-align: center;
+        //gap: 5px;
+
+        p {
+            //color: $color-green;
+            font-size: 22px;
+        }
+
+        .close_icon {
+            position: absolute;
+            top: -20px;
+            right: -30px;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: white;
+            border-radius: 50%;
+            border: 1px $color-green solid;
+            padding: 5px;
+
+            img {
+                width: 80%;
+            }
+        }
+    }
+
+    @-webkit-keyframes pulsate {
+        0% {
+            box-shadow: 0 0 3px $color-yellow;
+        }
+        50% {
+            box-shadow: 0 0 7px $color-yellow;
+        }
+        100% {
+            box-shadow: 0 0 3px $color-yellow;
+        }
+    }
+
+
 }
 
 //endregion

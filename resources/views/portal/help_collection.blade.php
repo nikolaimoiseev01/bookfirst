@@ -17,6 +17,7 @@
                 <a href="{{route('help_account')}}">Личный кабинет</a>
                 <a href="#collections" class="current">Участие в сборниках</a>
                 <a href="{{route('help_own_book')}}">Издание собственной книги</a>
+                <a href="{{route('help_ext_promotion')}}">Продвижение</a>
                 <a href="{{route('chat_create','Вопрос по работе с платформой')}}"
                    style="color: #2ec7a6 !important; float:right; font-size: 23px !important;"
                    class="log_check link"><i>Другой вопрос</i></a>

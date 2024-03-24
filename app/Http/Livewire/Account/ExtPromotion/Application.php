@@ -17,6 +17,7 @@ class Application extends Component
     public $error_texts = [];
     public $error_fields = [];
 
+    public $flg_affirmed = false;
     public $login;
     public $password;
     public $site = 'stihi';
@@ -79,11 +80,15 @@ class Application extends Component
             array_push($this->error_texts, 'У вас уже есть активная заявка на продвижение на этом сайте!');
         }
 
-        if (!$this->login ?? null) {
+        if (!$this->flg_affirmed ?? null) {
+            array_push($this->error_texts, 'Отметьте ваше согласие с правилами!');
+        }
+
+        if ($this->flg_affirmed && (!$this->login ?? null)) {
             array_push($this->error_fields, 'login');
             array_push($this->error_texts, 'Логин не заполнен!');
         }
-        if (!$this->password ?? null) {
+        if ($this->flg_affirmed && (!$this->password ?? null)) {
             array_push($this->error_fields, 'password');
             array_push($this->error_texts, 'Пароль не заполнен!');
         }

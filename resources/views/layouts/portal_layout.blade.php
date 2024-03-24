@@ -69,6 +69,7 @@
     </div>
 </div>
 
+<x-ext-promotion-anounce></x-ext-promotion-anounce>
 
 @if(str_contains($subdomain, 'social'))
     <style>

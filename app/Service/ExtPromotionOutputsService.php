@@ -11,7 +11,7 @@ class ExtPromotionOutputsService
 
         $days = intval($days);
 
-        $our_interest = 5;
+        $our_interest = 2;
 
         if ($days < 5) {
             $ext_discount = 1;
@@ -38,12 +38,17 @@ class ExtPromotionOutputsService
             $base_price = 50;
         }
 
-        $price_total = ceil($base_price * $ext_discount * $days * ((100 - $discount) / 100) * $our_interest);
+        $price_executor =  ceil($base_price * $ext_discount * $days);
+
+        $price_our = ceil($price_executor * ($our_interest * ((100 - $discount) / 100)) - $price_executor);
+
+        $price_total = $price_executor + $price_our;
 
         return [
             'price_total' => $price_total,
-            'price_executor' => $price_total / $our_interest,
-            'price_our' => $price_total - ($price_total / $our_interest)
+            'price_executor' => $price_executor,
+            'price_our' => $price_our,
+            'ext_discount' => (($ext_discount - 1) * -1) * 100
         ];
     }
 }

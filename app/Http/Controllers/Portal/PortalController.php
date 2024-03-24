@@ -39,6 +39,12 @@ class PortalController extends Controller
         return view('portal.help_own_book');
     }
 
+    public function help_ext_promotion()
+    {
+        return view('portal.help_ext_promotion');
+    }
+
+
     public function old_collections()
     {
         $collections = Collection::orderBY('id', 'desc')->where('col_status_id', 9)->orderBy('id', 'desc')->paginate(9);

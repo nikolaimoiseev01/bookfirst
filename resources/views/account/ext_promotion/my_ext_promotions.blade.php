@@ -17,13 +17,19 @@
 @section('content')
     <div class="account-header">
         <h1>Мои активные продвижения</h1>
-        <a href="{{route('make_ext_promotion')}}" class="button">
-            Подать заявку
-        </a>
+        <div class="buttons_wrap">
+            <a href="{{route('make_ext_promotion')}}" class="button">
+                Подать заявку
+            </a>
+            <a href="{{route('ext_promotion')}}" class="button">
+                Подробнее
+            </a>
+        </div>
+
     </div>
     <div class="my_collections_wrap">
         @if(count($ext_promotions) == 0)
-            <h1 class="no-access">На данный момент у Вас нет сборников, в которых Вы участвуете.</h1>
+            <h1 class="no-access">На данный момент у Вас нет активных заявок на продвижение.</h1>
         @endif
         @foreach($ext_promotions as $ext_promotion)
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Account\Chat;
 
+use App\Models\ext_promotion;
 use App\Models\Message;
 use App\Models\message_file;
 use App\Models\MessageTemplate;
@@ -215,7 +216,7 @@ class Chat extends Component
                     $this->chat->update([
                         'chat_status_id' => '2' // Ставим статус "ответ получен"
                     ]);
-                } elseif($this->chat['chat_status_id'] === '9') { // Если был пустой
+                } elseif ($this->chat['chat_status_id'] === '9') { // Если был пустой
                     $this->chat->update([
                         'chat_status_id' => '4' // Ставим статус "ответ получен"
                     ]);
@@ -263,15 +264,19 @@ class Chat extends Component
                     'flg_chat_read' => 1
                 ]);
 
-                // Посылаем Telegram уведомление нам
-                if (!ENV('APP_DEBUG')) {
-                    Notification::route('telegram', '-506622812')
-                        ->notify(new TelegramNotification('',
-                            '💬' . $user_from['name'] . ' ' . $user_from['surname'] . ': ' . $this->text,
-                            "К чатам",
-                            'https://vk.com/feed'));
+                if (str_contains($this->chat['title'], 'Личный чат по продвижению на сайте')) {
+                    $ext_promotion = ext_promotion::where('chat_id', $this->chat['id'])->first();
+                    $telegram_chat = '-4120321987';
+                } else {
+                    $telegram_chat = '-506622812';
                 }
 
+                // Посылаем Telegram уведомление нам
+                Notification::route('telegram', $telegram_chat)
+                    ->notify(new TelegramNotification('',
+                        '💬' . $user_from['name'] . ' ' . $user_from['surname'] . ': ' . $this->text,
+                        null,
+                        null));
 
             }
         }

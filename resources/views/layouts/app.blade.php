@@ -68,6 +68,8 @@
     </div>
 </div>
 
+<x-ext-promotion-anounce></x-ext-promotion-anounce>
+
 
 <x-preloader mode="portal"/>
 <x-header-portal/>

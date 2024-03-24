@@ -5,8 +5,6 @@
             <select wire:model="site" id="site" name="site">
                 <option value="stihi">stihi</option>
                 <option value="proza">proza</option>
-                <option value="chitalnya">chitalnya</option>
-                <option value="poembook">poembook</option>
             </select>
         </div>
 
@@ -27,6 +25,9 @@
                 <div id="total_price" class="price-number">{{$price_total}}</div>
                 <p class="price-desc rub">&nbsp;руб.</p>
             </div>
+            @if($ext_discount > 0)
+                <p style="color: darkgrey;"><i>За такое кол-во дней есть скидка: {{$ext_discount}}%</i></p>
+            @endif
         </div>
     </div>
 </div>
