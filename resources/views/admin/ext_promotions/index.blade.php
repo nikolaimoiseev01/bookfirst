@@ -179,6 +179,18 @@
                                             </td>
                                         </tr>
                                         <tr>
+                                            <td style="font-weight: bold">Логин</td>
+                                            <td>
+                                                {{$ext_promotion->user['login']}}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-weight: bold">Пароль</td>
+                                            <td>
+                                                {{$ext_promotion->user['password']}}
+                                            </td>
+                                        </tr>
+                                        <tr>
                                             <td style="font-weight: bold">Промокод</td>
                                             <td>
                                                 {{$ext_promotion['promocode'] ?? 'Без промокода'}}
