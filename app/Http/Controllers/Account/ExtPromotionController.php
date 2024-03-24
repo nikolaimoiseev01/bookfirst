@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Account;
 use App\Http\Controllers\Controller;
 use App\Models\ext_promotion;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ExtPromotionController extends Controller
 {
@@ -20,7 +21,7 @@ class ExtPromotionController extends Controller
     }
 
     public function my_ext_promotions () {
-        $ext_promotions = ext_promotion::orderBy('created_at', 'desc')->get();
+        $ext_promotions = ext_promotion::where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->get();
         return view('account.ext_promotion.my_ext_promotions', [
             'ext_promotions' => $ext_promotions
         ]);
