@@ -13,7 +13,7 @@
             @elseif($collection['col_status_id'] === 1)
 
                 <p class="no-access">Предварительная проверка сборника станет
-                    доступна {{ Date::parse($collection['col_date2'])->format('j F Y') }}.
+                    доступна {{ Date::parse($collection['col_date2'])->format('j F Y') }} до 23:59 МСК.
                 </p>
 
             @elseif ($collection['col_status_id'] === 2)
