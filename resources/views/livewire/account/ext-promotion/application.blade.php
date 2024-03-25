@@ -15,8 +15,6 @@
                         <select wire:model="site" id="site" name="site">
                             <option value="stihi">stihi</option>
                             <option value="proza">proza</option>
-                            <option value="chitalnya">chitalnya</option>
-                            <option value="poembook">poembook</option>
                         </select>
                     </div>
                 </div>
