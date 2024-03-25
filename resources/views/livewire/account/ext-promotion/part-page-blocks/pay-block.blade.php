@@ -67,7 +67,14 @@
 
                     </div>
                 </div>
-
+           @elseif ($ext_promotion['ext_promotion_status_id'] == 99) {{-- Ожидание автора в чате --}}
+                <p class="no-access">
+                    Сейчас продвижение находится "на паузе". Мы задали вопрос в чате (блок наверху этой страницы) и готовы продолжить сразу после вашего ответа.
+                </p>
+            @elseif ($ext_promotion['ext_promotion_status_id'] == 999) {{-- Неактуальна --}}
+            <p class="no-access">
+                С заявкой что-то пошло не так и сейчас у нее статус - неактуально.
+            </p>
             @else
 
                 <div class="prices_wrap pay_success_wrap">

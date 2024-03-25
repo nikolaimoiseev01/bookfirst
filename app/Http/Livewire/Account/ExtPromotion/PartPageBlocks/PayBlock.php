@@ -28,13 +28,13 @@ class PayBlock extends Component
         } elseif ($this->ext_promotion['ext_promotion_status_id'] === 2) { // Нужна оплата (
             $this->status_color = 'yellow';
             $this->page_title = 'Оплата продвижения';
+        } elseif ($this->ext_promotion['ext_promotion_status_id'] > 9) { // Ожидание автора в чате или неакутально
+            $this->status_color = 'grey';
+            $this->page_title = 'Оплата продвижения';
         } elseif ($this->ext_promotion['ext_promotion_status_id'] >= 3) { // Успешно оплатил
             $this->status_color = 'green';
             $this->page_title = 'Оплата успешно подтверждена';
-        } elseif ($this->ext_promotion['ext_promotion_status_id'] === 99) { // Успешно оплатил
-            $this->status_color = 'grey';
-            $this->page_title = 'Оплата продвижения';
-        };
+        } ;
 
         $found_status = $status->get_status('.pay_block_wrap', $this->status_color);
 
