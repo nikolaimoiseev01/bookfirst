@@ -74,6 +74,13 @@ class ExtPromotionController extends Controller
         $ext_promotion->update(array(
             'ext_promotion_status_id' => $request->ext_promotion_status_id
         ));
+
+        if($request->ext_promotion_status_id == 4) { // Если начинается продвижение, записываем дату начала
+            $ext_promotion->update(array(
+                'started_at' => Carbon::now('Europe/Moscow')->toDateTime()
+            ));
+        }
+
         $new_status_title = ext_promotion_status::where('id', $request->ext_promotion_status_id)->first()['title'];
 
         $user = User::where('id', $request->user_id)->first();

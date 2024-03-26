@@ -161,6 +161,13 @@
                                 создана: {{Date::parse($ext_promotion['created_at'])->addHours(3)->format('j F H:i')}}</h4>
                             <h4>Заявка была
                                 обновлена: {{Date::parse($ext_promotion['updated_at'])->addHours(3)->format('j F H:i')}}</h4>
+                            @if($ext_promotion['started_at'])
+                                <h4>Время начала
+                                    продвижения: {{Date::parse($ext_promotion['started_at'])->format('j F H:i')}}</h4>
+                                <h4>Плановый конец
+                                    продвижения: {{Date::parse($ext_promotion['started_at'])->addDays($ext_promotion['days'])->format('j F')}}
+                                    21:00</h4>
+                            @endif
 
                             <div class="info_tables row align-items-start">
                                 <div class="col-6">
@@ -193,7 +200,7 @@
                                         <tr>
                                             <td style="font-weight: bold">Промокод</td>
                                             <td>
-                                                {{$ext_promotion['promocode'] ?? 'Без промокода'}}
+                                                {{$ext_promotion->promocode['promocode'] ?? 'Без промокода'}}
                                             </td>
                                         </tr>
                                         <tr>
