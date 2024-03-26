@@ -208,7 +208,7 @@ class Chat extends Component
 
             if (in_array($this->cur_user_role, ['admin', 'ext_promotion_admin'])) { // Если пишет АДМИН
                 $user_from = Auth::user()->name;
-                $tel_message_title = "*Новое сообщение от {$user_from}*";
+                $tel_message_title = "*Новое сообщение от {$user_from} автору '{$user['name']} {$user['surname']}'*";
                 $this->chat->update([
                     'flg_chat_read' => 0 // Чат становится непрочитанным
                 ]);
