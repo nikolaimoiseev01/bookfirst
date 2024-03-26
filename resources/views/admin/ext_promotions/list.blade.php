@@ -49,6 +49,10 @@
                             <tr style="
                                 @if(in_array($ext_promotion['ext_promotion_status_id'], [1,3]) )
                                     background: #ffe7e7; color: black;
+                                @elseif(in_array($ext_promotion['ext_promotion_status_id'], [9]) )
+                                    background: #c3fdd2; color: black;
+                                @elseif(in_array($ext_promotion['ext_promotion_status_id'], [4]) )
+                                    background: #c3f7ff; color: black;
                                 @endif
                                 "
                                 onclick="document.location = '' + '{{route('admin_ext_promotion', $ext_promotion['id'])}}' + ''">
@@ -60,8 +64,8 @@
                                     @role('admin')
                                     <a href="{{route('user_page', $ext_promotion['user_id'])}}">{{$ext_promotion->user['name']}} {{$ext_promotion->user['surname']}}</a>
                                     @else
-                                    {{$ext_promotion->user['name']}} {{$ext_promotion->user['surname']}}
-                                    @endrole
+                                        {{$ext_promotion->user['name']}} {{$ext_promotion->user['surname']}}
+                                        @endrole
 
                                 </td>
                                 <td data-label="Сайт" style="text-align: center;">

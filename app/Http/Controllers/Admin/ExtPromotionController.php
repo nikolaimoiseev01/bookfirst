@@ -24,7 +24,8 @@ class ExtPromotionController extends Controller
     public function list()
     {
 
-        $ext_promotions = ext_promotion::orderBy('created_at', 'desc')->get();
+        $ext_promotions = ext_promotion::orderByRaw("FIELD(ext_promotion_status_id, 1, 3, 4, 2, 9, 99, 999)")
+                            -> orderBy('created_at', 'desc')->get();
 
         return view('admin.ext_promotions.list', [
             'ext_promotions' => $ext_promotions
