@@ -97,6 +97,10 @@
                             class="fa fa-book"></i> Нужно отправить
                     </button>
 
+                    <button type="button" class="printing_filter_button mr-3 btn btn-outline-danger btn-sm"><i
+                            class="fa fa-book"></i> В процессе печати
+                    </button>
+
                     <span class="col-info-block d-flex align-items-center clear_filters">
                         <i class="mr-2 fa fa-times"></i> Очистить фильтры
                     </span>
@@ -544,6 +548,16 @@
                         $('#own_book_cover_status_1').trigger('click');
                         $('#own_book_cover_status_3').trigger('click');
                     })
+
+                    $('.printing_filter_button').on('click', function () {
+                        $('.clear_filters').trigger('click');
+
+                        $('#check_none_own_book').trigger('click');
+                        $('#own_book_status_6').trigger('click');
+
+                    })
+
+
 
                     $('.action_needed_inside_filter_button').on('click', function () {
                         $('.clear_filters').trigger('click');
