@@ -12,14 +12,17 @@ use App\Models\Participation;
 use App\Models\Transaction;
 use App\Models\User;
 use App\Notifications\EmailNotification;
+use App\Notifications\TelegramNotification;
 use App\Notifications\UserNotification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 
 class ExtPromotionController extends Controller
 {
-    public function list() {
+    public function list()
+    {
 
         $ext_promotions = ext_promotion::orderBy('created_at', 'desc')->get();
 
@@ -28,7 +31,8 @@ class ExtPromotionController extends Controller
         ]);
     }
 
-    public function index($id) {
+    public function index($id)
+    {
 
         $ext_promotion = ext_promotion::where('id', $id)->first();
         $ext_promotion_statuses = ext_promotion_status::all();
@@ -59,20 +63,21 @@ class ExtPromotionController extends Controller
             $email_subject = 'Продвижение началось';
             $email_text = "Спешим сообщить, что ваше продвижение на сайте {$ext_promotion['site']} началось! " .
                 "Всю подробную информацию (включая статистику) вы можете отслеживать на странице вашего продвижения:";
-        }
-        elseif ($request->ext_promotion_status_id == 9) {
+        } elseif ($request->ext_promotion_status_id == 9) {
             $email_subject = 'Продвижение закончено';
             $email_text = "Спешим сообщить, что ваше продвижение на сайте {$ext_promotion['site']} завершено! " .
                 "Всю подробную информацию (включая статистику) вы можете проверить на странице вашего продвижения:";
         }
 
-        ext_promotion::where('id', $request->ext_promotion_id)->update(array(
+        $old_status_title = $ext_promotion->ext_promotion_status['title'];
+        $ext_promotion->update(array(
             'ext_promotion_status_id' => $request->ext_promotion_status_id
         ));
+        $new_status_title = ext_promotion_status::where('id', $request->ext_promotion_status_id)->first()['title'];
 
         $user = User::where('id', $request->user_id)->first();
 
-        if(in_array($request->ext_promotion_status_id, [2,4,9])) {
+        if (in_array($request->ext_promotion_status_id, [2, 4, 9])) {
             $user->notify(new EmailNotification(
                     $email_subject,
                     $user['name'],
@@ -81,6 +86,19 @@ class ExtPromotionController extends Controller
                     route('index_ext_promotion', $ext_promotion['id']) . '/#payment_block')
             );
         }
+
+        $user_who_changed = Auth::user()->name;
+
+
+        Notification::route('telegram', '-4120321987')
+            ->notify(new TelegramNotification('🔧 *Изменили статус по продвижению!* 🔧',
+                "*Кто поменял*: {$user_who_changed}\n" .
+                "*Для автора*: {$user['surname']} {$user['name']}\n" .
+                "*Старый статус*: {$old_status_title}\n" .
+                "*Новый статус*: {$new_status_title}\n" .
+                "*Сайт*: {$ext_promotion['site']}\n" ,
+                null,
+                null));
 
         session()->flash('success', 'change_printorder');
         session()->flash('alert_type', 'success');

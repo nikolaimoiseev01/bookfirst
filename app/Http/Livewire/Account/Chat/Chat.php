@@ -207,7 +207,8 @@ class Chat extends Component
             $chat = \App\Models\Chat::where('id', $this->chat_id)->first();
 
             if (in_array($this->cur_user_role, ['admin', 'ext_promotion_admin'])) { // Если пишет АДМИН
-
+                $user_from = Auth::user()->name;
+                $tel_message_title = "*Новое сообщение от {$user_from}*";
                 $this->chat->update([
                     'flg_chat_read' => 0 // Чат становится непрочитанным
                 ]);
@@ -257,28 +258,33 @@ class Chat extends Component
 
             } else {
 
-                $user_from = User::where('id', $this->user_from)->first();
+                $tel_message_title = '';
 
                 \App\Models\Chat::where('id', $this->chat_id)->update([
                     'chat_status_id' => '1',
                     'flg_chat_read' => 1
                 ]);
 
-                if (str_contains($this->chat['title'], 'Личный чат по продвижению на сайте')) {
-                    $ext_promotion = ext_promotion::where('chat_id', $this->chat['id'])->first();
-                    $telegram_chat = '-4120321987';
-                } else {
-                    $telegram_chat = '-506622812';
-                }
+            }
 
+            $user_from = User::where('id', $this->user_from)->first();
+            $is_ext_promotion_chat = str_contains($this->chat['title'], 'Личный чат по продвижению на сайте');
+            if ($is_ext_promotion_chat) {
+                $ext_promotion = ext_promotion::where('chat_id', $this->chat['id'])->first();
+                $telegram_chat = '-4120321987';
+            } else {
+                $telegram_chat = '-506622812';
+            }
+
+            if(!(in_array($this->cur_user_role, ['admin', 'ext_promotion_admin'])) || $is_ext_promotion_chat) {
                 // Посылаем Telegram уведомление нам
                 Notification::route('telegram', $telegram_chat)
-                    ->notify(new TelegramNotification('',
+                    ->notify(new TelegramNotification($tel_message_title,
                         '💬' . $user_from['name'] . ' ' . $user_from['surname'] . ': ' . $this->text,
                         null,
                         null));
-
             }
+
         }
 
         $this->dispatchBrowserEvent('update_js');
