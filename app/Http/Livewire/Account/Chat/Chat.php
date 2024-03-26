@@ -240,7 +240,7 @@ class Chat extends Component
                 }
 
                 if ($chat->own_book_id === null && $chat->collection_id === null) {
-                    $url_back = route('chat', $chat->id);
+                    $url_back = '/myaccount/chats?cur_chat_id=' . $chat->id;
 
                     // Посылаем Email уведомление пользователю
                     $user->notify(new EmailNotification(
@@ -250,7 +250,7 @@ class Chat extends Component
                         "Перейти в чат",
                         $url_back));
                 }
-                
+
 
             } else {
 
