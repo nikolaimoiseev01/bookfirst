@@ -133,9 +133,16 @@ class Application extends Component
 
             $user = Auth::user();
 
+            $promocode_info = $this->promocode['id'] ?? null ? "*Промокод*: " . $this->new_ext_promotion->promocode['promocode'] . "\n" : "";
+
             Notification::route('telegram', '-4120321987')
                 ->notify(new TelegramNotification('💥 *Новая заявка на продвижение!* 💥',
-                    "*Автор*: {$user['surname']} {$user['name']}\n*Логин*: {$this->login}\n*Сайт*: {$this->site}\n*Дней*: {$this->days}\n*Общая стоимость*: {$this->price_total}\n" ,
+                    "*Автор*: {$user['surname']} {$user['name']}\n" .
+                    "*Логин*: {$this->login}\n" .
+                    "*Сайт*: {$this->site}\n" .
+                    $promocode_info .
+                    "*Дней*: {$this->days}\n" .
+                    "*Общая стоимость*: {$this->price_total}" ,
                     null,
                     null));
 
