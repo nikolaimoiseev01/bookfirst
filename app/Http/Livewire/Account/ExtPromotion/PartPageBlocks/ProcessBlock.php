@@ -69,7 +69,7 @@ class ProcessBlock extends Component
             session()->flash('show_modal', 'yes');
             session()->flash('alert_type', 'error');
             session()->flash('alert_title', 'Упс!');
-            session()->flash('alert_text', 'При обновлении вручную должен быть перерыв более часа, пожалуйста, подождите.');
+            session()->flash('alert_text', 'При обновлении вручную должен быть перерыв более часа. Пожалуйста, подождите.');
             return redirect()->to(url()->previous());
 
         }

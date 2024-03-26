@@ -52,8 +52,8 @@ class ParseExtReaders extends Command
             Notification::route('telegram', '-4120321987')
                 ->notify(new TelegramNotification('📊 *Сохранили статистику по продвижениям!*',
                     "Обработали человек: $check_cnt",
-                    "В админку",
-                    "vk.com"));
+                    null,
+                    null));
         }
 
     }

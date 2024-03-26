@@ -31,6 +31,7 @@ class Kernel extends ConsoleKernel
             ->dailyAt('16:12')
             ->dailyAt('18:00')
             ->dailyAt('21:00');
+        $schedule->command('ParseExtReaders')->timezone('Europe/Moscow')->dailyAt('21:30');
     }
 
     /**
