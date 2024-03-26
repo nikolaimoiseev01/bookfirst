@@ -53,6 +53,8 @@
                                     background: #c3fdd2; color: black;
                                 @elseif(in_array($ext_promotion['ext_promotion_status_id'], [4]) )
                                     background: #c3f7ff; color: black;
+                                @else
+                                    background: #cbcdcb63; color: black;
                                 @endif
                                 "
                                 onclick="document.location = '' + '{{route('admin_ext_promotion', $ext_promotion['id'])}}' + ''">
