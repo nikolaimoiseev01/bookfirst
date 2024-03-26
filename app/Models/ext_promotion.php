@@ -37,6 +37,10 @@ class ext_promotion extends Model
         return $this->belongsTo(Chat::class);
     }
 
+    public function promocode() {
+        return $this->belongsTo(promocode::class);
+    }
+
     public function ext_promotion_parsed_reader() {
         return $this->hasMany(ext_promotion_parsed_reader::class);
     }
