@@ -38,6 +38,7 @@
                             <th scope="col" style="text-align: center;">Автор</th>
                             <th scope="col" style="text-align: center;">Сайт</th>
                             <th scope="col" style="text-align: center;">Дней</th>
+                            <th scope="col" style="text-align: center;">Общая сумма</th>
                             <th scope="col" style="text-align: center;">Создан</th>
                             <th scope="col" style="text-align: center;">Последнее изменение</th>
                         </tr>
@@ -75,6 +76,9 @@
                                 </td>
                                 <td data-label="Дней" style="text-align: center;">
                                     {{$ext_promotion['days']}}
+                                </td>
+                                <td data-label="Общая сумма" style="text-align: center;">
+                                    {{$ext_promotion['price_total']}} руб.
                                 </td>
                                 <td data-label="Создан" style="text-align: center;">
                                     {{ Date::parse($ext_promotion['created_at'])->addHours(3)->format('j F H:i') }}
