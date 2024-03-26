@@ -30,7 +30,7 @@
                 <p style="color: #578bcd"><b>Дата начала {{$ext_promotion['started_at']}}
                         продвижения:</b> {{Date::parse($ext_promotion['started_at'])->format('j F H:i')}}</p><br>
                 <p style="color: #578bcd"><b>Дата окончания
-                        продвижения:</b> {{Date::parse($ext_promotion['started_at'])->addDays($ext_promotion['days'])->format('j F H:i')}}
+                        продвижения:</b> {{Date::parse($ext_promotion['started_at'])->addDays($ext_promotion['days'])->format('j F')}} 21:00 МСК
                 </p>
 
                 @if(count($ext_promotion->ext_promotion_parsed_reader) > 0)
@@ -49,7 +49,7 @@
                 <p style="color: #47AF98"><b>Дата начала
                         продвижения:</b> {{Date::parse($ext_promotion['started_at'])->format('j F H:i')}}</p><br>
                 <p style="color: #47AF98"><b>Дата окончания
-                        продвижения:</b> {{Date::parse($ext_promotion['started_at'])->addDays($ext_promotion['days'])->format('j F H:i')}}
+                        продвижения:</b> {{Date::parse($ext_promotion['started_at'])->addDays($ext_promotion['days'])->format('j F')}} 21:00 МСК
                 </p>
                 <h4>Статистика читателей на сайте {{$ext_promotion['site']}}</h4>
                 <a style="color: #47AF98" wire:click="update_stat" class="link">Обновить данные</a>
