@@ -249,7 +249,6 @@ class Chat extends Component
                         "Вы получили новое сообщение в чате '" . $chat->title . "'!",
                         "Перейти в чат",
                         $url_back));
-                    Notification::send($user, new UserNotification('У Вас новое сообщение!', '/myaccount/chats/' . $this->chat_id));
                 }
 
                 // Посылаем Email уведомление пользователю
