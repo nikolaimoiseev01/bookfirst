@@ -135,7 +135,7 @@ class Application extends Component
 
             $promocode_info = $this->promocode['id'] ?? null ? "*Промокод*: " . $this->new_ext_promotion->promocode['promocode'] . "\n" : "";
 
-            Notification::route('telegram', '-4120321987')
+            Notification::route('telegram', ENV('APP_DEBUG') ? "-4176126016" : '-4120321987')
                 ->notify(new TelegramNotification('💥 *Новая заявка на продвижение!* 💥',
                     "*Автор*: {$user['surname']} {$user['name']}\n" .
                     "*Логин*: {$this->login}\n" .

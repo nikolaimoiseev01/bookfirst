@@ -27,7 +27,7 @@
                 </p>
             @elseif($ext_promotion['ext_promotion_status_id'] == 4)
                 <b><p class="green">Мы успешно приняли оплату и продвижение началось!</p></b><br>
-                <p style="color: #578bcd"><b>Дата начала {{$ext_promotion['started_at']}}
+                <p style="color: #578bcd"><b>Дата начала
                         продвижения:</b> {{Date::parse($ext_promotion['started_at'])->format('j F H:i')}}</p><br>
                 <p style="color: #578bcd"><b>Дата окончания
                         продвижения:</b> {{Date::parse($ext_promotion['started_at'])->addDays($ext_promotion['days'])->format('j F')}} 21:00 МСК

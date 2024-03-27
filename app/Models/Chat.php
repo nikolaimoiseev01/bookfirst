@@ -29,4 +29,9 @@ class Chat extends Model
     {
         return $this->belongsTo(chat_status::class);
     }
+
+    public function ext_promotion()
+    {
+        return $this->belongsTo(ext_promotion::class);
+    }
 }
