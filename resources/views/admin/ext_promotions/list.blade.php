@@ -116,7 +116,7 @@
                                 </td>
 
                                 <td data-label="Промокод" style="text-align: center;">
-                                    {{$ext_promotion->promocode['promocode']}}
+                                    {{$ext_promotion->promocode['promocode'] ?? 'Без промокода'}}
                                 </td>
 
                                 <td data-label="Исполнитель" style="text-align: center;">
