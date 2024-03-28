@@ -21,7 +21,9 @@
 
                 <div class="participation-inputs-row">
                     <div class="checkbox-group">
-                        <label><p>Ознакомлен и согласен с <a target="_blank" class="link" href="/ext_promotion_rules.pdf">правилами продвижения</a></p></label>
+                        <label><p>Ознакомлен и согласен с <a target="_blank" class="link"
+                                                             href="/ext_promotion_rules.pdf">правилами продвижения</a>
+                            </p></label>
                         <input wire:model="flg_affirmed" id="flg_affirmed" type="checkbox">
                     </div>
 
@@ -29,21 +31,21 @@
 
                 <div x-show="$wire.flg_affirmed" class="participation-inputs-row">
                     <div class="input-group">
-                        <p>Логин от сайта*</p>
+                        <p>Логин от сайта {{$site}}.ru *</p>
                         <input class="@if(in_array('login', $error_fields) && !$login) danger @endif"
                                wire:model.self="login"
                                type="text">
                     </div>
                     <div class="input-group">
-                        <p>Пароль от сайта*</p>
+                        <p>Пароль от сайта {{$site}}.ru*</p>
                         <input class="@if(in_array('password', $error_fields) && !$password) danger @endif"
                                wire:model="password" type="text">
                     </div>
                 </div>
 
                 <div class="participation-inputs-row">
-                        <p>Количество дней продвижения:</p>
-                        <x-input.range-slider model="days"/>
+                    <p>Количество дней продвижения:</p>
+                    <x-input.range-slider model="days"/>
                 </div>
             </div>
 
@@ -94,8 +96,12 @@
                 </button>
                 <p style="font-size: 20px; color: #bdbdbd"><i>* - обязательны для заполнения</i></p>
             </div>
-            <a href="{{route('help_ext_promotion')}}" target="_blank" style="font-size: 20px;" class="link"><i>Нужна
-                    помощь</i></a>
+            <div>
+                <a href="/ext_promotion_rules.pdf" target="_blank" style="font-size: 20px;" class="link"><i>Почему это
+                        безопасно</i></a>
+                <a href="{{route('help_ext_promotion')}}" target="_blank" style="font-size: 20px;" class="link"><i>Нужна
+                        помощь</i></a>
+            </div>
         </div>
 
     </form>

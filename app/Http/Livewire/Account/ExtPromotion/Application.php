@@ -110,7 +110,7 @@ class Application extends Component
 
             $html = "<div style='display: flex; flex-direction: column; gap: 10px;'>
                 <p><b>Сайт для продвижения:</b> {$this->site} </p>
-                <p>Данные, с помощью которых можно войти в ваш аккаунт <b>на сайте $this->site</b>: <br><b>Логин:</b> {$this->login}; <b>Пароль: {$this->password}</b>.
+                <p>Данные, с помощью которых можно войти в ваш аккаунт <b>на сайте $this->site</b>: <br>Логин: <b>{$this->login}</b>; Пароль: <b>{$this->password}</b><br><a target='_blank' class='link' href='/ext_promotion_rules.pdf'>Почему это безопасно</a><br>
                 <p><b>Дней продвижения:</b> {$this->days}</p>
                 <p><b>Общая стоимость:</b> {$this->price_total} руб.</p>
                 </div>";
