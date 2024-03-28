@@ -57,6 +57,7 @@
                             <th scope="col" style="text-align: center;">Автор</th>
                             <th scope="col" style="text-align: center;">Сайт</th>
                             <th scope="col" style="text-align: center;">Дней</th>
+                            <th scope="col" style="text-align: center;">Промокод</th>
                             <th scope="col" style="text-align: center;">Исполнитель</th>
                             <th scope="col" style="text-align: center;">Издательство</th>
                             <th scope="col" style="text-align: center;">Общая сумма</th>
@@ -112,6 +113,10 @@
                                 </td>
                                 <td data-label="Дней" style="text-align: center;">
                                     {{$ext_promotion['days']}}
+                                </td>
+
+                                <td data-label="Промокод" style="text-align: center;">
+                                    {{$ext_promotion->promocode['promocode']}}
                                 </td>
 
                                 <td data-label="Исполнитель" style="text-align: center;">
