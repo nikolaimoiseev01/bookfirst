@@ -94,6 +94,9 @@
                                     @endif
                                     {{$ext_promotion->ext_promotion_status['title']}}
                                 </td>
+                                <td data-label="ID" style="text-align: center;">
+                                    {{$ext_promotion['id']}}
+                                </td>
                                 <td scope="row" data-label="Автор" style="text-align: center;">
                                     @role('admin')
                                     <a href="{{route('user_page', $ext_promotion['user_id'])}}">{{$ext_promotion->user['name']}} {{$ext_promotion->user['surname']}}</a>
