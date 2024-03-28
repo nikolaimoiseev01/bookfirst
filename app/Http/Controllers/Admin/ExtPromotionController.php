@@ -25,12 +25,25 @@ class ExtPromotionController extends Controller
     {
 
         $ext_promotions = ext_promotion::orderByRaw("FIELD(ext_promotion_status_id, 1, 3, 4, 2, 99, 9, 999)")
+                            ->whereIn('ext_promotion_status_id', [1,3,4,99])
                             -> orderBy('created_at', 'desc')->get();
 
         return view('admin.ext_promotions.list', [
             'ext_promotions' => $ext_promotions
         ]);
     }
+
+    public function list_all()
+    {
+        $ext_promotions = ext_promotion::orderByRaw("FIELD(ext_promotion_status_id, 1, 3, 4, 2, 99, 9, 999)")
+            -> orderBy('created_at', 'desc')->get();
+
+        return view('admin.ext_promotions.list', [
+            'ext_promotions' => $ext_promotions
+        ]);
+    }
+
+
 
     public function index($id)
     {
@@ -98,7 +111,7 @@ class ExtPromotionController extends Controller
         $user_who_changed = Auth::user()->name;
 
 
-        Notification::route('telegram', '-4120321987')
+        Notification::route('telegram', ENV('APP_DEBUG') ? "-4176126016" : '-4120321987')
             ->notify(new TelegramNotification('🔧 *Изменили статус по продвижению!* 🔧',
                 "*Кто поменял*: {$user_who_changed}\n" .
                 "*Для автора*: {$user['surname']} {$user['name']}\n" .

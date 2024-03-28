@@ -123,6 +123,7 @@ class Application extends Component
                 $new_chat->flg_admin_chat = 1;
                 $new_chat->title = 'Личный чат по продвижению на сайте: ' . $this->site;
                 $new_chat->chat_status_id = 9;
+                $new_chat->ext_promotion_id = $this->new_ext_promotion['id'];
                 $new_chat->save();
 
                 $this->new_ext_promotion->update([

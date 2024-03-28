@@ -268,6 +268,7 @@ Route::middleware(['role:admin'])->prefix('admin_panel')->group(function () {
 
 Route::middleware(['role:ext_promotion_admin|admin'])->prefix('admin_panel')->group(function () {
     Route::get('/ext_promotions', [App\Http\Controllers\Admin\ExtPromotionController::class, 'list'])->name('admin_ext_promotions');
+    Route::get('/ext_promotions/all', [App\Http\Controllers\Admin\ExtPromotionController::class, 'list_all'])->name('admin_ext_promotions_all');
     Route::get('/ext_promotions/{id}', [App\Http\Controllers\Admin\ExtPromotionController::class, 'index'])->name('admin_ext_promotion');
 
     Route::post('/change_ext_promotion_status/{id}', [App\Http\Controllers\Admin\ExtPromotionController::class, 'change_ext_promotion_status'])->name('change_ext_promotion_status');

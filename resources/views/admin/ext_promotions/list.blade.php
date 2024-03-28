@@ -4,15 +4,13 @@
     <!-- Content Header (Page header) -->
     <div class="content-header">
         <div class="container-fluid">
-            <div class="justify-content-between d-flex">
-                <h1 class="m-0">Продвижения</h1>
-                <style>
-                    .page-link, .page-item {
-                        display: flex;
-                        height: 38px;
-                    }
-                </style>
-            </div>
+            <div style="align-items: flex-start;" class="row mb-2">
+                <div class="d-flex">
+                    <h1 class="m-0">Продвижения</h1>
+                </div><!-- /.col -->
+                <a href="{{route('admin_ext_promotions_all')}}" class="ml-3 btn btn-outline-info">Все продвижения без
+                    фильтра</a>
+            </div><!-- /.row -->
 
         </div><!-- /.container-fluid -->
     </div>
@@ -54,13 +52,24 @@
                                     background: #c3fdd2; color: black;
                                 @elseif(in_array($ext_promotion['ext_promotion_status_id'], [4]) )
                                     background: #c3f7ff; color: black;
-                                @else
-                                    background: #cbcdcb63; color: black;
+                                @elseif(in_array($ext_promotion['ext_promotion_status_id'], [99]) && $ext_promotion->chat['chat_status_id'] == 1)
+                                    background: #98c3fc; color: black;
                                 @endif
                                 "
                                 onclick="document.location = '' + '{{route('admin_ext_promotion', $ext_promotion['id'])}}' + ''">
 
-                                <td data-label="Статус" style="text-align: center;">
+                                <td data-label="Статус" class="position-relative" style="text-align: center;">
+                                    @if($ext_promotion->chat['chat_status_id'] == 1)
+                                        <span style="left: 5px; top:5px;"
+                                              class="mr-2 badge badge-danger">
+                                            @if(in_array($ext_promotion['ext_promotion_status_id'], [99]))
+                                                Есть ответ!
+                                            @else
+                                                Есть вопрос!
+                                            @endif
+
+                                    </span>
+                                    @endif
                                     {{$ext_promotion->ext_promotion_status['title']}}
                                 </td>
                                 <td scope="row" data-label="Автор" style="text-align: center;">

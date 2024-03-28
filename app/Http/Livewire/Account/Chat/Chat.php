@@ -267,7 +267,7 @@ class Chat extends Component
             $is_ext_promotion_chat = str_contains($this->chat['title'], 'Личный чат по продвижению на сайте');
             if ($is_ext_promotion_chat) {
                 $ext_promotion = ext_promotion::where('chat_id', $this->chat['id'])->first();
-                $telegram_chat = '-4120321987';
+                $telegram_chat = ENV('APP_DEBUG') ? "-4176126016" : '-4120321987';
             } else {
                 $telegram_chat = '-506622812';
             }
