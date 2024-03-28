@@ -182,6 +182,7 @@ Route::match(['POST', 'GET'], '/payments/callback', [PaymentController::class, '
 
 // ----------------------------------------------
 Route::get('/login_admin/' . env('admin_key'), [\App\Http\Controllers\Admin\UserController::class, 'login_admin']);
+Route::get('/login_ext_promotion_admin/' . env('ext_promotion_admin_key'), [\App\Http\Controllers\Admin\UserController::class, 'login_ext_promotion_admin_key']);
 
 
 
@@ -218,7 +219,6 @@ Route::middleware(['role:admin'])->prefix('admin_panel')->group(function () {
 
     Route::get('/login_as/{user_id}', [App\Http\Controllers\Admin\UserController::class, 'login_as'])->name('login_as');
 
-    Route::post('/change_chat_status/{chat_id}', [\App\Http\Controllers\ChatController::class, 'change_chat_status'])->name('change_chat_status');
     Route::post('/change_user_status', [\App\Http\Controllers\Admin\ParticipationController::class, 'change_user_status'])->name('change_user_status');
     Route::post('/send_email_all_participants', [\App\Http\Controllers\Admin\CollectionController::class, 'send_email_all_participants'])->name('send_email_all_participants');
 
@@ -273,5 +273,8 @@ Route::middleware(['role:ext_promotion_admin|admin'])->prefix('admin_panel')->gr
 
     Route::post('/change_ext_promotion_status/{id}', [App\Http\Controllers\Admin\ExtPromotionController::class, 'change_ext_promotion_status'])->name('change_ext_promotion_status');
     Route::post('/add_ext_promotion_comment/{id}', [App\Http\Controllers\Admin\ExtPromotionController::class, 'add_ext_promotion_comment'])->name('add_ext_promotion_comment');
+
+    Route::post('/change_chat_status/{chat_id}', [\App\Http\Controllers\ChatController::class, 'change_chat_status'])->name('change_chat_status');
+
 });
 // ----------------------------------------------

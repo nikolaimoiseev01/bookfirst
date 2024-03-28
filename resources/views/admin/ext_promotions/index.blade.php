@@ -299,7 +299,6 @@
                         <div class="tab-pane" id="chat">
 
                             <div class="mb-3 d-flex align-items-center">
-                                @role('admin')
                                 <h4 style="margin-bottom: 0 !important;" class="">Статус чата:
                                     <i id="change_chat_status_text">{{$chat->chat_status['status']}}</i>
                                 </h4>
@@ -335,12 +334,6 @@
                                     <i style="font-size: 20px;" class="fa fa-edit"></i>
 
                                 </button>
-                                @endrole
-                                @role('ext_promotion_admin')
-                                <h4 class="">Статус чата:
-                                    <i id="change_chat_status_text">{{$chat->chat_status['status']}}</i>
-                                </h4>
-                                @endrole
                             </div>
 
 

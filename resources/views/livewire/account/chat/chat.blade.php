@@ -1,16 +1,18 @@
 <div class="chat_wrap @if(($chat['chat_status_id'] ?? '0') === '3') container closed @endif">
     <div class="messages_wrap">
-        @if($flg_chat_creation) {{-- Если это полностью новый чат --}}
-        <div class="no_messages_alert no-access">
-            <span> Вы начинаете новую переписку с пользователем.</span>
-        </div>
-        @elseif(count($messages ?? []) == 0  && !$flg_chat_creation ) {{--Если нет сообщений и это не новый чат--}}
-        <p class="no-access">
+        @if($flg_chat_creation)
+            {{-- Если это полностью новый чат --}}
+            <div class="no_messages_alert no-access">
+                <span> Вы начинаете новую переписку с пользователем.</span>
+            </div>
+        @elseif(count($messages ?? []) == 0  && !$flg_chat_creation )
+            {{--Если нет сообщений и это не новый чат--}}
+            <p class="no-access">
 
-            Это чат с Вашим личным менеджером по конкретно этому изданию.
-            В нем пока нет сообщений.</br>
-            Здесь Вы можете задать любые вопросы, а также прикреплять файлы при необходимости.
-        </p>
+                Это чат с Вашим личным менеджером по конкретно этому изданию.
+                В нем пока нет сообщений.</br>
+                Здесь Вы можете задать любые вопросы, а также прикреплять файлы при необходимости.
+            </p>
         @endif
 
         {{App::setLocale('ru')}}
@@ -96,11 +98,12 @@
         @endif
     </div>
 
-    @if($chat['chat_status_id'] ?? 0 !== "3") {{-- Если есть какой-то статус у чата и он не закрыт--}}
+    @if($chat['chat_status_id'] ?? 0 !== "3")
+        {{-- Если есть какой-то статус у чата и он не закрыт--}}
 
-    <x-chat-textarea model="text"
-                     placeholder="Введите сообщение"
-                     attachable="true" sendable="true"></x-chat-textarea>
+        <x-chat-textarea model="text"
+                         placeholder="Введите сообщение"
+                         attachable="true" sendable="true"></x-chat-textarea>
 
     @else
         <div class="closed_info">
@@ -111,33 +114,38 @@
         </div>
     @endif
 
-    @if(Auth::user()->hasRole('admin'))
-        <div x-data="{ show_templates: false }" class="templates_block_wrap">
-            <a @click="show_templates = !show_templates" class="w-25 mt-3 ml-3 mb-3 btn btn-primary">Шаблоны</a>
-            <div @mousedown.outside="show_templates = false" x-show="show_templates" class="templates_wrap">
-                @if(!$template_type)
-                    <h4>Типы</h4>
-                    @foreach($templates->unique('template_type') as $template_type)
-                        @if($template_type !== '' || $template_type ?? null !== null)
+
+    <div x-data="{ show_templates: false }" class="templates_block_wrap">
+        <a @click="show_templates = !show_templates" class="w-25 mt-3 ml-3 mb-3 btn btn-primary">Шаблоны</a>
+        <div @mousedown.outside="show_templates = false" x-show="show_templates" class="templates_wrap">
+            @if(!$template_type)
+                <h4>Типы</h4>
+                @foreach($templates->unique('template_type') as $template_type)
+                    @if($template_type !== '' || $template_type ?? null !== null)
+                        @role('admin')
+                        <p wire:click.prevent="choose_template_type({{"'" . $template_type['template_type'] . "'"}})">{{$template_type['template_type']}}</p>
+                        @endrole
+                        @role('ext_promotion_admin')
+                        @if($template_type['template_type'] == '99. Продвижение')
                             <p wire:click.prevent="choose_template_type({{"'" . $template_type['template_type'] . "'"}})">{{$template_type['template_type']}}</p>
                         @endif
-                    @endforeach
-                @else
-                    <h4>Макеты</h4>
-                    <a wire:click.prevent="choose_template_type('all')"
-                       style="color: #007bff !important; cursor:pointer;">Назад</a>
-                    @foreach($templates as $template)
-                        <p wire:click.prevent="add_template({{$template['id']}})">{{$template['title']}}</p>
-                    @endforeach
-                @endif
-            </div>
+                        @endrole
+                    @endif
+                @endforeach
+            @else
+                <h4>Макеты</h4>
+                <a wire:click.prevent="choose_template_type('all')"
+                   style="color: #007bff !important; cursor:pointer;">Назад</a>
+                @foreach($templates as $template)
+                    <p wire:click.prevent="add_template({{$template['id']}})">{{$template['title']}}</p>
+                @endforeach
+            @endif
         </div>
-    @endif
+    </div>
 
 
     @push('page-js')
         @once
-
 
             <script>
 
