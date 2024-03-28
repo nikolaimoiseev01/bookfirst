@@ -120,7 +120,7 @@
                                     {{$ext_promotion['price_total']}} руб.
                                 </td>
                                 <td data-label="Оплачен исполнителю?" style="text-align: center;">
-                                    @if($ext_promotion['ext_promotion_status_id'] > 4)
+                                    @if(in_array($ext_promotion['ext_promotion_status_id'], [4,5]))
                                         @if($ext_promotion['executor_got_payment'])
                                             <span class="bg-green"
                                                   style="border-radius: 10px; padding: 2px 20px; background: green">Да</span>
