@@ -182,11 +182,6 @@ class UserController extends Controller
         $new_award->user_id = $request->user_id;
         $new_award->award_type_id = $request->award_id_to_update;
         $new_award->save();
-//        $writer = new Xlsx($spreadsheet);
-//        $file_title = 'Подписчики с сайта';
-//        $writer->save($file_title . '.xlsx');
-//        return response()->download($file_title . '.xlsx')->deleteFileAfterSend(true);
-
     }
 
 

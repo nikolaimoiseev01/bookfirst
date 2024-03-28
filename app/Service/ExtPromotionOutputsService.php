@@ -11,13 +11,18 @@ class ExtPromotionOutputsService
 
         $days = intval($days);
 
-        $our_interest = 2;
+        $our_interest = 1.5; /* Сколько цен заказчика забираем себе */
+        $executor_share_from_our_price = 0.5; /* Сколько от нашей маржи забирает заказчик плюсом к своей стоимости */
 
+        // Скидка от заказчика за дни
         if ($days < 5) {
+            $our_interest = 3;
             $ext_discount = 1;
         } elseif ($days < 10) {
+            $our_interest = 2.5;
             $ext_discount = 0.9;
         } elseif ($days < 15) {
+            $our_interest = 2;
             $ext_discount = 0.8;
         } elseif ($days < 30) {
             $ext_discount = 0.7;
@@ -38,16 +43,25 @@ class ExtPromotionOutputsService
             $base_price = 50;
         }
 
-        $price_executor =  ceil($base_price * $ext_discount * $days);
+        $price_executor = ceil($base_price * $ext_discount * $days);
+        $price_our = ceil($price_executor * $our_interest);
+        $price_total = ($price_executor + $price_our) * ((100 - $discount) / 100);
 
-        $price_our = ceil($price_executor * ($our_interest * ((100 - $discount) / 100)) - $price_executor);
+        $price_executor_new = round($price_executor + ($price_our * $executor_share_from_our_price));
+        $price_our_new = ceil($price_total - $price_executor_new);
 
-        $price_total = $price_executor + $price_our;
+//        dd('Days: ' . $days . "\n" .
+//            'Our Discount: ' . $discount . "\n" .
+//            'Price executor: ' . $price_executor . "\n" .
+//            'Price our: ' . $price_our . "\n" .
+//            'Price executor NEW: ' . $price_executor_new . "\n" .
+//            'Price our NEW: ' . $price_our_new . "\n" .
+//            'Price total: ' . $price_total . "\n");
 
         return [
             'price_total' => $price_total,
-            'price_executor' => $price_executor,
-            'price_our' => $price_our,
+            'price_executor' => $price_executor_new,
+            'price_our' => $price_our_new,
             'ext_discount' => (($ext_discount - 1) * -1) * 100
         ];
     }

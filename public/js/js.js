@@ -31,7 +31,7 @@ function trigger_all_js() {
         var location2 = window.location.protocol + '//' + window.location.host + window.location.pathname;
         var link = this.href;
 
-        console.log('Линк ссылки: ' + link + '|| Линк текущий: ' + location2 + '||  Совпадение? ' + location2.startsWith(link))
+        // console.log('Линк ссылки: ' + link + '|| Линк текущий: ' + location2 + '||  Совпадение? ' + location2.startsWith(link))
 
         // alert("link: " + link + " AND current: " + location2)
         if (location2.startsWith(link) && this.href !== '') {

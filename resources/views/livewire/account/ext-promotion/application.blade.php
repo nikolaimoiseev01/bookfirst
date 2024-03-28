@@ -1,7 +1,7 @@
 <div x-data class="ext_promotion_application_wrap create_participation_wrap">
 
     <form
-        wire:submit.prevent="save_application(Object.fromEntries(new FormData($event.target)))"
+        wire:submit.prevent="confirm_save(Object.fromEntries(new FormData($event.target)))"
         enctype="multipart/form-data">
         <div class="create-participation-form container">
 

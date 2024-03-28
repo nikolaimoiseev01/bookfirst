@@ -50,11 +50,8 @@
 
 
                 setTimeout(function() {
-                    console.log('test232');
                     $('.list.blade.php-wrap').css('height', 'auto')
                 }, 1000);
-
-
 
 
 
