@@ -52,6 +52,7 @@
                     <table id="participants_table" class="table table-bordered table-hover">
                         <thead>
                         <tr>
+                            <th scope="col" style="text-align: center;">ID</th>
                             <th scope="col" style="text-align: center;">Статус</th>
                             <th scope="col" style="text-align: center;">Автор</th>
                             <th scope="col" style="text-align: center;">Сайт</th>
@@ -80,6 +81,10 @@
                                 "
                                 onclick="document.location = '' + '{{route('admin_ext_promotion', $ext_promotion['id'])}}' + ''">
 
+                                <td data-label="ID" style="text-align: center;">
+                                    {{$ext_promotion['id']}}
+                                </td>
+
                                 <td data-label="Статус" class="position-relative" style="text-align: center;">
                                     @if($ext_promotion->chat['chat_status_id'] == 1)
                                         <span style="left: 5px; top:5px;"
@@ -93,9 +98,6 @@
                                     </span>
                                     @endif
                                     {{$ext_promotion->ext_promotion_status['title']}}
-                                </td>
-                                <td data-label="ID" style="text-align: center;">
-                                    {{$ext_promotion['id']}}
                                 </td>
                                 <td scope="row" data-label="Автор" style="text-align: center;">
                                     @role('admin')

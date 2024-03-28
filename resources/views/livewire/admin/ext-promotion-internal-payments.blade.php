@@ -18,12 +18,14 @@
         </tr>
         </tbody>
     </table>
+    @role('admin')
     <div style="gap: 20px;" class="d-flex align-items-center">
 
         <a wire:click="make_payment" class="ml-3 btn btn-outline-info">
             Сделать перевод
         </a>
     </div>
+    @endrole
 
     <div style="display: none;" id="payments_table">
         <table id="participants_table" class="table mt-3 table-bordered table-hover">
