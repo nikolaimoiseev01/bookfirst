@@ -22,7 +22,8 @@ class ext_promotion extends Model
         'price_our',
         'chat_id',
         'promocode_id',
-        'started_at'
+        'started_at',
+        'executor_got_payment'
     ];
 
     public function User() {

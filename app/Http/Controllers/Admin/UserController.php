@@ -176,8 +176,6 @@ class UserController extends Controller
 
 
     public function add_user_award(Request $request) {
-
-
         $new_award = new award;
         $new_award->user_id = $request->user_id;
         $new_award->award_type_id = $request->award_id_to_update;

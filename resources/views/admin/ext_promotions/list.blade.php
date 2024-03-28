@@ -4,13 +4,33 @@
     <!-- Content Header (Page header) -->
     <div class="content-header">
         <div class="container-fluid">
-            <div style="align-items: flex-start;" class="row mb-2">
+            <div style="gap: 20px; align-items: flex-start;" class="mb-3 row d-flex gap-3 mb-2">
                 <div class="d-flex">
                     <h1 class="m-0">Продвижения</h1>
                 </div><!-- /.col -->
                 <a href="{{route('admin_ext_promotions_all')}}" class="ml-3 btn btn-outline-info">Все продвижения без
                     фильтра</a>
+
+                <a id="payments_button" class="ml-3 btn btn-outline-info" href="">Все переводы исполнителю</a>
+
+                <script>
+                    // console.log("START")
+
+                    $('#payments_button').on("click", function(event) {
+                        event.preventDefault()
+                        payments_table = $('#payments_table')
+                        payments_table.toggle()
+                        if(payments_table.is(":visible")) {
+                            $(this).text('Скрыть')
+                        } else {
+                            $(this).text('Все переводы исполнителю')
+                        }
+                    })
+                </script>
+
             </div><!-- /.row -->
+
+            <livewire:admin.ext-promotion-internal-payments></livewire:admin.ext-promotion-internal-payments>
 
         </div><!-- /.container-fluid -->
     </div>
@@ -36,9 +56,11 @@
                             <th scope="col" style="text-align: center;">Автор</th>
                             <th scope="col" style="text-align: center;">Сайт</th>
                             <th scope="col" style="text-align: center;">Дней</th>
+                            <th scope="col" style="text-align: center;">Исполнитель</th>
+                            <th scope="col" style="text-align: center;">Издательство</th>
                             <th scope="col" style="text-align: center;">Общая сумма</th>
+                            <th scope="col" style="text-align: center;">Оплачен?</th>
                             <th scope="col" style="text-align: center;">Создан</th>
-                            <th scope="col" style="text-align: center;">Последнее изменение</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -86,15 +108,32 @@
                                 <td data-label="Дней" style="text-align: center;">
                                     {{$ext_promotion['days']}}
                                 </td>
+
+                                <td data-label="Исполнитель" style="text-align: center;">
+                                    {{$ext_promotion['price_executor']}} руб.
+                                </td>
+
+                                <td data-label="Издательство" style="text-align: center;">
+                                    {{$ext_promotion['price_our']}} руб.
+                                </td>
                                 <td data-label="Общая сумма" style="text-align: center;">
                                     {{$ext_promotion['price_total']}} руб.
                                 </td>
+                                <td data-label="Оплачен исполнителю?" style="text-align: center;">
+                                    @if($ext_promotion['ext_promotion_status_id'] > 4)
+                                        @if($ext_promotion['executor_got_payment'])
+                                            <span class="bg-green"
+                                                  style="border-radius: 10px; padding: 2px 20px; background: green">Да</span>
+                                        @else
+                                            <span class="bg-danger"
+                                                  style="border-radius: 10px; padding: 2px 20px; background: red">Нет</span>
+                                        @endif
+                                    @else
+                                        Еще не время
+                                    @endif
+                                </td>
                                 <td data-label="Создан" style="text-align: center;">
                                     {{ Date::parse($ext_promotion['created_at'])->addHours(3)->format('j F H:i') }}
-                                </td>
-
-                                <td data-label="Обновлен" style="text-align: center;">
-                                    {{ Date::parse($ext_promotion['updated_at'])->addHours(3)->format('j F H:i') }}
                                 </td>
 
 
