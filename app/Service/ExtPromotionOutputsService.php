@@ -45,7 +45,7 @@ class ExtPromotionOutputsService
 
         $price_executor = ceil($base_price * $ext_discount * $days);
         $price_our = ceil($price_executor * $our_interest);
-        $price_total = ($price_executor + $price_our) * ((100 - $discount) / 100);
+        $price_total = ceil(($price_executor + $price_our) * ((100 - $discount) / 100));
 
         $price_executor_new = round($price_executor + ($price_our * $executor_share_from_our_price));
         $price_our_new = ceil($price_total - $price_executor_new);
