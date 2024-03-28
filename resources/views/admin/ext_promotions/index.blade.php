@@ -248,7 +248,7 @@
                                 </div>
 
                                 <div>
-                                    <h2>Транзакции по этой книге</h2>
+                                    <h2>Транзакции по этому продвижению</h2>
                                     <div>
                                         @if(count($transactions) > 0)
                                             <table id="participants_table" class="table table-bordered">

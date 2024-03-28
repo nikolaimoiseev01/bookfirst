@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\ext_promotion;
+use App\Notifications\EmailNotification;
 use App\Notifications\TelegramNotification;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
@@ -55,12 +56,24 @@ class FinishExtPromotion extends Command
                 ]);
             }
 
+            $email_subject = 'Продвижение закончено';
+            $email_text = "Спешим сообщить, что ваше продвижение на сайте {$ext_promotion['site']} завершено! " .
+                "Всю подробную информацию (включая статистику) вы можете проверить на странице вашего продвижения:";
+
+            $ext_promotion->user->notify(new EmailNotification(
+                $email_subject,
+                $ext_promotion->user['name'],
+                $email_text,
+                "Перейти к странице продвижения",
+                route('index_ext_promotion', $ext_promotion['id']) . '/#payment_block')
+            );
+
         }
 
 
         if ($check_cnt > 0) {
             // Посылаем Telegram уведомление нам
-            Notification::route('telegram', '-4120321987')
+            Notification::route('telegram', ENV('APP_DEBUG') ? "-4176126016" : '-4120321987')
                 ->notify(new TelegramNotification("📊 *Закончили продвижение для {$check_cnt} авторов!*",
                     "",
                     null,
