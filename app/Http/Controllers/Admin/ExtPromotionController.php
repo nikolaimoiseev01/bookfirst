@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Charts\ExtPromotionStat;
 use App\Http\Controllers\Controller;
 use App\Models\Chat;
 use App\Models\chat_status;
@@ -45,7 +46,7 @@ class ExtPromotionController extends Controller
 
 
 
-    public function index($id)
+    public function index($id, ExtPromotionStat $chart_raw)
     {
 
         $ext_promotion = ext_promotion::where('id', $id)->first();
@@ -53,13 +54,15 @@ class ExtPromotionController extends Controller
         $transactions = Transaction::where('ext_promotion_id', $id)->get();
         $chat = Chat::where('id', $ext_promotion['chat_id'])->first();
         $chat_statuses = chat_status::all();
+        $chart = $chart_raw->build($ext_promotion);
 
         return view('admin.ext_promotions.index', [
             'ext_promotion' => $ext_promotion,
             'ext_promotion_statuses' => $ext_promotion_statuses,
             'transactions' => $transactions,
             'chat' => $chat,
-            'chat_statuses' => $chat_statuses
+            'chat_statuses' => $chat_statuses,
+            'chart' => $chart
         ]);
     }
 

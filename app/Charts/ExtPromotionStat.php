@@ -39,12 +39,11 @@ class ExtPromotionStat extends Chart
             $color = '#47AF98';
         }
 
-        return $this->chart->barChart()
+        return $this->chart->areaChart()
             ->addData('Читателей', $data)
             ->setXAxis($x_axis)
             ->setColors([$color])
             ->setFontFamily('Futura PT Light", serif')
-            ->setDataLabels()
-            ;
+            ->setDataLabels();
     }
 }

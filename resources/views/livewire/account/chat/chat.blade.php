@@ -114,34 +114,35 @@
         </div>
     @endif
 
-
-    <div x-data="{ show_templates: false }" class="templates_block_wrap">
-        <a @click="show_templates = !show_templates" class="w-25 mt-3 ml-3 mb-3 btn btn-primary">Шаблоны</a>
-        <div @mousedown.outside="show_templates = false" x-show="show_templates" class="templates_wrap">
-            @if(!$template_type)
-                <h4>Типы</h4>
-                @foreach($templates->unique('template_type') as $template_type)
-                    @if($template_type !== '' || $template_type ?? null !== null)
-                        @role('admin')
-                        <p wire:click.prevent="choose_template_type({{"'" . $template_type['template_type'] . "'"}})">{{$template_type['template_type']}}</p>
-                        @endrole
-                        @role('ext_promotion_admin')
-                        @if($template_type['template_type'] == '99. Продвижение')
+    @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('ext_promotion_admin'))
+        <div x-data="{ show_templates: false }" class="templates_block_wrap">
+            <a @click="show_templates = !show_templates" class="w-25 mt-3 ml-3 mb-3 btn btn-primary">Шаблоны</a>
+            <div @mousedown.outside="show_templates = false" x-show="show_templates" class="templates_wrap">
+                @if(!$template_type)
+                    <h4>Типы</h4>
+                    @foreach($templates->unique('template_type') as $template_type)
+                        @if($template_type !== '' || $template_type ?? null !== null)
+                            @role('admin')
                             <p wire:click.prevent="choose_template_type({{"'" . $template_type['template_type'] . "'"}})">{{$template_type['template_type']}}</p>
+                            @endrole
+                            @role('ext_promotion_admin')
+                            @if($template_type['template_type'] == '99. Продвижение')
+                                <p wire:click.prevent="choose_template_type({{"'" . $template_type['template_type'] . "'"}})">{{$template_type['template_type']}}</p>
+                            @endif
+                            @endrole
                         @endif
-                        @endrole
-                    @endif
-                @endforeach
-            @else
-                <h4>Макеты</h4>
-                <a wire:click.prevent="choose_template_type('all')"
-                   style="color: #007bff !important; cursor:pointer;">Назад</a>
-                @foreach($templates as $template)
-                    <p wire:click.prevent="add_template({{$template['id']}})">{{$template['title']}}</p>
-                @endforeach
-            @endif
+                    @endforeach
+                @else
+                    <h4>Макеты</h4>
+                    <a wire:click.prevent="choose_template_type('all')"
+                       style="color: #007bff !important; cursor:pointer;">Назад</a>
+                    @foreach($templates as $template)
+                        <p wire:click.prevent="add_template({{$template['id']}})">{{$template['title']}}</p>
+                    @endforeach
+                @endif
+            </div>
         </div>
-    </div>
+    @endif
 
 
     @push('page-js')

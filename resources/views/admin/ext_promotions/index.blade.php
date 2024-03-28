@@ -149,6 +149,9 @@
                                 Чат
                             </a>
                         </li>
+                        <li class="nav-item"><a class="test nav-link ml-1" href="#stat" data-toggle="tab">Статистика</a></li>
+
+
                     </ul>
                 </div><!-- /.card-header -->
 
@@ -345,6 +348,19 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+
+
+                        <div class="tab-pane" id="stat">
+                            @if(count($ext_promotion->ext_promotion_parsed_reader) > 0)
+                                {!! $chart->container() !!}
+                                <script src="{{ $chart->cdn() }}"></script>
+
+                                {{ $chart->script() }}
+                            @else
+                                <h4>Пока данных нет. Они появятся при обновлении каждый вечер в 21:30 МСК или, если
+                                    автор сам вручную. подтянет стату со страницы продвижения</h4>
+                            @endif
                         </div>
 
 
