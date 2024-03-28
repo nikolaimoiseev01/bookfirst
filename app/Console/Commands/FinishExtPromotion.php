@@ -59,13 +59,13 @@ class FinishExtPromotion extends Command
                 $email_text = "Спешим сообщить, что ваше продвижение на сайте {$ext_promotion['site']} завершено! " .
                     "Всю подробную информацию (включая статистику) вы можете проверить на странице вашего продвижения:";
 
-                $ext_promotion->user->notify(new EmailNotification(
-                        $email_subject,
-                        $ext_promotion->user['name'],
-                        $email_text,
-                        "Перейти к странице продвижения",
-                        route('index_ext_promotion', $ext_promotion['id']) . '/#payment_block')
-                );
+//                $ext_promotion->user->notify(new EmailNotification(
+//                        $email_subject,
+//                        $ext_promotion->user['name'],
+//                        $email_text,
+//                        "Перейти к странице продвижения",
+//                        route('index_ext_promotion', $ext_promotion['id']) . '/#payment_block')
+//                );
             }
         }
 
