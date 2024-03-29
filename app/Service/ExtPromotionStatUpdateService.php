@@ -19,8 +19,9 @@ class ExtPromotionStatUpdateService
         $ext_promotion_max_time = Carbon::parse($ext_promotion->ext_promotion_parsed_reader->max('checked_at') ?? now()->addHour(-3));
         $now_time = Date::parse(Carbon::now())->addHour(3);
         $date_diff = $ext_promotion_max_time->diff($now_time);
-        $date_diff_sec = ($date_diff->h * 60 * 60) + ($date_diff->m * 60) + $date_diff->i;
-        if ($date_diff_sec > 60 * 10) {
+        $date_diff_sec = ($date_diff->d * 24 * 60 * 60) + ($date_diff->h * 60 * 60) + ($date_diff->m * 60) + $date_diff->i;
+
+        if ($date_diff_sec > 60 * 60) { /* Если больше часа */
             return True;
         } else {
             return False;
