@@ -47,14 +47,14 @@ class ParseExtReaders extends Command
             }
         }
 
-        if($check_cnt > 0) {
-            // Посылаем Telegram уведомление нам
-            Notification::route('telegram', '-4120321987')
-                ->notify(new TelegramNotification('📊 *Сохранили статистику по продвижениям!*',
-                    "Обработали человек: $check_cnt",
-                    null,
-                    null));
-        }
+//        if($check_cnt > 0) {
+//            // Посылаем Telegram уведомление нам
+//            Notification::route('telegram', '-4120321987')
+//                ->notify(new TelegramNotification('📊 *Сохранили статистику по продвижениям!*',
+//                    "Обработали человек: $check_cnt",
+//                    null,
+//                    null));
+//        }
 
     }
 }
