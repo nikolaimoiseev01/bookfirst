@@ -11,6 +11,7 @@
             <ul class="menu__box">
                 <li><a class="menu__item" id="home_mobile" href="/">Главная</a></li>
                 <li><a class="menu__item" href="{{route('social.all_works_feed')}}">Произведения</a></li>
+                <li><a class="menu__item" href="{{route('ext_promotion')}}">Продвижение</a></li>
                 <li><a class="menu__item" href="{{route('work.index')}}">Разместить</a></li>
                 <li><a class="menu__item" href="{{route('actual_collections')}}">Конкурсы</a></li>
                 <a id="to_social_link" style="display:flex; align-items: center;" href="{{route('social.home')}}">
@@ -111,6 +112,7 @@
                 </div>
 
                 <a class="menu_link" href="{{route('social.all_works_feed')}}">Произведения</a>
+                <a class="menu_link" href="{{route('ext_promotion')}}">Продвижение</a>
                 <a class="menu_link log_check" href="{{route('work.index')}}">Разместить</a>
                 <a class="menu_link" href="{{route('actual_collections')}}">Конкурсы</a>
             </div>

@@ -13,7 +13,7 @@
                 <li><a class="menu__item" href="{{route('old_collections')}}">Сборники</a></li>
                 <li><a class="menu__item" href="{{route('own_books_portal')}}">Книги авторов</a></li>
                 <li><a class="menu__item" href="{{route('about')}}">О нас</a></li>
-                <li><a class="menu__item" href="{{route('about')}}">Продвижение</a></li>
+                <li><a class="menu__item" href="{{route('ext_promotion')}}">Продвижение</a></li>
                 <li><a class="menu__item" href="/#reviews-block">Отзывы</a></li>
                 <a id="to_social_link" style="display:flex; align-items: center;" href="{{route('social.home')}}">
                     <p>
