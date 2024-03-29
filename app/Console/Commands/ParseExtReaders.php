@@ -46,6 +46,8 @@ class ParseExtReaders extends Command
                 $stat->add_new_time($ext_promotion);
             }
         }
+        
+        dd($ext_promotions, $check_cnt);
 
 //        if($check_cnt > 0) {
 //            // Посылаем Telegram уведомление нам
