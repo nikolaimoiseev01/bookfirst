@@ -37,25 +37,26 @@
                                 </div>
                             </div>
                         @endif
-                        <div class="buttons_wrap">
-                            <a @if ($own_book['amazon_link'])
-                                   target="_blank" href="{{$own_book['amazon_link']}}"
-                               @endif
-                               class="@if (!$own_book['amazon_link']) no_amazon @endif button">
-                                Купить на Amazon
-                            </a>
+                        @if($own_book['id'] !== 169)
+                            <div class="buttons_wrap">
+                                <a @if ($own_book['amazon_link'])
+                                       target="_blank" href="{{$own_book['amazon_link']}}"
+                                   @endif
+                                   class="@if (!$own_book['amazon_link']) no_amazon @endif button">
+                                    Купить на Amazon
+                                </a>
 
-                            <form action="{{ route('payment.create_buying_own_book', $own_book['id'])}}"
-                                  method="POST"
-                                  enctype="multipart/form-data">
-                                @csrf
-                                <button href="{{route('my_digital_sales')}}" id="btn-submit" type="submit"
-                                        class="log_check pay-button button">
-                                    Электронная версия (100 руб.)
-                                </button>
-                            </form>
-
-                        </div>
+                                <form action="{{ route('payment.create_buying_own_book', $own_book['id'])}}"
+                                      method="POST"
+                                      enctype="multipart/form-data">
+                                    @csrf
+                                    <button href="{{route('my_digital_sales')}}" id="btn-submit" type="submit"
+                                            class="log_check pay-button button">
+                                        Электронная версия (100 руб.)
+                                    </button>
+                                </form>
+                            </div>
+                        @endif
                     </div>
                     <div class="col-card">
                         <div class="container">
@@ -94,7 +95,8 @@
                 <div class="nav">
                     <a href="#reviews" class="cont_nav_item current">Отзывы</a>
                     @if($own_book['inside_file_cut'])
-                        <a href="#read_part" id="read_part_link" target="_blank" class="cont_nav_item">Читать фрагмент</a>
+                        <a href="#read_part" id="read_part_link" target="_blank" class="cont_nav_item">Читать
+                            фрагмент</a>
                     @endif
                     <a style="float: right;" href="{{route('help_own_book')}}" target="_blank">Издать свою</a>
                 </div>
@@ -120,7 +122,7 @@
     <script src="/js/col-info-block.js"></script>
 
     <script>
-        if(window.innerWidth < 768) {
+        if (window.innerWidth < 768) {
             var cut_file_path = "/{{ $own_book->inside_file_cut }}";
             link = $('#read_part_link')
             link.attr('href', cut_file_path)
