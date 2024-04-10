@@ -16,10 +16,8 @@ class ExtPromotionOutputsService
 
         // Скидка от заказчика за дни
         if ($days < 5) {
-            $our_interest = 2;
             $ext_discount = 1;
         } elseif ($days < 10) {
-            $our_interest = 1.5;
             $ext_discount = 0.9;
         } elseif ($days < 15) {
             $ext_discount = 0.8;
