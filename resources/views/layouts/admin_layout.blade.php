@@ -432,7 +432,7 @@
 <!-- include FilePond file-validate-type adapter -->
 <script src="/plugins/filepond/filepond-plugin-file-validate-type.min.js"></script>
 
-<script src="//unpkg.com/alpinejs"></script>
+<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
 <!-- Page specific script -->
 <script>
