@@ -239,7 +239,7 @@
             var timeOnPage = 0;
             setInterval(function() {
                 timeOnPage += 1; // увеличиваем время на странице каждую секунду
-                if (timeOnPage === 1) { // если пользователь находится на странице больше минуты (60 секунд)
+                if (timeOnPage === 30) { // если пользователь находится на странице больше минуты (60 секунд)
                     window.livewire.emit('new_almost_complete_action')
                 }
             }, 1000); // вызываем каждую секунду
