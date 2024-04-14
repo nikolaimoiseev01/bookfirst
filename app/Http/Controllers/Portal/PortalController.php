@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Portal;
 
 use App\Http\Controllers\Controller;
+use App\Models\almost_complete_action;
 use App\Models\Collection;
 use App\Models\Col_status;
 use App\Models\own_book;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use setasign\Fpdi\Fpdi;
 
@@ -110,6 +112,9 @@ class PortalController extends Controller
     {
         return view('portal.ext_promotion');
     }
+
+
+
 
 
 }

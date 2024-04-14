@@ -109,6 +109,7 @@ Route::middleware([])->group(function () {
 
     Route::get('/ext_promotion', [PortalController::class, 'ext_promotion'])->name('ext_promotion');
 
+
 });
 // ----------------------------------------------
 

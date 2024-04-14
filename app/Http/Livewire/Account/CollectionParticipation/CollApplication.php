@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Account\CollectionParticipation;
 
+use App\Models\almost_complete_action;
 use App\Models\Chat;
 use App\Models\Collection;
 use App\Models\Participation;
@@ -64,7 +65,7 @@ class CollApplication extends Component
     public $error_texts = [];
     public $error_fields = [];
 
-    protected $listeners = ['syncWorks', 'storeParticipation'];
+    protected $listeners = ['syncWorks', 'storeParticipation', 'new_almost_complete_action'];
 
 
     public function render(ParticipationOutputsService $calc_outs)
@@ -642,5 +643,15 @@ class CollApplication extends Component
 
     }
 
+    public function new_almost_complete_action() {
+
+        almost_complete_action::firstOrCreate([
+            'user_id' => Auth::user()->id,
+            'almost_complete_action_type_id' => 1,
+            'collection_id' => $this->collection_id,
+            'cnt_email_sent' => 0
+        ]);
+
+    }
 
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Account\ParticipationOutputs;
+use App\Http\Controllers\Portal\PortalController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,3 +21,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::post('/participation_outputs', [ParticipationOutputs::class, 'calculate']);
+
+Route::post('/new_almost_complete_action', [PortalController::class, 'new_almost_complete_action'])->name('new_almost_complete_action');

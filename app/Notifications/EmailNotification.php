@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\HtmlString;
 
 class EmailNotification extends Notification
 {
@@ -52,7 +53,7 @@ class EmailNotification extends Notification
         return (new MailMessage)
                     ->greeting('Здравствуйте, ' . $this->user_name . '!')
                     ->subject($this->subject)
-                    ->line($this->email_text)
+                    ->line(new HtmlString($this->email_text))
                     ->action($this->email_button_text, url($this->email_button_link));
     }
 
