@@ -645,12 +645,17 @@ class CollApplication extends Component
 
     public function new_almost_complete_action() {
 
-        almost_complete_action::firstOrCreate([
-            'user_id' => Auth::user()->id,
-            'almost_complete_action_type_id' => 1,
-            'collection_id' => $this->collection_id,
-            'cnt_email_sent' => 0
-        ]);
+        $already_has_action = almost_complete_action::where('user_id', Auth::user()->id)
+            ->where('collection_id', $this->collection_id)
+            ->first();
+        if(!($already_has_action ?? null)) {
+            almost_complete_action::firstOrCreate([
+                'user_id' => Auth::user()->id,
+                'almost_complete_action_type_id' => 1,
+                'collection_id' => $this->collection_id,
+                'cnt_email_sent' => 0
+            ]);
+        }
 
     }
 
