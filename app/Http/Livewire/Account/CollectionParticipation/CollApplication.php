@@ -656,7 +656,6 @@ class CollApplication extends Component
                 'cnt_email_sent' => 0
             ]);
         }
-
     }
 
 }

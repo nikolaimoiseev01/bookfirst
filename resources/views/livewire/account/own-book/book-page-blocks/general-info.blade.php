@@ -29,7 +29,7 @@
                             <p><b>Адрес: </b>{{print_address($own_book->printorder['id'])}}</p>
                         </div>
                         @if($own_book['own_book_status_id'] < 5)
-                            <a @click="$wire.need_print = !$wire.need_print" class="link">Редактировать заказ</a>
+{{--                            <a @click="$wire.need_print = !$wire.need_print" class="link">Редактировать заказ</a>--}}
                         @endif
                     @else
                         <h2>Печатные эезкемпляры не требуются.</h2>

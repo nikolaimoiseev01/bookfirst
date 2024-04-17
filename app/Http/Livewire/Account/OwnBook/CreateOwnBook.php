@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Account\OwnBook;
 
+use App\Models\almost_complete_action;
 use App\Models\Chat;
 use App\Models\Collection;
 use App\Models\own_book;
@@ -470,6 +471,20 @@ class CreateOwnBook extends Component
             return redirect('/myaccount/mybooks/' . $new_own_book->id . '/book_page');
 
         });
+    }
+
+    public function new_almost_complete_action() {
+
+        $already_has_action = almost_complete_action::where('user_id', Auth::user()->id)
+            ->where('collection_id', $this->collection_id)
+            ->first();
+        if(!($already_has_action ?? null)) {
+            almost_complete_action::firstOrCreate([
+                'user_id' => Auth::user()->id,
+                'almost_complete_action_type_id' => 2,
+                'cnt_email_sent' => 0
+            ]);
+        }
     }
 
 }
