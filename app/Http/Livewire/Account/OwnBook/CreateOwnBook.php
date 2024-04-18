@@ -75,7 +75,7 @@ class CreateOwnBook extends Component
     public $error_texts = [];
     public $error_fields = [];
 
-    protected $listeners = ['count_doc_pages', 'syncWorks', 'save_own_book'];
+    protected $listeners = ['count_doc_pages', 'syncWorks', 'save_own_book', 'new_almost_complete_action'];
 
     public function render(OwnBookOutputsService $calc_outs)
     {
@@ -476,7 +476,7 @@ class CreateOwnBook extends Component
     public function new_almost_complete_action() {
 
         $already_has_action = almost_complete_action::where('user_id', Auth::user()->id)
-            ->where('collection_id', $this->collection_id)
+            ->where('almost_complete_action_type_id', 2)
             ->first();
         if(!($already_has_action ?? null)) {
             almost_complete_action::firstOrCreate([
