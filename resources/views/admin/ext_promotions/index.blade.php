@@ -191,7 +191,7 @@
                                         <tr>
                                             <td style="font-weight: bold">Логин</td>
                                             <td>
-                                                {{$ext_promotion['login']}}
+                                                <a target="_blank" href="{{$ext_promotion['site']}}.ru/avtor/{{$ext_promotion['login']}}">{{$ext_promotion['login']}}</a>
                                             </td>
                                         </tr>
                                         <tr>

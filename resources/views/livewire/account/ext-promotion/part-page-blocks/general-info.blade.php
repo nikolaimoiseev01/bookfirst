@@ -14,7 +14,7 @@
                     <div class="name">
                         <h2>Логин:</h2>
                         <p>
-                            <i> <a target="_blank" href="{{$ext_promotion['site']}}.ru/avtor/{{$ext_promotion['login']}}"></a>{{$ext_promotion['login']}}</i>
+                            <i> <a target="_blank" href="{{$ext_promotion['site']}}.ru/avtor/{{$ext_promotion['login']}}">{{$ext_promotion['login']}}</a></i>
                         </p>
                     </div>
 
