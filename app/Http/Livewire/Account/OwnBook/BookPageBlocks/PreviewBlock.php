@@ -62,6 +62,9 @@ class PreviewBlock extends Component
         } elseif ($this->own_book['own_book_inside_status_id'] < 4 || $this->own_book['own_book_cover_status_id'] < 4) { // Если обложка ИЛИ макет в работе
             $this->color = 'yellow';
             $this->page_title = 'Предварительная проверка';
+        } elseif ($this->own_book['own_book_inside_status_id'] == 99 || $this->own_book['own_book_cover_status_id'] == 99) { // Если обложка ИЛИ макет в ожидании ответа от автора
+            $this->color = 'yellow';
+            $this->page_title = 'Предварительная проверка';
         } else {
             $this->color = 'green';
             $this->page_title = 'Предварительная проверка завершена';
