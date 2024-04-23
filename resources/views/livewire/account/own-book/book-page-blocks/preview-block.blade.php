@@ -32,7 +32,7 @@
                     @endif
                 </div>
 
-                @if($chosen_type == 'cover' && $status_id > 1 && $status_id !== 9)
+                @if($chosen_type == 'cover' && $status_id > 1 && $status_id !== 9 && $status_id !== 99)
                     <div class="preview_book_wrap">
                         <div class="book">
                             <img
