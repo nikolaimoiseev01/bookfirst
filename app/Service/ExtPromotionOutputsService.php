@@ -11,7 +11,7 @@ class ExtPromotionOutputsService
 
         $days = intval($days);
 
-        $our_interest = 1; /* Сколько цен заказчика забираем себе */
+        $our_interest = 0.5; /* Сколько цен заказчика забираем себе */
         $executor_share_from_our_price = 0.5; /* Сколько от нашей маржи забирает заказчик плюсом к своей стоимости */
 
         // Скидка от заказчика за дни
