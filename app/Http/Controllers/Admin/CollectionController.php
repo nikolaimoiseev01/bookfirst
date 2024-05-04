@@ -323,6 +323,10 @@ class CollectionController extends Controller
                     '<w:br/>',
                     $work_text_style
                 );
+                $section->addText(
+                    '<w:br/>',
+                    $work_text_style
+                );
             }
 
         }
