@@ -94,5 +94,9 @@ class User extends Authenticatable implements MustVerifyEmail, FilamentUser
         return $this->hasmany(Survey::class);
     }
 
+    public function ext_promotion() {
+        return $this->hasmany(ext_promotion::class);
+    }
+
 
 }

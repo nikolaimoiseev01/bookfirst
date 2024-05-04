@@ -38,6 +38,7 @@
                                 сборниках</a></li>
                         <li class="nav-item"><a class="nav-link" href="#own_books" data-toggle="tab">Книги автора</a>
                         </li>
+                        <li class="nav-item"><a class="nav-link" href="#ext_promotions" data-toggle="tab">Продвижения</a></li>
                         <li class="nav-item"><a class="nav-link" href="#awards" data-toggle="tab">Награды</a></li>
                         <li class="nav-item"><a class="nav-link" href="#chats" data-toggle="tab">Чаты</a></li>
                     </ul>
@@ -274,6 +275,43 @@
                         </div>
                         <!-- /.tab-content -->
 
+                        <div class=" tab-pane" id="ext_promotions">
+                            <!-- /.card-header -->
+                            <div class="card-body p-0">
+                                <table style="max-width: 900px;" class="table table-hover table-bordered table-sm">
+                                    <thead>
+                                    <tr>
+                                        <th style="text-align: center">ID</th>
+                                        <th style="text-align: center">Статус</th>
+                                        <th style="text-align: center">Сайт</th>
+                                        <th style="text-align: center">Создан</th>
+                                        <th style="text-align: center">Дней</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach($user->ext_promotion as $ext_promotion)
+                                        <tr class="row_hover"
+                                            onclick="document.location = '{{route('admin_ext_promotion', $ext_promotion['id'])}}';">
+                                            <td style="text-align: center">{{$ext_promotion['id']}}</td>
+
+                                            <td style="text-align: center">
+                                                {{$ext_promotion->ext_promotion_status['title']}}
+                                            </td>
+                                            <td style="text-align: center">
+                                                {{$ext_promotion['site']}}
+                                            </td>
+                                            <td style="text-align: center">
+                                                {{Date::parse($ext_promotion['created_at'])->format('j F H:i')}}
+                                            </td>
+                                            <td style="text-align: center">
+                                                {{$ext_promotion['days']}}
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
 
                         <div class="tab-pane" id="awards">
                             {{App::setLocale('ru')}}

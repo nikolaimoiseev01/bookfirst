@@ -150,6 +150,7 @@
                             </a>
                         </li>
                         <li class="nav-item"><a class="test nav-link ml-1" href="#stat" data-toggle="tab">Статистика</a></li>
+                        <li class="nav-item"><a class="test nav-link ml-1" href="#ext_promotions" data-toggle="tab">Все продвижения юзера</a></li>
 
 
                     </ul>
@@ -351,7 +352,7 @@
                         </div>
 
 
-                        <div class="tab-pane" id="stat">
+                         <div class="tab-pane" id="stat">
                             @if(count($ext_promotion->ext_promotion_parsed_reader) > 0)
                                 {!! $chart->container() !!}
                                 <script src="{{ $chart->cdn() }}"></script>
@@ -361,6 +362,44 @@
                                 <h4>Пока данных нет. Они появятся при обновлении каждый вечер в 21:30 МСК или, если
                                     автор сам вручную. подтянет стату со страницы продвижения</h4>
                             @endif
+                        </div>
+
+                        <div class=" tab-pane" id="ext_promotions">
+                            <!-- /.card-header -->
+                            <div class="card-body p-0">
+                                <table style="max-width: 900px;" class="table table-hover table-bordered table-sm">
+                                    <thead>
+                                    <tr>
+                                        <th style="text-align: center">ID</th>
+                                        <th style="text-align: center">Статус</th>
+                                        <th style="text-align: center">Сайт</th>
+                                        <th style="text-align: center">Создан</th>
+                                        <th style="text-align: center">Дней</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach($ext_promotion->user->ext_promotion as $ext_promotion)
+                                        <tr class="row_hover"
+                                            onclick="document.location = '{{route('admin_ext_promotion', $ext_promotion['id'])}}';">
+                                            <td style="text-align: center">{{$ext_promotion['id']}}</td>
+
+                                            <td style="text-align: center">
+                                                {{$ext_promotion->ext_promotion_status['title']}}
+                                            </td>
+                                            <td style="text-align: center">
+                                                {{$ext_promotion['site']}}
+                                            </td>
+                                            <td style="text-align: center">
+                                                {{Date::parse($ext_promotion['created_at'])->format('j F H:i')}}
+                                            </td>
+                                            <td style="text-align: center">
+                                                {{$ext_promotion['days']}}
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
 
 
