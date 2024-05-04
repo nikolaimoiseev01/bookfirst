@@ -56,7 +56,7 @@ class PreviewBlock extends Component
         if ($this->own_book['own_book_status_id'] < 3) { // Если еще не началась работа после оплаты
             $this->color = 'grey';
             $this->page_title = 'Предварительная проверка';
-        } elseif ($this->own_book['own_book_status_id'] == 9) { // Если еще не началась работа после оплаты
+        } elseif ($this->own_book['own_book_status_id'] == 99) { // Если неактуально
             $this->color = 'grey';
             $this->page_title = 'Предварительная проверка';
         } elseif (($own_book_inside_status_id == 1 || $own_book_inside_status_id == 9) && ($own_book_cover_status_id == 1 || $own_book_cover_status_id == 9)) { // Если идет разработка
