@@ -318,6 +318,11 @@ class CollectionController extends Controller
                     $work_text,
                     $work_text_style
                 );
+                // Отступ после каждой работы
+                $section->addText(
+                    '<w:br/>',
+                    $work_text_style
+                );
             }
 
         }
