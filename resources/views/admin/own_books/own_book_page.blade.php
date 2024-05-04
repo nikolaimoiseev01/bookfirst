@@ -456,7 +456,7 @@
                                             <a href="{{route('social.work_page', $work->work['id'])}}" target="_blank">
                                                 <h3>{{$loop->index + 1}}. {{$work->work['title']}}</h3>
                                             </a>
-                                            <p>{{$work->work['text']}}</p>
+                                            <p>{!! $work->work['text'] !!}</p>
                                         @endforeach
                                     @endif
                                     @if ($own_book['inside_type'] == 'by_file' || $own_book['inside_type'] == 'файлами')
