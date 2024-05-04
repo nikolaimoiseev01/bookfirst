@@ -32,6 +32,8 @@ class TrackBlock extends Component
 
         if ($own_book_status_id < 9 && $own_book_status_id !== 4) { // Почти на всех статусах показываем серым
             $this->status_color = 'grey';
+        } elseif ($own_book_status_id == 99) { // Неактуальна
+            $this->status_color = 'grey';
         } elseif ($own_book_status_id === 4) {
             $this->status_color = 'yellow';
         } elseif($own_book_status_id === 9 && $printorder_paid_at === null) {

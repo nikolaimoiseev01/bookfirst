@@ -29,7 +29,10 @@ class PayBlock extends Component
         } elseif($this->own_book['own_book_status_id'] === 2) {
             $this->status_color = 'yellow';
             $this->page_title = 'Оплата издания';
-        } else {
+        } elseif($this->own_book['own_book_status_id'] === 99) {
+            $this->status_color = 'grey';
+            $this->page_title = 'Оплата издания';
+        }  else {
             $this->status_color = 'green';
             $this->page_title = 'Оплата успешно подтверждена';
         }

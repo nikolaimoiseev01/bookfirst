@@ -24,6 +24,8 @@ class SalesBlock extends Component
 
         if($this->own_book['own_book_status_id'] < 9) {
             $this->status_color = 'grey';
+        } elseif($this->own_book['own_book_status_id'] == 99) {
+            $this->status_color = 'grey';
         } else {
             $this->status_color = 'green';
         }
