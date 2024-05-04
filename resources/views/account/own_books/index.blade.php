@@ -44,7 +44,8 @@
                     <div class="right_wrap">
                         <h3>{{Str::limit($own_book['title'], 18, '...')}}</h3>
                         <div class="info">
-                            <p><b>Общий статус:</b> {{$own_book->own_book_status['status_title']}}
+                            <p @if($own_book['own_book_status_id'] == 99)style="color: #ff3333">
+                                <b>Общий статус: {{$own_book->own_book_status['status_title']}}</b>
                             </p>
                             <p><b>Статус обложки:</b> {{$own_book->own_book_cover_status['status_title']}}</p>
                             <p><b>Статус ВБ:</b> {{$own_book->own_book_inside_status['status_title']}}</p>
