@@ -218,8 +218,8 @@ class OwnBookController extends Controller
                 // Создаем обрезанную версию ВБ
 
                 $pdfPath = $this->own_book['inside_file'];
-                $user_folder = 'admin_files/own_books/' . 'user_id_' . $this->own_book['user_id'] . '/' . $this->own_book['title'] . '/ВЕРСТКА/';
-                $cut_file_path = $user_folder . 'ВБ_Main_' . $this->own_book['title'] . '_CUT.pdf';
+                $user_folder = 'admin_files/own_books/' . 'user_id_' . $this->own_book['user_id'] . '/' . $this->own_book['id'] . '/ВЕРСТКА/';
+                $cut_file_path = $user_folder . 'ВБ_Main_' . $this->own_book['id'] . '_CUT.pdf';
 
                 // Понимаем размер файла
                 $pdf = new Fpdi();
@@ -514,8 +514,8 @@ class OwnBookController extends Controller
     {
 
         $own_book = own_book::where('id', $request->own_book_id)->first();
-        $user_folder = 'admin_files/own_books/' . 'user_id_' . $own_book['user_id'] . '/' . $own_book['title'] . '/ВЕРСТКА/';
-        $file_new_path = $user_folder . 'ВБ_Main_' . $own_book['title'] . '.' . $request->file('inside_file')->getClientOriginalExtension();
+        $user_folder = 'admin_files/own_books/' . 'user_id_' . $own_book['user_id'] . '/' . $own_book['id'] . '/ВЕРСТКА/';
+        $file_new_path = $user_folder . 'ВБ_Main_' . $own_book['id'] . '.' . $request->file('inside_file')->getClientOriginalExtension();
 
         if (!is_null($request->file('inside_file'))) {
             File::delete($own_book->inside_file);
@@ -523,7 +523,7 @@ class OwnBookController extends Controller
         own_book::where('id', $request->own_book_id)->update(array(
             'inside_file' => $file_new_path,
         ));
-        $request->file('inside_file')->move($user_folder, 'ВБ_Main_' . $own_book['title'] . '.' . $request->file('inside_file')->getClientOriginalExtension());
+        $request->file('inside_file')->move($user_folder, 'ВБ_Main_' . $own_book['id'] . '.' . $request->file('inside_file')->getClientOriginalExtension());
 
         session()->flash('success', 'change_printorder');
         session()->flash('alert_type', 'success');
@@ -538,7 +538,7 @@ class OwnBookController extends Controller
 
 
         $own_book = own_book::where('id', $request->own_book_id)->first();
-        $user_folder = $cover_2d = 'admin_files/own_books/' . 'user_id_' . $own_book['user_id'] . '/' . $own_book['title'] . '/ОБЛОЖКА/';
+        $user_folder = $cover_2d = 'admin_files/own_books/' . 'user_id_' . $own_book['user_id'] . '/' . $own_book['id'] . '/ОБЛОЖКА/';
 
         if (!is_null($request->file('cover_2d'))) {
             $file_new_path = $user_folder . 'Cover_2d' . '.' . $request->file('cover_2d')->getClientOriginalExtension();
