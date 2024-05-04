@@ -6,16 +6,20 @@ use App\Http\Controllers\Controller;
 use App\Models\award;
 use App\Models\Chat;
 use App\Models\chat_status;
+use App\Models\Collection;
 use App\Models\own_book;
 use App\Models\own_book_cover_status;
 use App\Models\own_book_files;
 use App\Models\own_book_inside_status;
 use App\Models\own_book_status;
 use App\Models\own_books_works;
+use App\Models\Participation;
+use App\Models\Participation_work;
 use App\Models\preview_comment;
 use App\Models\Printorder;
 use App\Models\Transaction;
 use App\Models\User;
+use App\Models\Work;
 use App\Notifications\EmailNotification;
 use App\Notifications\UserNotification;
 use Carbon\Carbon;
@@ -239,7 +243,7 @@ class OwnBookController extends Controller
                     $pdf->useTemplate($template);
                 }
 
-                $pdf->output($cut_file_path,'F');
+                $pdf->output($cut_file_path, 'F');
 
                 own_book::where('id', $this->own_book['id'])->update(array(
                     'inside_file_cut' => $cut_file_path,
@@ -592,6 +596,88 @@ class OwnBookController extends Controller
 
         return redirect()->back();
 
+    }
+
+
+    public function create_own_book_file(Request $request)
+    {
+
+        $own_book = own_book::where('id', $request->own_book_id)->first();
+        // Creating the new document...
+        $phpWord = new \PhpOffice\PhpWord\PhpWord();
+
+        // Делаем стили для разных сборников
+        if ($request->works_type == 'poezia') {
+            $page_size = "A5";
+            $author_name_style = array('name' => 'a_BentTitulNr', 'size' => 16, 'color' => 'F79646', 'bold' => true);
+            $author_name_footer_style = array('name' => 'Bad Script', 'size' => 14, 'color' => '000000', 'bold' => true);
+            $work_title_style = array('name' => 'Bad Script', 'size' => 16, 'color' => 'FF0000', 'bold' => true);
+            $work_title_align = array('align' => 'left');
+            $work_text_style = array('name' => 'Ayuthaya', 'size' => 10, 'color' => '000000', 'bold' => false);
+            $phpWord->getSettings()->setMirrorMargins(true);
+
+        } elseif ($request->works_type == 'proza') {
+            $page_size = "A4";
+            $author_name_style = array('name' => 'Days', 'size' => 16, 'color' => 'F79646', 'bold' => true);
+            $author_name_footer_style = array('name' => 'Accuratist', 'size' => 14, 'color' => '000000', 'bold' => false);
+            $work_title_style = array('name' => 'Ayuthaya', 'size' => 14, 'color' => 'FF0000', 'bold' => false, 'italic' => true);
+            $work_title_align = array('align' => 'center');
+            $work_text_style = array('name' => 'Calibri Light', 'size' => 14, 'color' => '000000', 'bold' => false);
+        }
+
+        $PidPageSettings = array(
+            'marginTop' => 1000,
+            'footerHeight' => \PhpOffice\PhpWord\Shared\Converter::inchToTwip(.35),
+            'marginBottom' => 1100,
+            "paperSize" => $page_size,
+            'headerHeight' => \PhpOffice\PhpWord\Shared\Converter::inchToTwip(.28)
+        );
+
+
+        // Создаем новый раздел для автора
+        $section = $phpWord->addSection($PidPageSettings);
+
+        $phpWord->setDefaultParagraphStyle(
+            array(
+                'spaceAfter' => \PhpOffice\PhpWord\Shared\Converter::pointToTwip(0),
+                'spacing' => 120,
+                'lineHeight' => 1,
+            )
+        );
+
+        $author_works = own_books_works::where('own_book_id', $own_book['id'])->get();
+
+        foreach ($author_works as $author_work) {
+
+            $work = Work::where('id', $author_work['work_id'])->first();
+            // Пишем название
+            $section->addText($work['title'],
+                $work_title_style,
+                $work_title_align
+            );
+
+            $work_text = str_replace("\n", '<w:br/>', htmlspecialchars($work['text']));
+
+            \PhpOffice\PhpWord\Settings::setOutputEscapingEnabled(false);
+
+
+            // Пишем текст работы
+            $section->addText(
+//                        xmlEntities(htmlentities($work_text)),
+                $work_text,
+                $work_text_style
+            );
+
+        }
+
+
+        \PhpOffice\PhpWord\Settings::setCompatibility(false);
+        \PhpOffice\PhpWord\Settings::setOutputEscapingEnabled(false);
+        // Saving the document as HTML file...
+        $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
+        $own_book_title = 'own_book';
+        $objWriter->save($own_book_title . '.docx');
+        return response()->download($own_book_title . '.docx')->deleteFileAfterSend(true);
     }
 
 

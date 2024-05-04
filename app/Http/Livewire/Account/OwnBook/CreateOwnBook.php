@@ -339,12 +339,17 @@ class CreateOwnBook extends Component
             $new_own_book->print_price = $this->price_print;
             $new_own_book->total_price = $this->price_total;
 
-            // Делаем ссылку на постоянный внутренний блок PDF
-            $inside_file_path = 'admin_files/own_books/user_id_' . Auth::user()->id . '/' . $this->book_title . '/ВЕРСТКА' . '/ВБ_Main_' . $this->book_title . '.pdf';
-            $new_own_book->inside_file = $inside_file_path;
+//            dd($new_own_book->id);
+
             // ----------------------------
 
             $new_own_book->save();
+
+            // Делаем ссылку на постоянный внутренний блок PDF
+            $inside_file_path = 'admin_files/own_books/user_id_' . Auth::user()->id . '/' . $new_own_book->id . '/ВЕРСТКА' . '/ВБ_Main_' . $this->book_title . '.pdf';
+            $new_own_book->update([
+                'inside_file' => $inside_file_path
+            ]);
 
 
             // ----------------------------------------------
@@ -461,7 +466,7 @@ class CreateOwnBook extends Component
 
 
             // Посылаем Telegram уведомление нам
-            Notification::route('telegram', '-506622812')
+            Notification::route('telegram', ENV('APP_DEBUG') ? "-4176126016" : '-506622812')
                 ->notify(new TelegramNotification($title, $text, $button_text, $url));
 
             session()->flash('show_modal', 'yes');

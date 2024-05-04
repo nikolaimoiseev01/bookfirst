@@ -243,7 +243,7 @@ Route::middleware(['role:admin'])->prefix('admin_panel')->group(function () {
     Route::post('/update_own_book_track_number/{own_book_id}', [\App\Http\Controllers\Admin\OwnBookController::class, 'update_own_book_track_number'])->name('update_own_book_track_number');
     Route::post('/update_own_book_send_price/{own_book_id}', [\App\Http\Controllers\Admin\OwnBookController::class, 'update_own_book_send_price'])->name('update_own_book_send_price');
     Route::post('/update_own_book_desc/{own_book_id}', [\App\Http\Controllers\Admin\OwnBookController::class, 'update_own_book_desc'])->name('update_own_book_desc');
-
+    Route::get('/create_own_book_file', [App\Http\Controllers\Admin\OwnBookController::class, 'create_own_book_file'])->name('create_own_book_file');
 
     Route::get('/chats_users', [App\Http\Controllers\Admin\AdminSocialController::class, 'chats_users'])->name('chats_users');
     Route::get('/social_comments', [App\Http\Controllers\Admin\AdminSocialController::class, 'admin_social_comments'])->name('admin_social_comments');

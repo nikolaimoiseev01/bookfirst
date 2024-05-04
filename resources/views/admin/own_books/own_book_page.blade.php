@@ -432,6 +432,26 @@
                                 <div class="pr-2 col-sm-6">
                                     @if ($own_book['inside_type'] == 'by_system' || $own_book['inside_type'] == 'системой')
                                         <h3>Автор загрузил произведения из системы:</h3>
+
+                                        <form
+                                            enctype="multipart/form-data"
+                                            method="get"
+                                            action="{{route('create_own_book_file')}}"
+                                            style="gap: 20px;"
+                                            class="ml-auto d-flex mt-3 mb-3 align-items-center">
+                                            @csrf
+                                            <input style="display: none" type="number" id="own_book_id" name="own_book_id"
+                                                   value="{{$own_book['id']}}">
+                                            <select required name="works_type" id="works_type">
+                                                <option value="poezia">Поэзия</option>
+                                                <option value="proza">Проза</option>
+                                            </select>
+                                            <button id="chat_form" style="width:fit-content; position: relative;"
+                                                    class="button btn btn-block bg-gradient-primary">
+                                                <span class="button__text">Скачать верстку!</span>
+                                            </button>
+                                        </form>
+
                                         @foreach($own_book->own_books_works as $work)
                                             <a href="{{route('social.work_page', $work->work['id'])}}" target="_blank">
                                                 <h3>{{$loop->index + 1}}. {{$work->work['title']}}</h3>
