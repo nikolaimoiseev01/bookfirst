@@ -231,6 +231,7 @@
                                            href="https://www.pochta.ru/tracking#{{$participation->printorder['track_number']}}">
                                             {{$participation->printorder['track_number']}}
                                         </a>
+                                        ({{$participation->printorder['send_price']}} руб.)
                                     </h4>
                                     <p style="margin: 0 0 0 10px;">
                                         @if($participation->printorder['paid_at'])
