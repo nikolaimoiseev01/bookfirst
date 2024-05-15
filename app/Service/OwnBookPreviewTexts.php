@@ -41,7 +41,7 @@ class OwnBookPreviewTexts
         $text_dev = '
             <p class="no-access">
                 На данный момент идет работа над материалами. Предварительные варианты появятся здесь
-                до ' . $deadline . '23:59 МСК.
+                до ' . $deadline . ' 23:59 МСК.
             </p>
         ';
 
