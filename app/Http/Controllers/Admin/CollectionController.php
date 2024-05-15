@@ -148,6 +148,9 @@ class CollectionController extends Controller
             $sheet->setCellValue("B" . ($key + 2), print_address($print['id']));
             $sheet->setCellValue("C" . ($key + 2), $print['books_needed']);
         }
+        $sheet->setCellValue("A" . ($key + 2), 'Моисеев Николай Евгеньевич');
+        $sheet->setCellValue("B" . ($key + 2), 'Россия, Москва, Милашенкова 3к2, кв. 83, индекс: 127322, +79095713756');
+        $sheet->setCellValue("C" . ($key + 2), 1);
 
         foreach (range('A', 'D') as $columnID) {
             $spreadsheet->getActiveSheet()->getColumnDimension($columnID)
