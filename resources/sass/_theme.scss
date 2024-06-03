@@ -2506,6 +2506,19 @@ footer {
 
         }
 
+        .answer_soon {
+            color: $color-green;
+            font-size: 22px;
+            font-weight: 800;
+            text-align: center;
+
+            span {
+                font-size: 20px;
+                font-weight: 500;
+                font-style: italic;
+            }
+        }
+
     }
 
     .chat_filepond input {

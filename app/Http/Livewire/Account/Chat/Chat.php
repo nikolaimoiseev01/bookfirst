@@ -269,7 +269,7 @@ class Chat extends Component
                 $ext_promotion = ext_promotion::where('chat_id', $this->chat['id'])->first();
                 $telegram_chat = ENV('APP_DEBUG') ? "-4176126016" : '-4120321987';
             } else {
-                $telegram_chat = '-506622812';
+                $telegram_chat = config('cons.telegram_chat_id');
             }
 
             if(!(in_array($this->cur_user_role, ['admin', 'ext_promotion_admin'])) || $is_ext_promotion_chat) {

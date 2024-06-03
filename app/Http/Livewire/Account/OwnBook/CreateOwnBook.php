@@ -466,7 +466,7 @@ class CreateOwnBook extends Component
 
 
             // Посылаем Telegram уведомление нам
-            Notification::route('telegram', ENV('APP_DEBUG') ? "-4176126016" : '-506622812')
+            Notification::route('telegram', config('cons.telegram_chat_id'))
                 ->notify(new TelegramNotification($title, $text, $button_text, $url));
 
             session()->flash('show_modal', 'yes');
