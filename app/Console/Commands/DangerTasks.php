@@ -69,6 +69,7 @@ class DangerTasks extends Command
         if ($collections) {
             foreach ($collections as $collection) {
 
+                $title = null;
                 $text = null;
 
                 $random_priskazka = $priskazki[array_rand($priskazki)];
@@ -81,8 +82,11 @@ class DangerTasks extends Command
                     // Если разница положительна (deadline в будущем), инвертируем значение
                     $deadline_days = $deadline_days->days * ($deadline_days->invert === 0 ? -1 : 1);
 
-                    if ($deadline_days < $deadline_days_threshold && $deadline_days >= 0)
+                    $title = "Нужна верстка сборника! Дней: {$deadline_days}";
+
+                    if ($deadline_days < $deadline_days_threshold && $deadline_days >= 0) {
                         $text = "*{$title_short}* нужно сверстать до *{$col_deadline}*. Осталось дней: {$deadline_days}";
+                    }
                     elseif ($deadline_days < 0) {
                         $text = "*ПРОСРОЧКА!* *{$title_short}* нужно было сверстать *{$col_deadline}*. Дней просрочки: " . $deadline_days * -1;
                     }
@@ -93,8 +97,12 @@ class DangerTasks extends Command
                     // Если разница положительна (deadline в будущем), инвертируем значение
                     $deadline_days = $deadline_days->days * ($deadline_days->invert === 0 ? -1 : 1);
 
-                    if ($deadline_days < $deadline_days_threshold && $deadline_days >= 0)
+                    $title = "Нужна отправка сборника! Дней: {$deadline_days}";
+
+                    if ($deadline_days < $deadline_days_threshold && $deadline_days >= 0) {
                         $text = "*{$title_short}* нужно отправлять в печать до *{$col_deadline}*. Осталось дней: {$deadline_days}";
+                    }
+
                     elseif ($deadline_days < 0) {
                         $text = "*ПРОСРОЧКА!* *{$title_short}* нужно было отправить в печать до *{$col_deadline}*. Дней просрочки: " . $deadline_days * -1;
                     }
@@ -104,6 +112,8 @@ class DangerTasks extends Command
                     $deadline_days = Date::parse($col_deadline)->diff(Date::now());
                     // Если разница положительна (deadline в будущем), инвертируем значение
                     $deadline_days = $deadline_days->days * ($deadline_days->invert === 0 ? -1 : 1);
+
+                    $title = "Печать сборника уже готова! Дней: {$deadline_days}";
 
                     if ($deadline_days < $deadline_days_threshold && $deadline_days >= 0)
                         $text = "Позвонить Светлане! *{$title_short}* должен быть напечатан до *{$col_deadline}*. Осталось дней: {$deadline_days}";
@@ -117,7 +127,7 @@ class DangerTasks extends Command
 
                 if ($text ?? null) {
                     $message_arrays[] = [
-                        'title' => "🔥 *{$random_priskazka}*",
+                        'title' => "🔥 *{$title}*",
                         'text' => $text
                     ];
                 }
@@ -147,6 +157,7 @@ class DangerTasks extends Command
         $new_covers_ready = New_covers_readiness::first();
 
         if ($new_covers_ready['flg_ready'] == 'Ждем новых обложек') {
+            $title = "КРИС, ОБЛОЖКИ!";
             if ($deadline_days >= 0)
                 $text_kris = "На запуск следующих сборников нет новых обложек :(";
             elseif ($deadline_days < 0) {
@@ -156,7 +167,7 @@ class DangerTasks extends Command
 
         if ($text_kris ?? null) {
             $message_arrays[] = [
-                'title' => "🖌 *{$random_priskazka_kris}*",
+                'title' => "🖌 *{$title}*",
                 'text' => $text_kris
             ];
         }
@@ -177,6 +188,8 @@ class DangerTasks extends Command
 
                 $random_priskazka_kris = $priskazki_kris[array_rand($priskazki_kris)];
 
+                $title = "КРИС, ОБЛОЖКИ! Дней: {$deadline_days}";
+
                 if ($deadline_days < $deadline_days_threshold && $deadline_days >= 0)
                     $text_own_book_covers = "У автора *" . $own_book['author'] . "* нужно делать обложку! " . "Срок до {$own_book['cover_deadline']}. Осталось дней: {$deadline_days}";
                 elseif ($deadline_days < 0) {
@@ -185,7 +198,7 @@ class DangerTasks extends Command
 
                 if ($text_own_book_covers ?? null) {
                     $message_arrays[] = [
-                        'title' => "🖌 *{$random_priskazka_kris}*",
+                        'title' => "🖌 *{$title}*",
                         'text' => $text_own_book_covers
                     ];
                 }
@@ -202,6 +215,8 @@ class DangerTasks extends Command
 
                 $random_priskazka = $priskazki[array_rand($priskazki)];
 
+                $title = "СК. Нужно верстать! Дней: {$deadline_days}";
+
                 if ($deadline_days < $deadline_days_threshold && $deadline_days >= 0)
                     $text_own_book_insides = "У автора *" . $own_book['author'] . "* нужно делать макет! " . "Срок до {$own_book['cover_deadline']}. Осталось дней: {$deadline_days}";
                 elseif ($deadline_days < 0) {
@@ -210,7 +225,7 @@ class DangerTasks extends Command
 
                 if ($text_own_book_insides ?? null) {
                     $message_arrays[] = [
-                        'title' => "🔥 *{$random_priskazka}*",
+                        'title' => "🔥 *{$title}*",
                         'text' => $text_own_book_insides
                     ];
                 }
@@ -220,14 +235,16 @@ class DangerTasks extends Command
 
         if ($own_book_need_prints) {
             foreach ($own_book_need_prints as $own_book) {
-                $random_priskazka = $priskazki[array_rand($priskazki)];
+
                 $deadline_days = Date::parse($own_book['paid_at_print_only'])->diff(Date::now())->days;
 
                 $text_own_book_need_prints = "Нужно отправить в печать автора *{$own_book['author']}*! Ждет уже дней: {$deadline_days}";
 
+                $title = "СК. Нужно отправить в печать! Дней: {$deadline_days}";
+
                 if ($text_own_book_need_prints ?? null) {
                     $message_arrays[] = [
-                        'title' => "🔥 *{$random_priskazka}*",
+                        'title' => "🔥 *{$title}*",
                         'text' => $text_own_book_need_prints
                     ];
                 }
@@ -245,7 +262,7 @@ class DangerTasks extends Command
                 dd($message_arrays);
             } else {
                 foreach ($message_arrays as $message) {
-                    Notification::route('telegram', '-506622812')
+                    Notification::route('telegram', config('cons.telegram_chat_id'))
                         ->notify(new TelegramNotification($message['title'], $message['text'], "Админка", "vk1.com"));
                     sleep(0.5);
                 }
