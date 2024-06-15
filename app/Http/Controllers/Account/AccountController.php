@@ -23,7 +23,7 @@ class AccountController extends Controller
     }
 
     public function own_books() {
-        $own_books = own_book::where('user_id', Auth::user()->id)->get();
+        $own_books = own_book::where('user_id', Auth::user()->id)->where('own_book_status_id', '<>', 99)->get();
         return view('account/own_books/index', [
             'own_books' => $own_books,
         ]);
@@ -39,7 +39,7 @@ class AccountController extends Controller
 
     public function mysubscribtions() {
         $user_subed_to_ids = user_subscription::where('user_id', Auth::user()->id)->pluck('subscribed_to_user_Id')->toArray();
-        $sub_users = User::wherein('id', $user_subed_to_ids)->paginate(10);
+        $sub_users = User::wherein('id', $user_subed_to_ids)->paginateW(10);
 
         return view('account/mysubscriptions', [
             'sub_users' => $sub_users
