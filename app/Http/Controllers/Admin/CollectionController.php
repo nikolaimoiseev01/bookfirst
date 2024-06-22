@@ -139,14 +139,23 @@ class CollectionController extends Controller
         $sheet->setCellValue('B1', 'Адрес');
         $sheet->setCellValue('C1', 'Кол-во');
         $sheet->setCellValue('D1', 'Трек-номер');
+        $sheet->setCellValue('E1', 'Для пересылки');
 
         $spreadsheet->getActiveSheet()->getStyle("A1:D1")->getFont()->setBold(true);
 
+
         foreach ($authors as $key => $author) {
             $print = Printorder::where('id', $author['printorder_id'])->first();
+            $address = $print['send_to_country'] . ', ' .
+                $print['send_to_city'] . ', ' . $print['send_to_address'];
+
+            $print_address_to_envelope = "Кому: {$print['send_to_name']} \n Куда: {$address} \n Индекс: {$print['send_to_index']} \n Телефон: {$print['send_to_tel']}";
+            $print_address_to_typography = print_address($print['id']);
+
             $sheet->setCellValue("A" . ($key + 2), $print['send_to_name']);
             $sheet->setCellValue("B" . ($key + 2), print_address($print['id']));
             $sheet->setCellValue("C" . ($key + 2), $print['books_needed']);
+            $sheet->setCellValue("E" . ($key + 2), $print_address_to_envelope);
         }
         $sheet->setCellValue("A" . ($key + 2), 'Моисеев Николай Евгеньевич');
         $sheet->setCellValue("B" . ($key + 2), 'Россия, Москва, Милашенкова 3к2, кв. 83, индекс: 127322, +79095713756');
