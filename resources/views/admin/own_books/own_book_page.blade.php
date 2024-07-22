@@ -1222,6 +1222,42 @@
                                         <i style="font-size: 20px;" class="fa fa-edit"></i>
 
                                     </button>
+
+                                    <form class="d-flex ml-3" style=" align-items: center;"
+                                          action="{{ route('change_chat_status', $chat['id']) }}"
+                                          method="POST"
+                                          enctype="multipart/form-data"
+                                    >
+                                        @csrf
+
+                                        <input style="display: none" class="form-control" value="2" name="chat_status_id">
+
+                                        <button id="btn-submit" type="submit"
+                                                style="height: fit-content; max-height: 30px; max-width:150px;"
+                                                class="ml-3 d-flex align-items-center justify-content-center btn btn-outline-success"
+                                        >
+                                            Ответ получен
+                                        </button>
+                                    </form>
+
+                                    <form class="d-flex ml-3" style=" align-items: center;"
+                                          action="{{ route('change_chat_status', $chat['id']) }}"
+                                          method="POST"
+                                          enctype="multipart/form-data"
+                                    >
+                                        @csrf
+
+                                        <input style="display: none" class="form-control" value="3" name="chat_status_id">
+
+                                        <button id="btn-submit" type="submit"
+                                                style="height: fit-content; max-height: 30px; max-width:150px;"
+                                                class="ml-3 d-flex align-items-center justify-content-center btn btn-outline-danger"
+                                        >
+                                            Чат закрыт
+                                        </button>
+                                    </form>
+
+
                                 </div>
 
                                 <div style="width:100%; max-width: 2000px" class="chat">

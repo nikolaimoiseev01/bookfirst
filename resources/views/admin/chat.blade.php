@@ -53,13 +53,49 @@
                                 </button>
                             </form>
                         </div>
-                        <button style="border: none; width: auto; padding: 3px 10px;max-width:150px"
+
+                       <button style="border: none; width: auto; padding: 3px 10px;max-width:150px"
                                 data-form="change_chat_status" type="button"
                                 class="change_status_button ml-1 btn btn-outline-info btn-block btn-sm"
                         >
                             <i style="font-size: 20px;" class="fa fa-edit"></i>
 
                         </button>
+
+                        <form class="d-flex ml-3" style=" align-items: center;"
+                              action="{{ route('change_chat_status', $chat['id']) }}"
+                              method="POST"
+                              enctype="multipart/form-data"
+                        >
+                            @csrf
+
+                            <input style="display: none" class="form-control" value="2" name="chat_status_id">
+
+                            <button id="btn-submit" type="submit"
+                                    style="height: fit-content; max-height: 30px; max-width:150px;"
+                                    class="ml-3 d-flex align-items-center justify-content-center btn btn-outline-success"
+                            >
+                                Ответ получен
+                            </button>
+                        </form>
+
+                        <form class="d-flex ml-3" style=" align-items: center;"
+                              action="{{ route('change_chat_status', $chat['id']) }}"
+                              method="POST"
+                              enctype="multipart/form-data"
+                        >
+                            @csrf
+
+                            <input style="display: none" class="form-control" value="3" name="chat_status_id">
+
+                            <button id="btn-submit" type="submit"
+                                    style="height: fit-content; max-height: 30px; max-width:150px;"
+                                    class="ml-3 d-flex align-items-center justify-content-center btn btn-outline-danger"
+                            >
+                                Чат закрыт
+                            </button>
+                        </form>
+
                     </div>
             <div class="card">
                 <div class="d-flex align-items-center bg-gradient-info card-header">
