@@ -374,6 +374,14 @@ class CollectionController extends Controller
     {
         $col_statuses = Col_status::orderBY('id')->get();
         $participations = Participation::orderBy('pat_status_id', 'asc')->orderBy('paid_at', 'asc')->orderBy('check_price', 'desc')->where('collection_id', $collection->id)->get();
+
+        $filteredParticipations = $participations->where('pat_status_id', 3);
+
+        // Получим сумму поля books_needed из связанной модели printorder
+        $totalBooksNeeded = $filteredParticipations->sum(function ($participation) {
+            return $participation->printorder ? $participation->printorder->books_needed : 0;
+        });
+
         $collection_title = DB::table('collections')->where('id', $collection->id)->value('title');
         $printorders = PrintOrder::orderBy('id', 'desc')->where('collection_id', $collection->id)->get();
         $pre_comments = preview_comment::where('collection_id', $collection->id)->with('participation')->get();
@@ -429,6 +437,7 @@ class CollectionController extends Controller
             'emails_sent' => $emails_sent,
             'winners' => $winners,
             'collections_to_update' => $collections_to_update,
+            'totalBooksNeeded' => $totalBooksNeeded
         ]);
     }
 
