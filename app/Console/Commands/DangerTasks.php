@@ -264,6 +264,7 @@ class DangerTasks extends Command
                 foreach ($message_arrays as $message) {
                     Notification::route('telegram', config('cons.telegram_chat_id'))
                         ->notify(new TelegramNotification($message['title'], $message['text'], "Админка", "vk1.com"));
+                    dd('DONE!');
                     sleep(0.5);
                 }
             }
