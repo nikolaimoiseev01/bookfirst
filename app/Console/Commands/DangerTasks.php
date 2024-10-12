@@ -145,7 +145,7 @@ class DangerTasks extends Command
 
         $eol_collections = Collection::where('col_status_id', '<', 3)->first();
 
-        if ($eol_collections['col_status_id'] == 1) {
+        if ($eol_collections['col_status_id'] ?? 0 == 1) {
             $col_deadline = Date::parse($eol_collections->col_date2)->format('j F');
         } else {
             $col_deadline = Date::parse($eol_collections->col_date3)->format('j F');
