@@ -186,6 +186,7 @@
                                         <h3 style="font-size: 30px;" class="ml-0 widget-user-username">
                                             <b>{{$own_book->author}}</b>: </h3>
                                         <h3 style="font-weight: 100;">{{$own_book->title}}</h3>
+                                        <p class="mt-3">Обновили: {{ Date::parse($own_book->updated_at)->addHours(3)->format('j F')}}</p>
                                     </div>
 
                                 </div>
