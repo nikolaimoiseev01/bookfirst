@@ -56,19 +56,21 @@ class AlmostCompleteReminder extends Command
                 $button_link = route('own_book_create');
             }
 
-            $cnt_emails_pre = $action['cnt_email_sent'];
-            $action->update([
-                'cnt_email_sent' => $cnt_emails_pre + 1,
-                'dt_last_email_sent' => Date::parse(Carbon::now())->addHour(3)
-            ]);
+            if ($email_text ?? null) {
+                $cnt_emails_pre = $action['cnt_email_sent'];
+                $action->update([
+                    'cnt_email_sent' => $cnt_emails_pre + 1,
+                    'dt_last_email_sent' => Date::parse(Carbon::now())->addHour(3)
+                ]);
 
-            $user->notify(new EmailNotification(
-                    'Незаконченное действие!',
-                    $user['name'],
-                    $email_text,
-                    'Продолжить заполнение',
-                    $button_link)
-            );
+                $user->notify(new EmailNotification(
+                        'Незаконченное действие!',
+                        $user['name'],
+                        $email_text,
+                        'Продолжить заполнение',
+                        $button_link)
+                );
+            }
         }
 
         if ($cnt_authors > 0) {
