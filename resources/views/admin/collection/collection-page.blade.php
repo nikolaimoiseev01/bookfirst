@@ -399,13 +399,13 @@
                                                                         class="form-control"
                                                                         name="winner_participation_id">
                                                                     @foreach($participations as $participation)
-                                                                            <option value="{{$participation['id']}}">
-                                                                                @if($participation['nickname'] <> null)
-                                                                                    {{$participation['nickname']}}
-                                                                                @else
-                                                                                    {{$participation->name}} {{$participation->surname}}
-                                                                                @endif
-                                                                            </option>
+                                                                        <option value="{{$participation['id']}}">
+                                                                            @if($participation['nickname'] <> null)
+                                                                                {{$participation['nickname']}}
+                                                                            @else
+                                                                                {{$participation->name}} {{$participation->surname}}
+                                                                            @endif
+                                                                        </option>
                                                                     @endforeach
                                                                 </select>
 
@@ -831,7 +831,8 @@
         <div class="col-md-12">
             <div class="card collapsed-card mt-0">
                 <div class="bg-gradient-cyan card-header">
-                    <h1 style="font-size: 25px;" class="card-title">Печатные экзепляры оплативших клиентов ({{$totalBooksNeeded}} (+1) штук нужно напечатать)</h1>
+                    <h1 style="font-size: 25px;" class="card-title">Печатные экзепляры оплативших клиентов
+                        ({{$totalBooksNeeded}} (+1) штук нужно напечатать)</h1>
 
                     <div class="card-tools">
                         <button class="btn btn-tool" data-card-widget="collapse">
@@ -840,35 +841,79 @@
                     </div>
                 </div>
                 <!-- /.card-header -->
-                <div class="card-body p-0" style="display: none;">
-                    <div class="row">
-                        <div class="col-lg-12">
 
-                            <div class="d-flex card-header">
-                                <input class="form-control" id="print_orders_input" type="text"
-                                       placeholder="Поиск...">
-                                <form
-                                    id="chat"
-                                    enctype="multipart/form-data"
-                                    method="get"
-                                    action="{{route('download_all_prints')}}"
-                                    class="ml-3">
-                                    @csrf
-                                    <input style="display: none" type="number" id="col_id" name="col_id"
-                                           value="{{$collection['id']}}">
-                                    <button id="chat_form" style="width:fit-content; position: relative;"
-                                            class="button btn btn-block bg-gradient-primary">
-                                        <span class="button__text">Скачать таблицу печати!</span>
-                                    </button>
-                                </form>
+
+                    <div class="card-body p-0" style="display: none;">
+                        <div class="row">
+                            <div class="col-lg-12">
+
+                                <div class="d-flex card-header">
+
+                                    <ul class="nav nav-pills">
+                                        <li class="nav-item"><a @click="opened = 'table'"
+                                                                href="#table"
+                                                                class="nav-link active"
+                                                                data-toggle="tab">
+                                                Таблица
+                                            </a>
+                                        </li>
+                                        <li class="nav-item"><a @click="opened = 'grouped'" class="nav-link"
+                                                                href="#grouped"
+                                                                  data-toggle="tab">Группировка</a>
+                                        </li>
+
+                                    </ul>
+
+                                    <form
+                                        id="chat"
+                                        enctype="multipart/form-data"
+                                        method="get"
+                                        action="{{route('download_all_prints')}}"
+                                        class="ml-auto">
+                                        @csrf
+                                        <input style="display: none" type="number" id="col_id" name="col_id"
+                                               value="{{$collection['id']}}">
+                                        <button id="chat_form" style="width:fit-content; position: relative;"
+                                                class="button btn btn-block bg-gradient-primary">
+                                            <span class="button__text">Скачать таблицу печати!</span>
+                                        </button>
+                                    </form>
+                                </div>
+                                <div class="tab-content">
+
+                                    <div class="card-body p-0 active tab-pane" id="table">
+                                        @livewire('admin.admin-print-order-table',['collection_id'=>$collection['id']])
+                                    </div>
+
+                                    <div class="card-body p-0 tab-pane" id="grouped">
+                                        <table class="table table-bordered table-sm">
+                                            <thead>
+                                            <tr>
+                                                <th style="text-align: center">Кол-во книг</th>
+                                                <th style="text-align: center">Сколько заказов</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {{App::setLocale('ru')}}
+                                            @foreach($printorder_groups as $printorder_group)
+                                                <tr>
+                                                    <td style="text-align: center">{{$printorder_group['books_needed']}}</td>
+
+                                                    <td style="text-align: center">
+                                                        {{$printorder_group['total']}}
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                                <!-- /.card-body -->
                             </div>
-                            <div class="card-body p-0">
-                                @livewire('admin.admin-print-order-table',['collection_id'=>$collection['id']])
-                            </div>
-                            <!-- /.card-body -->
                         </div>
                     </div>
-                </div>
+
 
                 <!-- /.row -->
             </div>

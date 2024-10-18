@@ -375,6 +375,8 @@ class CollectionController extends Controller
         $col_statuses = Col_status::orderBY('id')->get();
         $participations = Participation::orderBy('pat_status_id', 'asc')->orderBy('paid_at', 'asc')->orderBy('check_price', 'desc')->where('collection_id', $collection->id)->get();
 
+
+
         $filteredParticipations = $participations->where('pat_status_id', 3);
 
         // Получим сумму поля books_needed из связанной модели printorder
@@ -383,7 +385,19 @@ class CollectionController extends Controller
         });
 
         $collection_title = DB::table('collections')->where('id', $collection->id)->value('title');
+
         $printorders = PrintOrder::orderBy('id', 'desc')->where('collection_id', $collection->id)->get();
+
+        $printorder_groups = PrintOrder::select('books_needed', DB::raw('count(*) as total'))
+            ->join('participations', 'participations.printorder_id', '=', 'printorders.id') // Предполагается, что у вас есть внешний ключ на PrintOrder
+            ->where('participations.pat_status_id', 3) // Условие на статус участия
+            ->where('printorders.collection_id', $collection->id) // Условие на collection_id
+            ->groupBy('books_needed')
+            ->orderBy('books_needed')
+            ->get()
+            ->toArray();
+
+
         $pre_comments = preview_comment::where('collection_id', $collection->id)->with('participation')->get();
 //        $votes = vote::where('collection_id', $collection->id)->with('Collection')->with('Participation')->get();
         $votes = DB::table('votes')
@@ -437,7 +451,8 @@ class CollectionController extends Controller
             'emails_sent' => $emails_sent,
             'winners' => $winners,
             'collections_to_update' => $collections_to_update,
-            'totalBooksNeeded' => $totalBooksNeeded
+            'totalBooksNeeded' => $totalBooksNeeded,
+            'printorder_groups' => $printorder_groups
         ]);
     }
 
