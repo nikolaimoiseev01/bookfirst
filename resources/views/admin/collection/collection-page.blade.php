@@ -885,8 +885,8 @@
                                         @livewire('admin.admin-print-order-table',['collection_id'=>$collection['id']])
                                     </div>
 
-                                    <div class="card-body p-0 tab-pane" id="grouped">
-                                        <table class="table table-bordered table-sm">
+                                    <div class="card-body p-3 tab-pane text-center" id="grouped">
+                                        <table style="width: fit-content" class="table table-bordered table-sm">
                                             <thead>
                                             <tr>
                                                 <th style="text-align: center">Кол-во книг</th>
