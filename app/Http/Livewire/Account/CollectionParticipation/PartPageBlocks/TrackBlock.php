@@ -28,10 +28,12 @@ class TrackBlock extends Component
             || $this->participation['pat_status_id'] < 3 // Если не оплатил участие
             || $col_status_id !== 9 // Если не до конца издан сборник
             || ($this->participation->collection['col_status_id'] >= 2 && !($this->participation['paid_at'] ?? null))) {
-                $this->status_color = 'grey';
-        } elseif (!$this->participation->printorder['paid_at']) { // Если не оплатил пересылку
-            $this->status_color = 'yellow';
-        } else {
+            $this->status_color = 'grey';
+//        } elseif (!$this->participation->printorder['paid_at']) { // Если не оплатил пересылку
+//            $this->status_color = 'yellow';
+//        } else {
+        }
+        else {
             $this->status_color = 'green';
         };
 
