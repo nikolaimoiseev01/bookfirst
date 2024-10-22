@@ -36,7 +36,7 @@ class AdminPrintOrderTable extends Component
             ->join('printorders', 'participations.printorder_id', '=', 'printorders.id')
             ->where('participations.collection_id', $this->collection_id)
             ->where('participations.pat_status_id', 3)
-            ->orderBy('surname')->get();
+            ->orderBy('send_to_name')->get();
 
         return view('livewire.admin.admin-print-order-table', [
             'participations' => $this->participations,
