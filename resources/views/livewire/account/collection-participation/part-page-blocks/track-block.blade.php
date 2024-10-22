@@ -101,6 +101,7 @@
                                 В качестве компенсации за сложившуюся ситуацию мы хотим подарить вам скидку в 30% на
                                 участие в следующем выпуске: промокод ALMOST_30.
                             </i></p>
+                    @endif
                         <a target="_blank"
                            href="https://www.pochta.ru/tracking#{{$participation->printorder['track_number'] ?? null ?? "ссылка не найдена"}}"
                            class="@if ($participation->printorder['track_number'] ?? 0 <> 0) @else amazon_link_error @endif button">Отследить</a>
