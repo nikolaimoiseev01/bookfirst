@@ -86,8 +86,7 @@ class DangerTasks extends Command
 
                     if ($deadline_days < $deadline_days_threshold && $deadline_days >= 0) {
                         $text = "*{$title_short}* нужно сверстать до *{$col_deadline}*. Осталось дней: {$deadline_days}";
-                    }
-                    elseif ($deadline_days < 0) {
+                    } elseif ($deadline_days < 0) {
                         $text = "*ПРОСРОЧКА!* *{$title_short}* нужно было сверстать *{$col_deadline}*. Дней просрочки: " . $deadline_days * -1;
                     }
 
@@ -101,9 +100,7 @@ class DangerTasks extends Command
 
                     if ($deadline_days < $deadline_days_threshold && $deadline_days >= 0) {
                         $text = "*{$title_short}* нужно отправлять в печать до *{$col_deadline}*. Осталось дней: {$deadline_days}";
-                    }
-
-                    elseif ($deadline_days < 0) {
+                    } elseif ($deadline_days < 0) {
                         $text = "*ПРОСРОЧКА!* *{$title_short}* нужно было отправить в печать до *{$col_deadline}*. Дней просрочки: " . $deadline_days * -1;
                     }
 
@@ -124,7 +121,6 @@ class DangerTasks extends Command
                 }
 
 
-
                 if ($text ?? null) {
                     $message_arrays[] = [
                         'title' => "🔥 *{$title}*",
@@ -136,7 +132,7 @@ class DangerTasks extends Command
             }
         }
 
-       //endregion
+        //endregion
 
 
         //region -- Оповещение Крис, что нет новых обложек
@@ -145,33 +141,34 @@ class DangerTasks extends Command
 
         $eol_collections = Collection::where('col_status_id', '<', 3)->first();
 
-        if($eol_collections) {
+        if ($eol_collections) {
             if ($eol_collections['col_status_id'] == 1) {
                 $col_deadline = Date::parse($eol_collections->col_date2)->format('j F');
             } else {
                 $col_deadline = Date::parse($eol_collections->col_date3)->format('j F');
             }
-        }
 
-        $deadline_days = Date::parse($col_deadline)->diff(Date::now());
-        // Если разница положительна (deadline в будущем), инвертируем значение
-        $deadline_days = $deadline_days->days * ($deadline_days->invert === 0 ? -1 : 1);
-        $new_covers_ready = New_covers_readiness::first();
 
-        if ($new_covers_ready['flg_ready'] == 'Ждем новых обложек') {
-            $title = "КРИС, ОБЛОЖКИ!";
-            if ($deadline_days >= 0)
-                $text_kris = "На запуск следующих сборников нет новых обложек :(";
-            elseif ($deadline_days < 0) {
-                $text_kris = "Сборники уже закончились, а новых обложек все нет :(";
+            $deadline_days = Date::parse($col_deadline)->diff(Date::now());
+            // Если разница положительна (deadline в будущем), инвертируем значение
+            $deadline_days = $deadline_days->days * ($deadline_days->invert === 0 ? -1 : 1);
+            $new_covers_ready = New_covers_readiness::first();
+
+            if ($new_covers_ready['flg_ready'] == 'Ждем новых обложек') {
+                $title = "КРИС, ОБЛОЖКИ!";
+                if ($deadline_days >= 0)
+                    $text_kris = "На запуск следующих сборников нет новых обложек :(";
+                elseif ($deadline_days < 0) {
+                    $text_kris = "Сборники уже закончились, а новых обложек все нет :(";
+                }
             }
-        }
 
-        if ($text_kris ?? null) {
-            $message_arrays[] = [
-                'title' => "🖌 *{$title}*",
-                'text' => $text_kris
-            ];
+            if ($text_kris ?? null) {
+                $message_arrays[] = [
+                    'title' => "🖌 *{$title}*",
+                    'text' => $text_kris
+                ];
+            }
         }
         //endregion
 
