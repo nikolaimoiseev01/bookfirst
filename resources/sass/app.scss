@@ -1397,6 +1397,8 @@
                     flex-direction: column;
                     gap: 20px;
                 }
+
+
             }
 
             .inside_options_block_wrap {
@@ -2301,6 +2303,18 @@
     }
 }
 
+.choose_delivery_block_wrap {
+    width: 100%;
+    .switch-wrap {
+        margin-bottom: 10px;
+        margin-top: 10px;
+    }
+
+    #simple-info {
+        display: none;
+    }
+}
+
 .archive_chats_wrap {
     display: flex;
     flex-wrap: wrap;
@@ -3122,6 +3136,8 @@
 
                     .filepond--root {
                         margin: 0 10px 10px 10px;
+                        height: 100px;
+                        min-height: 100px;
 
                         .filepond--item {
                             width: calc(30% - 0.5em);
@@ -3131,8 +3147,10 @@
                             font-size: 12px;
                         }
 
+
                         .filepond--drop-label {
                             height: 100px;
+                            min-height: 100px;
 
                             label {
                                 display: inline-block;
