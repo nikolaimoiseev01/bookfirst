@@ -210,10 +210,16 @@ class CreateOwnBook extends Component
         if ($this->pages == 0) {
             array_push($this->error_texts, "Не указано количество страниц (не загружен файл или они не определились автоматически)!");
             array_push($this->error_fields, 'pages');
-        } elseif ($this->pages < 20) {
-            array_push($this->error_texts, 'Минимальное количество страниц в собственной книге - 20.');
+        } elseif ($this->pages < 30) {
+            array_push($this->error_texts, 'Минимальное количество страниц в собственной книге - 30.');
             array_push($this->error_fields, 'pages');
         }
+
+        if ($this->inside_ready == 0 && !$this->need_design && !$this->need_check) {
+            array_push($this->error_texts, 'Макет не готов, но не выбрана необходимая помощь!');
+            array_push($this->error_fields, 'inside_ready');
+        }
+
 
         if ($this->book_title === $is_same_title & Auth::user()->id === $is_same_user) {
             array_push($this->error_texts, 'У Вас уже есть книга с точно таким же названием!');
