@@ -6,7 +6,7 @@
 
         <div class=hero_wrap>
             <h2>Моя заявка</h2>
-            @if($participation->collection['col_status_id'] < 3)
+            @if($participation->collection['col_status_id'] < 3 ?? $participation['pat_status_id'] <> 99)
                 <a href="{{route('participation_edit', [
                      'participation_id'=>$participation['id'],
                      'collection_id' => $participation['collection_id']
