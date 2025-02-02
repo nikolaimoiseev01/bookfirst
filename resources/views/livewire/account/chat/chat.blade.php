@@ -96,7 +96,7 @@
                 </div>
             @endforeach
 
-            @if($chat['chat_status_id'] == 1 && !(Auth::user()->hasRole('admin') || Auth::user()->hasRole('ext_promotion_admin')))
+            @if($chat['chat_status_id'] == 1 && (!(Auth::user()->hasRole('admin') && !(Auth::user()->hasRole('secondary_admin'))) || Auth::user()->hasRole('ext_promotion_admin')))
                 <p class="answer_soon">Мы успешно получили ваше сообщение!<br>
                     <span class="answer_soon answer_soon_desc">Обычно мы отвечаем в течение суток, но иногда нам
                 может потребоваться больше времени. Вы получите оповещение ответа по почте.</span>
