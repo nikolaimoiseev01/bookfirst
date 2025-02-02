@@ -42,6 +42,8 @@
             </div>
         </div>
     </div>
+    <a href="{{route('chat_create','Проблемы с заплонением адреса')}}" target="_blank" style="color: #fc9797; font-size: 18px;" class="danger link"><i>
+            Нужна помощь с заполнением адреса</i></a>
 </div>
 
 @push('page-js')
