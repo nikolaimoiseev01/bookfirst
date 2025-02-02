@@ -286,6 +286,20 @@
                                         </tr>
                                         </tbody>
                                     </table>
+                                    <form class="d-flex ml-3" style="align-items: center;"
+                                          action="{{ route('delete_participation',$participation['id']) }}"
+                                          method="POST"
+                                          enctype="multipart/form-data"
+                                    >
+                                        @csrf
+                                        <button id="btn-submit" type="submit"
+                                                style="height: fit-content; max-height: 30px; max-width:150px;"
+                                                data-status-from="УДАЛЕНИЕ ЗАЯВКИ"
+                                                class="change_status ml-3 d-flex align-items-center justify-content-center btn btn-outline-primary"
+                                        >
+                                            УДАЛИТЬ ЗАЯВКУ
+                                        </button>
+                                    </form>
                                 </div>
                                 <div class="col-6">
                                     <h4>Печать</h4>
@@ -313,7 +327,7 @@
                                         <tr>
                                             <td style="font-weight: bold">Адресс</td>
                                             <td>
-                                                {{$participation['printorder_id'] ? print_address($participation['printorder_id']) : 'Нет печати'}}
+                                                {{$participation['printorder_id'] ? print_address($participation->printorder) : 'Нет печати'}}
                                             </td>
                                         </tr>
                                         <tr>
@@ -352,6 +366,7 @@
                                                 {{$participation['check_price']}} руб.
                                             </td>
                                         </tr>
+                                        @role('admmin')
                                         <tr class="bg-info">
                                             <td style="font-weight: bold">Получили средств</td>
                                             <td>
@@ -365,12 +380,13 @@
                                             </td>
                                         </tr>
                                         <tr style="font-size: 22px;" class="bg-success">
-                                            <td style="font-weight: bold">Итого рибыль</td>
+                                            <td style="font-weight: bold">Итого прибыль</td>
                                             <td>
                                                 {{$participation['total_price'] - ($participation->printorder['books_needed'] ?? 0 * 80)}}
                                                 руб.
                                             </td>
                                         </tr>
+                                        @endrole
                                         </tbody>
                                     </table>
                                 </div>

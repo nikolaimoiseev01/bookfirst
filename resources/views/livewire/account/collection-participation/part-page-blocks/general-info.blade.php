@@ -49,7 +49,7 @@
 
                         </div>
                         <div class="name">
-                            <p><span class="h2">Адрес: </span>{{print_address($participation['printorder_id'])}}</p>
+                            <p><span class="h2">Адрес: </span>{{print_address($participation->printorder)}}</p>
                         </div>
                     @else
                         <h2>Печатные эезкемпляры не требуются.</h2>

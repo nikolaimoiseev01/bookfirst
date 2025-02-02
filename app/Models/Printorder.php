@@ -20,7 +20,10 @@ class Printorder extends Model
         'send_to_country',
         'send_to_city',
         'send_to_address',
-        'send_to_index'
+        'send_to_index',
+        'address',
+        'address_country',
+        'own_book_id'
     ];
 
     public function Participation()

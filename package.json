@@ -28,7 +28,8 @@
         "autolinker": "^4.0.0",
         "autoprefixer": "10.4.5",
         "cropperjs": "^1.5.12",
-        "gridstack": "^4.2.2"
+        "gridstack": "^4.2.2",
+        "jquery-mask-plugin": "^1.14.16"
     },
     "type": "module"
 }

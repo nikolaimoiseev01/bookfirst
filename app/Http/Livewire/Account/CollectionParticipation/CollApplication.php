@@ -17,6 +17,7 @@ use App\Service\ParticipationOutputsService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Validator;
@@ -42,14 +43,20 @@ class CollApplication extends Component
     public $rows;
     public $pages;
 
-    public $print_need;
+    public $print_need = False;
     public $prints = 1;
     public $send_to_name;
+    public $send_to_tel;
+
+    public $delivery_country = 'rus';
+
+    public $address;
     public $send_to_country;
     public $send_to_city;
-    public $send_to_index;
-    public $send_to_tel;
     public $send_to_address;
+    public $send_to_index;
+    public $address_default_string;
+
 
     public $need_check;
 
@@ -65,7 +72,7 @@ class CollApplication extends Component
     public $error_texts = [];
     public $error_fields = [];
 
-    protected $listeners = ['syncWorks', 'storeParticipation', 'new_almost_complete_action'];
+    protected $listeners = ['syncWorks', 'storeParticipation', 'editParticipation', 'new_almost_complete_action', 'confirm_step_2'];
 
 
     public function render(ParticipationOutputsService $calc_outs)
@@ -109,6 +116,7 @@ class CollApplication extends Component
 
     public function mount(Request $request, $type, $part_id)
     {
+
         // Куда нужно перейти после сохранения работ
         $currenturl = url()->full();
         $back_after_work_adding = [
@@ -156,13 +164,23 @@ class CollApplication extends Component
             // Если есть заказ печатных экземпляров
             if ($this->participation->printorder) {
                 $this->print_need = true;
-                $this->prints = $this->participation->printorder['books_needed'];
-                $this->send_to_name = $this->participation->printorder['send_to_name'];
-                $this->send_to_country = $this->participation->printorder['send_to_country'];
-                $this->send_to_city = $this->participation->printorder['send_to_city'];
-                $this->send_to_index = $this->participation->printorder['send_to_index'];
-                $this->send_to_tel = $this->participation->printorder['send_to_tel'];
-                $this->send_to_address = $this->participation->printorder['send_to_address'];
+                $printorder = $this->participation->printorder;
+                $address = json_decode($printorder['address'], true);
+                $this->prints = $printorder['books_needed'];
+                $this->send_to_name = $printorder['send_to_name'];
+                $this->send_to_tel = $printorder['send_to_tel'];
+                $this->address = $address;
+                $this->delivery_country = $printorder['address_country'] == 'Россия' ? 'rus' : 'foreign';
+
+                if ($printorder['address_country'] == 'Россия') { // Если в Россию, то заполняем только строку ввода
+                    $this->address_default_string = $address['value'];
+                } else { // Если нет, то заполняем отдельно поля
+                    $this->send_to_country = $address['data']['country'];
+                    $this->send_to_city = $address['data']['city'];
+                    $this->send_to_index = $address['data']['index'];
+                    $this->send_to_address = $address['data']['address'];
+                }
+
             } else {
                 $this->print_need = false;
                 $this->send_to_name = Auth::user()->surname . ' ' . Auth::user()->name;
@@ -187,9 +205,17 @@ class CollApplication extends Component
             $this->price_total = $this->participation['total_price'];
 
         }
-
     }
 
+    public function postAddressInit()
+    {
+        $this->updatePostWidget();
+    }
+
+    public function updatedPrints()
+    {
+        $this->updatePostWidget();
+    }
 
     public function syncWorks($works)
     {
@@ -226,7 +252,7 @@ class CollApplication extends Component
         $this->error_texts = [];
         $this->error_fields = [];
 
-        $is_same_part = Participation::where('user_id', Auth::user()->id)->Where('collection_id', $this->collection_id)->value('user_id');
+        $is_same_part = Participation::where('user_id', Auth::user()->id)->Where('collection_id', $this->collection_id)->where('pat_status_id', '<>', 99)->value('user_id');
 
         if ($this->app_type === 'create' && $is_same_part > 0) {
             array_push($this->error_texts, 'Вы уже участвуете в этом сборнике!');
@@ -281,28 +307,28 @@ class CollApplication extends Component
             }
         }
 
-        if (($this->print_need ?? null) && (!$this->send_to_country || !$this->send_to_city || !$this->send_to_address || !$this->send_to_name || !$this->send_to_tel || !$this->send_to_index)) {
+        $has_foreign_address_flg = $this->send_to_country && $this->send_to_city && $this->send_to_address && $this->send_to_index;
 
-            if (!$this->send_to_country) {
-                array_push($this->error_fields, 'send_to_country');
-            }
-            if (!$this->send_to_city) {
-                array_push($this->error_fields, 'send_to_city');
-            }
-            if (!$this->send_to_address) {
-                array_push($this->error_fields, 'send_to_address');
-            }
+        if ($this->print_need ?? null) {
+
             if (!$this->send_to_name) {
+                array_push($this->error_texts, 'Укажите имя получателя!');
                 array_push($this->error_fields, 'send_to_name');
             }
-            if (!$this->send_to_index) {
-                array_push($this->error_fields, 'send_to_index');
-            }
+
             if (!$this->send_to_tel) {
+                array_push($this->error_texts, 'Укажите телефон получателя!');
                 array_push($this->error_fields, 'send_to_tel');
             }
 
-            array_push($this->error_texts, 'Не вся информация о получаетеле заполнена!');
+            $has_ru_address = ($this->address ?? null) && ($this->address ?? null);
+            if ($this->delivery_country == 'rus' && !$has_ru_address) {
+                array_push($this->error_texts, 'Введите адрес и выберите его из подсказки!');
+            }
+
+            if ($this->delivery_country == 'foreign' && !$has_foreign_address_flg) {
+                array_push($this->error_texts, 'Не вся информация об адресе заполнена!');
+            }
         }
 
 
@@ -318,33 +344,63 @@ class CollApplication extends Component
         }
     }
 
-    public function confirm_save()
+    public function confirm_step_1()
     {
-        if ($this->check_app()) {
+        if ($this->check_app()) { // Если прошла все проверки
+            // Если в адресе не оказалось квартиры
+            if ($this->delivery_country == 'rus' && $this->address['type'] == 'DaData RUS') {
+                if (!$this->address['data']['flat'] || !$this->address['data']['street']) {
+                    $this->dispatchBrowserEvent('swal:confirm', [
+                        'title' => 'Точно такой адрес?',
+                        'html' => "<p>В выбранном адресе вы что-то пропустили (квартиру, улицу). Это нормально, если это, например, частный дом. Это точно правильный адрес? <br> {$this->address['unrestricted_value']}</p>",
+                        'onconfirm' => 'confirm_step_2'
+                    ]);
+                } else {
+                    $this->confirm_step_2();
+                };
+            } else {
+                $this->confirm_step_2();
+            };
 
-            $nickname = ($this->nickname) ? ' (' . $this->nickname . ')' : null;
-            $author_name = $this->name . ' ' . $this->surname . $nickname;
+        };
+    }
 
-            $work_files_text = count($this->works);
-            $check_text = ($this->need_check ? 'нужна (' . $this->price_check . ' руб.)' : 'не нужна');
-            $print_text = ($this->print_need) ?
-                'экземпляров: ' . $this->prints
-                . '. Получаетель: ' . $this->send_to_name . ', ' . $this->send_to_country . ', ' . $this->send_to_city
-                . ', ' . $this->send_to_address . ', ' . $this->send_to_index . ', ' . $this->send_to_name . ', ' . $this->send_to_tel : 'не нужна.';
+    public function confirm_step_2()
+    {
 
-            $html = "<div style='display: flex; flex-direction: column; gap: 10px;'>
+
+        $nickname = ($this->nickname) ? ' (' . $this->nickname . ')' : null;
+        $author_name = $this->name . ' ' . $this->surname . $nickname;
+
+        $work_files_text = count($this->works);
+        $check_text = ($this->need_check ? 'нужна (' . $this->price_check . ' руб.)' : 'не нужна');
+
+        if ($this->delivery_country == 'rus') {
+            $delivery_text = "РФ, {$this->address['unrestricted_value']}";
+        } elseif ($this->delivery_country == 'foreign') {
+            $delivery_text = "$this->send_to_country, $this->send_to_city, $this->send_to_address, $this->send_to_index";
+        }
+
+
+        $print_text = ($this->print_need) ?
+            "экземпляров: $this->prints
+                <p><b>Получатель:</b> $this->send_to_name, $this->send_to_tel</p>
+                <p><b>Адрес:</b>  $delivery_text</p>" : 'не нужна.';
+
+        $html = "<div style='display: flex; flex-direction: column; gap: 10px;'>
                 <p><b>Имя в сборнике:</b> {$author_name} </p>
-                <p><b>Загружено файлов: {$work_files_text}. </b>(страниц: {$this->pages})</p>
+                <p><b>Произведений:</b> {$work_files_text} (~страниц: {$this->pages})</p>
                 <p><b>Проверка текста:</b> {$check_text}</p>
                 <p><b>Печать:</b> {$print_text}</p>
                 </div>";
 
-            $this->dispatchBrowserEvent('swal:confirm', [
-                'title' => 'Проверьте, пожалуйста, заявку: ',
-                'html' => $html,
-                'onconfirm' => 'storeParticipation'
-            ]);
-        }
+        $onconfirm = $this->app_type == 'create' ? 'storeParticipation' : 'editParticipation';
+        $this->dispatchBrowserEvent('swal:confirm', [
+            'title' => 'Проверьте, пожалуйста, заявку: ',
+            'html' => $html,
+            'onconfirm' => $onconfirm
+        ]);
+
     }
 
     public function get_notify_text()
@@ -365,10 +421,125 @@ class CollApplication extends Component
         return $text;
     }
 
+    public function makeAddressJSON()
+    {
+        if ($this->delivery_country == 'rus') {
+            $this->address = json_encode($this->address);
+
+        } elseif ($this->delivery_country == 'foreign') {
+            $address = [
+                'type' => 'foreign',
+                'data' => [
+                    'country' => $this->send_to_country,
+                    'city' => $this->send_to_city,
+                    'address' => $this->send_to_address,
+                    'index' => $this->send_to_index
+                ],
+                'unrestricted_value' => "$this->send_to_country, $this->send_to_city, $this->send_to_address, $this->send_to_index"
+            ];
+            $this->address = json_encode($address);
+        }
+    }
+
+    public function storeParticipation()
+    {
+        DB::transaction(function () use (&$new_participation) {
+            // Создаем новый Заказ печатных!
+            if ($this->print_need ?? null) {
+
+                $this->makeAddressJSON();
+
+                $new_PrintOrder = Printorder::create([
+                    'collection_id' => $this->collection['id'],
+                    'user_id' => Auth::user()->id,
+                    'books_needed' => $this->prints,
+                    'send_to_name' => $this->send_to_name,
+                    'send_to_tel' => $this->send_to_tel,
+                    'address' => $this->address,
+                    'address_country' => $this->delivery_country == 'rus' ? 'Россия' : $this->send_to_country
+                ]);
+            }
+
+            // Создаем новую заявку
+            $new_participation = new Participation();
+            $new_participation->user_id = Auth::user()->id;
+            $new_participation->collection_id = $this->collection['id'];
+            $new_participation->name = $this->name;
+            $new_participation->surname = $this->surname;
+            $new_participation->nickname = $this->nickname;
+            $new_participation->works_number = count($this->works);
+            $new_participation->rows = $this->rows;
+            $new_participation->pages = $this->pages;
+            $new_participation->pat_status_id = 1;
+            $new_participation->promocode = $this->promocode['promocode'] ?? null;
+            $new_participation->part_price = $this->price_part;
+            $new_participation->print_price = $this->price_print;
+            $new_participation->check_price = $this->price_check;
+            $new_participation->total_price = $this->price_total;
+
+            $new_participation->save();
+
+            if ($this->print_need ?? null) {
+                $new_participation->update([
+                    'printorder_id' => $new_PrintOrder->id
+                ]);
+                $new_participation->save();
+
+                $new_PrintOrder->update([
+                    'participation_id' => $new_participation->id
+                ]);
+                $new_PrintOrder->save();
+            }
+
+            // Создаем произведения в participation_works
+            foreach ($this->works as $work) {
+                $new_participation_work = new Participation_work();
+                $new_participation_work->participation_id = $new_participation->id;
+                $new_participation_work->work_id = $work['id'];
+                $new_participation_work->save();
+            }
+            // ----------------------------------------------------------- //
+
+            // Создаем ЧАТ
+            $new_chat = new Chat();
+            $new_chat->user_created = Auth::user()->id;
+            $new_chat->user_to = 2;
+            $new_chat->flg_admin_chat = 1;
+            $new_chat->title = 'Личный чат по сборнику: ' . $this->collection['title'];
+            $new_chat->collection_id = $this->collection_id;
+            $new_chat->chat_status_id = 9;
+            $new_chat->save();
+
+            $new_participation->update([
+                'chat_id' => $new_chat->id
+            ]);
+            $new_participation->save();
+        });
+        // ------------------------------------
+
+
+        // Оповещение нам в телеграм
+        $title = '💥 *Новая заявка в ' . $this->collection['title'] . '!* 💥';
+        $text = $this->get_notify_text();
+        $button_text = "Его страница участия";
+        $url = "https://www.vk.com";
+
+        // Посылаем Telegram уведомление нам
+        Notification::route('telegram', config('cons.telegram_chat_id'))
+            ->notify(new TelegramNotification($title, $text, $button_text, $url));
+
+        // Переводим на страницу участия
+        session()->flash('show_modal', 'yes');
+        session()->flash('alert_type', 'success');
+        session()->flash('alert_title', 'Заявка успешно отправлена!');
+        session()->flash('alert_text', 'На этой странице отображается весь процесс Вашего участия: оплата, предварительные материалы, отслеживание сборника и т.д.');
+        return redirect('/myaccount/collections/' . $this->collection['id'] . '/participation/' . $new_participation->id);
+
+    }
+
     public function editParticipation()
     {
-
-        if ($this->check_app()) {
+        DB::transaction(function () {
             // Понимаем, какой статус ставить человеку.
 
             $old_works = Participation_work::where('participation_id', $this->participation['id'])->pluck('work_id')->toArray();
@@ -384,34 +555,31 @@ class CollApplication extends Component
             $old_works_number = $participation['works_number'];
             $old_price_check = $participation['price_check'];
 
-            if($old_name != $this->name) {
+            if ($old_name != $this->name) {
                 array_push($comparison, "*Имя.* Было '{$old_name}', стало '{$this->name}'");
             }
-            if($old_surname != $this->surname) {
+            if ($old_surname != $this->surname) {
                 array_push($comparison, "*Фамилия.* Было '{$old_surname}', стало '{$this->surname}'");
             }
-            if($old_nickname != $this->nickname) {
+            if ($old_nickname != $this->nickname) {
                 array_push($comparison, "*Псевдоним.* Было '{$old_nickname}', стало '{$this->nickname}'");
             }
-            if($old_works_number != count($this->works)) {
+            if ($old_works_number != count($this->works)) {
                 array_push($comparison, "*Кол-во работ.* Было {$old_works_number}, стало " . count($this->works));
             }
-            if($old_price_check != $this->price_check) {
+            if ($old_price_check != $this->price_check) {
                 array_push($comparison, "*Стоимость проверки.* Было " . $old_price_check ?? 0 . ", стало " . $this->price_check);
             }
-
 
 
             if (($this->participation['total_price'] === $this->price_total)
                 && $this->participation['pat_status_id'] > 2
                 && $old_works == $new_works) { // Если цена осталась неизменна, и он уже оплатил, а работы не поменялись
                 $pat_status_id = 3;
-            }
-            // Если цена изменилась, но не менялись произведения
+            } // Если цена изменилась, но не менялись произведения
             elseif ($this->participation['total_price'] !== $this->price_total && $old_works == $new_works && $this->participation['pat_status_id'] >= 2) {
                 $pat_status_id = 2;
-            }
-            else {
+            } else {
                 $pat_status_id = 1;
             }
 
@@ -445,37 +613,36 @@ class CollApplication extends Component
                 $old_send_to_city = $print_order_old['send_to_city'];
                 $old_send_to_index = $print_order_old['send_to_index'];
 
-                if($old_prints != $this->prints) {
-                    array_push($comparison, "*Кол-во экземпляров.* Было {$old_prints}, стало " .  $this->prints);
+                if ($old_prints != $this->prints) {
+                    array_push($comparison, "*Кол-во экземпляров.* Было {$old_prints}, стало " . $this->prints);
                 }
-                if($old_send_to_name != $this->send_to_name) {
+                if ($old_send_to_name != $this->send_to_name) {
                     array_push($comparison, "*Имя получателя.* Было '{$old_send_to_name}', стало '{$this->send_to_name}'");
                 }
-                if($old_send_to_tel != $this->send_to_tel) {
+                if ($old_send_to_tel != $this->send_to_tel) {
                     array_push($comparison, "*Телефон.* Было '{$old_send_to_tel}', стало '{$this->send_to_tel}'");
                 }
-                if($old_send_to_address != $this->send_to_address) {
+                if ($old_send_to_address != $this->send_to_address) {
                     array_push($comparison, "*Адрес.* Было '{$old_send_to_address}', стало '{$this->send_to_address}'");
                 }
-                if($old_send_to_country != $this->send_to_country) {
+                if ($old_send_to_country != $this->send_to_country) {
                     array_push($comparison, "*Страна.* Было '{$old_send_to_country}', стало '{$this->send_to_country}'");
                 }
-                if($old_send_to_city != $this->send_to_city) {
+                if ($old_send_to_city != $this->send_to_city) {
                     array_push($comparison, "*Город.* Было '{$old_send_to_city}', стало '{$this->send_to_city}'");
                 }
-                if($old_send_to_index != $this->send_to_index) {
+                if ($old_send_to_index != $this->send_to_index) {
                     array_push($comparison, "*Индекс.* Было '{$old_send_to_index}', стало '{$this->send_to_index}'");
                 }
 
                 if ($this->print_need ?? null) { // Редактируем, если нужен
+                    $this->makeAddressJSON();
                     PrintOrder::where('id', $print_order_old['id'])->update([
                         'books_needed' => $this->prints,
                         'send_to_name' => $this->send_to_name,
                         'send_to_tel' => $this->send_to_tel,
-                        'send_to_address' => $this->send_to_address,
-                        'send_to_country' => $this->send_to_country,
-                        'send_to_city' => $this->send_to_city,
-                        'send_to_index' => $this->send_to_index,
+                        'address' => $this->address,
+                        'address_country' => $this->delivery_country == 'rus' ? 'Россия' : $this->send_to_country
                     ]);
                 } else { // Удаляем, раз не нужно (оплаченный не удалится по ошибкам в проверке
                     PrintOrder::where('id', $print_order_old['id'])->delete();
@@ -488,19 +655,16 @@ class CollApplication extends Component
             } else { // Еще не было -> создаем, если нужно
                 if ($this->print_need ?? null) {
                     array_push($comparison, "*Добавилась печать.* Раньше не было");
-
-                    $new_PrintOrder = new PrintOrder();
-                    $new_PrintOrder->participation_id = $this->participation['id'];
-                    $new_PrintOrder->collection_id = $this->collection['id'];
-                    $new_PrintOrder->user_id = Auth::user()->id;
-                    $new_PrintOrder->books_needed = $this->prints;
-                    $new_PrintOrder->send_to_name = $this->send_to_name;
-                    $new_PrintOrder->send_to_tel = $this->send_to_tel;
-                    $new_PrintOrder->send_to_country = $this->send_to_country;
-                    $new_PrintOrder->send_to_city = $this->send_to_city;
-                    $new_PrintOrder->send_to_index = $this->send_to_index;
-                    $new_PrintOrder->send_to_address = $this->send_to_address;
-                    $new_PrintOrder->save();
+                    $this->makeAddressJSON();
+                    $new_PrintOrder = Printorder::create([
+                        'collection_id' => $this->collection['id'],
+                        'user_id' => Auth::user()->id,
+                        'books_needed' => $this->prints,
+                        'send_to_name' => $this->send_to_name,
+                        'send_to_tel' => $this->send_to_tel,
+                        'address' => $this->address,
+                        'address_country' => $this->delivery_country == 'rus' ? 'Россия' : $this->send_to_country
+                    ]);
                     Participation::where('id', $this->participation['id'])->update([
                         'printorder_id' => $new_PrintOrder->id,
                     ]);
@@ -519,22 +683,19 @@ class CollApplication extends Component
             }
 
 
-
-            if($comparison ?? null && $pat_status_id == 1) { // Если что-то поменялось и нужно апрувить
+            if ($comparison ?? null && $pat_status_id == 1) { // Если что-то поменялось и нужно апрувить
                 // Оповещение нам в телеграм
                 $nickname = ($this->nickname) ? ' (' . $this->nickname . ')' : null;
                 $author_name = $this->name . ' ' . $this->surname . $nickname;
                 $title = '💥 *Изменение заявки в ' . $this->collection['title'] . '!* 💥';
                 $text = "*Автор:* {$author_name} \n*Изменилось:* \n" . implode("\n", $comparison);
                 $button_text = "Его страница участия";
-                $url = route('user_participation', 1);
+                $url = "https://vk.com";
 
                 // Посылаем Telegram уведомление нам
                 Notification::route('telegram', '-506622812')
                     ->notify(new TelegramNotification($title, $text, $button_text, $url));
             }
-
-
 
 
             // Показываем успешно уведомление
@@ -545,110 +706,17 @@ class CollApplication extends Component
             return redirect('/myaccount/collections/' . $this->collection['id'] . '/participation/' . $this->participation['id']);
 
 
-        }
+        });
     }
 
-    public
-    function storeParticipation()
+
+    public function new_almost_complete_action()
     {
-
-        // Создаем новый Заказ печатных!
-        if ($this->print_need ?? null) {
-            $new_PrintOrder = new PrintOrder();
-            $new_PrintOrder->collection_id = $this->collection['id'];
-            $new_PrintOrder->user_id = Auth::user()->id;
-            $new_PrintOrder->books_needed = $this->prints;
-            $new_PrintOrder->send_to_name = $this->send_to_name;
-            $new_PrintOrder->send_to_tel = $this->send_to_tel;
-            $new_PrintOrder->send_to_country = $this->send_to_country;
-            $new_PrintOrder->send_to_city = $this->send_to_city;
-            $new_PrintOrder->send_to_index = $this->send_to_index;
-            $new_PrintOrder->send_to_address = $this->send_to_address;
-            $new_PrintOrder->save();
-        }
-
-        // Создаем новую заявку
-        $new_participation = new Participation();
-        $new_participation->user_id = Auth::user()->id;
-        $new_participation->collection_id = $this->collection['id'];
-        $new_participation->name = $this->name;
-        $new_participation->surname = $this->surname;
-        $new_participation->nickname = $this->nickname;
-        $new_participation->works_number = count($this->works);
-        $new_participation->rows = $this->rows;
-        $new_participation->pages = $this->pages;
-        $new_participation->pat_status_id = 1;
-        $new_participation->promocode = $this->promocode['promocode'] ?? null;
-        $new_participation->part_price = $this->price_part;
-        $new_participation->print_price = $this->price_print;
-        $new_participation->check_price = $this->price_check;
-        $new_participation->total_price = $this->price_total;
-
-        $new_participation->save();
-
-        if ($this->print_need ?? null) {
-            $new_participation->update([
-                'printorder_id' => $new_PrintOrder->id
-            ]);
-            $new_participation->save();
-
-            $new_PrintOrder->update([
-                'participation_id' => $new_participation->id
-            ]);
-            $new_PrintOrder->save();
-        }
-
-        // Создаем произведения в participation_works
-        foreach ($this->works as $work) {
-            $new_participation_work = new Participation_work();
-            $new_participation_work->participation_id = $new_participation->id;
-            $new_participation_work->work_id = $work['id'];
-            $new_participation_work->save();
-        }
-        // ----------------------------------------------------------- //
-
-        // Создаем ЧАТ
-        $new_chat = new Chat();
-        $new_chat->user_created = Auth::user()->id;
-        $new_chat->user_to = 2;
-        $new_chat->flg_admin_chat = 1;
-        $new_chat->title = 'Личный чат по сборнику: ' . $this->collection['title'];
-        $new_chat->collection_id = $this->collection_id;
-        $new_chat->chat_status_id = 9;
-        $new_chat->save();
-
-        $new_participation->update([
-            'chat_id' => $new_chat->id
-        ]);
-        $new_participation->save();
-        // ------------------------------------
-
-
-        // Оповещение нам в телеграм
-        $title = '💥 *Новая заявка в ' . $this->collection['title'] . '!* 💥';
-        $text = $this->get_notify_text();
-        $button_text = "Его страница участия";
-        $url = "https://www.vk.com";
-
-        // Посылаем Telegram уведомление нам
-        Notification::route('telegram', '-506622812')
-            ->notify(new TelegramNotification($title, $text, $button_text, $url));
-
-        // Переводим на страницу участия
-        session()->flash('show_modal', 'yes');
-        session()->flash('alert_type', 'success');
-        session()->flash('alert_title', 'Заявка успешно отправлена!');
-        session()->flash('alert_text', 'На этой странице отображается весь процесс Вашего участия: оплата, предварительные материалы, отслеживание сборника и т.д.');
-        return redirect('/myaccount/collections/' . $this->collection['id'] . '/participation/' . $new_participation->id);
-
-    }
-
-    public function new_almost_complete_action() {
 
         $already_has_action = almost_complete_action::where('user_id', Auth::user()->id)
             ->where('collection_id', $this->collection_id)
             ->first();
-        if(!($already_has_action ?? null)) {
+        if (!($already_has_action ?? null)) {
             almost_complete_action::firstOrCreate([
                 'user_id' => Auth::user()->id,
                 'almost_complete_action_type_id' => 1,

@@ -280,7 +280,7 @@
                                     <div class="col-sm-4">
                                         <div class="description-block">
                                             <a style="display: inline-block;"
-                                               href="{{route('collection.edit', $own_book->id)}}">Профит</a> <br>
+                                               href="{{route('collection.edit', $own_book->id)}}">Получено</a> <br>
                                             <span style="font-size:20px;"
                                                   class="badge">{{number_format($own_book->total_price, 0, ',', ' ')}} руб.</span>
                                         </div>

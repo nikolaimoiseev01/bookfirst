@@ -213,7 +213,7 @@
                 <div class="app_menu_text">Мои настройки</div>
             </a>
 
-            @role('admin')
+            @role('admin|secondary_admin')
             <a href="{{route('homeAdmin')}}" target="_blank" class="nav-item">
                 <svg id="Capa_1" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14.57 16.38">
                     <defs>

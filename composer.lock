@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5339e1078f7dcffdf3c333c421be2f39",
+    "content-hash": "ccc14263d8d7d80e1c68699fcc4de20e",
     "packages": [
         {
             "name": "akaunting/laravel-money",
@@ -3010,6 +3010,50 @@
                 }
             ],
             "time": "2023-10-18T10:00:55+00:00"
+        },
+        {
+            "name": "lapaygroup/russianpost",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lapaygroup/RussianPost.git",
+                "reference": "fd2ca5e3a58c8af4c5a8681d348badb98a46039e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lapaygroup/RussianPost/zipball/fd2ca5e3a58c8af4c5a8681d348badb98a46039e",
+                "reference": "fd2ca5e3a58c8af4c5a8681d348badb98a46039e",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-soap": "*",
+                "guzzlehttp/guzzle": "^6.3 || ^7.0",
+                "php": ">=7.0",
+                "psr/log": "^1.1 || ^2.0 || ^3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "LapayGroup\\RussianPost\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nikolay Lapay",
+                    "email": "nl@wildtuna.pro"
+                }
+            ],
+            "description": "SDK для работы с API Почты России (pochta.ru)",
+            "support": {
+                "issues": "https://github.com/lapaygroup/russianpost/issues",
+                "source": "https://github.com/lapaygroup/russianpost"
+            },
+            "time": "2024-05-16T16:43:35+00:00"
         },
         {
             "name": "laravel-notification-channels/telegram",
@@ -11828,5 +11872,5 @@
         "ext-json": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }

@@ -1,7 +1,23 @@
 <div x-data class="chat_wrap create_ownbook_wrap">
+    <style>
+        .filepond--item {
+            max-width: 100%;
+            width: fit-content !important;
+        }
 
+        .filepond--file {
+            font-size: 16px;
+        }
+
+        @if(($inside_files ?? null) && count($inside_files) > 0)
+            .create_ownbook_wrap .create_ownbook_form_wrap .inputs_wrap .input_inside_wrap .by_file_wrap .filepond--root {
+            min-height: 60px !important;
+            height: 60px !important;
+        }
+        @endif
+    </style>
     <form
-        wire:submit.prevent="confirm_save(Object.fromEntries(new FormData($event.target)))"
+        wire:submit.prevent="confirm_step_1(Object.fromEntries(new FormData($event.target)))"
         enctype="multipart/form-data"
     >
         <div class="create_ownbook_form_wrap container">
@@ -45,7 +61,8 @@
                     <div class="details_wrap">
 
                         <div x-cloak x-show="$wire.inside_type == 'by_file'">
-                            <div class="by_file_wrap @if(in_array('pages', $error_fields) && !$inside_files) danger @endif">
+                            <div
+                                class="by_file_wrap @if(in_array('pages', $error_fields) && !$inside_files) danger @endif">
                                 <div wire:ignore
                                      class="filepond_wrap">
                                     <input name="inside_files" class="filepond_inside" type="file"/>
@@ -133,21 +150,11 @@
                     </div>
 
                     <div class="details_wrap cover_need_wrap">
-                        @if($cover_ready === '1')
-                            <x-chat-textarea
-                                model="cover_comment"
-                                placeholder="Пожалуйста, прикрепите готовую обложку. Если есть какие-то комментарии, пожалуйста, дайте нам знать."
-                                attachable="true"
-                                sendable="false"></x-chat-textarea>
-                        @else
-                            <x-chat-textarea
-                                model="cover_comment"
-                                placeholder="Здесь необходимо описать Ваше видение будущей обложки. Любые наработки можно также прикрепить файлами. Чем точнее будет описание, тем лучше будут работы дизайнера :)"
-                                attachable="true"
-                                sendable="false"></x-chat-textarea>
-                        @endif
-
-
+                        <x-chat-textarea
+                            model="cover_comment"
+                            placeholder="Здесь можно указать комментарии к будущей обложке, а так же прикрепить любые файлы. Если обложка полностью готова, она должна быть подготовлена к печати."
+                            attachable="true"
+                            sendable="false"></x-chat-textarea>
                     </div>
 
                 </div>
@@ -170,7 +177,7 @@
                             <x-input.range-slider model="prints"/>
                         </div>
                         <div class="inputs_row">
-                            <p>Стиль обложки</p>
+                            <p>Формат обложки</p>
 
                             <div class="switch-wrap">
                                 <input wire:model="cover_type" checked type="radio" id="cover_type_soft" value="soft"
@@ -208,31 +215,13 @@
                             </div>
                             <div style="margin-bottom: 0;" class="input-group">
                                 <p>Телефон*</p>
-                                <input wire:model="send_to_tel" type="text"
-                                       class="@if(in_array('send_to_tel', $error_fields) && !$send_to_tel) danger @endif">
-                            </div>
-                            <div style="margin-bottom: 0;" class="input-group">
-                                <p>Страна*</p>
-                                <input wire:model="send_to_country" type="text"
-                                       class="@if(in_array('send_to_country', $error_fields) && !$send_to_country) danger @endif">
+                                <input placeholder="8 (123) 456 78 99"
+                                       wire:model="send_to_tel" type="text"
+                                       class="@if(in_array('send_to_tel', $error_fields) && !$send_to_tel) danger @endif mobile_input">
                             </div>
                         </div>
-                        <div class="inputs_row">
-                            <div class="input-group">
-                                <p>Город*</p>
-                                <input wire:model="send_to_city" type="text"
-                                       class="@if(in_array('send_to_city', $error_fields) && !$send_to_city) danger @endif">
-                            </div>
-                            <div style="margin-bottom: 0;" class="input-group">
-                                <p>Адрес*</p>
-                                <input wire:model="send_to_address" type="text"
-                                       class="@if(in_array('send_to_address', $error_fields) && !$send_to_address) danger @endif">
-                            </div>
-                            <div style="margin-bottom: 0;" class="input-group">
-                                <p>Индекс*</p>
-                                <input wire:model="send_to_index" type="text"
-                                       class="@if(in_array('send_to_index', $error_fields) && !$send_to_index) danger @endif">
-                            </div>
+                        <div wire:ignore class="participation-inputs-row">
+                            <x-choose-order-address address=""></x-choose-order-address>
                         </div>
                     </div>
                 </div>
@@ -295,14 +284,23 @@
                                 {{number_format($price_inside, 0, '', ' ')}}
                             </div>
                             <p class="price-desc">Работа с макетом ({{$pages}} стр.)</p>
-                            <p x-cloak
-                               x-show="$wire.need_design"
-                               x-transition.opacity.duration.500ms
-                               class="price-desc out_design_wrap">В т.ч. дизайн текста: {{$price_design}}</p>
-                            <p x-cloak
-                               x-show="$wire.need_check"
-                               x-transition.opacity.duration.500ms
-                               class="price-desc out_check_wrap">В т.ч. проверка правописания: {{$price_check}}</p>
+                            @if($price_design > 0 || $price_check > 0)
+
+                                @if($price_design > 0)
+                                    <p x-cloak
+                                       x-show="$wire.need_design"
+                                       x-transition.opacity.duration.500ms
+                                       class="price-desc out_design_wrap">В т.ч. дизайн текста: {{$price_design}}</p>
+                                @endif
+                                @if($price_check > 0)
+                                    <p x-cloak
+                                       x-show="$wire.need_check"
+                                       x-transition.opacity.duration.500ms
+                                       class="price-desc out_check_wrap">В т.ч. проверка
+                                        правописания: {{$price_check}}</p>
+                                @endif
+                            @endif
+
                         </div>
 
                         <div class="participation-price out_print_wrap"
@@ -314,10 +312,7 @@
                                 {{number_format($price_print, 0, '', ' ')}}
                                 @if($prints <= 4)
                                     <x-question-mark>
-                                        Стоимость 1,2,3,4 экземпляров будет одинаковая, так как мы печатаем книгу
-                                        изначально
-                                        на листе
-                                        А3.
+                                        Стоимость 1,2,3,4 экземпляров будет одинаковая, так как мы печатаем книгу изначально на А3.
                                     </x-question-mark>
                                 @endif
                             </div>
@@ -369,7 +364,8 @@
                 <button type="submit" class="button">Отправить заявку</button>
                 <p style="font-size: 20px; color: #bdbdbd"><i>* - обязательны для заполнения</i></p>
             </div>
-            <a href="{{route('help_own_book')}}" style="font-size: 20px;" target="_blank" class="link"><i>Нужна помощь</i></a>
+            <a href="{{route('help_own_book')}}" style="font-size: 20px;" target="_blank" class="link"><i>Нужна
+                    помощь</i></a>
         </div>
 
 
@@ -380,14 +376,6 @@
             $('input[name="inside_ready"]').change(function () {
                 $(".inside_works_wrap").slideToggle(500);
             })
-
-            $("#need_design").change(function () {
-                $(".out_design_wrap").slideToggle(500);
-            });
-
-            $("#need_check").change(function () {
-                $(".out_check_wrap").slideToggle(500);
-            });
 
             $('input[name="cover_ready"]').change(function () {
                 $(".out_cover_wrap").slideToggle(500);
@@ -412,7 +400,7 @@
                         inside_files.push($(this).val())
                     }
                 })
-            @this.set('inside_files', inside_files)
+                @this.set('inside_files', inside_files)
             }
 
             $('.filepond_inside').filepond({
@@ -424,11 +412,12 @@
                 },
                 onprocessfile: (file) => {
                     calculate_inside_files()
-                @this.emit('count_doc_pages')
+                    @this.emit('count_doc_pages')
                 },
                 onremovefile: () => {
                     calculate_inside_files();
-                @this.emit('count_doc_pages')
+                    @this.
+                    emit('count_doc_pages')
                 },
 
                 maxTotalFileSize: '30MB',
@@ -445,7 +434,7 @@
 
             document.addEventListener('livewire:load', function () {
                 var timeOnPage = 0;
-                setInterval(function() {
+                setInterval(function () {
                     timeOnPage += 1; // увеличиваем время на странице каждую секунду
                     if (timeOnPage === 30) { // если пользователь находится на странице больше минуты (60 секунд)
                         window.livewire.emit('new_almost_complete_action')

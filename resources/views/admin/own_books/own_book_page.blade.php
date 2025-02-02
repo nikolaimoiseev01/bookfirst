@@ -838,7 +838,7 @@
                                         <tr>
                                             <td style="font-weight: bold">Отправить на адрес</td>
                                             <td>
-                                                {{print_address($own_book->printorder['id'])}}
+                                                {{print_address($own_book->printorder)}}
                                             </td>
                                         </tr>
                                         <tr>
@@ -1103,7 +1103,7 @@
                                                                class="form-control change_finance_block">
                                                     </td>
                                                 </tr>
-
+                                                @role('admin')
                                                 <tr class="bg-info">
                                                     <td style="font-weight: bold">ИТОГО</td>
                                                     <td>
@@ -1132,6 +1132,7 @@
                                                         руб.
                                                     </td>
                                                 </tr>
+                                                @endrole
                                             </form>
                                             </tbody>
                                         </table>

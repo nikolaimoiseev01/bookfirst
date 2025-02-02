@@ -10,16 +10,14 @@ function prefer_name($name, $surname, $nickname)
     }
 }
 
-function print_address($id) {
-    $print_order = \App\Models\Printorder::where('id', $id)->first();
-
-    if($print_order['send_to_country']) {
-        $address = $print_order['send_to_country'] . ', ' .
-            $print_order['send_to_city'] . ', ' . $print_order['send_to_address'] . ', ' . $print_order['send_to_index'];
+function print_address($print_order)
+{
+    $address = json_decode($print_order['address']);
+//    dd($address);
+    $country = $print_order->address_country ?? null ? $print_order->address_country . ',' : null;
+    if ($address->type == 'foreign') {
+        return "$address->unrestricted_value";
     } else {
-        $address = $print_order['send_to_address'];
+        return "$country $address->unrestricted_value";
     }
-    return $address .
-        '. ' . $print_order['send_to_name'] .
-        '. ' . $print_order['send_to_tel'];
 }

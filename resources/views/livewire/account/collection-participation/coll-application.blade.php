@@ -1,11 +1,7 @@
 <div x-data class="create_participation_wrap">
 
     <form
-        @if($app_type === 'create')
-        wire:submit.prevent="confirm_save(Object.fromEntries(new FormData($event.target)))"
-        @elseif($app_type === 'edit')
-        wire:submit.prevent="editParticipation(Object.fromEntries(new FormData($event.target)))"
-        @endif
+        wire:submit.prevent="confirm_step_1(Object.fromEntries(new FormData($event.target)))"
         enctype="multipart/form-data">
         <div class="create-participation-form container">
 
@@ -73,44 +69,28 @@
                         <div class="participation-inputs-row">
                             <div class="input-group">
                                 <p>ФИО получателя*</p>
-                                <input class="@if(in_array('send_to_name', $error_fields) && !$send_to_name) danger @endif"
-                                       wire:model="send_to_name" type="text">
+                                <input
+                                    class="@if(in_array('send_to_name', $error_fields) && !$send_to_name) danger @endif"
+                                    wire:model="send_to_name" type="text">
                             </div>
                             <div style="margin-bottom: 0;" class="input-group">
                                 <p>Телефон*</p>
-                                <input class="@if(in_array('send_to_tel', $error_fields) && !$send_to_tel) danger @endif"
-                                       wire:model="send_to_tel" type="text">
-                            </div>
-                            <div style="margin-bottom: 0;" class="input-group">
-                                <p>Страна*</p>
-                                <input class="@if(in_array('send_to_country', $error_fields) && !$send_to_country) danger @endif"
-                                       wire:model="send_to_country" type="text">
+                                <input
+                                    placeholder="8 (123) 456 78 99"
+                                    class="@if(in_array('send_to_tel', $error_fields) && !$send_to_tel) danger @endif mobile_input"
+                                    wire:model="send_to_tel" type="text">
                             </div>
                         </div>
 
-                        <div class="participation-inputs-row">
-                            <div class="input-group">
-                                <p>Город*</p>
-                                <input class="@if(in_array('send_to_city', $error_fields) && !$send_to_city) danger @endif"
-                                       wire:model="send_to_city" type="text">
-                            </div>
-                            <div style="margin-bottom: 0;" class="input-group">
-                                <p>Адрес*</p>
-                                <input class="@if(in_array('send_to_address', $error_fields) && !$send_to_address) danger @endif"
-                                       wire:model="send_to_address" type="text">
-                            </div>
-                            <div style="margin-bottom: 0;" class="input-group">
-                                <p>Индекс*</p>
-                                <input class="@if(in_array('send_to_index', $error_fields) && !$send_to_index) danger @endif"
-                                       wire:model="send_to_index" type="text">
-                            </div>
+                        <div wire:ignore class="participation-inputs-row">
+                            <x-choose-order-address :address="$address_default_string"></x-choose-order-address>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="participation-outputs">
-                <h2 class="title">Стоимость</h2>
+                <h2 class="title">Стоимость, ₽</h2>
                 <div class="participation-price">
                     <div class="number">
                         @if(($promocode ?? null) && ($price_part > 00))
@@ -186,9 +166,10 @@
                     <input wire:model="promocode_input"
                            placeholder="Промокод..."
                            type="text">
-                    <span wire:click.prevent="check_promo" title="Проверить" class="tooltip material-symbols-outlined done">done</span>
-                    <span @click="$wire.set('show_promo_input', false)" title="Закрыть" class="tooltip material-symbols-outlined close">close</span>
-
+                    <span wire:click.prevent="check_promo" title="Проверить"
+                          class="tooltip material-symbols-outlined done">done</span>
+                    <span @click="$wire.set('show_promo_input', false)" title="Закрыть"
+                          class="tooltip material-symbols-outlined close">close</span>
 
 
                 </div>
@@ -224,6 +205,7 @@
         $("#print_need").change(function () {
             $(".print_info_block").slideToggle(500);
             $("#print-price").slideToggle(500);
+            $("#delivery-price").slideToggle(500);
         });
 
         $("#need_check").change(function () {
@@ -237,7 +219,7 @@
 
         document.addEventListener('livewire:load', function () {
             var timeOnPage = 0;
-            setInterval(function() {
+            setInterval(function () {
                 timeOnPage += 1; // увеличиваем время на странице каждую секунду
                 if (timeOnPage === 30) { // если пользователь находится на странице больше минуты (60 секунд)
                     window.livewire.emit('new_almost_complete_action')
@@ -246,7 +228,6 @@
 
         })
     </script>
-
 
 @endpush
 

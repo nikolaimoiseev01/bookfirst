@@ -154,6 +154,7 @@
                  class="brand-image img-circle elevation-3"
                  style="opacity: .8">
             <h3>Первая Книга</h3>
+            <p class="text-sm m-0 text-center"><i>{{\Illuminate\Support\Facades\Auth::user()->name}}</i></p>
         </a>
 
         <!-- Sidebar -->
@@ -165,7 +166,7 @@
                     <!-- Add icons to the links using the .nav-icon class
                          with font-awesome or any other icon font library -->
 
-                    @role('admin')
+                    @role('admin|secondary_admin')
                     <li class="nav-item">
                         <a href="{{ route('homeAdmin') }}" class="nav-link">
                             <i class="nav-icon fas fa-book-open"></i>
@@ -204,7 +205,7 @@
                     </li>
 
 
-                    @role('admin')
+                    @role('admin|secondary_admin')
                     <li class="nav-item">
                         <a href="{{ route('chats_admin') }}" class="nav-link">
                             <i class="nav-icon fas fa-comments"></i>
@@ -290,7 +291,7 @@
                         </a>
                     </li>
 
-
+                    @role('admin')
                     <li class="nav-item">
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-piggy-bank"></i>
@@ -329,6 +330,7 @@
 
                         </ul>
                     </li>
+                    @endrole
 
                     <li class="nav-item">
                         <a href="{{ route('admin_stat') }}" class="nav-link">

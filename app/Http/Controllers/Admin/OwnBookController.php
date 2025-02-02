@@ -581,11 +581,11 @@ class OwnBookController extends Controller
             own_book::where('id', $request->own_book_id)->update(array(
                 'text_check_price' => intval($request->text_check_price),
                 'text_design_price' => intval($request->text_design_price),
-                'inside_price' => intval($request->text_check_price) + intval($request->text_design_price),
+                'inside_price' => 300 + intval($request->text_check_price) + intval($request->text_design_price),
                 'cover_price' => intval($request->cover_price),
                 'print_price' => intval($request->print_price),
                 'promo_price' => intval($request->promo_price),
-                'total_price' => intval($request->text_check_price) + intval($request->text_design_price) + intval($request->cover_price) + intval($request->print_price) + intval($request->promo_price) + 300,
+                'total_price' => intval($request->text_check_price) + intval($request->text_design_price) + intval($request->cover_price) + intval($request->print_price) + intval($request->promo_price),
             ));
 
             session()->flash('success', 'change_printorder');

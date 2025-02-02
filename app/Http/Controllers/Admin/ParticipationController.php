@@ -52,12 +52,12 @@ class ParticipationController extends Controller
         if ($already_paid_amount ?? 0 == $participation['total_price']) { // Если уже полностью оплатил и только чуть поменял произведения
             $pat_status_id = 3;
             $email_subject = 'Заявка подтверждена';
-            $email_text = "Спешим сообщить, что Ваши произведения были одобрены и приняты для участия в сборнике '" . collection::where('id',$collection_id)->value('title') . "'! " .
+            $email_text = "Спешим сообщить, что Ваши произведения были одобрены и приняты для участия в сборнике '" . collection::where('id', $collection_id)->value('title') . "'! " .
                 "Вы уже оплатили участие, и цена осталась прежней. Таким образом статус Вашего участия: \"заявка подтверждена\".";
         } else {
             $pat_status_id = $request->pat_status_id;
             $email_subject = 'Требуется оплата участия';
-            $email_text = "Спешим сообщить, что Ваши произведения были одобрены и приняты для участия в сборнике '" . collection::where('id',$collection_id)->value('title') . "'! " .
+            $email_text = "Спешим сообщить, что Ваши произведения были одобрены и приняты для участия в сборнике '" . collection::where('id', $collection_id)->value('title') . "'! " .
                 "Сразу после оплаты (" . $participation['total_price'] . " рублей с учетом скидки) Вы будете включены в список авторов сборника и будете получать уведомления о всех этапах его публикации. " .
                 "Оплата происходит в автоматическом режиме. Для этого необходимо нажать кнопку 'Оплатить " . $participation['total_price'] . " руб.' на странице Вашего участия:";
         }
@@ -67,7 +67,6 @@ class ParticipationController extends Controller
             'approved_at' => Carbon::now()
         ));
         $user = User::where('id', $request->user_id)->first();
-
 
 
         $user->notify(new EmailNotification(
@@ -101,6 +100,25 @@ class ParticipationController extends Controller
             'new_participations' => $new_participations,
         ]);
 
+    }
+
+    public function delete_participation(Request $request)
+    {
+        $participation = Participation::where('id', $request->participation_id)->first();
+
+        DB::transaction(function () use ($participation) {
+            Participation_work::where('participation_id', $participation['id'])->delete();
+            Chat::where('user_created', $participation['user_id'])->where('collection_id', $participation['collection_id'])->delete();
+            Printorder::where('user_id', $participation['user_id'])->where('collection_id', $participation['collection_id'])->delete();
+            $participation->delete();
+        });
+
+        session()->flash('success', 'change_printorder');
+        session()->flash('alert_type', 'success');
+        session()->flash('alert_title', 'Успешно!');
+        session()->flash('alert_text', 'Заявка полностью удалена!');
+
+        return redirect(route('homeAdmin'));
     }
 
     public function add_participation_comment(Request $request)

@@ -55,11 +55,16 @@ class CreateOwnBook extends Component
     public $inside_color = '0';
 
     public $send_to_name;
+    public $send_to_tel;
+
+    public $delivery_country = 'rus';
+
+    public $address;
     public $send_to_country;
     public $send_to_city;
-    public $send_to_index;
-    public $send_to_tel;
     public $send_to_address;
+    public $send_to_index;
+
 
     public $need_promo;
     public $promo_type = "1";
@@ -75,7 +80,7 @@ class CreateOwnBook extends Component
     public $error_texts = [];
     public $error_fields = [];
 
-    protected $listeners = ['count_doc_pages', 'syncWorks', 'save_own_book', 'new_almost_complete_action'];
+    protected $listeners = ['count_doc_pages', 'syncWorks', 'save_own_book', 'new_almost_complete_action', 'confirm_step_2'];
 
     public function render(OwnBookOutputsService $calc_outs)
     {
@@ -225,30 +230,28 @@ class CreateOwnBook extends Component
             array_push($this->error_fields, 'title');
         }
 
+        $has_foreign_address_flg = $this->send_to_country && $this->send_to_city && $this->send_to_address && $this->send_to_index;
+
+
         if ($this->need_print ?? null) {
-            if ($this->send_to_name === null || $this->send_to_name === "") {
-                array_push($this->error_texts, 'Введите имя получателя!');
+
+            if (!$this->send_to_name) {
+                array_push($this->error_texts, 'Укажите имя получателя!');
                 array_push($this->error_fields, 'send_to_name');
             }
-            if ($this->send_to_tel === null || $this->send_to_tel === "") {
-                array_push($this->error_texts, 'Введите телефон получателя!');
+
+            if (!$this->send_to_tel) {
+                array_push($this->error_texts, 'Укажите телефон получателя!');
                 array_push($this->error_fields, 'send_to_tel');
             }
-            if ($this->send_to_country === null || $this->send_to_country === "") {
-                array_push($this->error_texts, 'Введите страну получателя!');
-                array_push($this->error_fields, 'send_to_country');
+
+            $has_ru_address = ($this->address ?? null) && ($this->address ?? null);
+            if ($this->delivery_country == 'rus' && !$has_ru_address) {
+                array_push($this->error_texts, 'Введите адрес и выберите его из подсказки!');
             }
-            if ($this->send_to_city === null || $this->send_to_city === "") {
-                array_push($this->error_texts, 'Введите город получателя!');
-                array_push($this->error_fields, 'send_to_city');
-            }
-            if ($this->send_to_address === null || $this->send_to_address === "") {
-                array_push($this->error_texts, 'Введите адрес получателя!');
-                array_push($this->error_fields, 'send_to_address');
-            }
-            if ($this->send_to_index === null || $this->send_to_index === "") {
-                array_push($this->error_texts, 'Введите индекс получателя!');
-                array_push($this->error_fields, 'send_to_index');
+
+            if ($this->delivery_country == 'foreign' && !$has_foreign_address_flg) {
+                array_push($this->error_texts, 'Не вся информация об адресе заполнена!');
             }
         }
 
@@ -274,7 +277,28 @@ class CreateOwnBook extends Component
         }
     }
 
-    public function confirm_save()
+    public function confirm_step_1()
+    {
+        if ($this->check_app()) { // Если прошла все проверки
+            // Если в адресе не оказалось квартиры
+            if ($this->delivery_country == 'rus') {
+                if (!$this->address['data']['flat'] || !$this->address['data']['street']) {
+                    $this->dispatchBrowserEvent('swal:confirm', [
+                        'title' => 'Точно такой адрес?',
+                        'html' => "<p>В выбранном адресе вы что-то пропустили (квартиру, улицу). Это нормально, если это, например, частный дом. Это точно правильный адрес? <br> {$this->address['unrestricted_value']}</p>",
+                        'onconfirm' => 'confirm_step_2'
+                    ]);
+                } else {
+                    $this->confirm_step_2();
+                };
+            } else {
+                $this->confirm_step_2();
+            };
+
+        };
+    }
+
+    public function confirm_step_2()
     {
         if ($this->check_app()) {
 
@@ -283,11 +307,17 @@ class CreateOwnBook extends Component
             $check_text = ($this->need_check ? 'необходима проверка (' . $this->price_check . ' руб.)' : '');
             $inside_text = ($this->inside_ready == '0') ? $design_text . (($this->need_design && $this->need_check) ? ', ' : '') . $check_text : 'полностью готов к печати';
             $cover_text = ($this->cover_ready == '0') ? 'необходимо создание (1500 руб.).' : 'полностью готова.';
+            if ($this->delivery_country == 'rus') {
+                $delivery_text = "РФ, {$this->address['unrestricted_value']}";
+            } elseif ($this->delivery_country == 'foreign') {
+                $delivery_text = "$this->send_to_country, $this->send_to_city, $this->send_to_address, $this->send_to_index";
+            }
             $print_text = ($this->need_print) ?
                 $this->prints . ' экземпляров'
                 . '. Обложка: ' . ($this->cover_type == 'soft' ? 'мягкая' : 'твердая')
                 . '. Внутренний блок: ' . ($this->inside_color == '0' ? 'ч/б' : 'цветной (' . $this->pages_color . ' цветных страниц).')
-                : 'не нужна.';
+                . "<br><b>Адрес:</b> $delivery_text"
+                : 'не нужна. ';
             $promo_text = $this->need_promo ? 'нужен ' . $this->promo_type . ' вариант' : 'не нужно.';
 
             $html = "<div style='display: flex; flex-direction: column; gap: 10px;'>
@@ -304,6 +334,26 @@ class CreateOwnBook extends Component
                 'html' => $html,
                 'onconfirm' => 'save_own_book'
             ]);
+        }
+    }
+
+    public function makeAddressJSON()
+    {
+        if ($this->delivery_country == 'rus') {
+            $this->address = json_encode($this->address);
+
+        } elseif ($this->delivery_country == 'foreign') {
+            $address = [
+                'type' => 'foreign',
+                'data' => [
+                    'country' => $this->send_to_country,
+                    'city' => $this->send_to_city,
+                    'address' => $this->send_to_address,
+                    'index' => $this->send_to_index
+                ],
+                'unrestricted_value' => "$this->send_to_country, $this->send_to_city, $this->send_to_address, $this->send_to_index"
+            ];
+            $this->address = json_encode($address);
         }
     }
 
@@ -415,21 +465,23 @@ class CreateOwnBook extends Component
             // ---- Создаем новый Заказ печатных экземпляров ---- //
             if ($this->need_print) {
 
-                $new_PrintOrder = new PrintOrder();
-                $new_PrintOrder->own_book_id = $new_own_book->id;
-                $new_PrintOrder->user_id = Auth::user()->id;
-                $new_PrintOrder->books_needed = $this->prints;
-                $new_PrintOrder->cover_type = $this->cover_type;
-                $new_PrintOrder->color_pages = intval($this->pages_color);
-                $new_PrintOrder->inside_color = $this->inside_color;
+                $this->makeAddressJSON();
 
-                $new_PrintOrder->send_to_name = $this->send_to_name;
-                $new_PrintOrder->send_to_tel = $this->send_to_tel;
-                $new_PrintOrder->send_to_country = $this->send_to_country;
-                $new_PrintOrder->send_to_city = $this->send_to_city;
-                $new_PrintOrder->send_to_address = $this->send_to_address;
-                $new_PrintOrder->send_to_index = $this->send_to_index;
-                $new_PrintOrder->save();
+//                dd($new_own_book->id);
+                Printorder::create([
+                    'own_book_id' => $new_own_book->id,
+                    'user_id' => Auth::user()->id,
+                    'books_needed' => $this->prints,
+
+                    'cover_type' => $this->cover_type,
+                    'color_pages' => intval($this->pages_color),
+                    'inside_color' => $this->inside_color,
+
+                    'send_to_name' => $this->send_to_name,
+                    'send_to_tel' => $this->send_to_tel,
+                    'address' => $this->address,
+                    'address_country' => $this->delivery_country == 'rus' ? 'Россия' : $this->send_to_country
+                ]);
 
             }
 
@@ -478,12 +530,13 @@ class CreateOwnBook extends Component
         });
     }
 
-    public function new_almost_complete_action() {
+    public function new_almost_complete_action()
+    {
 
         $already_has_action = almost_complete_action::where('user_id', Auth::user()->id)
             ->where('almost_complete_action_type_id', 2)
             ->first();
-        if(!($already_has_action ?? null)) {
+        if (!($already_has_action ?? null)) {
             almost_complete_action::firstOrCreate([
                 'user_id' => Auth::user()->id,
                 'almost_complete_action_type_id' => 2,

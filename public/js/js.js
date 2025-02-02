@@ -1,31 +1,37 @@
 //region -- Работа с КУКИ
-function setCookie(name,value,days) {
+once_triggererd = false
+
+function setCookie(name, value, days) {
     var expires = "";
     if (days) {
         var date = new Date();
-        date.setTime(date.getTime() + (days*24*60*60*1000));
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
         expires = "; expires=" + date.toUTCString();
     }
-    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+    document.cookie = name + "=" + (value || "") + expires + "; path=/";
 }
+
 function getCookie(name) {
     var nameEQ = name + "=";
     var ca = document.cookie.split(';');
-    for(var i=0;i < ca.length;i++) {
+    for (var i = 0; i < ca.length; i++) {
         var c = ca[i];
-        while (c.charAt(0)==' ') c = c.substring(1,c.length);
-        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
     }
     return null;
 }
+
 function eraseCookie(name) {
-    document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }
+
 //endregion
 
 function trigger_all_js() {
-//region -- Выбранный пункт в хедере
 
+
+//region -- Выбранный пункт в хедере
 
     $(".menu_link").each(function () {
         var location2 = window.location.protocol + '//' + window.location.host + window.location.pathname;
@@ -91,31 +97,34 @@ function trigger_all_js() {
 //endregion
 
 //region -- Инициализация модалок
-    modals = $('.modal-from')
-    var modal_on = 0;
+    if (!once_triggererd) {
+        modals = $('.modal-from')
+        var modal_on = 0;
 
-    for (var i = 0; i < modals.length; i++) {
-        modals[i].addEventListener('click', function () {
-            modal = $(this).attr('data-modal');
-            // alert(modal);
-            $('#' + modal).fadeToggle(200);
-            // $('#' + modal + " .modal-content").fadeToggle(500);
-            setTimeout(function () {
-                modal_on = 1
-            }, 1000)
-        }, false);
+        for (var i = 0; i < modals.length; i++) {
+            modals[i].addEventListener('click', function () {
+                modal = $(this).attr('data-modal');
+                // alert(modal);
+                $('#' + modal).fadeToggle(200);
+                // $('#' + modal + " .modal-content").fadeToggle(500);
+                setTimeout(function () {
+                    modal_on = 1
+                }, 1000)
+            }, false);
 
-        $(document).on("click", function (event) {
-            if (!$(event.target).closest(".modal-content").length) {
-                if (modal_on == 1) {
-                    $('.modal').fadeOut(200);
-                    if ($('#video_hero_iframe')) {
-                        $("#video_hero_iframe").attr('src', 'https://www.youtube.com/embed/q9YOJS_6FMg');
+            $(document).on("click", function (event) {
+                if (!$(event.target).closest(".modal-content").length) {
+                    if (modal_on == 1) {
+                        $('.modal').fadeOut(200);
+                        if ($('#video_hero_iframe')) {
+                            $("#video_hero_iframe").attr('src', 'https://www.youtube.com/embed/q9YOJS_6FMg');
+                        }
+                        modal_on = 0;
                     }
-                    modal_on = 0;
                 }
-            }
-        });
+            });
+        }
+        once_triggererd = true
     }
 
     function show_modal_function() {
@@ -406,12 +415,10 @@ $(document).ready(function () {
 
 document.addEventListener('livewire:update', function () {
     trigger_all_js()
-
 });
 
 document.addEventListener('trigger_all_js', function () {
     trigger_all_js()
-
 });
 
 

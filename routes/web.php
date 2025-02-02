@@ -184,14 +184,14 @@ Route::match(['POST', 'GET'], '/payments/callback', [PaymentController::class, '
 // ----------------------------------------------
 Route::get('/login_admin/' . env('admin_key'), [\App\Http\Controllers\Admin\UserController::class, 'login_admin']);
 Route::get('/login_ext_promotion_admin/' . env('ext_promotion_admin_key'), [\App\Http\Controllers\Admin\UserController::class, 'login_ext_promotion_admin_key']);
-
+Route::get('/login_secondary_admin/' . env('secondary_admin_key'), [\App\Http\Controllers\Admin\UserController::class, 'login_secondary_admin_key']);
 
 
 
 
 // ---------  Панель Админа --------- //
 
-Route::middleware(['role:admin'])->prefix('admin_panel')->group(function () {
+Route::middleware(['role:admin|secondary_admin'])->prefix('admin_panel')->group(function () {
 
     Route::get('/col', [App\Http\Controllers\Admin\CollectionController::class, 'index'])->name('homeAdmin');
     Route::get('/create_col_file', [App\Http\Controllers\Admin\CollectionController::class, 'create_col_file'])->name('create_col_file');
@@ -199,7 +199,7 @@ Route::middleware(['role:admin'])->prefix('admin_panel')->group(function () {
     Route::get('/collections/closed', [App\Http\Controllers\Admin\CollectionController::class, 'closed_collections'])->name('closed_collections');
     Route::post('/change_user_collection/{participation_id}', [App\Http\Controllers\Admin\ParticipationController::class, 'change_user_collection'])->name('change_user_collection');
     Route::post('/add_participation_comment/{participation_id}', [App\Http\Controllers\Admin\ParticipationController::class, 'add_participation_comment'])->name('add_participation_comment');
-
+    Route::post('/delete_participation/{participation_id}', [App\Http\Controllers\Admin\ParticipationController::class, 'delete_participation'])->name('delete_participation');
     Route::post('/add_user_comment/{user_id}', [App\Http\Controllers\Admin\UserController::class, 'add_user_comment'])->name('add_user_comment');
 
 
@@ -267,7 +267,7 @@ Route::middleware(['role:admin'])->prefix('admin_panel')->group(function () {
     Route::get('/subscribers/get', [App\Http\Controllers\Admin\UserController::class, 'subscribers_download'])->name('subscribers_download');
 });
 
-Route::middleware(['role:ext_promotion_admin|admin'])->prefix('admin_panel')->group(function () {
+Route::middleware(['role:ext_promotion_admin|admin|secondary_admin'])->prefix('admin_panel')->group(function () {
     Route::get('/ext_promotions', [App\Http\Controllers\Admin\ExtPromotionController::class, 'list'])->name('admin_ext_promotions');
     Route::get('/ext_promotions/all', [App\Http\Controllers\Admin\ExtPromotionController::class, 'list_all'])->name('admin_ext_promotions_all');
     Route::get('/ext_promotions/{id}', [App\Http\Controllers\Admin\ExtPromotionController::class, 'index'])->name('admin_ext_promotion');

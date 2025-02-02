@@ -177,6 +177,9 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/davcpas1234/laravelpdfviewer" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/jn-jairo/laravel-ngrok" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/laravel/telescope" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/lapaygroup/russianpost" />
+      <excludeFolder url="file://$MODULE_DIR$/storage/app" />
+      <excludeFolder url="file://$MODULE_DIR$/storage/framework" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

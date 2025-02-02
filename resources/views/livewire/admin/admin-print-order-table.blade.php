@@ -44,7 +44,7 @@
                         {{$participation->printorder['send_to_name']}}
                     </td>
                     <td style="width: 10%;  text-align: center;">
-                        {{print_address($participation['printorder_id'])}}
+                        {{print_address($participation->printorder)}}
                     </td>
                     <td>
                         {{$participation->printorder['send_to_tel']}}

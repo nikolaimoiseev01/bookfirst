@@ -22,6 +22,7 @@
         "inertiajs/inertia-laravel": "^0.6.9",
         "jenssegers/agent": "^2.6",
         "jenssegers/date": "^4.0",
+        "lapaygroup/russianpost": "^1.0",
         "laravel-notification-channels/telegram": "^4.0",
         "laravel/fortify": "^1.16",
         "laravel/framework": "^10.14",

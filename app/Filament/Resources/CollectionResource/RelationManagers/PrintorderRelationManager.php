@@ -42,7 +42,7 @@ class PrintorderRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('books_needed')->label('Экземпляров'),
                 Tables\Columns\TextColumn::make('Адрес')
                     ->getStateUsing(function ($record) {
-                    return print_address($record->id);
+                    return print_address($record);
                 })
                     ->limit(25),
                 Tables\Columns\BadgeColumn::make('paid_at')->date()

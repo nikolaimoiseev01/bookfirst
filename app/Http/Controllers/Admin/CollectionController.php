@@ -150,10 +150,10 @@ class CollectionController extends Controller
                 $print['send_to_city'] . ', ' . $print['send_to_address'];
 
             $print_address_to_envelope = "Кому: {$print['send_to_name']} \n Куда: {$address} \n Индекс: {$print['send_to_index']} \n Телефон: {$print['send_to_tel']}";
-            $print_address_to_typography = print_address($print['id']);
+            $print_address_to_typography = print_address($print);
 
             $sheet->setCellValue("A" . ($key + 2), $print['send_to_name']);
-            $sheet->setCellValue("B" . ($key + 2), print_address($print['id']));
+            $sheet->setCellValue("B" . ($key + 2), print_address($print));
             $sheet->setCellValue("C" . ($key + 2), $print['books_needed']);
             $sheet->setCellValue("E" . ($key + 2), $print_address_to_envelope);
         }
