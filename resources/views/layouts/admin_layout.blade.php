@@ -153,7 +153,7 @@
             <img src="/admin_assets/dist/img/AdminLTELogo.png" alt="/adminLTE Logo"
                  class="brand-image img-circle elevation-3"
                  style="opacity: .8">
-            <h3>Первая Книга</h3>
+            <h3 class="m-0">Первая Книга</h3>
             <p class="text-sm m-0 text-center"><i>{{\Illuminate\Support\Facades\Auth::user()->name}}</i></p>
         </a>
 
