@@ -348,13 +348,17 @@ class CollApplication extends Component
     {
         if ($this->check_app()) { // Если прошла все проверки
             // Если в адресе не оказалось квартиры
-            if ($this->delivery_country == 'rus' && $this->address['type'] == 'DaData RUS') {
-                if (!$this->address['data']['flat'] || !$this->address['data']['street']) {
-                    $this->dispatchBrowserEvent('swal:confirm', [
-                        'title' => 'Точно такой адрес?',
-                        'html' => "<p>В выбранном адресе вы что-то пропустили (квартиру, улицу). Это нормально, если это, например, частный дом. Это точно правильный адрес? <br> {$this->address['unrestricted_value']}</p>",
-                        'onconfirm' => 'confirm_step_2'
-                    ]);
+            if ($this->print_need ?? null) {
+                if ($this->delivery_country == 'rus' && $this->address['type'] == 'DaData RUS') {
+                    if (!$this->address['data']['flat'] || !$this->address['data']['street']) {
+                        $this->dispatchBrowserEvent('swal:confirm', [
+                            'title' => 'Точно такой адрес?',
+                            'html' => "<p>В выбранном адресе вы что-то пропустили (квартиру, улицу). Это нормально, если это, например, частный дом. Это точно правильный адрес? <br> {$this->address['unrestricted_value']}</p>",
+                            'onconfirm' => 'confirm_step_2'
+                        ]);
+                    } else {
+                        $this->confirm_step_2();
+                    };
                 } else {
                     $this->confirm_step_2();
                 };
@@ -375,12 +379,13 @@ class CollApplication extends Component
         $work_files_text = count($this->works);
         $check_text = ($this->need_check ? 'нужна (' . $this->price_check . ' руб.)' : 'не нужна');
 
-        if ($this->delivery_country == 'rus') {
-            $delivery_text = "РФ, {$this->address['unrestricted_value']}";
-        } elseif ($this->delivery_country == 'foreign') {
-            $delivery_text = "$this->send_to_country, $this->send_to_city, $this->send_to_address, $this->send_to_index";
+        if ($this->print_need ?? null) {
+            if ($this->delivery_country == 'rus') {
+                $delivery_text = "РФ, {$this->address['unrestricted_value']}";
+            } elseif ($this->delivery_country == 'foreign') {
+                $delivery_text = "$this->send_to_country, $this->send_to_city, $this->send_to_address, $this->send_to_index";
+            }
         }
-
 
         $print_text = ($this->print_need) ?
             "экземпляров: $this->prints
