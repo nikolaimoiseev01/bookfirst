@@ -212,10 +212,6 @@ class CollApplication extends Component
         $this->updatePostWidget();
     }
 
-    public function updatedPrints()
-    {
-        $this->updatePostWidget();
-    }
 
     public function syncWorks($works)
     {
