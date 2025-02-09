@@ -10,6 +10,9 @@ class Printorder extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
+        'collection_id',
+        'own_book_id',
         'participation_id',
         'books_needed',
         'cover_type',
@@ -22,8 +25,7 @@ class Printorder extends Model
         'send_to_address',
         'send_to_index',
         'address',
-        'address_country',
-        'own_book_id'
+        'address_country'
     ];
 
     public function Participation()
