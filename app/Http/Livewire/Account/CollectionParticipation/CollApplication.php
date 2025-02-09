@@ -207,12 +207,6 @@ class CollApplication extends Component
         }
     }
 
-    public function postAddressInit()
-    {
-        $this->updatePostWidget();
-    }
-
-
     public function syncWorks($works)
     {
         // Из компоненты выбора работ постоянно присылается список выбранных
