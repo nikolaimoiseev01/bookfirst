@@ -517,7 +517,7 @@
                             </div>
 
                             <div class="border-top mt-3 pt-3 row">
-                                <div class="border-right pr-3 col-sm-6">
+                                <div class="border-right pr-3 col-sm-12">
                                     <h3>Аннотация книги</h3>
                                     <form action="{{ route('update_own_book_desc',$own_book['id']) }}"
                                           method="post"
@@ -535,7 +535,7 @@
 
                                     </form>
                                 </div>
-                                <div class="pr-2 col-sm-6">
+                                <div class="pr-2 col-sm-12">
                                     <div class="mt-3 d-flex justify-content-between align-items-end mb-3">
                                         <h3 class="m-0 d-inline">Исправления:</h3>
                                         <form
