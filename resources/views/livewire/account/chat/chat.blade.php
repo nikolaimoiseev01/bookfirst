@@ -45,7 +45,7 @@
                         @endif
                     </div>
 
-                    @if(Auth::user()->id == 2 && $editing_message_id == $message['id'])
+                    @if((Auth::user()->id == 2 || Auth::user()->id == 2956) && $editing_message_id == $message['id'])
                         <div class="message_edit_wrap">
                             <x-chat-textarea model="editing_text"
                                              placeholder="Введите сообщение"
