@@ -27,6 +27,8 @@
                                 Поддержка
                             @elseif(App\Models\User::where('id', $message['user_from'])->first()->getRoleNames()[0] === 'ext_promotion_admin')
                                 Менеджер
+                            @elseif(App\Models\User::where('id', $message['user_from'])->first()->getRoleNames()[0] === 'secondary_admin')
+                                Менеджер
                             @else
                                 {{App\Models\User::where('id',$message['user_from'])->value('name')}}
                             @endif
@@ -55,6 +57,8 @@
                     @if(App\Models\User::where('id', $message['user_from'])->first()->getRoleNames()[0] === 'admin')
                                 #47AF98;
                     @elseif(App\Models\User::where('id', $message['user_from'])->first()->getRoleNames()[0] === 'ext_promotion_admin')
+                        #4d92e7
+                    @elseif(App\Models\User::where('id', $message['user_from'])->first()->getRoleNames()[0] === 'secondary_admin')
                         #4d92e7
                     @else
                         #e7b34d
@@ -96,7 +100,7 @@
                 </div>
             @endforeach
 
-            @if($chat['chat_status_id'] == 1 && !(Auth::user()->hasRole('admin') || Auth::user()->hasRole('ext_promotion_admin')))
+            @if($chat['chat_status_id'] == 1 && !(Auth::user()->hasRole('admin') || Auth::user()->hasRole('ext_promotion_admin') || Auth::user()->hasRole('secondary_admin')))
                 <p class="answer_soon">Мы успешно получили ваше сообщение!<br>
                     <span class="answer_soon answer_soon_desc">Обычно мы отвечаем в течение суток, но иногда нам
                 может потребоваться больше времени. Вы получите оповещение ответа по почте.</span>
@@ -121,7 +125,7 @@
         </div>
     @endif
 
-    @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('ext_promotion_admin'))
+    @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('ext_promotion_admin') || Auth::user()->hasRole('secondary_admin'))
         <div x-data="{ show_templates: false }" class="templates_block_wrap">
             <a @click="show_templates = !show_templates" class="w-25 mt-3 ml-3 mb-3 btn btn-primary">Шаблоны</a>
             <div @mousedown.outside="show_templates = false" x-show="show_templates" class="templates_wrap">
@@ -129,7 +133,7 @@
                     <h4>Типы</h4>
                     @foreach($templates->unique('template_type') as $template_type)
                         @if($template_type !== '' || $template_type ?? null !== null)
-                            @role('admin')
+                            @role('admin|secondary_admin')
                             <p wire:click.prevent="choose_template_type({{"'" . $template_type['template_type'] . "'"}})">{{$template_type['template_type']}}</p>
                             @endrole
                             @role('ext_promotion_admin')

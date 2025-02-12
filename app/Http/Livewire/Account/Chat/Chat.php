@@ -80,7 +80,7 @@ class Chat extends Component
             $this->chat_id = $chat_id;
             $this->currentUrl = url()->current();
             $this->dispatchBrowserEvent('update_hrefs');
-            if (in_array($this->cur_user_role, ['admin', 'ext_promotion_admin'])) {
+            if (in_array($this->cur_user_role, ['admin', 'ext_promotion_admin', 'secondary_admin'])) {
                 $this->text = 'Здравствуйте, ' . $this->user_to['name'] . '!';
             };
         } else {
@@ -206,7 +206,7 @@ class Chat extends Component
             $user = User::where('id', $this->user_to)->first();
             $chat = \App\Models\Chat::where('id', $this->chat_id)->first();
 
-            if (in_array($this->cur_user_role, ['admin', 'ext_promotion_admin'])) { // Если пишет АДМИН
+            if (in_array($this->cur_user_role, ['admin', 'ext_promotion_admin', 'secondary_admin'])) { // Если пишет АДМИН
                 $user_from = Auth::user()->name;
                 $tel_message_title = "*{$user_from} -> автору '{$user['name']} {$user['surname']}'*";
                 $this->chat->update([
@@ -272,7 +272,7 @@ class Chat extends Component
                 $telegram_chat = config('cons.telegram_chat_id');
             }
 
-            if(!(in_array($this->cur_user_role, ['admin', 'ext_promotion_admin'])) || $is_ext_promotion_chat) {
+            if(!(in_array($this->cur_user_role, ['admin', 'ext_promotion_admin', 'secondary_admin'])) || $is_ext_promotion_chat) {
                 // Посылаем Telegram уведомление нам
                 Notification::route('telegram', $telegram_chat)
                     ->notify(new TelegramNotification($tel_message_title,
