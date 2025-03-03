@@ -7,6 +7,7 @@ use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Str;
 use Jenssegers\Agent\Agent;
 use Throwable;
 
@@ -34,30 +35,63 @@ class Handler extends ExceptionHandler
 
     public function report(Exception|Throwable $exception)
     {
-        if(Auth::user()) {
-            $user_id = Auth::user()->id;
+        $errorId = Str::uuid()->toString(); // Генерируем один раз
+
+        // Добавляем error_id в исключение
+        if (method_exists($exception, 'setData')) {
+            $exception->setData(['error_id' => $errorId]);
         } else {
-            $user_id = 'Not Registered';
+            $exception->error_id = $errorId;
         }
 
+        $user_id = Auth::check() ? Auth::id() : 'Not Registered';
+
         $agent = new Agent();
-
-        // Получение информации о браузере
         $browser = $agent->browser();
-
-        // Получение информации о типе устройства (desktop, tablet, phone)
         $deviceType = $agent->device();
 
-        // Логирование ошибки в файл
-        Log::channel('custom')->error(
-            'User_id: ' . $user_id .
-            "\nAgent: " . 'Browser: ' . $browser . '; DeviceType: ' . $deviceType .
+        // Определяем код ошибки (по умолчанию 500)
+        $statusCode = method_exists($exception, 'getStatusCode') ? $exception->getStatusCode() : 500;
+
+        // Определяем уровень логирования
+        if ($statusCode >= 500 && $statusCode < 600) {
+            $logLevel = 'error';
+            $icon = '🔴';
+        } elseif ($statusCode >= 400 && $statusCode < 500) {
+            $logLevel = 'warning';
+            $icon = '🟡';
+        }
+
+        // Логируем ошибку с нужным уровнем
+        Log::$logLevel(
+            "$icon $statusCode [$errorId] $icon" .
+            "\nUser ID: " . $user_id .
+            "\nBrowser: " . $browser . " | Device: " . $deviceType .
             "\nURL: " . URL::current() .
-            "\nError Description: " . $exception->getMessage() .
+            "\nError: " . $exception .
             "\n"
         );
 
+        if ($this->shouldReport($exception)) {
+            return;
+        }
+
         parent::report($exception);
+    }
+
+    public function render($request, Throwable $exception)
+    {
+        // Извлекаем error_id, если он есть
+        $errorId = $exception->error_id ?? Str::uuid()->toString();
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'message' => 'Произошла ошибка! Сообщите код поддержки: ' . $errorId,
+                'error_id' => $errorId,
+            ], 500);
+        }
+
+        return response()->view('errors.500', ['error_id' => $errorId], 500);
     }
 
     /**

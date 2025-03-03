@@ -33,8 +33,8 @@ class CreateParticipationsTable extends Migration
             $table->text('file')-> nullable();
             $table->bigInteger('printorder_id')-> nullable();
             $table->bigInteger('chat_id')-> nullable();
-            $table->timestamps('approved_at')-> nullable();
-            $table->timestamps('paid_at')-> nullable();
+            $table->dateTime('approved_at')->nullable();
+            $table->dateTime('paid_at')->nullable();
 
             $table->timestamps();
         });

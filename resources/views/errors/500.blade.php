@@ -53,7 +53,7 @@
 @section('content')
     <div class="error-content">
         <h2 style="font-size: 45px; padding: 0 10%;">Что-то пошло не так!<br> Ошибка: 500.</h2>
-        <h2 style="font-size: 35px; padding: 0 10%;">Мы сожалеем, что Вы столкнулись с ошибкой. <br>Возможные пути решения:</h2>
+        <h2 style="font-size: 35px; padding: 0 10%;">Мы сожалеем, что Вы столкнулись с ошибкой. ID: {{$error_id}}<br>Возможные пути решения:</h2>
         <ul>
             <li>
                 1) Перезагрузите страницу и попробуйте совершить то же действие снова.
@@ -70,5 +70,13 @@
 @push('page-js')
     <script>
         document.getElementsByClassName('preloader_wrap')[0].style.visibility = 'hidden';
+
+        // Отправляем `error_id` в Яндекс.Метрику
+        if (typeof ym !== 'undefined') {
+            ym(86096774, 'reachGoal', 'error', {
+                error_id: '{{ $error_id }}',
+                url: window.location.href
+            });
+        }
     </script>
 @endpush
