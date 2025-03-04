@@ -342,7 +342,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a href="/admin" class="new_admin nav-link">
+                        <a href="/admin" class="nav-link">
                             <i class="nav-icon fas fa-users"></i>
                             <p>
                                 Новая админка
@@ -351,7 +351,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a href="/log-viewer" class="new_admin nav-link">
+                        <a href="/log-viewer" class="nav-link">
                             <i class="nav-icon fas fa-exclamation-triangle"></i>
                             <p>
                                Логи ошибок
