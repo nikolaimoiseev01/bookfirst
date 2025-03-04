@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Facades\Auth;
@@ -85,8 +86,6 @@ class Handler extends ExceptionHandler
 
     public function render($request, Throwable $exception)
     {
-
-
         // Извлекаем error_id, если он есть
         $errorId = $exception->error_id ?? Str::uuid()->toString();
 
@@ -107,6 +106,11 @@ class Handler extends ExceptionHandler
 
         if ($exception instanceof AccessDeniedHttpException) { // Обрабатываем 403 Forbidden
             return response()->view('errors.403', ['error_id' => $errorId], 403);
+        }
+
+        // Обрабатываем 401 (неавторизован) и отправляем на страницу входа
+        if ($exception instanceof AuthenticationException) {
+            return redirect()->guest(route('login'));
         }
 
         return response()->view('errors.500', ['error_id' => $errorId], 500);
