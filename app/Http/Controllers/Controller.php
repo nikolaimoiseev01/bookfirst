@@ -20,11 +20,9 @@ class Controller extends BaseController
     public function site_search(Request $request)
     {
 
-
         $search_input = $request->search_input;
 
-        if (strlen($search_input) > 3) {
-            $users_sql = "select
+        $users_sql = "select
                       `users`.`id`,
                       `users`.`name`,
                       `users`.`surname`,
@@ -72,7 +70,7 @@ class Controller extends BaseController
                               ) users";
 
 
-            $works = Work::Where('title', 'like', '%' . $search_input . '%')->get();
+        $works = Work::Where('title', 'like', '%' . $search_input . '%')->get();
 //            $users = DB::table('users as u')
 //                ->leftJoin('user_subscriptions as us', 'u.id', '=', 'us.subscribed_to_user_id')
 //                ->leftJoin('work_comments as wc', 'u.id', '=', 'wc.user_id')
@@ -91,27 +89,26 @@ class Controller extends BaseController
 //                ->groupBy('u.id')
 //                ->paginate(10);
 
-            $users = db::select($users_sql);
+        $users = db::select($users_sql);
 
 //            dd($users);
 
-            $own_books = own_book::where('own_book_status_id', 9)
-                ->where(function ($query) use ($search_input) {
-                    $query->where('author', 'like', '%' . $search_input . '%')
-                        ->orWhere('title', 'like', '%' . $search_input . '%');
-                })->orderBy('id', 'desc')->paginate(5);
+        $own_books = own_book::where('own_book_status_id', 9)
+            ->where(function ($query) use ($search_input) {
+                $query->where('author', 'like', '%' . $search_input . '%')
+                    ->orWhere('title', 'like', '%' . $search_input . '%');
+            })->orderBy('id', 'desc')->paginate(5);
 
-            $collections = Collection::where('title', 'like', '%' . $search_input . '%')->orderBy('created_at', 'desc')->paginate(5);
+        $collections = Collection::where('title', 'like', '%' . $search_input . '%')->orderBy('created_at', 'desc')->paginate(5);
 
 
-            return view('site_search', [
-                'works' => $works,
-                'users' => $users,
-                'search_input' => $search_input,
-                'own_books' => $own_books,
-                'collections' => $collections,
-            ]);
-        }
+        return view('site_search', [
+            'works' => $works,
+            'users' => $users,
+            'search_input' => $search_input,
+            'own_books' => $own_books,
+            'collections' => $collections,
+        ]);
     }
 
 }

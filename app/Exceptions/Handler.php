@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use Jenssegers\Agent\Agent;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
@@ -102,6 +103,10 @@ class Handler extends ExceptionHandler
 
         if ($exception instanceof ModelNotFoundException) {
             return response()->view('errors.404', ['error_id' => $errorId], 404);
+        }
+
+        if ($exception instanceof AccessDeniedHttpException) { // Обрабатываем 403 Forbidden
+            return response()->view('errors.403', ['error_id' => $errorId], 403);
         }
 
         return response()->view('errors.500', ['error_id' => $errorId], 500);
