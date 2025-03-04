@@ -342,7 +342,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a href="/admin" class="nav-link">
+                        <a href="/admin" class="new_admin nav-link">
                             <i class="nav-icon fas fa-users"></i>
                             <p>
                                 Новая админка
