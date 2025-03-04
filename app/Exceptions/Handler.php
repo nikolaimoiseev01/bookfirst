@@ -3,12 +3,14 @@
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use Jenssegers\Agent\Agent;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -64,7 +66,8 @@ class Handler extends ExceptionHandler
 
         // Логируем ошибку с нужным уровнем
         Log::$logLevel(
-            "$icon $statusCode [$errorId] $icon" .
+            "$icon $statusCode. {$exception->getMessage()} $icon" .
+            "\nID: " . $errorId .
             "\nUser ID: " . $user_id .
             "\nBrowser: " . $browser . " | Device: " . $deviceType .
             "\nURL: " . URL::current() .
@@ -81,6 +84,8 @@ class Handler extends ExceptionHandler
 
     public function render($request, Throwable $exception)
     {
+
+
         // Извлекаем error_id, если он есть
         $errorId = $exception->error_id ?? Str::uuid()->toString();
 
@@ -89,6 +94,14 @@ class Handler extends ExceptionHandler
                 'message' => 'Произошла ошибка! Сообщите код поддержки: ' . $errorId,
                 'error_id' => $errorId,
             ], 500);
+        }
+
+        if ($exception instanceof NotFoundHttpException) {
+            return response()->view('errors.404', ['error_id' => $errorId], 404);
+        }
+
+        if ($exception instanceof ModelNotFoundException) {
+            return response()->view('errors.404', ['error_id' => $errorId], 404);
         }
 
         return response()->view('errors.500', ['error_id' => $errorId], 500);

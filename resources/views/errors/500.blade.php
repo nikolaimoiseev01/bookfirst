@@ -6,6 +6,7 @@
         body {
             background: white;
         }
+
         .error-content {
             margin-top: 85px;
             display: flex;
@@ -46,23 +47,33 @@
 
 
 
-@section('page-title') 500 ошибка @endsection
+@section('page-title')
+    500 ошибка
+@endsection
 
 
 
 @section('content')
     <div class="error-content">
-        <h2 style="font-size: 45px; padding: 0 10%;">Что-то пошло не так!<br> Ошибка: 500.</h2>
-        <h2 style="font-size: 35px; padding: 0 10%;">Мы сожалеем, что Вы столкнулись с ошибкой. ID: {{$error_id}}<br>Возможные пути решения:</h2>
+        <h2 style="font-size: 45px; padding: 0 10%;">Что-то пошло не так!</h2>
+        <h2 style="font-size: 35px; padding: 0 10%;">Мы сожалеем, что Вы столкнулись с ошибкой.<br>Возможные пути
+            решения:</h2>
         <ul>
             <li>
                 1) Перезагрузите страницу и попробуйте совершить то же действие снова.
             </li>
             <li>
-                2) Создайте вопрос с подробные описанием проблемы. Мы постараемся помочь как можно скорее.
+                2) Создайте вопрос с подробные описанием проблемы. Мы постараемся помочь как можно скорее. Нам очень
+                поможет, если вы укажите код и ID ошибки.
+                <ul><i>
+                        <li><b>Код:</b> 500</li>
+                        <li><b>ID:</b> {{ $error_id }}</li>
+                    </i>
+                </ul>
             </li>
         </ul>
-        <a style="margin-top: 20px; box-shadow: none;" href="{{route('chat_create','Ошибка в системе')}}" class="button fast-load">Создать вопрос</a>
+        <a style="margin-top: 20px; box-shadow: none;" href="{{route('chat_create',"Ошибка в системе ({$error_id})")}}"
+           class="button fast-load">Создать вопрос</a>
     </div>
 
 @endsection

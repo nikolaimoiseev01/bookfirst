@@ -1,0 +1,38 @@
+<svg id="Слой_1" data-name="Слой 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 359.9 492.06">
+    <defs>
+        <style>
+            .cls-1 {fill: #ffedcc;}
+            .cls-2 {fill: #ffe3ad;}
+            .cls-3 {fill: #fff;}
+            .cls-4, .cls-5 {fill: none; stroke: #000; stroke-width: 4px;}
+            .cls-6 {fill: #47af98;}
+            .cls-7 {fill: #b78c38;}
+            .cls-8 {fill: #e7b34d;}
+        </style>
+    </defs>
+
+    <!-- Голова -->
+    <circle class="cls-1" cx="180" cy="80" r="40"/>
+
+    <!-- Глаза -->
+    <circle cx="165" cy="75" r="5" fill="#000"/>
+    <circle cx="195" cy="75" r="5" fill="#000"/>
+
+    <!-- Брови -->
+    <path d="M155,65 Q165,55 175,65" stroke="#000" stroke-width="3" fill="none"/>
+    <path d="M185,65 Q195,55 205,65" stroke="#000" stroke-width="3" fill="none"/>
+
+    <!-- Грустный рот -->
+    <path d="M165,95 Q180,110 195,95" stroke="#000" stroke-width="3" fill="none"/>
+
+    <!-- Тело -->
+    <path class="cls-6" d="M140,120 Q180,160 220,120 L240,280 L120,280 Z"/>
+
+    <!-- Руки подняты в жесте "не знаю" -->
+    <path class="cls-1" d="M140,130 Q90,100 80,140 T110,170"/>
+    <path class="cls-1" d="M220,130 Q270,100 280,140 T250,170"/>
+
+    <!-- Надпись 404 -->
+    <text x="100" y="350" font-size="60" font-family="Arial" fill="#000">404</text>
+    <text x="70" y="400" font-size="24" font-family="Arial" fill="#000">Oops! Nothing found...</text>
+</svg>

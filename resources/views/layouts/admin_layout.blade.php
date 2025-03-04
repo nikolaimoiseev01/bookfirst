@@ -349,6 +349,15 @@
                             </p>
                         </a>
                     </li>
+
+                    <li class="nav-item">
+                        <a href="/log-viewer" class="new_admin nav-link">
+                            <i class="nav-icon fas fa-exclamation-triangle"></i>
+                            <p>
+                               Логи ошибок
+                            </p>
+                        </a>
+                    </li>
                     @endrole
 
 
