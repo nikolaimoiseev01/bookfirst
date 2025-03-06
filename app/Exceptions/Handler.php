@@ -57,8 +57,19 @@ class Handler extends ExceptionHandler
         // Определяем код ошибки (по умолчанию 500)
         $statusCode = method_exists($exception, 'getStatusCode') ? $exception->getStatusCode() : 500;
 
+        $need_to_log = True;
+
         // Определяем уровень логирования
-        if ($statusCode >= 500 && $statusCode < 600) {
+        if ($exception instanceof \Illuminate\Validation\ValidationException) {
+            $logLevel = 'info';
+            $icon = '🔵';
+            $statusCode = 422; // Ошибки валидации обычно имеют этот статус
+            $need_to_log = False;
+        } elseif ($exception->getMessage() == 'Unauthenticated.') {
+            $logLevel = 'warning';
+            $icon = '🟡';
+            $need_to_log = False;
+        } elseif ($statusCode >= 500 && $statusCode < 600) {
             $logLevel = 'error';
             $icon = '🔴';
         } elseif ($statusCode >= 400 && $statusCode < 500) {
@@ -66,16 +77,19 @@ class Handler extends ExceptionHandler
             $icon = '🟡';
         }
 
-        // Логируем ошибку с нужным уровнем
-        Log::$logLevel(
-            "$icon $statusCode. {$exception->getMessage()} $icon" .
-            "\nID: " . $errorId .
-            "\nUser ID: " . $user_id .
-            "\nBrowser: " . $browser . " | Device: " . $deviceType .
-            "\nURL: " . URL::current() .
-            "\nError: " . $exception .
-            "\n"
-        );
+        if ($need_to_log) {
+            // Логируем ошибку с нужным уровнем
+            Log::$logLevel(
+                "$icon $statusCode. {$exception->getMessage()}" .
+                "\nID: " . $errorId .
+                "\nUser ID: " . $user_id .
+                "\nBrowser: " . $browser . " | Device: " . $deviceType .
+                "\nURL: " . URL::current() .
+                "\nError: " . $exception .
+                "\n"
+            );
+        }
+
 
         if ($this->shouldReport($exception)) {
             return;
@@ -113,7 +127,13 @@ class Handler extends ExceptionHandler
             return redirect()->guest(route('login'));
         }
 
-        return response()->view('errors.500', ['error_id' => $errorId], 500);
+        // Обрабатываем 500 только если мы в продакшене, иначе Laravel покажет полную ошибку
+        if (app()->environment('production')) {
+            return response()->view('errors.500', ['error_id' => $errorId], 500);
+        }
+
+        // Для всех остальных ошибок вызываем стандартное поведение Laravel
+        return parent::render($request, $exception);
     }
 
     /**
