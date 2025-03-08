@@ -151,7 +151,7 @@ class SocialController extends Controller
                 'works' => $works,
             ]);
         } else {
-            abort(500);
+            abort(404);
         }
 
     }
