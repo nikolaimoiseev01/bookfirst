@@ -54,15 +54,4 @@
 @endsection
 
 @push('page-js')
-    <script>
-        document.getElementsByClassName('preloader_wrap')[0].style.visibility = 'hidden';
-
-        // Отправляем `error_id` в Яндекс.Метрику
-        if (typeof ym !== 'undefined') {
-            ym(86096774, 'reachGoal', 'error', {
-                error_id: '{{ $error_id }}',
-                url: window.location.href
-            });
-        }
-    </script>
 @endpush

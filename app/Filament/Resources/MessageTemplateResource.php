@@ -19,6 +19,8 @@ class MessageTemplateResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 
+    protected static ?string $navigationGroup = 'Настройки';
+
     protected static ?string $navigationLabel = 'Шаблоны сообщений';
 
 

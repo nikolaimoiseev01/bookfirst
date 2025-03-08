@@ -13,13 +13,19 @@ use Illuminate\View\Component;
 class HeaderSocial extends Component
 {
     public $user;
+
     /**
      * Create a new component instance.
      */
     public function __construct(Request $request)
     {
-        $route_name = $request::route()->getName();
-        if($route_name == 'social.user_page') {
+        if ($request::route() ?? null) {
+            $route_name = $request::route()->getName() ?? null;
+        } else {
+            $route_name = null;
+        }
+
+        if ($route_name == 'social.user_page') {
             $user_id = Route::current()->parameter('user_id');
             $this->user = User::where('id', $user_id)->first();
         } elseif ($route_name == 'social.work_page') {

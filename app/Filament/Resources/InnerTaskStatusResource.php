@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PromocodeResource\Pages;
-use App\Filament\Resources\PromocodeResource\RelationManagers;
-use App\Models\promocode;
+use App\Filament\Resources\InnerTaskStatusResource\Pages;
+use App\Filament\Resources\InnerTaskStatusResource\RelationManagers;
+use App\Models\InnerTaskStatus;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
@@ -13,23 +13,23 @@ use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class PromocodeResource extends Resource
+class InnerTaskStatusResource extends Resource
 {
-    protected static ?string $model = Promocode::class;
+    protected static ?string $model = InnerTaskStatus::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 
+    protected static ?string $navigationLabel = 'Статус задач';
+
     protected static ?string $navigationGroup = 'Настройки';
-    protected static ?string $navigationLabel = 'Промокоды';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('promocode')
+                Forms\Components\TextInput::make('title')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('discount'),
             ]);
     }
 
@@ -37,12 +37,12 @@ class PromocodeResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('promocode')->sortable(),
-                Tables\Columns\TextColumn::make('discount')->sortable(),
-                Tables\Columns\TextColumn::make('created_at')->sortable()
+                Tables\Columns\TextColumn::make('title'),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime(),
+                Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime(),
             ])
-            ->defaultSort('created_at', 'desc')
             ->filters([
                 //
             ])
@@ -58,7 +58,7 @@ class PromocodeResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManagePromocodes::route('/'),
+            'index' => Pages\ManageInnerTaskStatuses::route('/'),
         ];
     }
 }

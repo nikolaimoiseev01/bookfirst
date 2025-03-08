@@ -21,6 +21,7 @@ class SurveyResource extends Resource
 
     protected static ?string $navigationLabel = 'Опросы';
 
+    protected static ?string $navigationGroup = 'Остальное';
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 

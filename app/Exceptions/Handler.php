@@ -128,7 +128,7 @@ class Handler extends ExceptionHandler
         }
 
         // Обрабатываем 500 только если мы в продакшене, иначе Laravel покажет полную ошибку
-        if (app()->environment('production')) {
+        if (!ENV('APP_DEBUG')) {
             return response()->view('errors.500', ['error_id' => $errorId], 500);
         }
 
