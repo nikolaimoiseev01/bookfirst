@@ -18,7 +18,8 @@ class InnerTask extends Model
         'description',
         'deadline',
         'deadline_inner',
-        'inner_task_status_id'
+        'inner_task_status_id',
+        'inner_task_type_id'
     ];
 
     public function Collection() {
@@ -31,5 +32,9 @@ class InnerTask extends Model
 
     public function InnerTaskStatus() {
         return $this->belongsTo(InnerTaskStatus::class);
+    }
+
+    public function InnerTaskType() {
+        return $this->belongsTo(InnerTaskType::class);
     }
 }

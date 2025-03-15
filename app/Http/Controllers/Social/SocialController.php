@@ -5,11 +5,13 @@ namespace App\Http\Controllers\Social;
 use App\Http\Controllers\Controller;
 use App\Models\award;
 use App\Models\own_book;
+use App\Models\Participation;
 use App\Models\User;
 use App\Models\user_subscription;
 use App\Models\UserWallet;
 use App\Models\Work;
 use App\Models\work_comment;
+use App\Models\work_topic;
 use App\Models\work_type;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -160,7 +162,13 @@ class SocialController extends Controller
 
     public function all_works_feed()
     {
-        $works = Work::where('user_id', '<>', 2)->withcount('work_like')->get();
+        \Log::info('Память перед запросом: ' . memory_get_usage());
+
+        $works = Work::where('user_id', '<>', 2)->get();
+
+        \Log::info('Память после запроса: ' . memory_get_usage());
+//        $works = Work::all();
+//        dd($works);
         return view('social.all_works_feed', [
             'works' => $works,
         ]);

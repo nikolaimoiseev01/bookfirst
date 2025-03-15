@@ -100,40 +100,20 @@ class Handler extends ExceptionHandler
 
     public function render($request, Throwable $exception)
     {
+
         // Извлекаем error_id, если он есть
         $errorId = $exception->error_id ?? Str::uuid()->toString();
 
-        if ($request->expectsJson()) {
-            return response()->json([
-                'message' => 'Произошла ошибка! Сообщите код поддержки: ' . $errorId,
-                'error_id' => $errorId,
-            ], 500);
+        // Для веб-версии добавляем error_id в шаблоны ошибок
+        $response = parent::render($request, $exception);
+
+        if ($response->status() >= 400 && !ENV('APP_DEBUG')) {
+            return response()->view("errors.{$response->status()}", ['error_id' => $errorId], $response->status());
+        } else {
+            return parent::render($request, $exception);
         }
 
-        if ($exception instanceof NotFoundHttpException) {
-            return response()->view('errors.404', ['error_id' => $errorId], 404);
-        }
 
-        if ($exception instanceof ModelNotFoundException) {
-            return response()->view('errors.404', ['error_id' => $errorId], 404);
-        }
-
-        if ($exception instanceof AccessDeniedHttpException) { // Обрабатываем 403 Forbidden
-            return response()->view('errors.403', ['error_id' => $errorId], 403);
-        }
-
-        // Обрабатываем 401 (неавторизован) и отправляем на страницу входа
-        if ($exception instanceof AuthenticationException) {
-            return redirect()->guest(route('login'));
-        }
-
-        // Обрабатываем 500 только если мы в продакшене, иначе Laravel покажет полную ошибку
-        if (!ENV('APP_DEBUG')) {
-            return response()->view('errors.500', ['error_id' => $errorId], 500);
-        }
-
-        // Для всех остальных ошибок вызываем стандартное поведение Laravel
-        return parent::render($request, $exception);
     }
 
     /**

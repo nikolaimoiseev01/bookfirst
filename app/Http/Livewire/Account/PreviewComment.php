@@ -7,6 +7,7 @@ use App\Models\own_book;
 use App\Models\Participation;
 use App\Models\preview_comment;
 use App\Notifications\TelegramNotification;
+use App\Service\DangerTasksService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
@@ -200,12 +201,14 @@ class PreviewComment extends Component
             }
 
 
+            (new DangerTasksService())->update($manual_update = true);
+
             // Посылаем Telegram уведомление нам
-            Notification::route('telegram', '-506622812')
+            Notification::route('telegram', config('cons.telegram_chat_id'))
                 ->notify(new TelegramNotification($title,
                     $text,
                     "Его страница издания",
-                    route('own_books_page', $this->own_book_id)));
+                    'vk.com'));
 
 
             return redirect()->to(url()->previous());
@@ -285,13 +288,13 @@ class PreviewComment extends Component
                     . own_book::where('id', $this->own_book_id)->value('title') . '"';
             }
 
-
+            (new DangerTasksService())->update($manual_update = true);
             // Посылаем Telegram уведомление нам
-            Notification::route('telegram', '-506622812')
+            Notification::route('telegram', config('cons.telegram_chat_id'))
                 ->notify(new TelegramNotification($title,
                     $text,
                     "Его страница издания",
-                    route('own_books_page', $this->own_book_id)));
+                    'vk.com'));
 
             return redirect()->to(url()->previous());
 

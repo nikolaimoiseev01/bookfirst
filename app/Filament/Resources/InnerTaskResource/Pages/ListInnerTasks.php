@@ -16,4 +16,9 @@ class ListInnerTasks extends ListRecords
             Actions\CreateAction::make(),
         ];
     }
+
+    protected function getTableRecordsPerPageSelectOptions(): array
+    {
+        return [50, 100, 150, 200];
+    }
 }

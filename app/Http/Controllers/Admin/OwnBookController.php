@@ -22,6 +22,7 @@ use App\Models\User;
 use App\Models\Work;
 use App\Notifications\EmailNotification;
 use App\Notifications\UserNotification;
+use App\Service\DangerTasksService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -278,6 +279,8 @@ class OwnBookController extends Controller
             session()->flash('alert_title', 'Статус успешно изменен!');
         }
 
+        (new DangerTasksService())->update($manual_update = true);
+
         return redirect()->back();
 
     }
@@ -308,6 +311,8 @@ class OwnBookController extends Controller
                 'Смена статуса внутреннего блока!',
                 route('book_page', $own_book['id']))
         );
+
+        (new DangerTasksService())->update($manual_update = true);
 
         session()->flash('alert_type', 'success');
         session()->flash('alert_title', 'Статус успешно изменен!');
@@ -386,6 +391,7 @@ class OwnBookController extends Controller
         session()->flash('alert_type', 'success');
         session()->flash('alert_title', 'Статус успешно изменен!');
 
+        (new DangerTasksService())->update($manual_update = true);
 
         return redirect()->back();
 

@@ -20,6 +20,7 @@ use App\Models\Work;
 use App\Notifications\AllParticipantsEmail;
 use App\Notifications\EmailNotification;
 use App\Notifications\UserNotification;
+use App\Service\DangerTasksService;
 use Carbon\Carbon;
 use Illuminate\Notifications\Notification;
 use Illuminate\Http\Request;
@@ -574,6 +575,7 @@ class CollectionController extends Controller
             session()->flash('alert_title', 'Сборник успешно обновлен!');
 
         }
+        (new DangerTasksService())->update($manual_update = true);
         return redirect()->back();
     }
 

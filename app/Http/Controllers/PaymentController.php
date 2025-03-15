@@ -16,6 +16,7 @@ use App\Models\UserWallet;
 use App\Notifications\EmailNotification;
 use App\Notifications\new_participation;
 use App\Notifications\TelegramNotification;
+use App\Service\DangerTasksService;
 use App\Service\PaymentService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -636,7 +637,7 @@ class PaymentController extends Controller
                             'payment_method' => $notification['payment_method']['type'],
                         ));
                     // -----------------------------------------------------------------
-
+                    (new DangerTasksService())->update($manual_update = true);
                 }
             }
         }
