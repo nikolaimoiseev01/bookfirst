@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class InnerTaskResource extends Resource
 {
     use Tables\Concerns\InteractsWithTable;
+
     protected static ?string $model = InnerTask::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-check';
@@ -46,8 +47,10 @@ class InnerTaskResource extends Resource
                                 'Ксения' => 'Ксения',
                                 'Николай' => 'Николай',
                                 'Кристина' => 'Кристина',
-                            ])
-                    ])->columns(4),
+                            ]),
+                        Forms\Components\Toggle::make('flg_finished')
+                            ->label('Выполнено')->columnSpan(1)
+                    ])->columns(5),
                     Forms\Components\Grid::make()->schema([
                         Forms\Components\Textarea::make('description')
                             ->label('Описание')
@@ -55,7 +58,6 @@ class InnerTaskResource extends Resource
                             ->columnSpan(1),
                         Forms\Components\Grid::make()->schema([
                             Forms\Components\DateTimePicker::make('deadline_inner')
-                                ->sortable()
                                 ->label('Cрок'),
                         ])->columns(1)->columnSpan(1)
                     ])->columns(2),
