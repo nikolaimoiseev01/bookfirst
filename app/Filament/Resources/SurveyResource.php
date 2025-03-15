@@ -89,6 +89,7 @@ class SurveyResource extends Resource
             ->filters([
                 //
             ])
+            ->defaultSort('created_at', 'desc')
             ->actions([
                 Tables\Actions\ViewAction::make()
                     ->modalHeading('Отзыв пользователя'),
