@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\OwnBookResource\Pages;
-use App\Filament\Resources\OwnBookResource\RelationManagers;
-use App\Models\own_book;
+use App\Filament\Resources\ExtPromotionResource\Pages;
+use App\Filament\Resources\ExtPromotionResource\RelationManagers;
+use App\Models\ext_promotion;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
@@ -13,11 +13,11 @@ use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class OwnBookResource extends Resource
+class ExtPromotionResource extends Resource
 {
-    protected static ?string $model = own_book::class;
+    protected static ?string $model = ext_promotion::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-book-open';
+    protected static ?string $navigationIcon = 'heroicon-o-status-online';
 
     public static function form(Form $form): Form
     {
@@ -54,9 +54,9 @@ class OwnBookResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListOwnBooks::route('/'),
-            'create' => Pages\CreateOwnBook::route('/create'),
-            'edit' => Pages\EditOwnBook::route('/{record}/edit'),
+            'index' => Pages\ListExtPromotions::route('/'),
+            'create' => Pages\CreateExtPromotion::route('/create'),
+            'edit' => Pages\EditExtPromotion::route('/{record}/edit'),
         ];
     }
 }

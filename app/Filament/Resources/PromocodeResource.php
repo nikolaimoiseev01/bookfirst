@@ -17,7 +17,7 @@ class PromocodeResource extends Resource
 {
     protected static ?string $model = Promocode::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-cog';
 
     protected static ?string $navigationGroup = 'Настройки';
     protected static ?string $navigationLabel = 'Промокоды';

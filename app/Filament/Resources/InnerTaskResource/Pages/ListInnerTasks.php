@@ -17,6 +17,11 @@ class ListInnerTasks extends ListRecords
         ];
     }
 
+    protected function getTitle(): string
+    {
+        return 'Внутренние задачи';
+    }
+
     protected function getTableRecordsPerPageSelectOptions(): array
     {
         return [50, 100, 150, 200];

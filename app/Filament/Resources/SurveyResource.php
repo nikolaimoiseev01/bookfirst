@@ -23,7 +23,7 @@ class SurveyResource extends Resource
 
     protected static ?string $navigationGroup = 'Остальное';
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-question-mark-circle';
 
     public static function form(Form $form): Form
     {

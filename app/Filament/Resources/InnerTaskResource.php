@@ -131,8 +131,8 @@ class InnerTaskResource extends Resource
                         'Николай' => 'Коля',
                         'Кристина' => 'Крис',
                     ]),
-                Tables\Columns\ToggleColumn::make('flg_finished')
-                    ->label('Готово?'),
+//                Tables\Columns\ToggleColumn::make('flg_finished')
+//                    ->label('Готово?'),
                 Tables\Columns\TextColumn::make('deadline_inner')
                     ->label('Срок')
                     ->sortable()
@@ -155,10 +155,10 @@ class InnerTaskResource extends Resource
             ])
             ->defaultSort('deadline_inner', 'asc')
             ->actions([
-                Tables\Actions\DeleteAction::make(),
+//                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+//                Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
 

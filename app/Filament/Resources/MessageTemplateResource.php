@@ -17,7 +17,7 @@ class MessageTemplateResource extends Resource
 {
     protected static ?string $model = MessageTemplate::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-cog';
 
     protected static ?string $navigationGroup = 'Настройки';
 
