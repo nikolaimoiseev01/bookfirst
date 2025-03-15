@@ -328,7 +328,7 @@ class DangerTasksService
             foreach ($innerTasks as $innerTask) { /* Идем по всем нашим, чтобы удалить тех, что уже нет */
                 if ($innerTask['inner_task_type_id'] == 1) { /* Если Книги */
                     $search_type = 'collection_id';
-                } elseif ($innerTask['inner_task_type_id'] == 2) {
+                } else {
                     $search_type = 'own_book_id';
                 }
                 $exists = collect($message_arrays)->contains(function ($task) use ($innerTask, $search_type) { /* Ещем в сформированных сообщениях такую комбинацию */
