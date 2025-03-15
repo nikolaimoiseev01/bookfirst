@@ -132,7 +132,7 @@ class DangerTasksService
                                 'col_id' => $collection->id,
                                 'type_id' => 1,
                                 'title' => $innerTaskTitles[3],
-                                'deadline' =>  $winners_deadline
+                                'deadline' => $winners_deadline
                             ];
                             $message_arrays[] = [
                                 'title' => "🔥 *{$winners_add_title}*",
@@ -306,7 +306,7 @@ class DangerTasksService
                         'type_id' => 2,
                         'title' => $innerTaskTitles[54],
                         'original_status' => $own_book->own_book_status['status_title'],
-                        'deadline' =>  Date::parse($own_book['paid_at_print_only'])->addDays(2)
+                        'deadline' => Date::parse($own_book['paid_at_print_only'])->addDays(2)
                     ];
 
                     if ($text_own_book_need_prints ?? null) {
@@ -328,21 +328,22 @@ class DangerTasksService
             foreach ($innerTasks as $innerTask) { /* Идем по всем нашим, чтобы удалить тех, что уже нет */
                 if ($innerTask['inner_task_type_id'] == 1) { /* Если Книги */
                     $search_type = 'collection_id';
-                } else {
+                } elseif ($innerTask['inner_task_type_id'] == 2) {
                     $search_type = 'own_book_id';
-                }
-                $exists = collect($message_arrays)->contains(function ($task) use ($innerTask, $search_type) { /* Ещем в сформированных сообщениях такую комбинацию */
-                    return
-                        isset($task['innerTask'][$search_type])
-                        && $task['innerTask'][$search_type] == $innerTask[$search_type]
-                        && $task['innerTask']['title'] === $innerTask['title'];
-                });
-                if (!$exists) { /* Если нет такого, то удаляем */
-                    $innerTask->delete();
-                }
+                };
+                if ($search_type ?? null) {
+                    $exists = collect($message_arrays)->contains(function ($task) use ($innerTask, $search_type) { /* Ещем в сформированных сообщениях такую комбинацию */
+                        return
+                            isset($task['innerTask'][$search_type])
+                            && $task['innerTask'][$search_type] == $innerTask[$search_type]
+                            && $task['innerTask']['title'] === $innerTask['title'];
+                    });
+                    if (!$exists) { /* Если нет такого, то удаляем */
+                        $innerTask->delete();
+                    }
+                };
+
             }
-
-
 
 
             $debug_mode = False;
@@ -353,7 +354,7 @@ class DangerTasksService
                     dd($message_arrays);
                 } else {
                     foreach ($message_arrays as $message) {
-                        if(!$manual_update) { /* Если не ручное обновление */
+                        if (!$manual_update) { /* Если не ручное обновление */
                             Notification::route('telegram', config('cons.telegram_chat_id'))
                                 ->notify(new TelegramNotification($message['title'], $message['text'], "Админка", "vk1.com"));
                         }
