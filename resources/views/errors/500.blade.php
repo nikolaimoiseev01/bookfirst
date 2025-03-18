@@ -54,6 +54,11 @@
 
 
 @section('content')
+    <?php
+    if (!isset($error_id)) {
+        $error_id = '999';
+    }
+    ?>
     <div class="error-content">
         <h2 style="font-size: 45px; padding: 0 10%;">Что-то пошло не так!</h2>
         <h2 style="font-size: 35px; padding: 0 10%;">Мы сожалеем, что Вы столкнулись с ошибкой.<br>Возможные пути
@@ -67,13 +72,14 @@
                 поможет, если вы укажите код и ID ошибки.
                 <ul><i>
                         <li><b>Код:</b> 500</li>
-                        <li><b>ID:</b> {{ $error_id }}</li>
+                        <li><b>ID:</b> {{$error_id}}
+                        </li>
                     </i>
                 </ul>
             </li>
         </ul>
-        <a style="margin-top: 20px; box-shadow: none;" href="{{route('chat_create',"Ошибка в системе ({$error_id})")}}"
-           class="button fast-load">Создать вопрос</a>
+                <a style="margin-top: 20px; box-shadow: none;" href="{{route('chat_create',"Ошибка в системе ({$error_id})")}}"
+                   class="button fast-load">Создать вопрос</a>
     </div>
 
 @endsection

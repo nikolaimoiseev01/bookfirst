@@ -106,14 +106,11 @@ class Handler extends ExceptionHandler
 
         // Для веб-версии добавляем error_id в шаблоны ошибок
         $response = parent::render($request, $exception);
-
         if ($response->status() >= 400 && !ENV('APP_DEBUG')) {
             return response()->view("errors.{$response->status()}", ['error_id' => $errorId], $response->status());
         } else {
             return parent::render($request, $exception);
         }
-
-
     }
 
     /**
