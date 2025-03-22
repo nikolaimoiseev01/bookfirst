@@ -15,10 +15,13 @@ use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
 use Filament\Tables\Columns\SelectColumn;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\App;
+use Jenssegers\Date\Date;
 
 class InnerTaskResource extends Resource
 {
@@ -135,11 +138,29 @@ class InnerTaskResource extends Resource
                     ]),
 //                Tables\Columns\ToggleColumn::make('flg_finished')
 //                    ->label('Готово?'),
-                Tables\Columns\TextColumn::make('deadline_inner')
-                    ->label('Срок')
+                TextColumn::make('deadline_inner')
+                    ->label('Срок1')
+                    ->getStateUsing(function (InnerTask $record) {
+                        return $record['deadline_inner'];
+                    })
+                    ->formatStateUsing(callback: function ($state, InnerTask $record) {
+                        App::setLocale('ru');
+                        $deadline_days = Date::parse($state)->diff(Date::now());
+                        $date = \Carbon\Carbon::parse($state)->locale('ru')->translatedFormat('j F');
+                        $deadline_days = $deadline_days->days * ($deadline_days->invert === 0 ? -1 : 1);
+
+                        if ($deadline_days < 0) {
+                            $icon = '🔥';
+                        } elseif ($deadline_days <= 3) {
+                            $icon = '⚠️';
+                        } else {
+                            $icon = '';
+                        }
+
+                        return "$icon $date";
+                    })
                     ->sortable()
-                    ->searchable()
-                    ->date(),
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->toggleable()
                     ->toggledHiddenByDefault()
