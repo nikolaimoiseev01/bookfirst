@@ -42,7 +42,7 @@
                            style="height: 30px; width: 100%; margin-bottom: 14px;" type="text">
                     @foreach($works_to_choose as $work)
 
-                        <div id="work-container-{{$work['id']}}"
+                        <div wire:key="work_{{$work['id']}}" id="work-container-{{$work['id']}}"
                              class="container">
                             <p>{{Str::limit($work['title'], 20)}}</p>
                             <div class="one-work-button">
