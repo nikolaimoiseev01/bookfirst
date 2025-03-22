@@ -666,6 +666,8 @@ class CollectionController extends Controller
             'collection_id' => $collection['id']
         ]);
 
+        (new DangerTasksService())->update($manual_update = true);
+
         // ---- Сохраняем победителя! ---- //
         $new_winner = new collection_winner();
         $new_winner->collection_id = $collection['id'];
