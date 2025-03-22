@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Models\Collection;
+use App\Models\collection_winner;
 use App\Models\InnerTask;
 use App\Models\New_covers_readiness;
 use App\Models\own_book;
@@ -97,15 +98,16 @@ class DangerTasksService
 
                         if ($deadline_days < $deadline_days_threshold && $deadline_days >= 0) {
                             $text = "*{$title_short}* нужно сверстать до *{$col_deadline}*. Осталось дней: {$deadline_days}";
-                            $innerTask = [
-                                'col_id' => $collection->id,
-                                'type_id' => 1,
-                                'title' => $innerTaskTitles[1],
-                                'deadline' => $collection->col_date2
-                            ];
                         } elseif ($deadline_days < 0) {
                             $text = "*ПРОСРОЧКА!* *{$title_short}* нужно было сверстать *{$col_deadline}*. Дней просрочки: " . $deadline_days * -1;
                         }
+
+                        $innerTask = [
+                            'col_id' => $collection->id,
+                            'type_id' => 1,
+                            'title' => $innerTaskTitles[1],
+                            'deadline' => $collection->col_date2
+                        ];
 
                     } elseif ($collection['col_status_id'] == 2) {
                         $col_deadline = Date::parse($collection->col_date3)->format('j F');
@@ -117,14 +119,21 @@ class DangerTasksService
 
                         if ($deadline_days < $deadline_days_threshold && $deadline_days >= 0) {
                             $text = "*{$title_short}* нужно отправлять в печать до *{$col_deadline}*. Осталось дней: {$deadline_days}";
-                            $innerTask = [
-                                'col_id' => $collection->id,
-                                'type_id' => 1,
-                                'title' => $innerTaskTitles[4],
-                                'deadline' => $collection->col_date3
-                            ];
 
-                            /* Доп задача */
+                        } elseif ($deadline_days < 0) {
+                            $text = "*ПРОСРОЧКА!* *{$title_short}* нужно было отправить в печать до *{$col_deadline}*. Дней просрочки: " . $deadline_days * -1;
+                        }
+
+                        $innerTask = [
+                            'col_id' => $collection->id,
+                            'type_id' => 1,
+                            'title' => $innerTaskTitles[4],
+                            'deadline' => $collection->col_date3
+                        ];
+
+                        /* Доп задача */
+                        $this->winners = collection_winner::where('collection_id', $collection->id)->orderby('place')->count();
+                        if ($this->winners < 3) {
                             $winners_deadline = Date::parse($collection->col_date3)->addDays(-3);
                             $winners_add_title = "Нужно выбрать победителей! Дней: {$winners_deadline}";
                             $winners_add_text = "*{$title_short}* нужно выбрать победителей до *{$winners_deadline}*";
@@ -139,10 +148,8 @@ class DangerTasksService
                                 'text' => $winners_add_text,
                                 'innerTask' => $winners_add_inner_task
                             ];
-
-                        } elseif ($deadline_days < 0) {
-                            $text = "*ПРОСРОЧКА!* *{$title_short}* нужно было отправить в печать до *{$col_deadline}*. Дней просрочки: " . $deadline_days * -1;
                         }
+
 
                     } elseif ($collection['col_status_id'] == 3) {
                         $col_deadline = Date::parse($collection->col_date4)->format('j F');
@@ -233,16 +240,17 @@ class DangerTasksService
 
                     if ($deadline_days < $deadline_days_threshold && $deadline_days >= 0) {
                         $text_own_book_covers = "У автора *" . $own_book['author'] . "* нужно делать обложку! " . "Срок до {$own_book['cover_deadline']}. Осталось дней: {$deadline_days}";
-                        $innerTask = [
-                            'own_book_id' => $own_book['id'],
-                            'type_id' => 2,
-                            'title' => $innerTaskTitles[51][$own_book['own_book_cover_status_id']],
-                            'original_status' => $own_book->own_book_cover_status['status_title'],
-                            'deadline' => $own_book['cover_deadline']
-                        ];
                     } elseif ($deadline_days < 0) {
                         $text_own_book_covers = "*ПРОСРОЧКА!* У автора *" . $own_book['author'] . "* нужно было делать обложку! " . "Дней просрочки: " . $deadline_days * -1;
                     }
+
+                    $innerTask = [
+                        'own_book_id' => $own_book['id'],
+                        'type_id' => 2,
+                        'title' => $innerTaskTitles[51][$own_book['own_book_cover_status_id']],
+                        'original_status' => $own_book->own_book_cover_status['status_title'],
+                        'deadline' => $own_book['cover_deadline']
+                    ];
 
                     if ($text_own_book_covers ?? null) {
                         $message_arrays[] = [
@@ -269,17 +277,18 @@ class DangerTasksService
 
                     if ($deadline_days < $deadline_days_threshold && $deadline_days >= 0) {
                         $text_own_book_insides = "У автора *" . $own_book['author'] . "* нужно делать макет! " . "Срок до {$own_book['cover_deadline']}. Осталось дней: {$deadline_days}";
-                        $innerTask = [
-                            'own_book_id' => $own_book['id'],
-                            'type_id' => 2,
-                            'title' => $innerTaskTitles[50][$own_book['own_book_inside_status_id']],
-                            'original_status' => $own_book->own_book_inside_status['status_title'],
-                            'deadline' => $own_book['inside_deadline']
-                        ];
-
                     } elseif ($deadline_days < 0) {
                         $text_own_book_insides = "*ПРОСРОЧКА!* У автора *" . $own_book['author'] . "* нужно было делать макет! " . "Дней просрочки: " . $deadline_days * -1;
                     }
+
+                    $innerTask = [
+                        'own_book_id' => $own_book['id'],
+                        'type_id' => 2,
+                        'title' => $innerTaskTitles[50][$own_book['own_book_inside_status_id']],
+                        'original_status' => $own_book->own_book_inside_status['status_title'],
+                        'deadline' => $own_book['inside_deadline']
+                    ];
+
 
                     if ($text_own_book_insides ?? null) {
                         $message_arrays[] = [
