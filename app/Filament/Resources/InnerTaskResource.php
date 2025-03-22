@@ -92,6 +92,18 @@ class InnerTaskResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('title')
                     ->label('Заголовок')
+                    ->formatStateUsing(callback: function ($state, InnerTask $record) {
+
+                        $icon = '';
+                        if (str_contains(strtolower($state), 'облож')) {
+                            $icon = '📕';
+                        } elseif (str_contains(strtolower($state), 'ВБ')) {
+                            $icon = '📖';
+                        } elseif (str_contains(strtolower($state), 'сборник')) {
+                            $icon = '✒️';
+                        }
+                        return "$icon $state";
+                    })
                     ->searchable(),
                 Tables\Columns\TextColumn::make('own_book.title')
                     ->label('Книга')
@@ -139,7 +151,7 @@ class InnerTaskResource extends Resource
 //                Tables\Columns\ToggleColumn::make('flg_finished')
 //                    ->label('Готово?'),
                 TextColumn::make('deadline_inner')
-                    ->label('Срок1')
+                    ->label('Срок')
                     ->getStateUsing(function (InnerTask $record) {
                         return $record['deadline_inner'];
                     })
