@@ -196,6 +196,8 @@ Route::middleware(['role:admin|secondary_admin'])->prefix('admin_panel')->group(
     Route::get('/col', [App\Http\Controllers\Admin\CollectionController::class, 'index'])->name('homeAdmin');
     Route::get('/create_col_file', [App\Http\Controllers\Admin\CollectionController::class, 'create_col_file'])->name('create_col_file');
     Route::get('/download_all_prints', [App\Http\Controllers\Admin\CollectionController::class, 'download_all_prints'])->name('download_all_prints');
+    Route::get('/download_cdek_prints', [App\Http\Controllers\Admin\CollectionController::class, 'download_cdek_prints'])->name('download_cdek_prints');
+
     Route::get('/collections/closed', [App\Http\Controllers\Admin\CollectionController::class, 'closed_collections'])->name('closed_collections');
     Route::post('/change_user_collection/{participation_id}', [App\Http\Controllers\Admin\ParticipationController::class, 'change_user_collection'])->name('change_user_collection');
     Route::post('/add_participation_comment/{participation_id}', [App\Http\Controllers\Admin\ParticipationController::class, 'add_participation_comment'])->name('add_participation_comment');

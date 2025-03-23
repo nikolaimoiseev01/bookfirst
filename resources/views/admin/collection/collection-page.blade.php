@@ -867,7 +867,7 @@
                                     id="chat"
                                     enctype="multipart/form-data"
                                     method="get"
-                                    action="{{route('download_all_prints')}}"
+                                    action="{{route('download_cdek_prints')}}"
                                     class="ml-auto">
                                     @csrf
                                     <input style="display: none" type="number" id="col_id" name="col_id"

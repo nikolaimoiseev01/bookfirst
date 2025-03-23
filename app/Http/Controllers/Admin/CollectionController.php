@@ -136,7 +136,7 @@ class CollectionController extends Controller
 
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
-        $sheet->setCellValue('A1', 'ФИО');
+        $sheet->setCellValue('Номер отправления', 'ФИО');
         $sheet->setCellValue('B1', 'Адрес');
         $sheet->setCellValue('C1', 'Кол-во');
         $sheet->setCellValue('D1', 'Трек-номер');
@@ -165,6 +165,107 @@ class CollectionController extends Controller
         $sheet->setCellValue("B" . ($key + 3), 'Россия, Москва, Милашенкова 3к2, кв. 83, индекс: 127322, +79095713756');
         $sheet->setCellValue("C" . ($key + 3), 1);
         $sheet->setCellValue("E" . ($key + 3), $print_address_to_envelope);
+
+        foreach (range('A', 'D') as $columnID) {
+            $spreadsheet->getActiveSheet()->getColumnDimension($columnID)
+                ->setAutoSize(true);
+        }
+
+
+        $writer = new Xlsx($spreadsheet);
+        $col_title = 'Печать ' . Collection::where('id', $request->col_id)->value('title');
+        $writer->save($col_title . '.xlsx');
+        return response()->download($col_title . '.xlsx')->deleteFileAfterSend(true);
+
+    }
+
+    public function download_cdek_prints(Request $request)
+    {
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A1', 'Номер отправления');
+        $sheet->setCellValue('B1', 'Город получателя');
+        $sheet->setCellValue('C1', 'Индекс города получателя');
+        $sheet->setCellValue('D1', 'Получатель');
+        $sheet->setCellValue('E1', 'ФИО получателя');
+        $sheet->setCellValue('F1', 'Адрес получателя');
+        $sheet->setCellValue('G1', 'Код ПВЗ');
+        $sheet->setCellValue('H1', 'Телефон получателя');
+        $sheet->setCellValue('I1', 'Доп сбор за доставку с получателя в т.ч. НДС');
+        $sheet->setCellValue('J1', 'Ставка НДС с доп.сбора за доставку');
+        $sheet->setCellValue('K1', 'Сумма НДС с доп.сбора за доставку');
+        $sheet->setCellValue('L1', 'Истинный продавец');
+        $sheet->setCellValue('M1', 'Комментарий');
+        $sheet->setCellValue('N1', 'Порядковый номер места');
+        $sheet->setCellValue('O1', 'Вес места, кг');
+        $sheet->setCellValue('P1', 'Длина места, см');
+        $sheet->setCellValue('Q1', 'Ширина места, см');
+        $sheet->setCellValue('R1', 'Высота места, см');
+        $sheet->setCellValue('S1', 'Описание места');
+        $sheet->setCellValue('T1', 'Код маркировки');
+        $sheet->setCellValue('U1', 'Код товара/артикул');
+        $sheet->setCellValue('V1', 'Наименование товара');
+        $sheet->setCellValue('W1', 'Стоимость единицы товара');
+        $sheet->setCellValue('X1', 'Оплата с получателя за ед товара в т.ч. НДС');
+        $sheet->setCellValue('Y1', 'Вес товара, кг');
+        $sheet->setCellValue('Z1', 'Количество, шт');
+        $sheet->setCellValue('AA1', 'Ставка НДС, %');
+        $sheet->setCellValue('AB1', 'Сумма НДС за ед.');
+        $sheet->setCellValue('AC1', 'Наименование компании');
+        $sheet->setCellValue('AD1', 'Страна продавца');
+        $sheet->setCellValue('AE1', 'Форма собственности');
+        $sheet->setCellValue('AF1', 'ИНН истинного продавца');
+        $sheet->setCellValue('AG1', 'Телефон истинного продавца');
+
+        $spreadsheet->getActiveSheet()->getStyle("A1:D1")->getFont()->setBold(true);
+
+        $sendings = Participation::where('collection_id', $request->col_id)->where('pat_status_id', 3)->where('printorder_id', '>', 0)->get();
+
+        $book_weight = 170;
+        $book_thickness = 4;
+
+        foreach ($sendings as $key => $sending) {
+            $print = Printorder::where('id', $sending['printorder_id'])->first();
+            $address = collect(json_decode($print['address']));
+            $address_data = collect($address['data']);
+            $comment = $sending->collection['title'] . ', ' . $print['books_needed'] . ' шт.';
+            $sending_weight = ($book_weight * $print['books_needed'] + 20) / 1000;
+            $sending_thickness = $book_thickness * $print['books_needed'] + 1;
+
+            $sheet->setCellValue('A' . $key + 2, $key + 2); // Номер отправления
+            $sheet->setCellValue('B' . $key + 2, $address_data['city']); // Город получателя
+            $sheet->setCellValue('C' . $key + 2, $address_data['postal_code']); // Индекс города получателя
+            $sheet->setCellValue('D' . $key + 2, $print['send_to_name']); // Получатель
+            $sheet->setCellValue('E' . $key + 2, $print['send_to_name']);
+            $sheet->setCellValue('F' . $key + 2, $address['unrestricted_value']); // Адрес получателя
+            $sheet->setCellValue('G' . $key + 2, ''); // КОД ПВЗ
+            $sheet->setCellValue('H' . $key + 2, $print['send_to_tel']); // Телефон получателя
+            $sheet->setCellValue('I' . $key + 2, 1); // Доп сбор за доставку с получателя в т.ч. НДС
+            $sheet->setCellValue('J' . $key + 2, ''); // Ставка НДС с доп.сбора за доставку
+            $sheet->setCellValue('K' . $key + 2, ''); // Сумма НДС с доп.сбора за доставку
+            $sheet->setCellValue('L' . $key + 2, '');
+            $sheet->setCellValue('M' . $key + 2, $comment); // Комментарий
+            $sheet->setCellValue('N' . $key + 2, 1); // Порядковый номер места
+            $sheet->setCellValue('O' . $key + 2, $sending_weight); // Вес места, кг
+            $sheet->setCellValue('P' . $key + 2, '22,9'); // Длина места, см
+            $sheet->setCellValue('Q' . $key + 2, '16,5'); // Ширина места, см
+            $sheet->setCellValue('R' . $key + 2, $sending_thickness); // Высота места, см
+            $sheet->setCellValue('S' . $key + 2, 'Книги'); // Описание места
+            $sheet->setCellValue('T' . $key + 2, '');// Код маркировки
+            $sheet->setCellValue('U' . $key + 2, 'print_id=' . $print['id']); // Код товара/артикул
+            $sheet->setCellValue('V' . $key + 2, 'Наименование товара'); // Наименование товара
+            $sheet->setCellValue('W' . $key + 2, 'Стоимость единицы товара'); // Стоимость единицы товара
+            $sheet->setCellValue('X' . $key + 2, 0); // Оплата с получателя за ед товара в т.ч. НДС
+            $sheet->setCellValue('Y' . $key + 2, $sending_weight); // Вес товара, кг
+            $sheet->setCellValue('Z' . $key + 2, 1); // Количество, шт
+            $sheet->setCellValue('AA' . $key + 2, 0); // Ставка НДС, %
+            $sheet->setCellValue('AB' . $key + 2, 0); // Сумма НДС за ед.
+            $sheet->setCellValue('AC' . $key + 2, ''); // Наименование компании
+            $sheet->setCellValue('AD' . $key + 2, ''); // Страна продавца
+            $sheet->setCellValue('AE' . $key + 2, ''); // Форма собственности
+            $sheet->setCellValue('AF' . $key + 2, ''); // ИНН истинного продавца
+            $sheet->setCellValue('AG' . $key + 2, ''); // Телефон истинного продавца
+        }
 
         foreach (range('A', 'D') as $columnID) {
             $spreadsheet->getActiveSheet()->getColumnDimension($columnID)
