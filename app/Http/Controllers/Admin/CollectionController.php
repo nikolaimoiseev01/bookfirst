@@ -227,22 +227,23 @@ class CollectionController extends Controller
         foreach ($sendings as $key => $sending) {
             $print = Printorder::where('id', $sending['printorder_id'])->first();
             $address = collect(json_decode($print['address']));
-            $address_data = collect($address['data']);
+//            $address_data = collect($address['data']);
+//            dd($address);
             $comment = $sending->collection['title'] . ', ' . $print['books_needed'] . ' шт.';
             $sending_weight = ($book_weight * $print['books_needed'] + 20) / 1000;
             $sending_thickness = $book_thickness * $print['books_needed'] + 1;
 
             $sheet->setCellValue('A' . $key + 2, $key + 2); // Номер отправления
-            $sheet->setCellValue('B' . $key + 2, $address_data['city']); // Город получателя
-            $sheet->setCellValue('C' . $key + 2, $address_data['postal_code']); // Индекс города получателя
+            $sheet->setCellValue('B' . $key + 2, $print['send_to_city']); // Город получателя
+            $sheet->setCellValue('C' . $key + 2, $print['send_to_index']); // Индекс города получателя
             $sheet->setCellValue('D' . $key + 2, $print['send_to_name']); // Получатель
             $sheet->setCellValue('E' . $key + 2, $print['send_to_name']);
             $sheet->setCellValue('F' . $key + 2, $address['unrestricted_value']); // Адрес получателя
             $sheet->setCellValue('G' . $key + 2, ''); // КОД ПВЗ
             $sheet->setCellValue('H' . $key + 2, $print['send_to_tel']); // Телефон получателя
             $sheet->setCellValue('I' . $key + 2, 1); // Доп сбор за доставку с получателя в т.ч. НДС
-            $sheet->setCellValue('J' . $key + 2, ''); // Ставка НДС с доп.сбора за доставку
-            $sheet->setCellValue('K' . $key + 2, ''); // Сумма НДС с доп.сбора за доставку
+            $sheet->setCellValue('J' . $key + 2, 0); // Ставка НДС с доп.сбора за доставку
+            $sheet->setCellValue('K' . $key + 2, 0); // Сумма НДС с доп.сбора за доставку
             $sheet->setCellValue('L' . $key + 2, '');
             $sheet->setCellValue('M' . $key + 2, $comment); // Комментарий
             $sheet->setCellValue('N' . $key + 2, 1); // Порядковый номер места
