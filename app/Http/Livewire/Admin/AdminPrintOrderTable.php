@@ -10,6 +10,7 @@ use Livewire\Component;
 class AdminPrintOrderTable extends Component
 {
     public $track_number = [];
+    public $logistic = [];
     public $send_price = [];
     public $participations;
     public $print_order_id = 99999;
@@ -76,6 +77,26 @@ class AdminPrintOrderTable extends Component
             // ---- Редактируем Заказ печатных! ---- //
             Printorder::where('id', $print_order_id)->update([
                 'track_number' => $this->track_number[$print_order_id],
+            ]);
+// ----------------------------------------------------------- //
+
+            $this->show_input = 0;
+        }
+    }
+
+    public function save_logistic($print_order_id)
+    {
+
+        if ($this->track_number[$print_order_id] === '' || $this->track_number[$print_order_id] === null) {
+            $this->dispatchBrowserEvent('swal:modal', [
+                'type' => 'error',
+                'title' => 'Что-то пошло не так',
+                'text' => 'Ни одно поле не должно быть пустым!',
+            ]);
+        } else {
+            // ---- Редактируем Заказ печатных! ---- //
+            Printorder::where('id', $print_order_id)->update([
+                'logistic' => $this->logistic[$print_order_id],
             ]);
 // ----------------------------------------------------------- //
 

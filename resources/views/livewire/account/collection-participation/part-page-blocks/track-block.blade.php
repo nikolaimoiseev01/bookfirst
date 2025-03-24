@@ -103,7 +103,7 @@
                             </i></p>
                     @endif
                         <a target="_blank"
-                           href="https://www.pochta.ru/tracking#{{$participation->printorder['track_number'] ?? null ?? "ссылка не найдена"}}"
+                           href="{{tracking_link($participation->printorder)}}"
                            class="@if ($participation->printorder['track_number'] ?? 0 <> 0) @else amazon_link_error @endif button">Отследить</a>
                         <a href="{{route('chat_create', 'У меня проблема с пересылкой')}}" class="link">У
                             меня

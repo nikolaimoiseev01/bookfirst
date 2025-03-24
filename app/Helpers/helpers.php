@@ -23,3 +23,13 @@ function print_address($print_order)
     $full_string = "{$address}, {$print_order['send_to_name']}, {$print_order['send_to_tel']}";
     return $full_string;
 }
+
+function tracking_link($print_order)
+{
+    if ($print_order['logistic'] == 'cdek') {
+        $link = "https://www.cdek.ru/ru/tracking/?order_id={$print_order['track_number']}";
+    } else {
+        $link = "https://www.pochta.ru/tracking#{$print_order['track_number']}";
+    }
+    return $link;
+}

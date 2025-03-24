@@ -254,8 +254,8 @@ class CollectionController extends Controller
             $sheet->setCellValue('S' . $key + 2, 'Книги'); // Описание места
             $sheet->setCellValue('T' . $key + 2, '');// Код маркировки
             $sheet->setCellValue('U' . $key + 2, 'print_id=' . $print['id']); // Код товара/артикул
-            $sheet->setCellValue('V' . $key + 2, 'Наименование товара'); // Наименование товара
-            $sheet->setCellValue('W' . $key + 2, 'Стоимость единицы товара'); // Стоимость единицы товара
+            $sheet->setCellValue('V' . $key + 2, ''); // Наименование товара
+            $sheet->setCellValue('W' . $key + 2, ''); // Стоимость единицы товара
             $sheet->setCellValue('X' . $key + 2, 0); // Оплата с получателя за ед товара в т.ч. НДС
             $sheet->setCellValue('Y' . $key + 2, $sending_weight); // Вес товара, кг
             $sheet->setCellValue('Z' . $key + 2, 1); // Количество, шт
