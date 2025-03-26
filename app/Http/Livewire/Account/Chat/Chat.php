@@ -278,7 +278,7 @@ class Chat extends Component
                     ->notify(new TelegramNotification($tel_message_title,
                         '💬' . $user_from['name'] . ' ' . $user_from['surname'] . ': ' . $this->text,
                         null,
-                        null));
+                        'vk.com'));
             }
 
         }
