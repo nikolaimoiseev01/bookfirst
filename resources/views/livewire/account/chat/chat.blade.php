@@ -96,7 +96,7 @@
 
 
                     </div>
-                    <p class="message_time">{{ Date::parse($message['created_at'])->addHours(3)->format('j F H:i') }} </p>
+                    <p class="message_time">{{ Date::parse($message['created_at'])->format('j F H:i') }} </p>
                 </div>
             @endforeach
 
