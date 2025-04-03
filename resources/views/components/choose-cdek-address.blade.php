@@ -77,7 +77,7 @@
             new window.CDEKWidget({
                 from: 'Новосибирск',
                 root: 'cdek-map',
-                apiKey: 'f4e034c2-8c37-4168-8b97-99b6b3b268d7',
+                apiKey: 'fd961b64-1fc8-45e7-aa43-c7a313266688',
                 servicePath: 'https://pervajakniga.ru/service.php',
                 defaultLocation: 'Новосибирск',
                 hideDeliveryOptions: {
