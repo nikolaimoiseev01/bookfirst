@@ -83,8 +83,8 @@
                         </div>
 
                         <div wire:ignore class="participation-inputs-row">
-{{--                            <x-choose-order-address :address="$address_default_string"></x-choose-order-address>--}}
-                            <x-choose-cdek-address/>
+                            <x-choose-order-address :address="$address_default_string"></x-choose-order-address>
+{{--                            <x-choose-cdek-address/>--}}
                         </div>
                     </div>
                 </div>
