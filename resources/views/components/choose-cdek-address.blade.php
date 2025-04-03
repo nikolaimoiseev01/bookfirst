@@ -78,7 +78,7 @@
                 from: 'Новосибирск',
                 root: 'cdek-map',
                 apiKey: 'f4e034c2-8c37-4168-8b97-99b6b3b268d7',
-                servicePath: 'http://localhost:8000/service.php',
+                servicePath: 'https://pervajakniga.ru/service.php',
                 defaultLocation: 'Новосибирск',
                 hideDeliveryOptions: {
                     office: false,
