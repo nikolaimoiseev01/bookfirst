@@ -270,8 +270,8 @@ class CollectionController extends Controller
             $sheet->setCellValue('S' . $key + 2, "Книги ({$print['books_needed']} шт.)"); // Описание места
             $sheet->setCellValue('T' . $key + 2, '');// Код маркировки
             $sheet->setCellValue('U' . $key + 2, 'print_id=' . $print['id']); // Код товара/артикул
-            $sheet->setCellValue('V' . $key + 2, ''); // Наименование товара
-            $sheet->setCellValue('W' . $key + 2, ''); // Стоимость единицы товара
+            $sheet->setCellValue('V' . $key + 2, 'Книги'); // Наименование товара
+            $sheet->setCellValue('W' . $key + 2, 0); // Стоимость единицы товара
             $sheet->setCellValue('X' . $key + 2, 0); // Оплата с получателя за ед товара в т.ч. НДС
             $sheet->setCellValue('Y' . $key + 2, $sending_weight); // Вес товара, кг
             $sheet->setCellValue('Z' . $key + 2, 1); // Количество, шт
@@ -510,12 +510,17 @@ class CollectionController extends Controller
         $printorder_groups = PrintOrder::select('books_needed', DB::raw('count(*) as total'))
             ->join('participations', 'participations.printorder_id', '=', 'printorders.id') // Предполагается, что у вас есть внешний ключ на PrintOrder
             ->where('participations.pat_status_id', 3) // Условие на статус участия
-            ->where('printorders.collection_id', $collection->id) // Условие на collection_id
+            ->where('participations.collection_id', $collection->id) // Условие на collection_id
+//            ->where('printorders.id', 1192)
             ->groupBy('books_needed')
             ->orderBy('books_needed')
             ->get()
             ->toArray();
-
+//        $printorder_groups = PrintOrder::join('participations', 'participations.printorder_id', '=', 'printorders.id') // Предполагается, что у вас есть внешний ключ на PrintOrder
+//            ->where('printorders.collection_id', $collection->id) // Условие на collection_id
+//            ->get()
+//            ->toArray();
+//        dd(collect($printorder_groups));
 
         $pre_comments = preview_comment::where('collection_id', $collection->id)->with('participation')->get();
 //        $votes = vote::where('collection_id', $collection->id)->with('Collection')->with('Participation')->get();
