@@ -870,6 +870,11 @@
                                     action="{{route('download_cdek_prints')}}"
                                     class="ml-auto">
                                     @csrf
+                                    <label for="book_weight">Вес</label>
+                                    <input value="200" required type="number" id="book_weight" name="book_weight">
+
+                                    <label for="book_thickness">Толщина книги</label>
+                                    <input value="4" required type="number" id="col_id" name="book_thickness">
                                     <input style="display: none" type="number" id="col_id" name="col_id"
                                            value="{{$collection['id']}}">
                                     <button id="chat_form" style="width:fit-content; position: relative;"

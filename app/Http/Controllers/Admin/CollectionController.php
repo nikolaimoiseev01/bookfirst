@@ -219,25 +219,41 @@ class CollectionController extends Controller
 
         $spreadsheet->getActiveSheet()->getStyle("A1:D1")->getFont()->setBold(true);
 
-        $sendings = Participation::where('collection_id', $request->col_id)->where('pat_status_id', 3)->where('printorder_id', '>', 0)->get();
+//        $sendings = Participation::where('collection_id', $request->col_id)->where('pat_status_id', 3)->where('printorder_id', '>', 0)->orderBy('books_needed')->get();
 
-        $book_weight = 170;
-        $book_thickness = 4;
+        $sendings = Participation::join('printorders', 'participations.printorder_id', '=', 'printorders.id')
+            ->where('participations.collection_id', $request->col_id)
+            ->where('participations.pat_status_id', 3)
+            ->where('participations.printorder_id', '>', 0)
+            ->orderBy('printorders.books_needed')
+            ->select('participations.*') // важно, чтобы вернулись модели Participation
+            ->get();
+
+
+        $book_weight = $request->book_weight;
+        $book_thickness = $request->book_thickness; // мм
 
         foreach ($sendings as $key => $sending) {
             $print = Printorder::where('id', $sending['printorder_id'])->first();
-            $address = collect(json_decode($print['address']));
-//            $address_data = collect($address['data']);
-//            dd($address);
+
             $comment = $sending->collection['title'] . ', ' . $print['books_needed'] . ' шт.';
             $sending_weight = ($book_weight * $print['books_needed'] + 20) / 1000;
             $sending_thickness = $book_thickness * $print['books_needed'] + 1;
 
+            $address = collect(json_decode($print['address']));
+            if ($address['type'] == 'DaData RUS') {
+                $city = $address['data']->city;
+                $postal_code = $address['data']->postal_code;
+            } else {
+                $city = $print['send_to_city'];
+                $postal_code = $print['send_to_index'];
+            }
+
             $sheet->setCellValue('A' . $key + 2, $key + 2); // Номер отправления
-            $sheet->setCellValue('B' . $key + 2, $print['send_to_city']); // Город получателя
-            $sheet->setCellValue('C' . $key + 2, $print['send_to_index']); // Индекс города получателя
+            $sheet->setCellValue('B' . $key + 2, $city); // Город получателя
+            $sheet->setCellValue('C' . $key + 2, $postal_code); // Индекс города получателя
             $sheet->setCellValue('D' . $key + 2, $print['send_to_name']); // Получатель
-            $sheet->setCellValue('E' . $key + 2, $print['send_to_name']);
+            $sheet->setCellValue('E' . $key + 2, $print['send_to_name']); // ФИО Получателя
             $sheet->setCellValue('F' . $key + 2, $address['unrestricted_value']); // Адрес получателя
             $sheet->setCellValue('G' . $key + 2, ''); // КОД ПВЗ
             $sheet->setCellValue('H' . $key + 2, $print['send_to_tel']); // Телефон получателя
@@ -251,7 +267,7 @@ class CollectionController extends Controller
             $sheet->setCellValue('P' . $key + 2, '22,9'); // Длина места, см
             $sheet->setCellValue('Q' . $key + 2, '16,5'); // Ширина места, см
             $sheet->setCellValue('R' . $key + 2, $sending_thickness); // Высота места, см
-            $sheet->setCellValue('S' . $key + 2, 'Книги'); // Описание места
+            $sheet->setCellValue('S' . $key + 2, "Книги ({$print['books_needed']} шт.)"); // Описание места
             $sheet->setCellValue('T' . $key + 2, '');// Код маркировки
             $sheet->setCellValue('U' . $key + 2, 'print_id=' . $print['id']); // Код товара/артикул
             $sheet->setCellValue('V' . $key + 2, ''); // Наименование товара
