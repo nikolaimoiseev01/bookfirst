@@ -287,7 +287,7 @@ class CreateOwnBook extends Component
     {
         if ($this->check_app()) { // Если прошла все проверки
             // Если в адресе не оказалось квартиры
-            if ($this->delivery_country == 'rus') {
+            if ($this->delivery_country == 'rus' && $this->need_print ?? null) {
                 if (!$this->address['data']['flat'] || !$this->address['data']['street']) {
                     $this->dispatchBrowserEvent('swal:confirm', [
                         'title' => 'Точно такой адрес?',
