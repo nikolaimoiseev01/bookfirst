@@ -313,9 +313,9 @@ class CreateOwnBook extends Component
             $check_text = ($this->need_check ? 'необходима проверка (' . $this->price_check . ' руб.)' : '');
             $inside_text = ($this->inside_ready == '0') ? $design_text . (($this->need_design && $this->need_check) ? ', ' : '') . $check_text : 'полностью готов к печати';
             $cover_text = ($this->cover_ready == '0') ? 'необходимо создание (1500 руб.).' : 'полностью готова.';
-            if ($this->delivery_country == 'rus') {
+            if ($this->delivery_country == 'rus' && $this->need_print ?? null) {
                 $delivery_text = "РФ, {$this->address['unrestricted_value']}";
-            } elseif ($this->delivery_country == 'foreign') {
+            } elseif ($this->delivery_country == 'foreign' && $this->need_print ?? null) {
                 $delivery_text = "$this->send_to_country, $this->send_to_city, $this->send_to_address, $this->send_to_index";
             }
             $print_text = ($this->need_print) ?
