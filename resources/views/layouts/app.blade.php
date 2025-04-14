@@ -78,7 +78,7 @@
 
 <div class="account-content">
 
-    @yield('page-title')
+    @yield('page-title2')
 
     @yield('content')
 
