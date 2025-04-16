@@ -417,10 +417,10 @@
                     emit('count_doc_pages')
                 },
 
-                maxTotalFileSize: '30MB',
+                maxTotalFileSize: '100MB',
                 labelMaxFileSizeExceeded: 'Размер превышен!',
                 labelMaxFileSize: 'Максимальный: {filesize}',
-                labelMaxTotalFileSizeExceeded: 'Макс. размер: 20мб!',
+                labelMaxTotalFileSizeExceeded: 'Макс. размер: 100мб!',
                 labelMaxTotalFileSize: 'Максимум: {filesize}',
                 labelIdle: `<p>Загрузите один файл <b>внутреннего блока.</b> <a class="link">Загрузить</a></p></br><p style="font-size: 20px; line-height: 25px; color: #ff5b5b;"><i>В файлах 'docx' мы попробуем определить кол-во страниц автоматически. <br>В случае ошибки необходимо указать кол-во вручную.</i></p>`,
             });
