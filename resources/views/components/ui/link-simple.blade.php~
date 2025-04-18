@@ -1,0 +1,13 @@
+@props([
+    'social',
+])
+
+@php
+    $classes = ($social ?? false)
+                ? 'block text-blue-500'
+                : 'block text-green-500';
+@endphp
+
+<a {{ $attributes->merge(['type' => 'submit', 'class' => $classes])}}>
+   {{$slot}}
+</a>

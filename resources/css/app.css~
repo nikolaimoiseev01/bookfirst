@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    @apply bg-white font-futura text-black-500;
+}
+
+
+.content {
+    @apply max-w-7xl mx-auto w-[90%];
+}

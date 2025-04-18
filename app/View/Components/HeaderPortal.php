@@ -1,0 +1,73 @@
+<?php
+
+namespace App\View\Components;
+
+use Closure;
+use Illuminate\Contracts\View\View;
+use Illuminate\View\Component;
+
+class HeaderPortal extends Component
+{
+    /**
+     * Create a new component instance.
+     */
+    public function __construct()
+    {
+        //
+    }
+
+    /**
+     * Get the view / contents that represent the component.
+     */
+    public function render(): View|Closure|string
+    {
+        $links = [
+            [
+                'name' => 'Сборники',
+                'routes' => [
+                    [
+                        'name' => 'Актуальные',
+                        'link' => route('portal.index')
+                    ],
+                    [
+                        'name' => 'Изданные',
+                        'link' => route('portal.index')
+                    ],
+                ]
+            ],
+            [
+                'name' => 'Собственные книги',
+                'routes' => [
+                    [
+                        'name' => 'Подробнее',
+                        'link' => route('portal.index')
+                    ],
+                    [
+                        'name' => 'Изданные',
+                        'link' => route('portal.index')
+                    ],
+                ]
+            ],
+            [
+                'name' => 'Продвижение',
+                'route' => route('portal.index')
+            ],
+            [
+                'name' => 'Еще',
+                'routes' => [
+                    [
+                        'name' => 'О нас',
+                        'link' => route('portal.index')
+                    ],
+                    [
+                        'name' => 'Отзывы',
+                        'link' => route('portal.index')
+                    ],
+                ]
+            ]
+        ];
+        return view('components.header-portal', [
+            'links' => $links
+        ]);
+    }
+}

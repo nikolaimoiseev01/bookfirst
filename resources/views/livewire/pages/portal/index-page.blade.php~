@@ -1,0 +1,20 @@
+<main>
+    <section class="h-screen w-full flex items-center">
+        <div class="content flex justify-between items-center">
+            <div class="flex flex-col gap-4 max-w-[600px]">
+                <h1 class="text-7xl font-medium text-black-500">Ваш шаг в мир<br>литературы</h1>
+                <x-portal.welcome-running-line/>
+                <div class="flex gap-8">
+                    <a href="#"
+                       class="text-3xl px-9 py-2 text-green-500
+                              border border-green-500 no-underline
+                              relative overflow-hidden rounded-[10px]
+                              transition-all duration-300
+                              hover:shadow-[5px_5px_2px_#499b897a] hover:scale-[1.03]">
+                        Опубликовать
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>

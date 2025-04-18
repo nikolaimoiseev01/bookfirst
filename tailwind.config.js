@@ -1,0 +1,35 @@
+import defaultTheme from 'tailwindcss/defaultTheme';
+import forms from '@tailwindcss/forms';
+
+/** @type {import('tailwindcss').Config} */
+export default {
+    content: [
+        './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
+        './storage/framework/views/*.php',
+        './resources/views/**/*.blade.php',
+    ],
+
+    theme: {
+        extend: {
+            fontFamily: {
+                futura: ['"Futura PT"', ...defaultTheme.fontFamily.sans],
+                sans: ['Futura PT', ...defaultTheme.fontFamily.sans],
+            },
+            colors: {
+                green: {
+                    500: '#47af98'
+                },
+                black: {
+                    400: '#4c4b46',
+                    500: '#363531',
+                    600: '#1c1c16'
+                },
+                blue: {
+                    500: '#66a2e5'
+                }
+            }
+        },
+    },
+
+    plugins: [forms],
+};
