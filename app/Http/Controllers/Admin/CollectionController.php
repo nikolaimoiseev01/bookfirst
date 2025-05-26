@@ -243,7 +243,7 @@ class CollectionController extends Controller
             $sending_thickness = $book_thickness * $print['books_needed'] + 1;
 
             $shor_collection_nm = str_replace(['Современный ', 'Поэзии. ', 'Сокровенные ', 'Выпуск '], '', $sending->collection['title']);
-            $cdek_desc = $shor_collection_nm . '. ' . $print['books_needed'] . ' шт. ' . 'part_id=' . $sending['id'];
+            $cdek_desc = $shor_collection_nm . '. ' . $print['books_needed'] . ' шт. ' . 'part_id=' . $sending['id'] . '. ' . 'print_id=' . $print['id'];
 
             $address = collect(json_decode($print['address']));
             if ($address['type'] == 'DaData RUS') {
@@ -254,7 +254,7 @@ class CollectionController extends Controller
                 $postal_code = $print['send_to_index'];
             }
 
-            $sheet->setCellValue('A' . $key + 2, $key + 2); // Номер отправления
+            $sheet->setCellValue('A' . $key + 2, $print['id']); // Номер отправления
             $sheet->setCellValue('B' . $key + 2, $city); // Город получателя
             $sheet->setCellValue('C' . $key + 2, $postal_code); // Индекс города получателя
             $sheet->setCellValue('D' . $key + 2, $print['send_to_name']); // Получатель
