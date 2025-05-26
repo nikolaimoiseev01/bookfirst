@@ -233,12 +233,17 @@ class CollectionController extends Controller
         $book_weight = $request->book_weight;
         $book_thickness = $request->book_thickness; // мм
 
+
+
         foreach ($sendings as $key => $sending) {
             $print = Printorder::where('id', $sending['printorder_id'])->first();
 
             $comment = $sending->collection['title'] . ', ' . $print['books_needed'] . ' шт.';
             $sending_weight = ($book_weight * $print['books_needed'] + 20) / 1000;
             $sending_thickness = $book_thickness * $print['books_needed'] + 1;
+
+            $shor_collection_nm = str_replace(['Современный ', 'Поэзии. ', 'Сокровенные ', 'Выпуск '], '', $sending->collection['title']);
+            $cdek_desc = $shor_collection_nm . '. ' . $print['books_needed'] . ' шт. ' . 'part_id=' . $sending['id'];
 
             $address = collect(json_decode($print['address']));
             if ($address['type'] == 'DaData RUS') {
@@ -269,7 +274,7 @@ class CollectionController extends Controller
             $sheet->setCellValue('R' . $key + 2, $sending_thickness); // Высота места, см
             $sheet->setCellValue('S' . $key + 2, "Книги ({$print['books_needed']} шт.)"); // Описание места
             $sheet->setCellValue('T' . $key + 2, '');// Код маркировки
-            $sheet->setCellValue('U' . $key + 2, 'print_id=' . $print['id']); // Код товара/артикул
+            $sheet->setCellValue('U' . $key + 2, $cdek_desc); // Код товара/артикул
             $sheet->setCellValue('V' . $key + 2, 'Книги'); // Наименование товара
             $sheet->setCellValue('W' . $key + 2, 0); // Стоимость единицы товара
             $sheet->setCellValue('X' . $key + 2, 0); // Оплата с получателя за ед товара в т.ч. НДС
