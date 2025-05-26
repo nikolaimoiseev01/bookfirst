@@ -2,11 +2,11 @@
 
 namespace App\Livewire\Components\Account\Settings;
 
-use Livewire\Component;
-use App\Models\User;
+use App\Models\User\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rule;
+use Livewire\Component;
 
 class UpdateProfileInformationForm extends Component
 {

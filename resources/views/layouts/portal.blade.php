@@ -11,11 +11,14 @@
     <link rel="stylesheet" href="/fixed/fonts/fonts.css">
 
     <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/textify.js@1.1.1/dist/index.min.js"></script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="antialiased">
 <x-header-portal/>
 {{ $slot }}
+{{--<x-book3d/>--}}
 @stack('page-js')
 </body>
 </html>

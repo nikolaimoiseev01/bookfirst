@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Auth;
 
-use App\Models\User;
+use App\Models\User\User;
 use Livewire\Volt\Volt;
 
 test('confirm password screen can be rendered', function () {

@@ -1,5 +1,5 @@
 <div>
-    <form wire:submit="register">
+    <form wire:submit="register" class="pt-16">
         <!-- Name -->
         <div>
             <x-input-label for="name" :value="__('Name')"/>
@@ -45,9 +45,7 @@
                 {{ __('Already registered?') }}
             </a>
 
-            <x-primary-button class="ms-4">
-                {{ __('Register') }}
-            </x-primary-button>
+            <button>Register</button>
         </div>
     </form>
 </div>

@@ -62,6 +62,14 @@ return [
             ]) : [],
         ],
 
+        'old_mysql' => [
+            'driver' => 'mysql',
+            'host' => env('OLD_DB_HOST', '127.0.0.1'),
+            'database' => env('OLD_DB_DATABASE', 'old_db'),
+            'username' => env('OLD_DB_USERNAME', 'root'),
+            'password' => env('OLD_DB_PASSWORD', ''),
+        ],
+
         'mariadb' => [
             'driver' => 'mariadb',
             'url' => env('DB_URL'),

@@ -1,4 +1,4 @@
-<header class="fixed w-full shadow-[0_1px_4px_#00000026] px-5 py-2 flex justify-between items-center">
+<header class="fixed w-full shadow-[0_1px_4px_#00000026] px-5 py-2 flex justify-between items-center z-40 bg-white dark:bg-dark_bg">
     <div class="flex gap-2 items-center">
         <x-ui.application-logo class="w-12 h-12 mr-2"/>
         <a class="italic text-3xl font-light">Первая Книга</a>
@@ -9,7 +9,7 @@
         <x-ui.link-simple class="social italic text-xl" :social="true" :href="route('portal.index')">Социальная сеть
         </x-ui.link-simple>
     </div>
-    <div class="flex gap-6 items-center text-2xl text-black-400">
+    <div class="flex gap-6 items-center text-2xl text-black-400 dark:text-white">
         @foreach($links as $link)
             @if($link['routes'] ?? null)
                 <div class="relative group">

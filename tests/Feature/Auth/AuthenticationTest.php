@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\User;
+use App\Models\User\User;
 use Livewire\Volt\Volt;
 
 test('login screen can be rendered', function () {
