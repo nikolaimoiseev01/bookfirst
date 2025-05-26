@@ -254,7 +254,7 @@ class CollectionController extends Controller
                 $postal_code = $print['send_to_index'];
             }
 
-            $sheet->setCellValue('A' . $key + 2, $print['id']); // Номер отправления
+            $sheet->setCellValue('A' . $key + 2, $cdek_desc); // Номер отправления
             $sheet->setCellValue('B' . $key + 2, $city); // Город получателя
             $sheet->setCellValue('C' . $key + 2, $postal_code); // Индекс города получателя
             $sheet->setCellValue('D' . $key + 2, $print['send_to_name']); // Получатель
