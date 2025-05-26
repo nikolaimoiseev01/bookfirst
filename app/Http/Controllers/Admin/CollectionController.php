@@ -667,13 +667,16 @@ class CollectionController extends Controller
                 $users = User::whereIn('id', $users_from_participation)->get();
                 foreach ($users as $user) {
                     $button_link = route('homePortal') . "/myaccount/collections/" . $collection->id . "/participation/" . Participation::where([['user_id', $user->id], ['collection_id', $collection->id]])->value('id');
-                    $user->notify(new EmailNotification(
+                    try {
+                        $user->notify(new EmailNotification(
                             $subject,
                             $user['name'],
                             $text,
                             'Страница участия',
-                            $button_link)
-                    );
+                            $button_link));
+                    } catch (\Exception $e) {
+                        continue;
+                    }
                     \Illuminate\Support\Facades\Notification::send($user, new UserNotification(
                         $subject,
                         $button_link
