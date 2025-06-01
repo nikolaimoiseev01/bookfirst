@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('votes', function (Blueprint $table) {
+        Schema::create('collection_votes', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('participation_id_from')->references('id')->on('participations');
+            $table->foreignId('collection_id')->references('id')->on('collections');
+            $table->foreignId('participation_id_to')->references('id')->on('participations');
             $table->timestamps();
         });
     }
@@ -22,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('votes');
+        Schema::dropIfExists('collection_votes');
     }
 };
