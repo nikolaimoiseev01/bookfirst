@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('almost_complete_actions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->nullable();
-            $table->foreignId('almost_complete_action_type_id');
+            $table->foreignId('user_id')->nullable()->references('id')->on('users');
+            $table->foreignId('almost_complete_action_type_id')->references('id')->on('almost_complete_action_types');
             $table->string('model_type')->nullable();
             $table->integer('model_id')->nullable();
             $table->dateTime('dt_action_completed')->nullable();

@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('survey_completeds', function (Blueprint $table) {
+        Schema::create('work_likes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id');
-            $table->nullableMorphs('model');
-            $table->string('title');
+            $table->foreignId('user_id')->references('id')->on('users');
+            $table->foreignId('work_id')->references('id')->on('works');
             $table->timestamps();
         });
     }
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('survey_completeds');
+        Schema::dropIfExists('work_likes');
     }
 };

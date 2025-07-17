@@ -14,13 +14,13 @@ return new class extends Migration
         Schema::create('own_books', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('user_id');
+            $table->foreignId('user_id')->references('id')->on('users');
             $table->string('author');
             $table->string('title');
 
-            $table->foreignId('own_book_status_id');
-            $table->foreignId('own_book_cover_status_id')->nullable();
-            $table->foreignId('own_book_inside_status_id')->nullable();
+            $table->foreignId('own_book_status_id')->references('id')->on('own_book_statuses');
+            $table->foreignId('own_book_cover_status_id')->nullable()->references('id')->on('own_book_cover_statuses');
+            $table->foreignId('own_book_inside_status_id')->nullable()->references('id')->on('own_book_inside_statuses');
 
             $table->date('deadline_inside')->nullable();
             $table->date('deadline_cover')->nullable();

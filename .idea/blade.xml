@@ -20,6 +20,7 @@
       <data directive="@componentfirst" injection="true" prefix="&lt;?php&#10;$__env-&gt;startComponentFirst(" suffix="); ?&gt;" />
       <data directive="@continue" injection="true" prefix="&lt;?php&#10;if(" suffix=") continue; ?&gt;" />
       <data directive="@csrf" />
+      <data directive="@currency" injection="true" prefix="&lt;?php _bladeDirective(" suffix="); ?&gt;" />
       <data directive="@dd" injection="true" prefix="&lt;?php&#10;dd(" suffix="); ?&gt;" />
       <data directive="@default" />
       <data directive="@disabled" injection="true" prefix="&lt;?php if(" suffix=") {echo 'disabled';}?&gt;" />
@@ -92,6 +93,7 @@
       <data directive="@extendsfirst" injection="true" prefix="&lt;?php&#10;echo $__env-&gt;first(" suffix=", \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))-&gt;render(); ?&gt;" />
       <data directive="@filamentScripts" injection="true" prefix="&lt;?php _bladeDirective(" suffix="); ?&gt;" />
       <data directive="@filamentStyles" injection="true" prefix="&lt;?php _bladeDirective(" suffix="); ?&gt;" />
+      <data directive="@filepondScripts" />
       <data directive="@for" injection="true" prefix="&lt;?php&#10;for(" suffix="): ?&gt;" />
       <data directive="@foreach" injection="true" prefix="&lt;?php&#10;foreach(" suffix="): ?&gt;" />
       <data directive="@forelse" injection="true" prefix="&lt;?php&#10;foreach(" suffix="): ?&gt;" />
@@ -119,6 +121,7 @@
       <data directive="@livewireScripts" />
       <data directive="@livewireStyles" />
       <data directive="@method" injection="true" prefix="&lt;?php&#10;echo method_field(" suffix="); ?&gt;" />
+      <data directive="@money" injection="true" prefix="&lt;?php _bladeDirective(" suffix="); ?&gt;" />
       <data directive="@once" />
       <data directive="@overwrite" />
       <data directive="@parent" />

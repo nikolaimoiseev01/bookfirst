@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('email_sents', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id');
+            $table->foreignId('user_id')->references('id')->on('users');
             $table->string('subject');
             $table->text('text');
             $table->json('data')->nullable();

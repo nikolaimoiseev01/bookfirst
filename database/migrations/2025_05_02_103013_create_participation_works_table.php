@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('participation_works', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('participation_id');
-            $table->foreignId('work_id');
+            $table->foreignId('participation_id')->references('id')->on('participations');
+            $table->foreignId('work_id')->references('id')->on('works');
             $table->timestamps();
         });
     }

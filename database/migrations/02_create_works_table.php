@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('works', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id');
+            $table->foreignId('user_id')->references('id')->on('users');
             $table->string('title');
             $table->longText('text');
             $table->bigInteger('symbols');
             $table->bigInteger('rows');
             $table->bigInteger('pages');
-            $table->foreignId('work_type_id');
-            $table->foreignId('work_topic_id')->nullable();
+            $table->foreignId('work_type_id')->references('id')->on('work_types');
+            $table->foreignId('work_topic_id')->nullable()->references('id')->on('work_topics');
             $table->string('upload_type')->nullable();
             $table->timestamps();
         });

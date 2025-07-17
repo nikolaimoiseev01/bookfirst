@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('ext_promotions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id');
-            $table->foreignId('ext_promotion_status_id');
+            $table->foreignId('user_id')->references('id')->on('users');
+            $table->foreignId('ext_promotion_status_id')->references('id')->on('ext_promotion_statuses');
             $table->string('login');
             $table->string('password');
             $table->string('site');
@@ -22,7 +22,7 @@ return new class extends Migration
             $table->integer('price_total');
             $table->integer('price_executor');
             $table->integer('price_our');
-            $table->foreignId('promocode_id')->nullable();
+            $table->foreignId('promocode_id')->nullable()->references('id')->on('promocodes');
             $table->dateTime('paid_at')->nullable();
             $table->string('started_at')->nullable();
             $table->text('comment')->nullable();

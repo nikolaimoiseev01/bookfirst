@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('name_short');
             $table->string('slug');
-            $table->foreignId('collection_status_id');
+            $table->foreignId('collection_status_id')->constrained();
             $table->integer('pages')->nullable();
             $table->text('description')->nullable();
             $table->date('date_apps_end')->nullable();
@@ -24,7 +24,8 @@ return new class extends Migration
             $table->date('date_voting_end')->nullable();
             $table->date('date_print_start')->nullable();
             $table->date('date_print_end')->nullable();
-            $table->json('winners')->nullable();
+            $table->json('winner_participations')->nullable();
+            $table->json('links')->nullable();
             $table->timestamps();
         });
     }

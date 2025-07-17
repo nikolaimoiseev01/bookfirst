@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('inner_tasks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('inner_task_type_id')->nullable();
+            $table->foreignId('inner_task_type_id')->nullable()->references('id')->on('inner_task_types');
             $table->nullableMorphs('model');
             $table->string('responsible')->nullable();
             $table->string('title')->nullable();

@@ -9,24 +9,23 @@
 }
 
 body {
-    @apply bg-white font-futura text-black-400 dark:text-white dark:bg-dark_bg;
+    @apply bg-white font-futura text-dark-400 dark:text-white dark:bg-dark_bg;
 }
-
 
 .content {
     @apply max-w-7xl mx-auto w-[90%];
 }
 
 h2 {
-    @apply text-6xl text-black-400 dark:text-white;
+    @apply text-6xl text-dark-400 dark:text-white;
 }
 
 h3 {
-    @apply text-[42px] text-black-400 font-medium dark:text-white;
+    @apply text-[42px] text-dark-400 font-medium dark:text-white;
 }
 
 p {
-    @apply text-2xl font-light text-black-400 dark:text-white;
+    @apply text-2xl font-light text-dark-400 dark:text-white;
 }
 
 .container {

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
@@ -19,6 +20,8 @@ class CopyTableService
         int    $fromId = null,
     ): void
     {
+        $now_time = Carbon::now()->format('H:i:s');
+        echo "$sourceTable START ($now_time)\n";
 
         $allColumns = Schema::connection('old_mysql')->getColumnListing($sourceTable);
 
@@ -88,6 +91,7 @@ class CopyTableService
                 }
             }
         }
-
+        $now_time = Carbon::now()->format('H:i:s');
+        echo "$sourceTable END ($now_time)\n";
     }
 }

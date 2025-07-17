@@ -4,24 +4,32 @@ namespace App\Filament\Resources\Collection;
 
 use App\Filament\Resources\Collection\CollectionResource\Pages;
 use App\Filament\Resources\Collection\CollectionResource\RelationManagers;
+use App\Filament\Resources\Collection\CollectionResource\RelationManagers\ParticipationsRelationManager;
+use App\Filament\Resources\Collection\CollectionResource\RelationManagers\PreviewCommentsRelationManager;
+use App\Livewire\Components\Filament\Collection\Votes;
 use App\Models\Collection\Collection;
 use App\Models\Work\Work;
 use Filament\Forms;
+use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Grid as GridForm;
+use Filament\Forms\Components\Livewire;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Tabs;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\ViewField;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Columns\Layout\Grid as GridTable;
+use Filament\Tables\Columns\Layout\Grid;
 use Filament\Tables\Columns\Layout\Split;
 use Filament\Tables\Columns\Layout\Stack;
 use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\HtmlString;
-use PHPUnit\Framework\TestSize\Large;
 
 class CollectionResource extends Resource
 {
@@ -29,33 +37,93 @@ class CollectionResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $navigationLabel = 'Сборники';
+    protected static ?string $navigationGroup = 'Сборники';
+
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('name_short')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('slug')
-                    ->required()
-                    ->maxLength(255),
-                Select::make('collection_status_id')
-                    ->relationship(name: 'CollectionStatus', titleAttribute: 'name'),
-                Forms\Components\TextInput::make('pages')
-                    ->numeric(),
-                Forms\Components\Textarea::make('description')
-                    ->columnSpanFull(),
-                GridForm::make()->schema([
-                    Forms\Components\DatePicker::make('date_apps_end'),
-                    Forms\Components\DatePicker::make('date_preview'),
-                    Forms\Components\DatePicker::make('date_voting_end'),
-                    Forms\Components\DatePicker::make('date_print_start'),
-                    Forms\Components\DatePicker::make('date_print_end'),
-                ])->columns(5)
+
+                Tabs::make('Tabs')
+                    ->tabs([
+                        Tabs\Tab::make('Общее')
+                            ->schema([
+                                GridForm::make()->schema([
+                                    Forms\Components\SpatieMediaLibraryFileUpload::make('cover')
+                                        ->label('Обложка')
+                                        ->collection('cover_2d')->columnSpan(1),
+                                    GridForm::make()->schema([
+                                        Forms\Components\TextInput::make('name')
+                                            ->label('Название')
+                                            ->required()
+                                            ->maxLength(255),
+                                        Select::make('collection_status_id')
+                                            ->label('Статус')
+                                            ->relationship(name: 'collectionStatus', titleAttribute: 'name'),
+                                        GridForm::make()->schema([
+                                            Forms\Components\TextInput::make('slug')
+                                                ->required()
+                                                ->maxLength(255),
+                                            Forms\Components\TextInput::make('name_short')
+                                                ->label('Краткое название')
+                                                ->required()
+                                                ->columnSpan(1)
+                                                ->maxLength(255),
+                                            Forms\Components\TextInput::make('pages')
+                                                ->label('Страниц')
+                                                ->columnSpan(1)
+                                                ->numeric(),
+                                        ])->columns(3),
+                                        Forms\Components\Textarea::make('description')
+                                            ->columnSpanFull(),
+                                    ])->columns(2)->columnSpan(2),
+                                    GridForm::make()->schema([
+                                        Forms\Components\DatePicker::make('date_apps_end'),
+                                        Forms\Components\DatePicker::make('date_preview'),
+                                        Forms\Components\DatePicker::make('date_voting_end'),
+                                        Forms\Components\DatePicker::make('date_print_start'),
+                                        Forms\Components\DatePicker::make('date_print_end'),
+                                    ])->columns(2)->columnSpan(1)
+                                ])->columns(4),
+                            ]),
+                        Tabs\Tab::make('Победители')
+                            ->schema([
+                                GridForm::make()->schema([
+                                    Forms\Components\Repeater::make('winners')
+                                        ->label('Победители')
+                                        ->simple(
+                                            Select::make('participation_id')
+                                                ->label('Пользователь')
+                                                ->options(fn(Collection $collection) => $collection->participations()->pluck('author_name', 'id')->toArray())
+                                                ->required(),
+                                        )
+                                        ->columnSpan(1)
+                                        ->mutateDehydratedStateUsing(function (array $state): array {
+                                            $intConverted = array_values(array_map(fn($item) => (int)$item['user_id'], $state));
+                                            return $intConverted;
+                                        }),
+                                    ViewField::make('rating')
+                                        ->view('filament.components.collection-votes')
+                                        ->viewData(function(Collection $collection) {
+                                            $collection = $collection->load('collectionVotes');
+                                            $candidates = DB::table('collection_votes')
+                                                ->select(DB::raw('count(*) as votes_count, participations.author_name'))
+                                                ->join('participations', 'participations.id', '=', 'collection_votes.participation_id_to')
+                                                ->where('collection_votes.collection_id', $collection->id)
+                                                ->groupBy('participations.author_name')
+                                                ->orderBy('votes_count', 'desc')
+                                                ->get();
+//                                            dd($candidates);
+                                            return [
+                                                'collection' => $collection,
+                                                'candidates' => $candidates
+                                            ];
+                                        })
+                                ])->columns(3)
+                            ])
+                    ])->columnSpanFull()
 
             ]);
     }
@@ -103,11 +171,12 @@ class CollectionResource extends Resource
                                     ->icon('heroicon-o-user-group')
                                     ->tooltip('Страниц работ')
                                     ->size(TextColumn\TextColumnSize::Large)
-                                    ->formatStateUsing(function (Collection $collection): int {
-                                        return Work::whereIn(
+                                    ->getStateUsing(function (Collection $collection): int {
+                                        $works = Work::whereIn(
                                             'id',
                                             $collection->participationWorks()->pluck('work_id')
                                         )->sum('pages');
+                                        return $works;
                                     })
                             ])
                         ])
@@ -121,7 +190,10 @@ class CollectionResource extends Resource
             ])
             ->defaultSort('id', 'desc')
             ->filters([
-                //
+                SelectFilter::make('collection_status_id')
+                    ->label('Статус')
+                    ->multiple()
+                    ->relationship('CollectionStatus', 'name')
             ])
             ->actions([
 //                Tables\Actions\EditAction::make(),
@@ -136,7 +208,8 @@ class CollectionResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            ParticipationsRelationManager::class,
+            PreviewCommentsRelationManager::class
         ];
     }
 

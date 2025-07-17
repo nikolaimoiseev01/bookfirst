@@ -2,8 +2,10 @@
 
 namespace App\Models\Collection;
 
+use App\Models\PreviewComment;
 use App\Models\Work\Work;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
@@ -13,20 +15,31 @@ class Collection extends Model implements HasMedia
 
     public const MORPH_ALIAS = 'Collection';
 
-    public function CollectionStatus()
+    public function collectionStatus()
     {
         return $this->belongsTo(CollectionStatus::class);
-}
+    }
 
-    public function Participations()
+    public function participations()
     {
         return $this->hasMany(Participation::class);
+    }
+
+    public function collectionVotes()
+    {
+        return $this->hasMany(CollectionVote::class);
     }
 
     public function participationWorks()
     {
         return $this->hasManyThrough(ParticipationWork::class, Participation::class);
     }
+
+    public function previewComments(): MorphMany
+    {
+        return $this->morphMany(PreviewComment::class, 'model');
+    }
+
 
 
 //    public function Printorder() {
@@ -41,4 +54,8 @@ class Collection extends Model implements HasMedia
 //        return $this->belongsTo(digital_sale::class, 'id', 'bought_collection_id');
 //    }
 
+    protected $casts = [
+        'winner_participations' => 'array',
+        'links' => 'array',
+    ];
 }

@@ -29,6 +29,6 @@ class EditParticipation extends EditRecord
             $name = "{$this->record['author_name']} ({$user_full_name})";
         }
         $collection = $this->record->collection;
-        return new HtmlString("Участие автора <a class='text-primary-600' href=''>$name</a><br>в сборнике {$collection['name_short']}") ;
+        return new HtmlString("Участие автора <a class='text-primary-600' href=''>$name</a><br>в сборнике <a class='text-primary-600' href='/admin/collection/collections/{$collection['id']}/edit'>{$collection['name_short']}</a>") ;
     }
 }

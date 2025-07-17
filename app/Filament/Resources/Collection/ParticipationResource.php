@@ -6,9 +6,14 @@ use App\Filament\Resources\Collection\ParticipationResource\Pages;
 use App\Filament\Resources\Collection\ParticipationResource\RelationManagers;
 use App\Models\Collection\Participation;
 use Filament\Forms;
+use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Livewire;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Tabs\Tab;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
+use Filament\Support\RawJs;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -20,51 +25,83 @@ class ParticipationResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $navigationLabel = 'Участия';
+    protected static ?string $navigationGroup = 'Сборники';
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\Tabs::make()->tabs([
                     Forms\Components\Tabs\Tab::make('Основное')->schema([
-                        Select::make('collection_id')
-                            ->label('Сборник')
-                            ->relationship(name: 'collection', titleAttribute: 'name'),
+                        Grid::make()->schema([
+                            Forms\Components\TextInput::make('author_name')
+                                ->label('Имя в сборнике')
+                                ->required()
+                                ->maxLength(255),
+                            Select::make('collection_id')
+                                ->label('Сборник')
+                                ->relationship(name: 'collection', titleAttribute: 'name'),
+                            Select::make('participation_status_id')
+                                ->label('Статус')
+                                ->relationship(name: 'participationStatus', titleAttribute: 'name'),
+                        ])->columns(3),
+                        Grid::make()->schema([
+                            Forms\Components\TextInput::make('price_part')
+                                ->label('Цена участия')
+                                ->mask(RawJs::make('$money($input)'))
+                                ->stripCharacters(',')
+                                ->required()
+                                ->numeric(),
+                            Forms\Components\TextInput::make('price_print')
+                                ->label('Цена печати')
+                                ->mask(RawJs::make('$money($input)'))
+                                ->stripCharacters(',')
+                                ->numeric(),
+                            Forms\Components\TextInput::make('price_check')
+                                ->label('Цена проверки')
+                                ->mask(RawJs::make('$money($input)'))
+                                ->stripCharacters(',')
+                                ->numeric(),
+                            Forms\Components\TextInput::make('price_send')
+                                ->label('Цена отправки')
+                                ->mask(RawJs::make('$money($input)'))
+                                ->stripCharacters(',')
+                                ->numeric(),
+                            Forms\Components\TextInput::make('price_total')
+                                ->label('Итого')
+                                ->mask(RawJs::make('$money($input)'))
+                                ->stripCharacters(',')
+                                ->required()
+                                ->numeric(),
+                        ])->columns(5),
+                        Grid::make()->schema([
+                            Select::make('promocode_id')
+                                ->label('Промокод')
+                                ->relationship(name: 'promocode', titleAttribute: 'name'),
+                            Forms\Components\TextInput::make('works_number')
+                                ->label('Произведений')
+                                ->required()
+                                ->disabled()
+                                ->numeric(),
+                            Forms\Components\TextInput::make('rows')
+                                ->disabled()
+                                ->numeric(),
+                            Forms\Components\TextInput::make('pages')
+                                ->disabled()
+                                ->required()
+                                ->numeric(),
+                        ])->columns(4),
+                    ]),
+                    Tab::make('Печать')->schema([
+                        Forms\Components\Placeholder::make('print_order_id')
+                            ->label('Печать')
+                    ]),
+                    Tab::make('Чат')->schema([
+                        Livewire::make('components.account.chat', ['chat' => $form->getRecord()->chat])
                     ])
                 ])->columnSpanFull(),
 
-                Forms\Components\TextInput::make('user_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('author_name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('works_number')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('rows')
-                    ->numeric(),
-                Forms\Components\TextInput::make('pages')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('participation_status_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('print_order_id')
-                    ->numeric(),
-                Forms\Components\TextInput::make('promocode_id')
-                    ->numeric(),
-                Forms\Components\TextInput::make('price_part')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('price_print')
-                    ->numeric(),
-                Forms\Components\TextInput::make('price_check')
-                    ->numeric(),
-                Forms\Components\TextInput::make('price_send')
-                    ->numeric(),
-                Forms\Components\TextInput::make('price_total')
-                    ->required()
-                    ->numeric(),
             ]);
     }
 

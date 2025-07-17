@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('chats', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_created');
-            $table->foreignId('user_to');
+            $table->foreignId('user_created')->references('id')->on('users');
+            $table->foreignId('user_to')->references('id')->on('users');
             $table->string('title');
-            $table->foreignId('chat_status_id');
+            $table->foreignId('chat_status_id')->references('id')->on('chat_statuses');
             $table->morphs('model');
             $table->integer('flg_admin_chat');
             $table->timestamps();

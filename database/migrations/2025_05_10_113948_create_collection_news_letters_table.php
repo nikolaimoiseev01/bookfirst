@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('collection_news_letters', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('collection_id');
+            $table->foreignId('collection_id')->references('id')->on('collections');
             $table->json('users');
             $table->string('subject');
             $table->text('text');

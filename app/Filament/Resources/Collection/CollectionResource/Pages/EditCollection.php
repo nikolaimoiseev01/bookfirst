@@ -16,4 +16,19 @@ class EditCollection extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
+
+    public function getTitle(): string
+    {
+        return $this->record['name'];
+    }
+
+    public function getContentTabLabel(): ?string
+    {
+        return 'Сборник';
+    }
+
+    public function hasCombinedRelationManagerTabsWithContent(): bool
+    {
+        return true;
+    }
 }

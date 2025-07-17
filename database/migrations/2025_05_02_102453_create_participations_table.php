@@ -13,19 +13,20 @@ return new class extends Migration
     {
         Schema::create('participations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('collection_id')-> nullable();
-            $table->foreignId('user_id')-> nullable();
-            $table->string('author_name')-> nullable();
-            $table->bigInteger('works_number')-> nullable();
-            $table->bigInteger('rows')-> nullable();
-            $table->bigInteger('pages')-> nullable();
-            $table->foreignId('participation_status_id');
-            $table->foreignId('promocode_id')-> nullable();
-            $table->bigInteger('price_part')-> nullable();
+            $table->foreignId('collection_id')->references('id')->on('collections');
+            $table->foreignId('user_id')->references('id')->on('users');
+            $table->string('author_name');
+            $table->bigInteger('works_number');
+            $table->bigInteger('rows')->nullable();
+            $table->bigInteger('pages');
+            $table->foreignId('participation_status_id')->references('id')->on('participation_statuses');
+            $table->foreignId('print_order_id')->nullable()->constrained()->nullable()->references('id')->on('print_orders');
+            $table->foreignId('promocode_id')->nullable()->references('id')->on('promocodes');
+            $table->bigInteger('price_part');
             $table->bigInteger('price_print')-> nullable();
             $table->bigInteger('price_check')-> nullable();
             $table->bigInteger('price_send')-> nullable();
-            $table->bigInteger('price_total')-> nullable();
+            $table->bigInteger('price_total');
             $table->timestamps();
         });
     }

@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Auth\Middleware\RedirectIfAuthenticated;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -33,6 +34,8 @@ class AppServiceProvider extends ServiceProvider
             'Message' => \App\Models\Chat\Message::class,
             'AwardType' => \App\Models\Award\AwardType::class,
         ]);
+
+        Carbon::setLocale(config('app.locale')); // Установим локаль из конфигурации
 
         RedirectIfAuthenticated::redirectUsing(function () {
             return route('account.settings');

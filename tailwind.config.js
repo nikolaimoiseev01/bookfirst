@@ -25,7 +25,7 @@ export default {
                     500: '#47af98'
                 },
                 dark_bg: '#1c1c16',
-                black: {
+                dark: {
                     400: '#4c4b46',
                     500: '#363531',
                     600: '#1c1c16'
@@ -47,5 +47,5 @@ export default {
         },
     },
 
-    plugins: [forms, 'tailwindcss-3d'],
+    plugins: ['@tailwindcss/typography', forms, 'tailwindcss-3d'],
 };

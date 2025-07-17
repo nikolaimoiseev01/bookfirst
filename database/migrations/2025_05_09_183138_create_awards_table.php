@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('awards', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id');
-            $table->foreignId('award_type_id');
+            $table->foreignId('user_id')->references('id')->on('users');
+            $table->foreignId('award_type_id')->references('id')->on('award_types');
             $table->string('model_type')->nullable();
             $table->integer('model_id')->nullable();
             $table->timestamps();

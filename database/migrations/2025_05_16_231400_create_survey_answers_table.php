@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('survey_answers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('survey_completed_id');
+            $table->foreignId('survey_completed_id')->references('id')->on('survey_completeds');
             $table->bigInteger('step');
             $table->bigInteger('stars')->nullable();
             $table->string('question')->nullable();
