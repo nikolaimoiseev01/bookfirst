@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use Exception;
+use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
@@ -76,7 +78,7 @@ class CopyTableService
                 }
 
                 // Создаём запись
-                /** @var \Illuminate\Database\Eloquent\Model $model */
+                /** @var Model $model */
                 $model = $modelClass::create($filteredRows);
 
                 // Добавляем медиа, если есть
@@ -84,7 +86,7 @@ class CopyTableService
                     try {
                         $model->addMediaFromUrl($media['url'])
                             ->toMediaCollection($media['collection']);
-                    } catch (\Exception $e) {
+                    } catch (Exception $e) {
                         continue;
                     }
 

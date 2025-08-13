@@ -1,5 +1,4 @@
-@tailwind base;
-@tailwind components;
+@import "tailwindcss/preflight";
 @tailwind utilities;
 
 * {
@@ -8,26 +7,26 @@
     box-sizing: border-box;
 }
 
-body {
-    @apply bg-white font-futura text-dark-400 dark:text-white dark:bg-dark_bg;
-}
+/*body {*/
+/*    @apply text-dark-400 dark:text-white dark:bg-dark_bg;*/
+/*}*/
 
-.content {
-    @apply max-w-7xl mx-auto w-[90%];
-}
+/*.content {*/
+/*    @apply max-w-7xl mx-auto w-[90%];*/
+/*}*/
 
-h2 {
-    @apply text-6xl text-dark-400 dark:text-white;
-}
+/*h2 {*/
+/*    @apply text-6xl text-dark-400 dark:text-white;*/
+/*}*/
 
-h3 {
-    @apply text-[42px] text-dark-400 font-medium dark:text-white;
-}
+/*h3 {*/
+/*    @apply text-[42px] text-dark-400 font-medium dark:text-white;*/
+/*}*/
 
-p {
-    @apply text-2xl font-light text-dark-400 dark:text-white;
-}
+/*p {*/
+/*    @apply text-2xl font-light text-dark-400 dark:text-white;*/
+/*}*/
 
-.container {
-    @apply bg-white rounded-2xl shadow-[0_0_7px_1px_#00000012];
-}
+/*.container {*/
+/*    @apply bg-white rounded-2xl shadow-[0_0_7px_1px_#00000012];*/
+/*}*/

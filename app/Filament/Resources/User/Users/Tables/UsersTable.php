@@ -1,0 +1,59 @@
+<?php
+
+namespace App\Filament\Resources\User\Users\Tables;
+
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
+
+class UsersTable
+{
+    public static function configure(Table $table): Table
+    {
+        return $table
+            ->columns([
+                TextColumn::make('name')
+                    ->searchable(),
+                TextColumn::make('surname')
+                    ->searchable(),
+                TextColumn::make('nickname')
+                    ->searchable(),
+                TextColumn::make('email')
+                    ->label('Email address')
+                    ->searchable(),
+                TextColumn::make('email_verified_at')
+                    ->dateTime()
+                    ->sortable(),
+                TextColumn::make('last_seen')
+                    ->dateTime()
+                    ->sortable(),
+                TextColumn::make('reg_utm_source')
+                    ->searchable(),
+                TextColumn::make('reg_utm_medium')
+                    ->searchable(),
+                TextColumn::make('reg_type')
+                    ->searchable(),
+                TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+            ])
+            ->filters([
+                //
+            ])
+            ->recordActions([
+                EditAction::make(),
+            ])
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
+                ]),
+            ]);
+    }
+}

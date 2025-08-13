@@ -2,6 +2,12 @@
 
 namespace App\Providers;
 
+use App\Models\User\User;
+use App\Models\Collection\Collection;
+use App\Models\Collection\Participation;
+use App\Models\OwnBook\OwnBook;
+use App\Models\Chat\Message;
+use App\Models\Award\AwardType;
 use Illuminate\Auth\Middleware\RedirectIfAuthenticated;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -27,12 +33,12 @@ class AppServiceProvider extends ServiceProvider
         Model::unguard();
 
         Relation::morphMap([
-            'User' => \App\Models\User\User::class,
-            'Collection' => \App\Models\Collection\Collection::class,
-            'Participation' => \App\Models\Collection\Participation::class,
-            'OwnBook' => \App\Models\OwnBook\OwnBook::class,
-            'Message' => \App\Models\Chat\Message::class,
-            'AwardType' => \App\Models\Award\AwardType::class,
+            'User' => User::class,
+            'Collection' => Collection::class,
+            'Participation' => Participation::class,
+            'OwnBook' => OwnBook::class,
+            'Message' => Message::class,
+            'AwardType' => AwardType::class,
         ]);
 
         Carbon::setLocale(config('app.locale')); // Установим локаль из конфигурации

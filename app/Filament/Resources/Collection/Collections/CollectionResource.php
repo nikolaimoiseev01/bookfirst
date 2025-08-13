@@ -1,0 +1,51 @@
+<?php
+
+namespace App\Filament\Resources\Collection\Collections;
+
+use App\Filament\Resources\Collection\Collections\Pages\CreateCollection;
+use App\Filament\Resources\Collection\Collections\Pages\EditCollection;
+use App\Filament\Resources\Collection\Collections\Pages\ListCollections;
+use App\Filament\Resources\Collection\Collections\RelationManagers\ParticipationRelationManager;
+use App\Filament\Resources\Collection\Collections\Schemas\CollectionForm;
+use App\Filament\Resources\Collection\Collections\Tables\CollectionsTable;
+use App\Models\Collection\Collection;
+use BackedEnum;
+use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
+use Filament\Tables\Table;
+
+class CollectionResource extends Resource
+{
+    protected static ?string $model = Collection::class;
+
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+
+    protected static ?string $recordTitleAttribute = 'Collection';
+
+    public static function form(Schema $schema): Schema
+    {
+        return CollectionForm::configure($schema);
+    }
+
+    public static function table(Table $table): Table
+    {
+        return CollectionsTable::configure($table);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            ParticipationRelationManager::make()
+        ];
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => ListCollections::route('/'),
+            'create' => CreateCollection::route('/create'),
+            'edit' => EditCollection::route('/{record}/edit'),
+        ];
+    }
+}

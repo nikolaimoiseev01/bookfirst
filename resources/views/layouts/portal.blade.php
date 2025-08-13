@@ -15,7 +15,7 @@
     <script src="https://cdn.jsdelivr.net/npm/textify.js@1.1.1/dist/index.min.js"></script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="antialiased">
+<body class="w- antialiased">
 <x-header-portal/>
 {{ $slot }}
 {{--<x-book3d/>--}}

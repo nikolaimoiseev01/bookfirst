@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Pages\Auth;
 
+use Illuminate\Validation\Rules\Password;
 use App\Models\User\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
@@ -29,7 +30,7 @@ class RegisterPage extends Component
         $validated = $this->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
-            'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
+            'password' => ['required', 'string', 'confirmed', Password::defaults()],
         ]);
 
         $validated['password'] = Hash::make($validated['password']);

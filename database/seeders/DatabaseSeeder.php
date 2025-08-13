@@ -658,7 +658,7 @@ class DatabaseSeeder extends Seeder
                     'winner_participations' => $winners,
                     'links' => $links,
                 ]);
-            if ($new_collection->wasRecentlyCreated && !$test) {
+            if ($new_collection->wasRecentlyCreated) {
                 $inside_url = 'https://pervajakniga.ru/' . $collection->pre_var;
                 $cover_2d_url = 'https://pervajakniga.ru/' . $collection->cover_2d;
                 $cover_3d_url = 'https://pervajakniga.ru/' . $collection->cover_3d;
