@@ -37,7 +37,7 @@
                                 </div>
                             </div>
                         @endif
-                        @if($own_book['id'] !== 169)
+                        @if($own_book['id'] !== 169 && $own_book['id'] !== 367)
                             <div class="buttons_wrap">
                                 <a @if ($own_book['amazon_link'])
                                        target="_blank" href="{{$own_book['amazon_link']}}"
