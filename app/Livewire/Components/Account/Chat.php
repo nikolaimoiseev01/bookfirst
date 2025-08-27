@@ -23,7 +23,7 @@ class Chat extends Component
     }
 
     public function send() {
-        sleep(3);
-//        dd($this->file);
+//        dd('test');
+        dd($this->file);
     }
 }

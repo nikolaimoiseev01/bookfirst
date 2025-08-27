@@ -8,6 +8,9 @@ use App\Models\Collection\Participation;
 use App\Models\OwnBook\OwnBook;
 use App\Models\Chat\Message;
 use App\Models\Award\AwardType;
+use Filament\Facades\Filament;
+use Filament\Support\Assets\Js;
+use Filament\Support\Facades\FilamentAsset;
 use Illuminate\Auth\Middleware\RedirectIfAuthenticated;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -31,6 +34,10 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Model::unguard();
+
+        FilamentAsset::register([
+            Js::make('custom-script', 'https://code.jquery.com/jquery-3.7.1.min.js'),
+        ]);
 
         Relation::morphMap([
             'User' => User::class,

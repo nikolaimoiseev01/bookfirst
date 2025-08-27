@@ -8,12 +8,13 @@ use Illuminate\View\Component;
 
 class Book3d extends Component
 {
+    public $cover;
     /**
      * Create a new component instance.
      */
-    public function __construct()
+    public function __construct($cover)
     {
-        //
+        $this->cover = $cover;
     }
 
     /**

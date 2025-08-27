@@ -618,11 +618,19 @@ class DatabaseSeeder extends Seeder
 
         $oldCollections = DB::connection('old_mysql')
             ->table('collections')
+            ->when($test, function ($query) {
+                return $query->where('id', '>', 120);
+            })
             ->get();
         foreach ($oldCollections as $collection) {
 
             $wordsToRemove = ['Современный ', ' Поэзии', 'Сокровенные ', 'Выпуск '];
             $short_nm = str_replace($wordsToRemove, '', $collection->title);
+            if (str_contains($short_nm, 'Дух')) {
+                $work_type_id = 1;
+            } else {
+                $work_type_id = 2;
+            }
             $slug = Str::slug($short_nm);
 
             $winners = DB::connection('old_mysql')
@@ -649,14 +657,15 @@ class DatabaseSeeder extends Seeder
                     'collection_status_id' => $collection->col_status_id,
                     'description' => $collection->col_desc,
                     'date_apps_end' => $collection->col_date1,
-                    'date_preview' => $collection->col_date2,
-                    'date_voting_end' => $collection->col_date3,
+                    'date_preview_start' => $collection->col_date2,
+                    'date_preview_end' => $collection->col_date3,
                     'date_print_start' => $collection->col_date3,
                     'date_print_end' => $collection->col_date4,
                     'created_at' => $collection->created_at,
                     'updated_at' => $collection->updated_at,
                     'winner_participations' => $winners,
                     'links' => $links,
+                    'work_type_id' => $work_type_id
                 ]);
             if ($new_collection->wasRecentlyCreated) {
                 $inside_url = 'https://pervajakniga.ru/' . $collection->pre_var;
@@ -874,32 +883,32 @@ class DatabaseSeeder extends Seeder
 //
         $this->same_tables(test: $test);
 
-        $this->make_survey_completeds();
-        $this->make_inner_tasks();
-        $this->make_chats($test);
-        $this->make_messages($test);
-        $this->make_awards();
-        $this->make_actions();
-        $this->make_digital_sales();
-        $this->make_message_templates();
-        $this->make_preview_comments();
-        $this->make_print_orders();
-        $this->make_transactions();
-        $this->make_work_likes();
-
-
-        $now_time = Carbon::now()->format('H:i:s');
-        echo "Collections START ($now_time)\n";
+//        $this->make_survey_completeds();
+//        $this->make_inner_tasks();
+//        $this->make_chats($test);
+//        $this->make_messages($test);
+//        $this->make_awards();
+//        $this->make_actions();
+//        $this->make_digital_sales();
+//        $this->make_message_templates();
+//        $this->make_preview_comments();
+//        $this->make_print_orders();
+//        $this->make_transactions();
+//        $this->make_work_likes();
+//
+//
+//        $now_time = Carbon::now()->format('H:i:s');
+//        echo "Collections START ($now_time)\n";
         $this->make_collection_statuses();
         (new CopyTableService())->copy(sourceTable: 'pat_statuses', targetTable: 'participation_statuses', columnsToRename: ['pat_status_title' => 'name']);
         $this->make_collections($test);
-        $this->make_participations($test);
-        $this->make_news_letters($test);
-        $this->make_collection_votes($test);
-        $this->make_participation_works($test);
-        $now_time = Carbon::now()->format('H:i:s');
-        echo "Collections END ($now_time)\n";
+//        $this->make_participations($test);
+//        $this->make_news_letters($test);
+//        $this->make_collection_votes($test);
+//        $this->make_participation_works($test);
+//        $now_time = Carbon::now()->format('H:i:s');
+//        echo "Collections END ($now_time)\n";
 
-        (new OwnBookSeeder())->run(test: $test);
+//        (new OwnBookSeeder())->run(test: $test);
     }
 }

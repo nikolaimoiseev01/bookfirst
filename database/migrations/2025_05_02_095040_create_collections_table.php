@@ -20,12 +20,13 @@ return new class extends Migration
             $table->integer('pages')->nullable();
             $table->text('description')->nullable();
             $table->date('date_apps_end')->nullable();
-            $table->date('date_preview')->nullable();
-            $table->date('date_voting_end')->nullable();
+            $table->date('date_preview_start')->nullable();
+            $table->date('date_preview_end')->nullable();
             $table->date('date_print_start')->nullable();
             $table->date('date_print_end')->nullable();
             $table->json('winner_participations')->nullable();
             $table->json('links')->nullable();
+            $table->foreignId('work_type_id')->nullable();
             $table->timestamps();
         });
     }

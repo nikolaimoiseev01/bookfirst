@@ -4,6 +4,7 @@ namespace App\Models\Collection;
 
 use App\Models\PreviewComment;
 use App\Models\Work\Work;
+use App\Models\Work\WorkType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Spatie\MediaLibrary\HasMedia;
@@ -18,6 +19,10 @@ class Collection extends Model implements HasMedia
     public function collectionStatus()
     {
         return $this->belongsTo(CollectionStatus::class);
+    }
+    public function workType()
+    {
+        return $this->belongsTo(WorkType::class);
     }
 
     public function participations()

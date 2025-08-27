@@ -1,0 +1,30 @@
+<div class="container flex gap-10 relative p-4 lg:flex-col lg:items-center md:pt-24">
+    <div class="min-w-[180px] max-w-[180px]  md:min-w-[140px]  md:max-w-[140px] relative">
+        <x-book3d :cover="$collection->getFirstMediaUrl('cover_2d')" class=" left-0 bottom-0"/>
+    </div>
+    <div class="flex flex-col gap-4 lg:items-center lg:text-center">
+        <h3>{{$collection['name']}}</h3>
+        <p>{{$collection['description']}}</p>
+    </div>
+    <div class="flex flex-col justify-center gap-4 lg:w-full">
+        <x-ui.link href="{{route('portal.collection', ['slug' => $collection['slug']])}}">Подробнее</x-ui.link>
+        <x-ui.link>Принять участие</x-ui.link>
+    </div>
+{{--    <div class="absolute bg-green-500 px-4 pt-1 pb-4 right-8 md:right-0 md:left-1/2 md:-translate-x-1/2 top-0 text-lg w-fit text-white flex flex-col leading-tight text-center items-center--}}
+{{--                after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-0 after:h-0--}}
+{{--after:border-b-[20px] after:border-b-white--}}
+{{--after:border-l-[20px] after:border-l-transparent--}}
+{{--after:border-r-[20px] after:border-r-transparent--}}
+{{--                ">--}}
+{{--        <span>Заявки до:</span>--}}
+{{--        <span>{{ \Carbon\Carbon::parse($collection['date_apps_end'])->translatedFormat('j F') }}</span>--}}
+{{--    </div>--}}
+    <div class="absolute top-0 right-8 inline-block md:right-0 md:left-1/2 md:-translate-x-1/2 w-fit">
+        <div
+            class="bg-green-500 text-white text-center px-4 pb-4 text-lg flex flex-col
+           [clip-path:polygon(0_0,100%_0,100%_100%,50%_85%,0_100%)]">
+                    <span>Заявки до:</span>
+                    <span>{{ \Carbon\Carbon::parse($collection['date_apps_end'])->translatedFormat('j F') }}</span>
+        </div>
+    </div>
+</div>

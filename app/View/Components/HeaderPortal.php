@@ -27,11 +27,11 @@ class HeaderPortal extends Component
                 'routes' => [
                     [
                         'name' => 'Актуальные',
-                        'link' => route('portal.index')
+                        'link' => route('portal.collections.actual')
                     ],
                     [
                         'name' => 'Изданные',
-                        'link' => route('portal.index')
+                        'link' => route('portal.collections.released')
                     ],
                 ]
             ],

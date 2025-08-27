@@ -15,10 +15,11 @@
     <script src="https://cdn.jsdelivr.net/npm/textify.js@1.1.1/dist/index.min.js"></script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="w- antialiased">
+<body class="antialiased flex flex-col min-h-screen">
 <x-header-portal/>
 {{ $slot }}
 {{--<x-book3d/>--}}
-@stack('page-js')
+@stack('scripts')
+<x-footer/>
 </body>
 </html>

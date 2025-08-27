@@ -36,7 +36,7 @@ class CollectionForm
                                             ->maxLength(255),
                                         Select::make('collection_status_id')
                                             ->label('Статус')
-                                            ->relationship(name: 'collectionStatus', titleAttribute: 'name'),
+                                            ->relationship(name: 'collectionStatus', titleAttribute: 'name', modifyQueryUsing: fn ($query) => $query->orderBy('id')),
                                         \Filament\Schemas\Components\Grid::make()->schema([
                                             TextInput::make('slug')
                                                 ->required()
@@ -67,6 +67,7 @@ class CollectionForm
                             ->schema([
                                 \Filament\Schemas\Components\Grid::make()->schema([
                                     Repeater::make('winners')
+                                        ->dehydrated(false)
                                         ->label('Победители')
                                         ->simple(
                                             Select::make('participation_id')
@@ -80,6 +81,7 @@ class CollectionForm
                                             return $intConverted;
                                         }),
                                     ViewField::make('rating')
+                                        ->dehydrated(false)
                                         ->view('filament.components.collection-votes')
                                         ->viewData(function(Collection $collection) {
                                             $collection = $collection->load('collectionVotes');

@@ -1,32 +1,65 @@
-@import "tailwindcss/preflight";
-@tailwind utilities;
+@import 'tailwindcss';
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+/*@import "delicious-hamburgers/scss/_base.scss";*/
+/*@import "delicious-hamburgers/scss/animations/_converge.scss";*/
+
+@config '../../tailwind.config.js';
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+    *,
+    ::after,
+    ::before,
+    ::backdrop,
+    ::file-selector-button {
+        border-color: var(--color-gray-200, currentcolor);
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    h2 {
+        @apply text-6xl text-dark-400 dark:text-white;
+    }
+    h3 {
+        @apply text-[42px] text-dark-400 font-medium dark:text-white md:!text-4xl;
+    }
+    p, label {
+        @apply text-2xl font-light text-dark-400 dark:text-white;
+    }
+    label {
+        @apply cursor-pointer;
+    }
+    html {
+        @apply text-[16px] md:!text-[14px] xl:text-[15px];
+    }
 }
 
-/*body {*/
-/*    @apply text-dark-400 dark:text-white dark:bg-dark_bg;*/
-/*}*/
+body {
+    @apply bg-white font-futura text-dark-400 dark:text-white dark:bg-dark_bg;
+}
 
-/*.content {*/
-/*    @apply max-w-7xl mx-auto w-[90%];*/
-/*}*/
 
-/*h2 {*/
-/*    @apply text-6xl text-dark-400 dark:text-white;*/
-/*}*/
 
-/*h3 {*/
-/*    @apply text-[42px] text-dark-400 font-medium dark:text-white;*/
-/*}*/
 
-/*p {*/
-/*    @apply text-2xl font-light text-dark-400 dark:text-white;*/
-/*}*/
+.content {
+    @apply max-w-[1512px] mx-auto w-[90%];
+}
 
-/*.container {*/
-/*    @apply bg-white rounded-2xl shadow-[0_0_7px_1px_#00000012];*/
-/*}*/
+.container {
+    @apply bg-white rounded-2xl shadow-[0_0_7px_1px_#00000012];
+}
+
+main {
+    @apply mt-16 pt-8;
+}
+
+input[type="number"] {
+    @apply border border-green-500 outline-none focus:outline-none rounded px-2 py-1 text-xl w-24 font-light;
+}

@@ -6,8 +6,10 @@ export default {
     content: [
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
         './storage/framework/views/*.php',
-        "./resources/**/*.js",
         './resources/views/**/*.blade.php',
+        './app/Filament/**/*.php',
+        './resources/views/filament/**/*.blade.php',
+        './vendor/filament/**/*.blade.php',
     ],
     darkMode: 'class', // ← автоматическая тёмная тема на основе ОС
     theme: {
@@ -18,10 +20,14 @@ export default {
             },
             colors: {
                 green: {
-                    500: '#47af98'
+                    400: '#84C9BA',
+                    500: '#47af98',
+                    600: '#267868'
                 },
                 dark_bg: '#1c1c16',
                 dark: {
+                    100: '#E0E0E0',
+                    200: '#BDBDBD',
                     400: '#4c4b46',
                     500: '#363531',
                     600: '#1c1c16'
@@ -42,6 +48,4 @@ export default {
             }
         },
     },
-
-    plugins: ['@tailwindcss/typography', forms, 'tailwindcss-3d'],
 };

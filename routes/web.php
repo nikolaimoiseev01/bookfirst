@@ -8,6 +8,9 @@ use App\Livewire\Pages\Auth\LoginPage;
 use App\Livewire\Pages\Auth\RegisterPage;
 use App\Livewire\Pages\Auth\ResetPasswordPage;
 use App\Livewire\Pages\Auth\VerifyEmailPage;
+use App\Livewire\Pages\Portal\CollectionPage;
+use App\Livewire\Pages\Portal\CollectionsActualPage;
+use App\Livewire\Pages\Portal\CollectionsReleasedPage;
 use App\Livewire\Pages\Portal\IndexPage;
 use Illuminate\Support\Facades\Route;
 
@@ -50,6 +53,9 @@ Route::middleware('auth')->group(function () {
 
 
 Route::get('/', IndexPage::class)->name('portal.index');
+Route::get('/collections/actual', CollectionsActualPage::class)->name('portal.collections.actual');
+Route::get('/collections/released', CollectionsReleasedPage::class)->name('portal.collections.released');
+Route::get('/collection/{slug}', CollectionPage::class)->name('portal.collection');
 
 Route::middleware('auth')->prefix('account')->group(function () {
     Route::get('settings', SettingsPage::class)->middleware(['auth', 'verified'])->name('account.settings');

@@ -1,5 +1,5 @@
 <section
-    class="max-w-screen-3xl mx-auto w-[90%] flex justify-between items-center relative mb-32"
+    class="max-w-(--breakpoint-3xl) mx-auto w-[90%] flex justify-between items-center relative mb-32"
     x-data="exSlider()"
     x-init="init()"
 >
@@ -41,7 +41,7 @@
             />
             <div class="h-[2px] w-56 bg-black-400 relative">
                 <div
-                    class="h-1 bg-brown-300 absolute -top-[1px] transition-all duration-500"
+                    class="h-1 bg-brown-300 absolute -top-px transition-all duration-500"
                     :style="`width: ${100 / images.length}%; left: ${(100 / images.length) * currentIndex}%;`"
                 ></div>
             </div>
@@ -63,7 +63,7 @@
 </section>
 
 
-@push('page-js')
+@push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
     <script>
         function exSlider() {
