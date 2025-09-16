@@ -32,7 +32,7 @@
 @endphp
 
 <div
-    class="{{ $attributes->get('class') }}"
+    {{ $attributes->merge(['class' => '']) }}
     wire:ignore
     id="chat-file-upload"
     x-cloak
@@ -59,8 +59,10 @@
 
       const pond = LivewireFilePond.create($refs.input);
 
+
       pond.setOptions({
           allowMultiple: isMultiple,
+          allowPaste: false,   // не превращать вставленный текст в «файлы»
           server: {
               process: async (fieldName, file, metadata, load, error, progress) => {
                   $dispatch('filepond-upload-started', '{{ $wireModelAttribute }}');
@@ -90,13 +92,10 @@
                   $dispatch('filepond-upload-file-removed', {'attribute' : '{{ $wireModelAttribute }}'});
               },
           },
-           onprocessfile: () => {
-                 $('#send-button__spinner').hide()
-                 $('#send-button').show()
-            },
             onaddfilestart: (file) => {
                 $('#send-button__spinner').show()
-                 $('#send-button').hide()
+                $('#send-button').hide()
+                $('#chat-file-upload').show()
             },
           required: @js($required),
           disabled: @js($disabled),
@@ -106,12 +105,27 @@
 
       pond.setOptions(@js($pondProperties));
 
+      pond.on('processfiles', () => {
+        console.log('DONE')
+        $('#send-button__spinner').hide()
+        $('#send-button').show()
+        $dispatch('filepond-upload-completed', {'attribute' : '{{ $wireModelAttribute }}'});
+    });
+
       pond.setOptions({ labelIdle: '<span id=filepond-button></span>' });
 
-      pond.addFiles(files)
+    if (files.length > 0 && files.every(f => f instanceof File)) {
+            pond.addFiles(files)
+    }
+
       pond.on('addfile', (error, file) => {
           if (error) console.log(error);
       });
+      pond.on('updatefiles', (files) => {
+        if (files.length === 0) {
+            $('#chat-file-upload').hide()
+        }
+    });
 
       // All files have been processed and uploaded, dispatch the upload-completed event
       pond.on('processfiles', () => {
@@ -123,6 +137,6 @@
       });
     }"
 >
-    <input type="file" x-ref="input">
+    <input type="file" x-ref="input" :name="'pond_' + '{{ $wireModelAttribute }}'">
 </div>
 

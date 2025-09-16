@@ -19,3 +19,20 @@ window.Typewriter = Typewriter;
 window.Swiper = Swiper;
 
 livewire_hot_reload();
+
+function showSwal(icon, title, text) {
+    Swal.fire({
+        icon: icon,
+        title: title,
+        html: '<p>' + text + '</p>',
+        showConfirmButton: false,
+    });
+}
+window.shoSwal = showSwal
+
+window.addEventListener('swal', event => {
+    showSwal(event.detail.icon, event.detail.title, event.detail.text)
+});
+
+
+

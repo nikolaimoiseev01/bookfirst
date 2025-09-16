@@ -27,7 +27,7 @@ class ParticipationForm
                                 ->maxLength(255),
                             Select::make('collection_id')
                                 ->label('Сборник')
-                                ->relationship(name: 'collection', titleAttribute: 'name'),
+                                ->relationship(name: 'collection', titleAttribute: 'title'),
                             Select::make('participation_status_id')
                                 ->label('Статус')
                                 ->relationship(name: 'participationStatus', titleAttribute: 'name'),

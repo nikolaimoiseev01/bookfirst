@@ -18,8 +18,17 @@ export default {
                 futura: ['"Futura PT"', ...defaultTheme.fontFamily.sans],
                 sans: ['Futura PT', ...defaultTheme.fontFamily.sans],
             },
+            keyframes: {
+                pulseLight: {
+                    '50%': { opacity: '.75' }, // вместо 0.5 сделаем 0.75
+                },
+            },
+            animation: {
+                'pulse-light': 'pulseLight 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            },
             colors: {
                 green: {
+                    300: '#a2e4d6',
                     400: '#84C9BA',
                     500: '#47af98',
                     600: '#267868'
@@ -31,6 +40,9 @@ export default {
                     400: '#4c4b46',
                     500: '#363531',
                     600: '#1c1c16'
+                },
+                red: {
+                    300: '#ff6262'
                 },
                 brown: {
                     300: '#ECBA57'

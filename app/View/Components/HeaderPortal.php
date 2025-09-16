@@ -24,6 +24,7 @@ class HeaderPortal extends Component
         $links = [
             [
                 'name' => 'Сборники',
+                'url_part' => 'collection',
                 'routes' => [
                     [
                         'name' => 'Актуальные',
@@ -37,31 +38,34 @@ class HeaderPortal extends Component
             ],
             [
                 'name' => 'Собственные книги',
+                'url_part' => 'own-book',
                 'routes' => [
                     [
                         'name' => 'Подробнее',
-                        'link' => route('portal.index')
+                        'link' => route('portal.own_book.application')
                     ],
                     [
                         'name' => 'Изданные',
-                        'link' => route('portal.index')
+                        'link' => route('portal.own_books.released')
                     ],
                 ]
             ],
             [
                 'name' => 'Продвижение',
-                'route' => route('portal.index')
+                'url_part' => 'ext-promotion',
+                'route' => route('portal.ext_promotion')
             ],
             [
                 'name' => 'Еще',
+                'url_part' => 'about',
                 'routes' => [
                     [
                         'name' => 'О нас',
-                        'link' => route('portal.index')
+                        'link' => route('portal.about')
                     ],
                     [
                         'name' => 'Отзывы',
-                        'link' => route('portal.index')
+                        'link' => route('portal.index') . '#reviews'
                     ],
                 ]
             ]

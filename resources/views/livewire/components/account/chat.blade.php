@@ -1,28 +1,38 @@
-<div class="w-full p-4 ">
+<div class="w-full h-full ">
     @filepondScripts
-    <h2>{{$chat['title']}}</h2>
-    <div class="container bg-white dark:bg-dark_bg dark:border dark:border-gray-300">
-        <div class="flex flex-col gap-4 p-8 pb-4">
+    <div class="bg-white dark:bg-dark_bg dark:border dark:border-gray-300 h-full flex flex-col">
+        <!-- список сообщений -->
+        <div id="chatMessagesWrap" class="flex flex-col gap-4 px-4 py-2 flex-[1_1_0] overflow-y-auto min-h-80">
             @if(count($chat['messages']) > 0 )
                 @foreach($chat['messages'] as $message)
-                    <div class="flex flex-col">
-                        <span
-                            class="text-dark-600 dark:text-white">{{$message->user['name'] . ' ' . $message->user['surname']}}</span>
-                        <div class="rounded-xl bg-green-500 px-4 py-2 w-fit max-w-fit">
-                            <p class="text-lg text-white">{{$message['text']}}</p>
-                        </div>
-                        <span
-                            class="text-dark-600 text-sm dark:text-white">{{$message['created_at']->translatedFormat('j F H:i')}}</span>
-                    </div>
+                    <x-chat.message :message="$message"/>
                 @endforeach
             @else
-            <span class="text-gray-100! text-4xl font-bold">
-                Это чат с Вашим личным менеджером по конкретно этому изданию. В нем пока нет сообщений.
-                Здесь Вы можете задать любые вопросы, а также прикреплять файлы при необходимости.
+                <span class="text-gray-100! text-4xl font-bold">
+                                    Это чат с Вашим личным менеджером по конкретно этому изданию. В нем пока нет сообщений.
+                    Здесь Вы можете задать любые вопросы, а также прикреплять файлы при необходимости.
             </span>
+            @endif
         </div>
-        @endif
-        <x-ui.chat-file-upload multiple="true" wire:model="file" />
-        <x-ui.input-text-area model="text"></x-ui.input-text-area>
+
+        <!-- форма -->
+        <form class="mt-auto">
+            <x-ui.input-text-area model="text" attachable="true"></x-ui.input-text-area>
+        </form>
+        @push('scripts')
+            <script>
+                function scroll() {
+                    const el = document.getElementById('chatMessagesWrap');
+                    if (el) el.scrollTop = el.scrollHeight;
+                }
+
+                window.addEventListener('scrollChatToEnd', () => {
+                    setTimeout(function () {
+                        scroll()
+                    }, 100)
+                });
+                scroll()
+            </script>
+        @endpush
     </div>
 </div>

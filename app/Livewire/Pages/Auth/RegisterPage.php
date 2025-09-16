@@ -8,6 +8,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use Illuminate\Validation\ValidationException;
 use Livewire\Component;
 
 class RegisterPage extends Component
@@ -18,6 +19,8 @@ class RegisterPage extends Component
     }
 
     public string $name = '';
+    public string $surname = '';
+    public string $nickname = '';
     public string $email = '';
     public string $password = '';
     public string $password_confirmation = '';
@@ -27,18 +30,34 @@ class RegisterPage extends Component
      */
     public function register(): void
     {
-        $validated = $this->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
-            'password' => ['required', 'string', 'confirmed', Password::defaults()],
-        ]);
+        try {
+            $validated = $this->validate([
+                'name' => ['required', 'string', 'max:255'],
+                'surname' => ['required', 'string', 'max:255'],
+                'nickname' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
+                'password' => ['required', 'string', 'confirmed', Password::defaults()],
+            ]);
 
-        $validated['password'] = Hash::make($validated['password']);
+            $validated['password'] = Hash::make($validated['password']);
 
-        event(new Registered($user = User::create($validated)));
+            event(new Registered($user = User::create($validated)));
 
-        Auth::login($user);
+            Auth::login($user);
 
-        $this->redirect(route('dashboard', absolute: false), navigate: true);
+            $this->redirect(route('account.collections', absolute: false), navigate: true);
+        } catch (ValidationException $e) {
+            // Собираем все ошибки в одну строку или массив
+            $messages = collect($e->validator->errors()->all())->implode("<br>");
+            // Диспатчим в JS
+            $this->dispatch('swal',
+                title: 'Ошибка',
+                text: $messages,
+            );
+
+            throw $e; // чтобы стандартный Livewire тоже знал про ошибки
+        }
+
+
     }
 }

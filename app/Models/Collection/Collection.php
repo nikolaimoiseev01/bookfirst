@@ -61,6 +61,6 @@ class Collection extends Model implements HasMedia
 
     protected $casts = [
         'winner_participations' => 'array',
-        'links' => 'array',
+        'selling_links' => 'array',
     ];
 }

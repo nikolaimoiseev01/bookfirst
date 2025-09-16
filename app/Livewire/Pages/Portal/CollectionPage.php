@@ -13,6 +13,8 @@ class CollectionPage extends Component
     public $process;
     public $dates;
 
+    public $tabs;
+
     public function render()
     {
         return view('livewire.pages.portal.collection-page');
@@ -27,6 +29,27 @@ class CollectionPage extends Component
             'Формат' => $this->collection->workType['name'],
             'Обложка' => 'Мягкая, цветная'
         ];
+
+        if ($this->collection['collection_status_id'] == 1 ) {
+            $this->tabs = [
+                'default' => 'process',
+                'tabs' => [
+                    'process' => 'Порядок участия',
+                    'calculator' => 'Калькулятор',
+                    'dates' => 'Даты издания',
+                    'free_participation' => 'Бесплатное участие'
+                ]
+            ];
+        } else {
+            $this->tabs = [
+                'default' => 'dates',
+                'tabs' => [
+                    'dates' => 'Даты издания',
+                    'read_part' => 'Читать фрагмент',
+                ]
+            ];
+        }
+
         $this->process = [
             [
                 'title' => 'Страница участия',

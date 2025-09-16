@@ -1,36 +1,31 @@
-<div>
-    <form wire:submit="resetPassword">
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')"/>
-            <x-text-input wire:model="email" id="email" class="block mt-1 w-full" type="email" name="email" required
-                          autofocus autocomplete="username"/>
-            <x-input-error :messages="$errors->get('email')" class="mt-2"/>
-        </div>
+<main class="flex-1 content mb-32">
+    @section('title')
+        Восстановление пароля
+    @endsection
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')"/>
-            <x-text-input wire:model="password" id="password" class="block mt-1 w-full" type="password" name="password"
-                          required autocomplete="new-password"/>
-            <x-input-error :messages="$errors->get('password')" class="mt-2"/>
-        </div>
+    <div class="flex gap-8 mx-auto justify-center mb-8 flex-wrap">
+        <p class="text-6xl text-green-500 font-normal">Восстановление пароля</p>
+    </div>
 
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')"/>
-
-            <x-text-input wire:model="password_confirmation" id="password_confirmation" class="block mt-1 w-full"
-                          type="password"
-                          name="password_confirmation" required autocomplete="new-password"/>
-
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2"/>
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
-                {{ __('Reset Password') }}
-            </x-primary-button>
-        </div>
+    <form wire:submit="resetPassword" class="border border-green-500 rounded-2xl p-8 flex flex-col gap-4 max-w-2xl mx-auto">
+        <x-ui.input.text
+            name="email"
+            label="Email"
+            wire:model="email"
+        />
+        <x-ui.input.password
+            name="password"
+            label="Пароль"
+            wire:model="password"
+        />
+        <x-ui.input.password
+            name="password_confirmation"
+            label="Повторите пароль"
+            wire:model="password_confirmation"
+        />
+        <x-ui.button class="flex-1 mt-8">Сохранить пароль</x-ui.button>
+        @if (session('status'))
+            <p class="text-green-500"><b>{{ __('Письмо с инструкцией восстановления отправлена на Email!') }}</b></p>
+        @endif
     </form>
-</div>
+</main>

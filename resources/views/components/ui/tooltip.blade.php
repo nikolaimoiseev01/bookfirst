@@ -25,10 +25,10 @@
             after:border-t-[6px] after:border-t-transparent
             after:border-b-[6px] after:border-b-transparent
             after:border-r-[6px] after:border-r-dark-600",
-
     };
 @endphp
-<div {{ $attributes->merge(['class' => 'absolute bg-dark-600 text-white p-4 rounded text-center w-max max-w-60 z-20 ' . $classes]) }}
-">
+<div :class="open ? 'opacity-100 visible' : 'opacity-0 invisible'"
+{{ $attributes->merge(['class' => 'absolute bottom-[110%] left-1/2 -translate-x-1/2 bg-dark-600 text-white py-2 px-4 rounded text-center w-max max-w-60 z-20 transition' . $classes]) }}
+>
     {{$slot}}
 </div>

@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('collections', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('name_short');
+            $table->string('title');
+            $table->string('title_short');
             $table->string('slug');
             $table->foreignId('collection_status_id')->constrained();
             $table->integer('pages')->nullable();
@@ -25,7 +25,7 @@ return new class extends Migration
             $table->date('date_print_start')->nullable();
             $table->date('date_print_end')->nullable();
             $table->json('winner_participations')->nullable();
-            $table->json('links')->nullable();
+            $table->json('selling_links')->nullable();
             $table->foreignId('work_type_id')->nullable();
             $table->timestamps();
         });

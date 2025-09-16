@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class OwnBookSeeder extends Seeder
 {
@@ -24,15 +25,18 @@ class OwnBookSeeder extends Seeder
     {
         $oldOwnBooks = DB::connection('old_mysql')
             ->table('own_books')
-            ->where('id', '>', $test ? 310 : 0)
+            ->where('id', '>', $test ? 230 : 0)
             ->get();
         foreach ($oldOwnBooks as $oldOwnBook) {
 
 
             if ($oldOwnBook->amazon_link ?? null) {
-                $external_links = json_encode(['amazon' => $oldOwnBook->amazon_link]);
+                $selling_links = [
+                    'platform' => 'amazon',
+                    'link' => $oldOwnBook->amazon_link
+                ];
             } else {
-                $external_links = null;
+                $selling_links = null;
             }
 
             $own_book = OwnBook::create([
@@ -40,6 +44,7 @@ class OwnBookSeeder extends Seeder
                 'user_id' => $oldOwnBook->user_id,
                 'author' => $oldOwnBook->author,
                 'title' => $oldOwnBook->title,
+                'slug' => Str::slug($oldOwnBook->title),
                 'own_book_status_id' => $oldOwnBook->own_book_status_id,
                 'own_book_cover_status_id' => $oldOwnBook->own_book_cover_status_id,
                 'own_book_inside_status_id' => $oldOwnBook->own_book_inside_status_id,
@@ -60,7 +65,7 @@ class OwnBookSeeder extends Seeder
                 'paid_at_print_only' => $oldOwnBook->paid_at_print_only,
                 'old_author_email' => $oldOwnBook->old_author_email,
                 'annotation' => $oldOwnBook->own_book_desc,
-                'external_links' => $external_links
+                'selling_links' => $selling_links
             ]);
             $author_inside_file = DB::connection('old_mysql')
                 ->table('own_book_files')
@@ -83,7 +88,7 @@ class OwnBookSeeder extends Seeder
                     $own_book->addMediaFromUrl('https://pervajakniga.ru/' . $oldOwnBook->inside_file)->toMediaCollection('inside_file');
                 }
                 if ($oldOwnBook->inside_file_cut) {
-                    $own_book->addMediaFromUrl('https://pervajakniga.ru/' . $oldOwnBook->inside_file_cut)->toMediaCollection('inside_file_cut');
+                    $own_book->addMediaFromUrl('https://pervajakniga.ru/' . $oldOwnBook->inside_file_cut)->toMediaCollection('inside_file_preview');
                 }
             } catch (\Throwable $th) {
                 continue;
@@ -130,7 +135,7 @@ class OwnBookSeeder extends Seeder
             , columnsToRename: ['status_title' => 'name']
         );
         $this->make_own_book_works($test);
-        if(!$test) {
+        if (!$test) {
             (new CopyTableService())->copy(
                 sourceTable: 'own_book_reviews'
                 , targetTable: 'own_book_reviews'

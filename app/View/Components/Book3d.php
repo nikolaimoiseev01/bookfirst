@@ -14,7 +14,12 @@ class Book3d extends Component
      */
     public function __construct($cover)
     {
-        $this->cover = $cover;
+        if ($cover == null || $cover == '') {
+            $this->cover = '/fixed/cover_wip.png';
+        } else {
+            $this->cover = $cover;
+        }
+
     }
 
     /**

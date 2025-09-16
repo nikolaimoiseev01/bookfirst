@@ -8,13 +8,11 @@ use Illuminate\View\Component;
 
 class InputTextArea extends Component
 {
-    public $model;
     /**
      * Create a new component instance.
      */
-    public function __construct($model)
+    public function __construct()
     {
-        $this->model = $model;
     }
 
     /**

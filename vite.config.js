@@ -14,7 +14,7 @@ export default defineConfig({
             refresh: false, // <-- disables laravel autorefresh, to avoid conflicts
         }),
         livewire({  // <-- add livewire plugin
-            refresh: ['resources/css/app.css'],  // <-- will refresh css (tailwind ) as well
+            refresh: ['resources/css/app.css', 'resources/css/filament/admin/theme.css'],  // <-- will refresh css (tailwind ) as well
         }),
         tailwindcss(),
     ],

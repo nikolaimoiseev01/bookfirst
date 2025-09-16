@@ -1,47 +1,31 @@
-<div class="pt-96 content">
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')"/>
+<main class="flex-1 content mb-32">
+    @section('title')
+        Вход
+    @endsection
 
-    <form wire:submit="login">
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')"/>
-            <x-text-input wire:model="form.email" id="email" class="block mt-1 w-full" type="email" name="email"
-                          required autofocus autocomplete="username"/>
-            <x-input-error :messages="$errors->get('form.email')" class="mt-2"/>
+    <div class="flex gap-8 mx-auto justify-center mb-8 flex-wrap">
+        <p class="text-6xl text-green-500 font-normal">Вход</p>
+        <x-ui.link-simple href="{{route('auth.register')}}"
+                          class="text-6xl  font-normal !text-dark-100 hover:!text-green-500 transition">
+            Регистрация
+        </x-ui.link-simple>
+    </div>
+
+    <form wire:submit="login" class="border border-green-500 rounded-2xl p-8 flex flex-col gap-4 max-w-2xl mx-auto">
+        <x-ui.input.text
+            name="email"
+            label="Email"
+            wire:model="email"
+        />
+        <x-ui.input.password
+            name="password"
+            label="Пароль"
+            wire:model="password"
+        />
+        <div class="flex gap-4 mt-8 w-full">
+            <x-ui.button class="flex-1">Войти</x-ui.button>
+            <x-ui.link-simple href="{{route('auth.password.request')}}">Восстановить пароль</x-ui.link-simple>
         </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')"/>
-
-            <x-text-input wire:model="form.password" id="password" class="block mt-1 w-full"
-                          type="password"
-                          name="password"
-                          required autocomplete="current-password"/>
-
-            <x-input-error :messages="$errors->get('form.password')" class="mt-2"/>
-        </div>
-
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember" class="inline-flex items-center">
-                <input wire:model="form.remember" id="remember" type="checkbox"
-                       class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:focus:ring-offset-gray-800"
-                       name="remember">
-                <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Remember me') }}</span>
-            </label>
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
-                   href="{{ route('password.request') }}" wire:navigate>
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
-
-           <button>Log in</button>
-        </div>
     </form>
-</div>
+</main>

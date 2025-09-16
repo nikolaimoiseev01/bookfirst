@@ -7,6 +7,7 @@ use App\Filament\Resources\Collection\Participations\Pages\EditParticipation;
 use App\Filament\Resources\Collection\Participations\Pages\ListParticipations;
 use App\Filament\Resources\Collection\Participations\Schemas\ParticipationForm;
 use App\Filament\Resources\Collection\Participations\Tables\ParticipationsTable;
+use App\Filament\Resources\User\Users\UserResource;
 use App\Models\Collection\Participation;
 use BackedEnum;
 use Filament\Resources\Resource;
@@ -20,7 +21,12 @@ class ParticipationResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static ?string $recordTitleAttribute = 'Participation';
+    protected static ?string $label = 'Участия';
+    protected static ?string $navigationLabel = 'Участия';
+    protected static ?string $pluralLabel = 'Участия в сборниках';
+
+
+    protected static ?string $parentResource = UserResource::class;
 
     public static function form(Schema $schema): Schema
     {

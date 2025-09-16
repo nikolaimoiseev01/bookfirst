@@ -29,9 +29,9 @@ class CollectionsTable
                         SpatieMediaLibraryImageColumn::make('cover')
                             ->width(150)
                             ->height(210)
-                            ->collection('cover_2d'),
+                            ->collection('cover_front'),
                         Stack::make([
-                            TextColumn::make('name')
+                            TextColumn::make('title')
                                 ->formatStateUsing(fn(string $state): HtmlString => new HtmlString("<h1 class='text-xl'>{$state}</h1>"))
                                 ->extraAttributes(['class' => 'text-3xl'])
                                 ->searchable(),

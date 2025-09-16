@@ -31,6 +31,7 @@ use App\Models\User\User;
 use App\Models\Work\Work;
 use App\Models\Work\WorkLike;
 use App\Services\CopyTableService;
+use App\Services\PdfService;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Filesystem\Filesystem;
@@ -281,7 +282,9 @@ class DatabaseSeeder extends Seeder
             $message = Message::create([
                 'chat_id' => $oldMessage->chat_id,
                 'user_id' => $oldMessage->user_from,
-                'text' => $oldMessage->text
+                'text' => $oldMessage->text,
+                'created_at' => $oldMessage->created_at,
+                'updated_at' => $oldMessage->updated_at
             ]);
             if (!$test) {
                 $files = DB::connection('old_mysql')->table('message_files')->where('message_id', $oldMessage->id)->get();
@@ -378,7 +381,9 @@ class DatabaseSeeder extends Seeder
                 'transaction_type' => $transaction_type,
                 'model_type' => $model_type,
                 'model_id' => $model_id,
-                'yoo_id' => $oldTransaction->yoo_id
+                'yoo_id' => $oldTransaction->yoo_id,
+                'created_at' => $oldTransaction->created_at,
+                'updated_at' => $oldTransaction->updated_at
             ]);
         }
 
@@ -412,7 +417,7 @@ class DatabaseSeeder extends Seeder
                 'flg_custom_task' => 0,
                 'created_at' => $oldTask->created_at,
                 'updated_at' => $oldTask->updated_at,
-                'flg_custom_finished' => 0
+                'flg_custom_finished' => 0,
             ]);
 
         };
@@ -618,9 +623,6 @@ class DatabaseSeeder extends Seeder
 
         $oldCollections = DB::connection('old_mysql')
             ->table('collections')
-            ->when($test, function ($query) {
-                return $query->where('id', '>', 120);
-            })
             ->get();
         foreach ($oldCollections as $collection) {
 
@@ -643,16 +645,17 @@ class DatabaseSeeder extends Seeder
             $links = null;
             if ($collection->amazon_link) {
                 $links = [
-                    'amazon' => $collection->amazon_link
+                    'platform' => 'amazon',
+                    'link' => $collection->amazon_link
                 ];
             }
 //            dd(json_encode($winners));
 
             $new_collection = Collection::firstOrCreate(
-                ['name' => $collection->title],
+                ['title' => $collection->title],
                 [
                     'id' => $collection->id,
-                    'name_short' => $short_nm,
+                    'title_short' => $short_nm,
                     'slug' => $slug,
                     'collection_status_id' => $collection->col_status_id,
                     'description' => $collection->col_desc,
@@ -664,7 +667,7 @@ class DatabaseSeeder extends Seeder
                     'created_at' => $collection->created_at,
                     'updated_at' => $collection->updated_at,
                     'winner_participations' => $winners,
-                    'links' => $links,
+                    'selling_links' => $links ?? null,
                     'work_type_id' => $work_type_id
                 ]);
             if ($new_collection->wasRecentlyCreated) {
@@ -672,11 +675,13 @@ class DatabaseSeeder extends Seeder
                 $cover_2d_url = 'https://pervajakniga.ru/' . $collection->cover_2d;
                 $cover_3d_url = 'https://pervajakniga.ru/' . $collection->cover_3d;
                 try {
-                    $new_collection->addMediaFromUrl($inside_url)
-                        ->usingFileName("$slug.pdf")      // имя файла на диске
-                        ->usingName($slug)
-                        ->preservingOriginal()
-                        ->toMediaCollection('inside_file');
+                    if ($collection->pre_var) {
+                        $new_collection->addMediaFromUrl($inside_url)
+                            ->usingFileName("$slug.pdf") // имя файла на диске
+                            ->usingName($slug)
+                            ->preservingOriginal()
+                            ->toMediaCollection('inside_file');
+                    }
                 } catch (\Throwable $th) {
                     // 1. Декодируем URL
                     $decoded = urldecode($inside_url);
@@ -703,13 +708,24 @@ class DatabaseSeeder extends Seeder
                 try {
                     $new_collection->addMediaFromUrl($cover_2d_url)
                         ->preservingOriginal()
-                        ->toMediaCollection('cover_2d');
+                        ->toMediaCollection('cover_front');
                 } catch (\Throwable $th) {
                     try {
                         $new_collection->addMediaFromUrl($cover_3d_url)
                             ->preservingOriginal()
                             ->toMediaCollection('cover_3d');
                     } catch (\Throwable $th) {
+                    }
+                }
+                if ($collection->pre_var) {
+                    try {
+                        $preview_file_name = $new_collection['slug'] . '_preview.pdf';
+                        $media = $new_collection->getFirstMedia('inside_file');
+                        $path = $media->getPath(); // абсолютный путь в storage
+                        app(PdfService::class)
+                            ->cutAndAttach($new_collection, $path, 10, 'inside_file_preview', $preview_file_name);
+                    } catch (\Throwable $th) {
+
                     }
                 }
             }
@@ -766,7 +782,9 @@ class DatabaseSeeder extends Seeder
                 CollectionVote::create([
                     'participation_id_from' => $participation_id_from->id,
                     'participation_id_to' => $participation_id_to->id,
-                    'collection_id' => $oldCollectionVote->collection_id
+                    'collection_id' => $oldCollectionVote->collection_id,
+                    'created_at' => $oldCollectionVote->created_at,
+                    'updated_at' => $oldCollectionVote->updated_at
                 ]);
             }
         }
@@ -787,7 +805,9 @@ class DatabaseSeeder extends Seeder
                     'collection_id' => $emailSent->collection_id,
                     'subject' => $emailSent->subject,
                     'text' => $emailSent->email_text,
-                    'users' => json_encode($users)
+                    'users' => json_encode($users),
+                    'created_at' => $emailSent->created_at,
+                    'updated_at' => $emailSent->updated_at
                 ]);
             }
             if (count($users) > 0) {
@@ -795,7 +815,9 @@ class DatabaseSeeder extends Seeder
                     EmailSent::create([
                         'user_id' => $user,
                         'subject' => $emailSent->subject,
-                        'text' => $emailSent->email_text
+                        'text' => $emailSent->email_text,
+                        'created_at' => $emailSent->created_at,
+                        'updated_at' => $emailSent->updated_at
                     ]);
                 }
             }
@@ -832,7 +854,9 @@ class DatabaseSeeder extends Seeder
                 'price_print' => $participation->print_price,
                 'price_check' => $participation->check_price,
                 'price_send' => $participation->send_price,
-                'price_total' => $participation->total_price
+                'price_total' => $participation->total_price,
+                'created_at' => $participation->created_at,
+                'updated_at' => $participation->updated_at
             ]);
         }
     }
@@ -850,7 +874,9 @@ class DatabaseSeeder extends Seeder
         foreach ($oldParticipationWorks as $oldParticipationWork) {
             ParticipationWork::create([
                 'work_id' => $oldParticipationWork->work_id,
-                'participation_id' => $oldParticipationWork->participation_id
+                'participation_id' => $oldParticipationWork->participation_id,
+                'created_at' => $oldParticipationWork->created_at,
+                'updated_at' => $oldParticipationWork->updated_at
             ]);
         }
     }
@@ -868,7 +894,9 @@ class DatabaseSeeder extends Seeder
         foreach ($oldWorkLikes as $oldWorkLike) {
             WorkLike::create([
                 'user_id' => $oldWorkLike->user_id,
-                'work_id' => $oldWorkLike->work_id
+                'work_id' => $oldWorkLike->work_id,
+                'created_at' => $oldWorkLike->created_at,
+                'updated_at' => $oldWorkLike->updated_at
             ]);
         }
     }
@@ -880,35 +908,35 @@ class DatabaseSeeder extends Seeder
 
         $file = new Filesystem;
         $file->cleanDirectory(storage_path('app/public/media'));
-//
+
         $this->same_tables(test: $test);
 
-//        $this->make_survey_completeds();
-//        $this->make_inner_tasks();
-//        $this->make_chats($test);
-//        $this->make_messages($test);
-//        $this->make_awards();
-//        $this->make_actions();
-//        $this->make_digital_sales();
-//        $this->make_message_templates();
-//        $this->make_preview_comments();
-//        $this->make_print_orders();
-//        $this->make_transactions();
-//        $this->make_work_likes();
-//
-//
-//        $now_time = Carbon::now()->format('H:i:s');
-//        echo "Collections START ($now_time)\n";
+        $this->make_survey_completeds();
+        $this->make_inner_tasks();
+        $this->make_chats($test);
+        $this->make_messages($test);
+        $this->make_awards();
+        $this->make_actions();
+        $this->make_digital_sales();
+        $this->make_message_templates();
+        $this->make_preview_comments();
+        $this->make_print_orders();
+        $this->make_transactions();
+        $this->make_work_likes();
+
+
+        $now_time = Carbon::now()->format('H:i:s');
+        echo "Collections START ($now_time)\n";
         $this->make_collection_statuses();
         (new CopyTableService())->copy(sourceTable: 'pat_statuses', targetTable: 'participation_statuses', columnsToRename: ['pat_status_title' => 'name']);
         $this->make_collections($test);
-//        $this->make_participations($test);
-//        $this->make_news_letters($test);
-//        $this->make_collection_votes($test);
-//        $this->make_participation_works($test);
-//        $now_time = Carbon::now()->format('H:i:s');
-//        echo "Collections END ($now_time)\n";
+        $this->make_participations($test);
+        $this->make_news_letters($test);
+        $this->make_collection_votes($test);
+        $this->make_participation_works($test);
+        $now_time = Carbon::now()->format('H:i:s');
+        echo "Collections END ($now_time)\n";
 
-//        (new OwnBookSeeder())->run(test: $test);
+        (new OwnBookSeeder())->run(test: $test);
     }
 }

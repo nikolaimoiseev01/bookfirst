@@ -1,4 +1,7 @@
 <main>
+    @section('title')
+        Главная
+    @endsection
     <section class="h-screen w-full flex items-center">
         <svg class="absolute left-0 top-0 h-full" id="Слой_1" data-name="Слой 1" xmlns="http://www.w3.org/2000/svg"
              viewBox="0 0 531.37 733.2">
@@ -14,7 +17,7 @@
         </svg>
         <div class="max-w-(--breakpoint-3xl) mx-auto w-[90%] flex justify-between items-center relative">
             <div class="flex flex-col gap-4 max-w-[600px]">
-                <h1 class="text-7xl font-medium text-black-500 dark:text-white">Ваш шаг в мир<br>литературы</h1>
+                <h2 class="text-7xl font-medium text-black-500 dark:text-white">Ваш шаг в мир<br>литературы</h2>
                 <x-portal.welcome-running-line/>
                 <div class="flex gap-8">
                     <a href="#"
@@ -60,7 +63,7 @@
         </div>
     </section>
 
-    <section class="content mb-32">
+    <section id="reviews" class="content mb-32">
         <div class="flex w-full justify-between mb-8">
             <h2>Отзывы</h2>
             <a href="">Больше отзывов</a>

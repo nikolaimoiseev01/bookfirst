@@ -1,22 +1,24 @@
-<div class="pt-16">
-    <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
-        {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
+<main class="flex-1 content mb-32">
+    @section('title')
+        Восстановление пароля
+    @endsection
+
+    <div class="flex gap-8 mx-auto justify-center mb-8 flex-wrap">
+        <p class="text-6xl text-green-500 font-normal">Восстановление пароля</p>
     </div>
 
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')"/>
-
-    <form wire:submit="sendPasswordResetLink">
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')"/>
-            <x-text-input wire:model="email" id="email" class="block mt-1 w-full" type="email" name="email" required
-                          autofocus/>
-            <x-input-error :messages="$errors->get('email')" class="mt-2"/>
+    <form wire:submit="sendPasswordResetLink" class="border border-green-500 rounded-2xl p-8 flex flex-col gap-4 max-w-2xl mx-auto">
+        <x-ui.input.text
+            name="email"
+            label="Email"
+            wire:model="email"
+        />
+        <div class="flex gap-4 mt-8 w-full">
+            <x-ui.button class="flex-1">Напомнить пароль</x-ui.button>
+            <x-ui.link-simple href="{{route('auth.login')}}">Войти</x-ui.link-simple>
         </div>
-
-        <div class="flex items-center justify-end mt-4">
-            <button>Send</button>
-        </div>
+        @if (session('status'))
+            <p class="text-green-500"><b>{{ __('Письмо с инструкцией восстановления отправлена на Email!') }}</b></p>
+        @endif
     </form>
-</div>
+</main>

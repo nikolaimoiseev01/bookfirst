@@ -1,4 +1,4 @@
-<footer class="py-4 w-full bg-green-500 mt-32">
+<footer class="py-4 w-full bg-green-500">
     <div class="content flex gap-8 items-center justify-evenly  text-xl text-white flex-wrap">
         <div class="text-center leading-tight">
             Независимое издательство<br>

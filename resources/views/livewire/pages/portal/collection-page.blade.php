@@ -1,4 +1,7 @@
-<main class="flex-1 content">
+<main class="flex-1 content mb-32">
+    @section('title')
+        {{$collection['title']}}
+    @endsection
     <nav class="flex gap-2 mb-12 flex-wrap">
         <x-ui.link-simple href="{{route('portal.collections.actual')}}">Сборники</x-ui.link-simple>
         @if($collection['collection_status_id'] == 1)
@@ -6,15 +9,27 @@
             <x-ui.link-simple href="{{route('portal.collections.actual')}}">Идет приём заявок</x-ui.link-simple>
         @endif
         <p>/</p>
-        <p>{{$collection['name']}}</p>
+        <p>{{$collection['title']}}</p>
     </nav>
     <section class="mb-24 flex gap-12 lg:flex-col lg:text-center lg:items-center">
         <div class="w-60 min-w-60">
-            <x-book3d :cover="$collection->getFirstMediaUrl('cover_2d')" class=""/>
+            <x-book3d :cover="$collection->getFirstMediaUrl('cover_front')" class=""/>
         </div>
         <div class="flex flex-col gap-4 lg:items-center">
-            <h3 class="border-b border-b-dark-600 w-fit">{{$collection['name']}}</h3>
+            <h3 class="border-b border-b-dark-600 w-fit">{{$collection['title']}}</h3>
             <p>{{$collection['description']}}</p>
+            <h4>Приобрести книгу:</h4>
+            <div class="flex flex-wrap gap-8 md:gap-4 md:flex-col md:justify-center">
+                @foreach($collection['selling_links'] ?? [] as $name => $link)
+                    <a href="{{$link}}" target="_blank" class="flex gap-4 border text-xl border-dark-100 rounded px-4 py-2 hover:bg-green-500 hover:text-white transition">
+                        <img src="/fixed/logo-{{$name}}.png" class="w-16" alt="">
+                        {{$name}}
+                    </a>
+                @endforeach
+                <a href="" target="_blank" class="flex gap-4 border text-xl border-dark-100 rounded px-4 py-2 hover:bg-green-500 hover:text-white transition">
+                    Электронная версия (100 руб.)
+                </a>
+            </div>
         </div>
         <div class="container flex flex-col w-fit px-4 h-fit">
             @foreach($info as $key => $value)
@@ -22,24 +37,21 @@
                     <p class="font-normal text-nowrap text-xl">{{$key}}: <span class="font-light">{{$value}}</span></p>
                 </div>
             @endforeach
-            <x-ui.link href="" class="my-4 py-2 font-medium !text-2xl tracking-wide">Принять участие!</x-ui.link>
+            @if($collection['collection_status_id'] == 1)
+                <x-ui.link href="" class="my-4 py-2 font-medium !text-2xl tracking-wide">Принять участие!</x-ui.link>
+            @else
+                <p class="my-4 text-center text-red-300 font-normal">Прием заявок окончен</p>
+            @endif
         </div>
     </section>
-    @php
-        $tabs = [
-            'process' => 'Порядок участия',
-            'calculator' => 'Калькулятор',
-            'dates' => 'Даты издания',
-            'free_participation' => 'Бесплатное участие'
-        ]
-    @endphp
-    <section x-data="{ tab: 'process' }" class="container p-4 transition-all min-w-full">
+    <section x-data="{ tab: '{{$tabs['default']}}' }"
+             class="container p-4 transition-all min-w-full">
         <nav class="flex flex-wrap md:justify-center md:flex-col gap-8 md:gap-4 text-4xl relative z-[1]
                                 after:absolute after:left-0 after:right-0 after:bottom-0 after:block
                                 after:w-full after:h-[2px] after:z-10 after:bg-dark-100 after:rounded
                                 after:m-auto after:content-['']
                                 after:transition-all after:duration-400">
-            @foreach($tabs as $key => $value)
+            @foreach($tabs['tabs'] as $key => $value)
                 <button @click="tab = '{{$key}}'"
                         :class="tab === '{{$key}}' ? 'text-green-500 after:w-full' : 'text-dark-100'"
                         class="cursor-pointer transition
@@ -54,8 +66,9 @@
             @endforeach
             <a href="" class="text-dark-100  pb-4 hover:text-green-500 ml-auto md:mx-auto">Инструкция</a>
         </nav>
-        <section x-show="tab === 'process'"
-                 class="px-12 py-8 pb-4 relative mx-auto">
+        <section
+            x-show="tab === 'process'"
+            class="px-12 py-8 pb-4 relative mx-auto">
             <x-bi-chevron-compact-left id="processPrev"
                                        class="[&.swiper-button-disabled]:opacity-30 [&.swiper-button-disabled]:cursor-not-allowed absolute w-12 h-auto top-1/2 -translate-y-1/2 left-0 cursor-pointer hover:scale-110 transition"/>
             <x-bi-chevron-compact-right id="processNext"
@@ -73,6 +86,7 @@
                     <script type="module">
                         var swiper = new Swiper(".processSwiper", {
                             slidesPerView: 1,
+                            autoHeight: true,
                             spaceBetween: 30,
                             grabCursor: true,
                             pagination: {
@@ -117,8 +131,8 @@
                                     {{$date['tooltip']}}
                                 </x-ui.question-mark>
                             @endif
-{{--                            <x-bi-arrow-right--}}
-{{--                                class="absolute top-1/2 text-dark-100 -right-8 w-12 h-auto -translate-y-1/2"/>--}}
+                            {{--                            <x-bi-arrow-right--}}
+                            {{--                                class="absolute top-1/2 text-dark-100 -right-8 w-12 h-auto -translate-y-1/2"/>--}}
                         </div>
                     @endforeach
                 </div>
@@ -175,6 +189,11 @@
                 </div>
             </div>
             <p class="italic">*Подробная информация о правилах получения будет предоставлена призеру лично.</p>
+        </section>
+
+        <section x-show="tab === 'read_part'" class="p-4">
+            <iframe src="{{$collection->getFirstMediaUrl('inside_file_preview')}}"
+                    width="100%" height="600px"></iframe>
         </section>
     </section>
 </main>

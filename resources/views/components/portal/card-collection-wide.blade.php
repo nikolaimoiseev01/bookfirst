@@ -1,9 +1,9 @@
 <div class="container flex gap-10 relative p-4 lg:flex-col lg:items-center md:pt-24">
     <div class="min-w-[180px] max-w-[180px]  md:min-w-[140px]  md:max-w-[140px] relative">
-        <x-book3d :cover="$collection->getFirstMediaUrl('cover_2d')" class=" left-0 bottom-0"/>
+        <x-book3d :cover="$collection->getFirstMediaUrl('cover_front')" class=" left-0 bottom-0"/>
     </div>
     <div class="flex flex-col gap-4 lg:items-center lg:text-center">
-        <h3>{{$collection['name']}}</h3>
+        <h3>{{$collection['title']}}</h3>
         <p>{{$collection['description']}}</p>
     </div>
     <div class="flex flex-col justify-center gap-4 lg:w-full">

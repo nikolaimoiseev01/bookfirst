@@ -17,20 +17,23 @@
         @foreach($links as $link)
             @if($link['routes'] ?? null)
                 <div class="relative group md:hidden">
-                    <p class="cursor-pointer font-normal">{{$link['name']}}</p>
+                    <p
+                        :class="window.location.href.includes('{{$link['url_part']}}') ? 'text-green-500' : ''"
+                        class="cursor-pointer font-normal">{{$link['name']}}</p>
                     <div
                         class="absolute left-1/2 -translate-x-1/2 top-1/2 mt-2 w-max invisible opacity-0 scale-y-95 transform transition-all duration-300 ease-out group-hover:opacity-100 group-hover:visible group-hover:scale-y-100 group-hover:top-3/4"
                     >
                         @foreach($link['routes'] as $route)
                             <a wire:navigate href="{{$route['link']}}"
-                               class="block px-4 py-2 bg-white hover:bg-gray-100 rounded shadow text-center">
+                               class="block px-4 py-2 bg-white hover:bg-gray-100 hover:text-green-500 rounded shadow text-center">
                                 {{$route['name']}}
                             </a>
                         @endforeach
                     </div>
                 </div>
             @else
-                <a href="{{$link['route']}}" class="md:hidden">{{$link['name']}}</a>
+                <a wire:navigate :class="window.location.href.includes('{{$link['url_part']}}') ? 'text-green-500' : ''"
+                   href="{{$link['route']}}" class="md:hidden transition hover:text-green-500">{{$link['name']}}</a>
             @endif
         @endforeach
         <style>
@@ -51,7 +54,25 @@
                 <span class="bar"></span>
             </div>
         </button>
-        <a wire:navigate href="">Мой кабинет</a>
+        <div class="flex gap-2 items-center group cursor-pointer">
+            <x-codicon-account
+                x-bind:class="(window.location.href.includes('account') || window.location.href.includes('login')) || window.location.href.includes('register')
+        ? 'text-green-500'
+        : ''"
+                class="w-6 h-auto group-hover:text-green-500 transition"
+            />
+            @auth
+                <a  :class="window.location.href.includes('account') ? 'text-green-500' : ''"
+                    class="transition group-hover:text-green-500" wire:navigate href="{{route('account.collections')}}">
+                    Мой кабинет</a>
+            @else
+                <a
+                    :class="window.location.href.includes('login')  || window.location.href.includes('register') ? 'text-green-500' : ''"
+                    class="transition group-hover:text-green-500" wire:navigate href="{{route('auth.login')}}">Войти</a>
+            @endauth
+        </div>
+
+
     </div>
     <div x-show="mobileMenuOpen"
          x-transition:enter="transition ease-out duration-300"

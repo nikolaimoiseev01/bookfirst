@@ -22,7 +22,7 @@
             </div>
 
             <div class="flex gap-4 items-center">
-                <label for="hasPromo">Мне нужна проверка</label>
+                <label for="hasPromo">У меня есть скидка в 20%</label>
                 <x-ui.input.checkbox wire:model="hasPromo" id="hasPromo" label=""/>
             </div>
         </div>
@@ -35,6 +35,6 @@
             <span class="text-2xl text-dark-200">+</span>
             <x-price-element price="3000" label="Проверка"/>
         </div>
-        <x-price-element price="3000" label="Итого" direction="row" color="green"/>
+
     </div>
 </div>

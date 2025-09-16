@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('user_id')->references('id')->on('users');
             $table->string('author');
             $table->string('title');
+            $table->string('slug');
 
             $table->foreignId('own_book_status_id')->references('id')->on('own_book_statuses');
             $table->foreignId('own_book_cover_status_id')->nullable()->references('id')->on('own_book_cover_statuses');
@@ -45,7 +46,7 @@ return new class extends Migration
 
             $table->string('old_author_email')->nullable();
             $table->text('annotation')->nullable();
-            $table->json('external_links')->nullable();
+            $table->json('selling_links')->nullable();
 
 
             $table->timestamps();

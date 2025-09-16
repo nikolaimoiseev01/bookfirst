@@ -23,6 +23,10 @@ class CollectionResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'Collection';
 
+    protected static ?string $label = 'Сборники';
+    protected static ?string $navigationLabel = 'Сборники';
+    protected static ?string $pluralLabel = 'Сборники';
+
     public static function form(Schema $schema): Schema
     {
         return CollectionForm::configure($schema);
