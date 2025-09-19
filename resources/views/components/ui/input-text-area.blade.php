@@ -4,9 +4,9 @@
     'description' => null
 ])
 
-<div
-    {{ $attributes->merge(['class' => 'flex flex-col w-full relative']) }}
-    x-data="{
+<div {{ $attributes->merge(['class' => 'flex flex-col w-full relative']) }}
+     wire:ignore
+     x-data="{
         isSending: false,
         isFocused: false,
         previews: [],
@@ -16,7 +16,7 @@
             $refs.fileInput.click()
         },
 
-        handleFiles(files) {
+        handleFiles(files, triggerChange = true) {
             Array.from(files).forEach(file => {
                 if (file.type.startsWith('image/')) {
                     const reader = new FileReader()
@@ -31,15 +31,41 @@
                 }
             })
 
-            // добавляем новые файлы к input'у, а не заменяем
             const dataTransfer = new DataTransfer()
-            // сначала все, что уже были в input
             Array.from($refs.fileInput.files).forEach(f => dataTransfer.items.add(f))
-            // теперь новые
             Array.from(files).forEach(f => dataTransfer.items.add(f))
 
             $refs.fileInput.files = dataTransfer.files
-            $refs.fileInput.dispatchEvent(new Event('input', { bubbles: true }))
+
+            // триггерим Livewire только если вызвали не из самого change
+            if (triggerChange) {
+                $refs.fileInput.dispatchEvent(new Event('change', { bubbles: true }))
+            }
+        },
+
+                previewFiles(files) {
+            this.previews = [] // если нужно перезаписывать
+            Array.from(files).forEach(file => {
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader()
+                    reader.onload = e => this.previews.push({
+                        type: 'image',
+                        src: e.target.result,
+                        name: file.name
+                    })
+                    reader.readAsDataURL(file)
+                } else {
+                    this.previews.push({ type: 'file', name: file.name })
+                }
+            })
+        },
+
+        handleDrop(files) {
+            // просто кладём файлы в input и дёргаем change → Livewire подхватит
+            const dataTransfer = new DataTransfer()
+            Array.from(files).forEach(f => dataTransfer.items.add(f))
+            $refs.fileInput.files = dataTransfer.files
+            $refs.fileInput.dispatchEvent(new Event('change', { bubbles: true }))
         },
 
         sendMessage() {
@@ -50,16 +76,12 @@
                 $refs.fileInput.value = null
             })
         }
-    }"
-    @dragover.prevent="isDropping = true"
-    @dragleave.prevent="isDropping = false"
-    @drop.prevent="
+    }" @dragover.prevent="isDropping = true" @dragleave.prevent="isDropping = false" @drop.prevent="
         isDropping = false;
         if ($event.dataTransfer.files.length) {
             handleFiles($event.dataTransfer.files)
         }
-    "
->
+    ">
     <!-- Плашка drag & drop -->
     <div
         x-show="isDropping"
@@ -93,8 +115,15 @@
 
     <!-- Поле ввода -->
     <div class="flex w-full">
-        <input type="file" x-ref="fileInput" wire:model.live="files" multiple class="hidden"
-               @change="handleFiles($event.target.files)">
+{{--        <input type="file"--}}
+{{--               x-ref="fileInput"--}}
+{{--               wire:model="files"--}}
+{{--               x-on:livewire-upload-start="isSending = true"--}}
+{{--               x-on:livewire-upload-finish="isSending = false"--}}
+{{--               x-on:livewire-upload-error="isSending = false; alert('Ошибка загрузки файла')"--}}
+{{--               multiple--}}
+{{--               class="hidden"--}}
+{{--               @change="previewFiles($event.target.files)">--}}
 
         <textarea
             wire:model="{{ $model }}"

@@ -17,10 +17,12 @@
 
         <!-- форма -->
         <form class="mt-auto">
-            <x-ui.input-text-area model="text" attachable="true"></x-ui.input-text-area>
+{{--            <x-ui.chat-file-upload multiple="true" wire:model="files" />--}}
+            <x-filepond::upload wire:model="files" />
+{{--            <x-ui.input-text-area model="text" attachable="true"></x-ui.input-text-area>--}}
         </form>
         @push('scripts')
-            <script>
+            <script >
                 function scroll() {
                     const el = document.getElementById('chatMessagesWrap');
                     if (el) el.scrollTop = el.scrollHeight;

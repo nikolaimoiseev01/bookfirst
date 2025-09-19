@@ -62,6 +62,7 @@ class Chat extends Component
 
     public function send()
     {
+        dd($this->files);
         if ($this->custom_validation()) {
             DB::transaction(function () {
                 $message = Message::create([
@@ -70,7 +71,6 @@ class Chat extends Component
                     'text' => $this->text
                 ]);
                 if ($this->files) {
-                    dd($this->files);
                     foreach ($this->files as $file) {
                         $message
                             ->addMedia($file->getRealPath()) // 👈 важно
