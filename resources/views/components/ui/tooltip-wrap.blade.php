@@ -14,6 +14,6 @@
         direction="{{$direction}}"
         class="opacity-0 invisible group-hover:visible group-hover:opacity-100 transition"
     >
-        {{$text}}
+        {!! $text !!}
     </x-ui.tooltip>
 </div>

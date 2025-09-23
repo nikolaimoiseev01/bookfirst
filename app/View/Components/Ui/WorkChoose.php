@@ -6,13 +6,15 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class InputTextArea extends Component
+class WorkChoose extends Component
 {
+    public $userWorks;
     /**
      * Create a new component instance.
      */
-    public function __construct()
+    public function __construct($userWorks)
     {
+        $this->userWorks = $userWorks;
     }
 
     /**
@@ -20,6 +22,6 @@ class InputTextArea extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.ui.input-text-area');
+        return view('components.ui.work-choose');
     }
 }

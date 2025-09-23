@@ -7,6 +7,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import {Navigation, Pagination} from "swiper/modules";
+
 Swiper.use([Navigation, Pagination]);
 import collapse from '@alpinejs/collapse'
 import "delicious-hamburgers"
@@ -28,6 +29,7 @@ function showSwal(icon, title, text) {
         showConfirmButton: false,
     });
 }
+
 window.shoSwal = showSwal
 
 window.addEventListener('swal', event => {
@@ -35,4 +37,18 @@ window.addEventListener('swal', event => {
 });
 
 
+window.disableSendButtons = function (state) {
+    const submitButtons = document.querySelectorAll('.submitButton');
+    if (state) {
+        submitButtons.forEach(function (el) {
+            el.classList.add('loading');
+            el.setAttribute('disabled', 'true');
+        });
+    } else {
+        submitButtons.forEach(function (el) {
+            el.classList.remove('loading');
+            el.removeAttribute('disabled');
+        });
+    }
+};
 

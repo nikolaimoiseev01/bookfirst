@@ -1,8 +1,7 @@
 <div class="w-full h-full ">
-    @filepondScripts
     <div class="bg-white dark:bg-dark_bg dark:border dark:border-gray-300 h-full flex flex-col">
         <!-- список сообщений -->
-        <div id="chatMessagesWrap" class="flex flex-col gap-4 px-4 py-2 flex-[1_1_0] overflow-y-auto min-h-80">
+        <div id="chatMessagesWrap" class="flex flex-col gap-4 px-4 py-2 flex-[1_1_0] overflow-y-auto min-h-80 transition">
             @if(count($chat['messages']) > 0 )
                 @foreach($chat['messages'] as $message)
                     <x-chat.message :message="$message"/>
@@ -17,9 +16,7 @@
 
         <!-- форма -->
         <form class="mt-auto">
-{{--            <x-ui.chat-file-upload multiple="true" wire:model="files" />--}}
-            <x-filepond::upload wire:model="files" />
-{{--            <x-ui.input-text-area model="text" attachable="true"></x-ui.input-text-area>--}}
+            <x-ui.input.text-area model="text" attachable="true"></x-ui.input.text-area>
         </form>
         @push('scripts')
             <script >

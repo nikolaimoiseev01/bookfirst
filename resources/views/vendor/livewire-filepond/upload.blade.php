@@ -1,5 +1,5 @@
 @php
-    $isCustomPlaceholder = isset($placeholder);
+$isCustomPlaceholder = isset($placeholder);
 @endphp
 
 @props([
@@ -10,31 +10,29 @@
 ])
 
 @php
-    if (! $wireModelAttribute = $attributes->whereStartsWith('wire:model')->first()) {
-        throw new Exception("You must wire:model to the filepond input.");
-    }
+if (! $wireModelAttribute = $attributes->whereStartsWith('wire:model')->first()) {
+    throw new Exception("You must wire:model to the filepond input.");
+}
 
-    $pondProperties = $attributes->except([
-        'class',
-        'placeholder',
-        'required',
-        'disabled',
-        'multiple',
-        'wire:model',
-    ]);
+$pondProperties = $attributes->except([
+    'class',
+    'placeholder',
+    'required',
+    'disabled',
+    'multiple',
+    'wire:model',
+]);
 
-    // convert keys from kebab-case to camelCase
-    $pondProperties = collect($pondProperties)
-        ->mapWithKeys(fn ($value, $key) => [Illuminate\Support\Str::camel($key) => $value])
-        ->toArray();
+// convert keys from kebab-case to camelCase
+$pondProperties = collect($pondProperties)
+    ->mapWithKeys(fn ($value, $key) => [Illuminate\Support\Str::camel($key) => $value])
+    ->toArray();
 
-    $pondLocalizations = __('livewire-filepond::filepond');
+$pondLocalizations = __('livewire-filepond::filepond');
 @endphp
 
 <div
     class="{{ $attributes->get('class') }}"
-    x-show="isDropping"
-    :class="{ '!block': isDropping }"
     wire:ignore
     x-cloak
     x-data="{
@@ -94,56 +92,28 @@
           required: @js($required),
           disabled: @js($disabled),
       });
+
       pond.setOptions(@js($pondLocalizations));
 
       pond.setOptions(@js($pondProperties));
 
       @if($isCustomPlaceholder)
-        pond.setOptions({ labelIdle: @js($placeholder) });
+      pond.setOptions({ labelIdle: @js($placeholder) });
       @endif
 
-        if (files && files.length > 0) {
-            pond.addFiles(files.filter(f => f instanceof File));
-        }
-
-        pond.on('addfile', (error, file) => {
-            if (error) console.log(error);
-            isDropping = false
-        });
-
-        // All files have been processed and uploaded, dispatch the upload-completed event
-        pond.on('processfiles', () => {
-            $dispatch('filepond-upload-completed', {'attribute' : '{{ $wireModelAttribute }}'});
+      pond.addFiles(files)
+      pond.on('addfile', (error, file) => {
+          if (error) console.log(error);
       });
 
-
+      // All files have been processed and uploaded, dispatch the upload-completed event 
+      pond.on('processfiles', () => {
+          $dispatch('filepond-upload-completed', {'attribute' : '{{ $wireModelAttribute }}'});
+      });
 
       $wire.on('filepond-reset-{{ $wireModelAttribute }}', () => {
           pond.removeFiles();
       });
-
-
-      pond.on('processfile', (error, file) => {
-            $dispatch('filepond-upload-done', {
-                attribute: '{{ $wireModelAttribute }}',
-                error: !!error,
-                file: file.filename,
-            });
-        });
-
-      pond.on('processfileabort', () => {
-           $dispatch('filepond-upload-aborted');
-      });
-      // 👉 прячем/показываем root в зависимости от наличия файлов
-        pond.on('addfile', () => {
-            $el.classList.add('!block');
-        });
-
-        pond.on('updatefiles', (files) => {
-            if (files.length === 0) {
-                $el.classList.remove('!block');
-            }
-        });
     }"
 >
     <input type="file" x-ref="input">

@@ -6,15 +6,14 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class Dropdown extends Component
+class AddressChoose extends Component
 {
-    public $placeholder;
     /**
      * Create a new component instance.
      */
-    public function __construct($default)
+    public function __construct()
     {
-        $this->placeholder = $default ?? 'Выберите...';
+        //
     }
 
     /**
@@ -22,6 +21,6 @@ class Dropdown extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.ui.dropdown');
+        return view('components.ui.address-choose');
     }
 }

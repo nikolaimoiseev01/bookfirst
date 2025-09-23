@@ -1,7 +1,12 @@
 <div
-    x-data="{ insideReady: $wire.entangle('insideReady'), needPrint: $wire.entangle('needPrint')
-    ,coverReady: $wire.entangle('coverReady'), insideColor: $wire.entangle('insideColor')
-    ,needTextCheck: $wire.entangle('needTextCheck'), needTextDesign: $wire.entangle('needTextDesign')}"
+    x-data="{
+        insideReady: $wire.entangle('insideReady'),
+        needPrint: $wire.entangle('needPrint'),
+        coverReady: $wire.entangle('coverReady'),
+        insideColor: $wire.entangle('insideColor'),
+        needTextCheck: $wire.entangle('needTextCheck'),
+        needTextDesign: $wire.entangle('needTextDesign')}
+    "
     class="flex lg:flex-col">
     <div
         class="flex flex-col gap-6 w-1/2 lg:w-full mt-8 pr-4 lg:pr-0 mb-4 border-r lg:border-none border-dark-100 lg:my-4">
@@ -16,7 +21,8 @@
             <div class="flex gap-4 flex-wrap items-center">
                 <p>Макет полностью готов?</p>
                 <x-ui.question-mark>
-                    Макет можно считать готовым, если файл полностью подготовлен к общепринятым правилам издания. Никакая редактура не потребуется.
+                    Макет можно считать готовым, если файл полностью подготовлен к общепринятым правилам издания.
+                    Никакая редактура не потребуется.
                 </x-ui.question-mark>
                 <x-ui.input.toggle boolean="true" model="insideReady" :options="[true => 'Да', false => 'Нет']"/>
             </div>
@@ -88,8 +94,10 @@
     <div class="flex flex-col w-1/2 lg:w-full mt-8 pl-4 lg:pl-0 mb-4 items-center">
         <div class="flex flex-col mb-6 text-center">
             <x-price-element price="4600" label="Работа с макетом"/>
-            <span x-show="needTextDesign && !insideReady" x-collapse.duration.800ms class="text-dark-200 italic text-xl font-light">Включая дизайн текста: 1300</span>
-            <span x-show="needTextCheck && !insideReady" x-collapse.duration.800ms class="text-dark-200 italic text-xl font-light">Включай проверку правописания: 3000</span>
+            <span x-show="needTextDesign && !insideReady" x-collapse.duration.800ms
+                  class="text-dark-200 italic text-xl font-light">Включая дизайн текста: 1300</span>
+            <span x-show="needTextCheck && !insideReady" x-collapse.duration.800ms
+                  class="text-dark-200 italic text-xl font-light">Включай проверку правописания: 3000</span>
         </div>
 
         <div x-show="needPrint" x-collapse.duration.800ms>

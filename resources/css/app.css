@@ -112,56 +112,73 @@ input {
 
 
 
-/*.filepond--item {*/
-/*    width: calc(30% - 0.5em);*/
-/*    height: 70px !important;*/
-/*}*/
-/*.filepond--item-panel {*/
-/*    height: 70px !important;*/
-/*}*/
+.filepond--item {
+    width: calc(30% - 0.5em);
+    height: 70px !important;
+}
+.filepond--item-panel {
+    height: 70px !important;
+}
 
-/*.filepond--file-status-sub {*/
-/*    font-size: 12px;*/
-/*}*/
+.filepond--file-status-sub {
+    font-size: 12px;
+}
 
-/*.filepond--root,*/
-/*.filepond--list-scroller {*/
-/*    height: 80px !important;*/
-/*    max-height: 100px;*/
-/*    margin: 0 !important;*/
-/*}*/
+.filepond--root,
+.filepond--list-scroller {
+    height: 80px !important;
+    max-height: 100px;
+    margin: 0 !important;
+}
 
-/*.filepond--panel-center.filepond--item-panel {*/
-/*    display: none !important;*/
-/*}*/
+.filepond--panel-center.filepond--item-panel {
+    display: none !important;
+}
 
-/*.filepond--list-scroller {*/
-/*    transform: inherit !important;*/
-/*    height: 80px !important;*/
-/*}*/
+.filepond--list-scroller {
+    transform: inherit !important;
+    height: 80px !important;
+}
 
-/*.filepond--panel-center {*/
-/*    transform: inherit !important;*/
-/*    height: 70px !important;*/
-/*}*/
+.filepond--panel-center {
+    transform: inherit !important;
+    height: 70px !important;
+}
 
-/*.filepond--file {*/
-/*    flex-direction: column;*/
-/*}*/
+.filepond--file {
+    flex-direction: column;
+}
 
-/*.filepond--file-info {*/
-/*    width: 80%;*/
-/*}*/
+.filepond--file-info {
+    width: 80%;
+}
 
-/*.filepond--panel-bottom,*/
-/*.filepond--credits {*/
+.filepond--panel-bottom,
+.filepond--credits {
+    display: none;
+}
+
+.filepond--list-scroller {
+    margin: 0 !important;
+}
+
+.filepond--drop-label {
+    display: none !important;
+}
+
+.filepond--panel-root {
+    height: 80px !important;
+    background: transparent !important;
+    border: 1px #47af98 solid;
+    border-bottom: none;
+    border-radius: 10px 10px 0 0;
+    background-color: transparent !important;
+}
+
+/*.filepond--drip {*/
 /*    display: none;*/
 /*}*/
 
-/*.filepond--list-scroller {*/
-/*    margin: 0 !important;*/
-/*}*/
-
-/*.filepond--panel-root {*/
-/*    height: 80px !important;*/
-/*}*/
+.filepond--list-scroller[data-state=overflow] {
+    overflow: auto !important;
+}

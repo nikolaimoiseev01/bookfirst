@@ -5,6 +5,7 @@ namespace App\Models\Collection;
 use App\Models\Chat\Chat;
 use App\Models\PrintOrder\PrintOrder;
 use App\Models\Promocode;
+use App\Models\Survey\SurveyCompleted;
 use App\Models\User\User;
 use App\Models\Work\Work;
 use Illuminate\Database\Eloquent\Model;
@@ -30,6 +31,10 @@ class Participation extends Model
 
     public function printOrder() {
         return $this->belongsTo(PrintOrder::class);
+    }
+
+    public function surveyCompleted() {
+        return $this->morphOne(SurveyCompleted::class, 'model');
     }
 
     public function promocode() {

@@ -8,7 +8,7 @@
     </div>
     <div class="flex flex-col justify-center gap-4 lg:w-full">
         <x-ui.link href="{{route('portal.collection', ['slug' => $collection['slug']])}}">Подробнее</x-ui.link>
-        <x-ui.link>Принять участие</x-ui.link>
+        <x-ui.link href="{{route('account.participation.create', ['collection_id' => $collection['id']])}}">Принять участие</x-ui.link>
     </div>
 {{--    <div class="absolute bg-green-500 px-4 pt-1 pb-4 right-8 md:right-0 md:left-1/2 md:-translate-x-1/2 top-0 text-lg w-fit text-white flex flex-col leading-tight text-center items-center--}}
 {{--                after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-0 after:h-0--}}

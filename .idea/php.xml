@@ -206,7 +206,6 @@
       <path value="$PROJECT_DIR$/vendor/symfony/symfony" />
       <path value="$PROJECT_DIR$/vendor/bacon/bacon-qr-code" />
       <path value="$PROJECT_DIR$/vendor/league/oauth1-client" />
-      <path value="$PROJECT_DIR$/vendor/laravel/telescope" />
       <path value="$PROJECT_DIR$/vendor/phpoffice/math" />
       <path value="$PROJECT_DIR$/vendor/phpoffice/phpspreadsheet" />
       <path value="$PROJECT_DIR$/vendor/phpoffice/phpword" />
@@ -272,8 +271,13 @@
       <path value="$PROJECT_DIR$/vendor/codeat3/blade-akar-icons" />
       <path value="$PROJECT_DIR$/vendor/mallardduck/blade-lucide-icons" />
       <path value="$PROJECT_DIR$/vendor/phiki/phiki" />
-      <path value="$PROJECT_DIR$/vendor/laradumps/laradumps" />
       <path value="$PROJECT_DIR$/vendor/spatie/livewire-filepond" />
+      <path value="$PROJECT_DIR$/vendor/yiisoft/injector" />
+      <path value="$PROJECT_DIR$/vendor/clue/stream-filter" />
+      <path value="$PROJECT_DIR$/vendor/nyholm/psr7" />
+      <path value="$PROJECT_DIR$/vendor/internal/destroy" />
+      <path value="$PROJECT_DIR$/vendor/php-http/message" />
+      <path value="$PROJECT_DIR$/vendor/buggregator/trap" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.2" />

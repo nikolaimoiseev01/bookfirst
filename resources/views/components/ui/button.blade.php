@@ -9,7 +9,17 @@
     };
 @endphp
 
-<button {{ $attributes->merge(['class' => $classes]) }}>
+<style>
+    .submitButton.loading {
+        svg {
+            display: block !important;
+        }
+        span {
+            display: none !important;
+        }
+    }
+</style>
+<button {{ $attributes->merge(['class' => 'submitButton ' . $classes]) }} wire:ignore>
     <span wire:loading.remove>{{ $slot }}</span>
     <x-ui.spinner wire:loading class="w-7 h-7"/>
 </button>

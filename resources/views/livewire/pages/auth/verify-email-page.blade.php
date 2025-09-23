@@ -2,7 +2,7 @@
     @section('title')
         Подтвердите Email
     @endsection
-    <div class="border border-green-500 rounded-2xl p-4 flex flex-col gap-4">
+    <div class="border border-green-500 rounded-2xl p-4 flex flex-col gap-4 max-w-3xl">
         <p>Мы отправили ссылку на почту: <b>{{\Illuminate\Support\Facades\Auth::user()->email}}</b><br>
             Пожалуйста, перейдите по ней, чтобы подтвердить Ваш Email.</p>
         <div class="flex justify-between items-center">

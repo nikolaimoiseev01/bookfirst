@@ -32,7 +32,9 @@ class ChatsPage extends Component
             ->withMax('messages', 'created_at') // получаем поле messages_max_created_at
             ->orderBy('messages_max_created_at', 'desc')
             ->get();
-        $this->cur_chat_id = Chat::where('id', $this->allChats[0]['id'])->first()['id'];
+        if (!$this->cur_chat_id) {
+            $this->cur_chat_id = Chat::where('id', $this->allChats[0]['id'])->first()['id'];
+        }
         $this->makeCurChat();
     }
 

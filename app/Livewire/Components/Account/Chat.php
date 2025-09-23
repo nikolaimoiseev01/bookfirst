@@ -3,6 +3,7 @@
 namespace App\Livewire\Components\Account;
 
 use App\Models\Chat\Message;
+use App\Traits\WithCustomValidation;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Illuminate\Support\Facades\Auth;
@@ -16,11 +17,15 @@ use Spatie\LivewireFilepond\WithFilePond;
 class Chat extends Component
 {
     use WithFileUploads;
+    use WithFilePond;
+    use WithCustomValidation;
 
     public $chat;
     public $text;
 
     public $files = [];
+
+    public $isSending = false;
 
 
     protected $listeners = ['refreshChat' => '$refresh'];
@@ -35,35 +40,25 @@ class Chat extends Component
         $this->chat = $chat->load(['messages.user', 'chatStatus']);
     }
 
-    public function messages(): array
+    protected function rules(): array
     {
         return [
-            'text.required' => 'Сообщение обязательно для заполнения',
-            'files.*.max'   => 'Размер файла не должен превышать 30 МБ',
+            'text' => 'required',
         ];
     }
 
-    public function custom_validation()
+    protected function messages(): array
     {
-        try {
-            $this->validate([
-                'text' => 'required',
-                'files.*' => 'max:102',
-            ]);
-
-            return true;
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            $messages = collect($e->validator->errors()->all())->implode("<br>");
-            $this->dispatch('swal', title: 'Ошибка', text: $messages);
-            return false;
-        }
+        return [
+            'text.required' => 'Текст сообщения обязателен для заполнения'
+        ];
     }
 
 
-    public function send()
+
+    public function sendMessage()
     {
-        dd($this->files);
-        if ($this->custom_validation()) {
+        if ($this->customValidate()) {
             DB::transaction(function () {
                 $message = Message::create([
                     'chat_id' => $this->chat['id'],
@@ -81,8 +76,11 @@ class Chat extends Component
                 $this->dispatch('scrollChatToEnd');
                 $this->reset('files');
                 $this->text = '';
+                $this->dispatch('filepond-reset-files');
             });
         }
+
+        $this->isSending = false;
 
 //        dd($this->file);
     }

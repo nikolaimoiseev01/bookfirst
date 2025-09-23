@@ -1,6 +1,5 @@
 @props([
     'options' => [],           // ['id'=>'Название', ...] или [['value'=>1,'label'=>'Текст']]
-    'placeholder' => 'Выберите...',
 ])
 
 @php
@@ -18,9 +17,8 @@
         selected: @entangle($attributes->wire('model')),
         options: @js($normalized),
     }"
-    class="relative w-fit"
+    {{ $attributes->merge(['class' => 'relative w-fit']) }}
 >
-    <!-- Trigger -->
     <button
         type="button"
         @click="open = !open"

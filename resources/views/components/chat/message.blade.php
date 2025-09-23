@@ -21,7 +21,7 @@
             <p class="font-normal text-white text-xl">Прикрепленные файлы:</p>
             <div class="flex flex-col gap-2">
                 @foreach($message->getMedia('files') as $file)
-                    <a href="{{$file->getUrl()}}" class="flex gap-2 items-center">
+                    <a href="{{$file->getUrl()}}" download="true" class="flex gap-2 items-center">
                         <x-bi-download class="text-white h-4 w-4"/>
                         <span class="flex gap-2 text-white">{{Str::limit($file->getAttribute('file_name'), 30, '...')}}</span>
                     </a>

@@ -35,6 +35,5 @@
             <span class="text-2xl text-dark-200">+</span>
             <x-price-element price="3000" label="Проверка"/>
         </div>
-
     </div>
 </div>
