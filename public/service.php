@@ -52,6 +52,9 @@ class service
             case 'offices':
                 $this->sendResponse($this->getOffices(), $time);
                 break;
+            case 'cities':
+                $this->sendResponse($this->getAllCities(), $time);
+                break;
             case 'calculate':
                 $this->sendResponse($this->calculate(), $time);
                 break;
@@ -220,7 +223,7 @@ class service
 
     private function httpRequest($method, $data, $useFormData = false, $useJson = false)
     {
-        $ch = curl_init("$this->baseUrl/$method");
+        $ch = curl_init("$this->baseUrl/$method?city_code=270");
 
         $headers = array(
             'Accept: application/json',
@@ -317,6 +320,44 @@ class service
 
         $this->endMetrics('office', 'Offices Request', $time);
         return $result;
+    }
+
+    protected function getAllCities()
+    {
+        $time = $this->startMetrics();
+        $all = [];
+        $page = 0;
+        $size = 1000;
+
+        while (true) {
+            $params = array_merge($this->requestData, [
+                'page' => $page,
+                'size' => $size,
+            ]);
+
+            $result = $this->httpRequest('location/cities', $params);
+            $decoded = json_decode($result['result'], true);
+
+            if (empty($decoded)) {
+                break;
+            }
+
+            $all = array_merge($all, $decoded);
+
+            // если вернулось меньше 1000 — значит последняя страница
+            if (count($decoded) < $size) {
+                break;
+            }
+
+            $page++;
+        }
+
+        $this->endMetrics('cities', 'Cities Request', $time);
+
+        return [
+            'result' => json_encode($all, JSON_UNESCAPED_UNICODE),
+            'addedHeaders' => $result['addedHeaders']
+        ];
     }
 
     protected function calculate()

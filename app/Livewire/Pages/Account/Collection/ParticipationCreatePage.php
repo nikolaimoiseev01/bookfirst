@@ -19,7 +19,7 @@ class ParticipationCreatePage extends Component
     public $nickname;
 
     public $needCheck;
-    public $needPrint;
+    public $needPrint=true;
 
     public function render()
     {
