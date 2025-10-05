@@ -45,7 +45,7 @@ class RegisterPage extends Component
 
             Auth::login($user);
 
-            $this->redirect(route('account.collections', absolute: false), navigate: true);
+            $this->redirect(route('account.participations', absolute: false), navigate: true);
         } catch (ValidationException $e) {
             // Собираем все ошибки в одну строку или массив
             $messages = collect($e->validator->errors()->all())->implode("<br>");

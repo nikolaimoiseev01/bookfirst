@@ -17,17 +17,19 @@ return new class extends Migration {
             $table->nullableMorphs('model');
             $table->bigInteger('books_cnt')->nullable();
             $table->string('inside_color')->nullable();
-            $table->bigInteger('color_pages')->nullable();
+            $table->bigInteger('pages_color')->nullable();
             $table->string('cover_type')->nullable();
-            $table->string('full_name')->nullable();
-            $table->string('telephone')->nullable();
+            $table->bigInteger('price_print')->nullable();
+            $table->bigInteger('price_send')->nullable();
+            $table->string('receiver_name')->nullable();
+            $table->string('receiver_telephone')->nullable();
             $table->string('country')->nullable();
-            $table->foreignId('address_type_id')->nullable()->references('id')->on('address_types');
-            $table->json('address');
+            $table->bigInteger('address_type_id')->nullable();
+            $table->json('address_json');
             $table->dateTime('paid_at')->nullable();
             $table->string('track_number')->nullable();
-            $table->foreignId('logistic_company_id')->nullable()->references('id')->on('logistic_companies');
-            $table->foreignId('printing_company_id')->nullable()->references('id')->on('printing_companies');
+            $table->bigInteger('logistic_company_id')->nullable();
+            $table->bigInteger('printing_company_id')->nullable();
             $table->timestamps();
         });
     }

@@ -20,7 +20,7 @@ class VerifyEmailPage extends Component
     public function sendVerification(): void
     {
         if (Auth::user()->hasVerifiedEmail()) {
-            $this->redirectIntended(default: route('account.collections', absolute: false), navigate: true);
+            $this->redirectIntended(default: route('account.participations', absolute: false), navigate: true);
 
             return;
         }

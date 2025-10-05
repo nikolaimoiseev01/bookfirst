@@ -12,16 +12,20 @@
 
                 <div @click.away="open = false" x-show="open" x-transition
                      class="absolute mt-2 rounded-lg shadow-lg bg-white ring-1 ring-black/5 z-50">
-                    <div class="flex gap-2 px-4 py-2 items-center">
-                        <a href="" class="text-2xl hover:bg-gray-10 font-light items-center">
-                            Вручную
-                        </a>
-                        <x-ui.question-mark class="w-4 h-4">Заполнить заголовок и текст вручную</x-ui.question-mark>
-                    </div>
+                    <x-ui.link-simple href="{{route('account.works.create.manual')}}"
+                       class="flex gap-2 px-4 py-2 font-light items-center hover:bg-gray-100">
+                        <span class="text-xl text-dark-400">Вручную</span>
+                        <x-ui.question-mark class="text-lg w-4 h-4">Заполнить заголовок и текст для конкретного произведения
+                        </x-ui.question-mark>
+                    </x-ui.link-simple>
 
-                    <a href="" class="flex text-2xl font-light items-center gap-2 px-4 py-2 hover:bg-gray-100">
-                        Из файла
-                    </a>
+
+                    <x-ui.link-simple href="{{route('account.works.create.file')}}"
+                                      class="flex font-light items-center gap-2 px-4 py-2 hover:bg-gray-100">
+                        <span class="text-xl text-nowrap text-dark-400">Из файла</span>
+                        <x-ui.question-mark class="text-lg w-4 h-4">Создать несколько произведений сразу, загрузив файл, отредактируемый по правилам
+                        </x-ui.question-mark>
+                    </x-ui.link-simple>
                 </div>
             </div>
         </div>
@@ -41,18 +45,18 @@
                             <x-bi-heart class="w-5 h-5 text-dark-200 pt-1"/>
                         </div>
                         <div class="flex items-center gap-2 ml-auto">
-                            <a class="flex">
+                            <x-ui.link-simple href="{{route('account.work.edit', $work['id'])}}"  class="flex">
                                 <x-ui.tooltip-wrap text="Редактировать">
                                     <x-lucide-edit class="w-5 h-5 text-green-400"/>
                                 </x-ui.tooltip-wrap>
-                            </a>
-                            <button class="flex">
+                            </x-ui.link-simple>
+                            <button class="flex" wire:click="deleteConfirm({{$work['id']}})">
                                 <x-ui.tooltip-wrap text="Удалить">
-                                    <x-bi-trash class="w-5 h-6 text-red-300"/>
+                                    <x-bi-trash wire:loading.remove wire:target="deleteConfirm({{ $work['id'] }})" class="w-5 h-6 text-red-300"/>
+                                    <x-ui.spinner wire:loading wire:target="deleteConfirm({{ $work['id'] }})" class="w-4 h-auto"/>
                                 </x-ui.tooltip-wrap>
                             </button>
                         </div>
-
                     </div>
                 </div>
             @empty

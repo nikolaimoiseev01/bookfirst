@@ -17,7 +17,7 @@
                         <p class="text-xl"><span
                                 class="font-normal">Статус сборника: </span> {{$participation->collection->collectionStatus['name']}}
                         </p>
-                        <x-ui.link href="{{route('account.participation', $participation['id'])}}">Страница моего участия</x-ui.link>
+                        <x-ui.link href="{{route('account.participation.index', $participation['id'])}}">Страница моего участия</x-ui.link>
                     </div>
                 </div>
             </div>

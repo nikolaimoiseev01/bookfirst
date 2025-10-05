@@ -11,4 +11,8 @@ class PrintOrder extends Model
     {
         return $this->morphTo();
     }
+
+    protected $casts = [
+        'address_json' => 'array',
+    ];
 }

@@ -13,6 +13,8 @@ class CalculatorCollection extends Component
         ['value'=>15,'label'=>'15-21'],
         ['value'=>22,'label'=>'22-28'],
     ];
+    public $needCheck;
+    public $hasPromo;
 
     public function render()
     {

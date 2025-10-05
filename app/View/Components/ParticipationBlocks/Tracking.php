@@ -1,19 +1,20 @@
 <?php
 
-namespace App\View\Components\Ui;
+namespace App\View\Components\ParticipationBlocks;
 
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class AddressChoose extends Component
+class Tracking extends Component
 {
+    public $participation;
     /**
      * Create a new component instance.
      */
-    public function __construct()
+    public function __construct($part)
     {
-        //
+        $this->participation = $part;
     }
 
     /**
@@ -21,6 +22,6 @@ class AddressChoose extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.ui.address-choose');
+        return view('components.participation-blocks.tracking');
     }
 }

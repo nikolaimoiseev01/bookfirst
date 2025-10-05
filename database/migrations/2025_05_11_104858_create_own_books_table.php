@@ -28,16 +28,21 @@ return new class extends Migration
 
             $table->bigInteger('pages');
             $table->string('inside_type'); // из системы или фалом
-            $table->text('comment')->nullable();
+            $table->boolean('need_text_design')->nullable();
+            $table->boolean('need_text_check')->nullable();
+            $table->boolean('cover_ready')->nullable();
             $table->text('comment_author_inside')->nullable();
             $table->text('comment_author_cover')->nullable();
 
+            $table->text('comment')->nullable();
+
             $table->bigInteger('internal_promo_type')->nullable();
+
+            $table->bigInteger('print_order_id')->nullable();
 
             $table->bigInteger('price_text_design')->nullable();
             $table->bigInteger('price_text_check')->nullable();
             $table->bigInteger('price_cover')->nullable();
-            $table->bigInteger('price_print')->nullable();
             $table->bigInteger('price_promo')->nullable();
             $table->bigInteger('price_total')->nullable();
 

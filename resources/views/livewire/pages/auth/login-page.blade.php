@@ -5,7 +5,7 @@
 
     <div class="flex gap-8 mx-auto justify-center mb-8 flex-wrap">
         <p class="text-6xl text-green-500 font-normal">Вход</p>
-        <x-ui.link-simple href="{{route('auth.register')}}"
+        <x-ui.link-simple href="{{route('register')}}"
                           class="text-6xl  font-normal !text-dark-100 hover:!text-green-500 transition">
             Регистрация
         </x-ui.link-simple>
@@ -20,6 +20,7 @@
         <x-ui.input.password
             name="password"
             label="Пароль"
+            autocomplete="password"
             wire:model="password"
         />
         <div class="flex gap-4 mt-8 w-full">

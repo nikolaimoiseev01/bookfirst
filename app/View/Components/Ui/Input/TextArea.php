@@ -8,22 +8,28 @@ use Illuminate\View\Component;
 
 class TextArea extends Component
 {
-    public $model;
+    public $textModel;
+    public $filesModel;
     public $attachable;
+    public $fileTypes;
     public $description;
     public $sendable;
     public $multiple;
+    public $color;
 
     /**
      * Create a new component instance.
      */
-    public function __construct($model, $description=null, $sendable=true, $attachable=false, $multiple=true)
+    public function __construct($textModel='text', $filesModel='files', $description=null, $sendable=true, $attachable=false, $multiple=true, $fileTypes=[], $color='green-500')
     {
-        $this->model = $model;
+
+        $this->textModel = $textModel;
+        $this->filesModel = $filesModel;
         $this->attachable = $attachable;
         $this->description = $description;
         $this->sendable = $sendable;
         $this->multiple = $multiple;
+        $this->color = $color;
     }
 
     /**

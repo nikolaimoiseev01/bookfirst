@@ -10,6 +10,7 @@
         type="checkbox"
         {{ $disabled ? 'disabled' : '' }}
         {{ $attributes->whereStartsWith('wire:') }}
+        {{ $attributes->whereStartsWith('x-model') }}
         class="
       peer
       relative w-6 h-6

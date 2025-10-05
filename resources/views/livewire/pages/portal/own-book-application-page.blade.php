@@ -1,6 +1,6 @@
 <main class="flex-1 content mb-32">
     @section('title')
-        СОбственная Книга
+        Собственная Книга
     @endsection
     <section class="mb-24 flex gap-12 lg:flex-col lg:text-center lg:items-center">
         <div class="w-60 min-w-60">
@@ -23,7 +23,7 @@
                     <p class="font-normal text-nowrap text-xl">{{$key}}: <span class="font-light">{{$value}}</span></p>
                 </div>
             @endforeach
-            <x-ui.link href="" class="my-4 py-2 font-medium !text-2xl tracking-wide">Подать заявку!</x-ui.link>
+            <x-ui.link href="{{route('account.own_book.create')}}" class="my-4 py-2 font-medium !text-2xl tracking-wide">Начать издание!</x-ui.link>
         </div>
     </section>
     <section x-data="{ tab: '{{$tabs['default']}}' }"

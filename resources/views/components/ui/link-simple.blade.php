@@ -3,7 +3,7 @@
 ])
 
 @php
-    $classes = 'text-2xl font-light cursor-pointer' . (($social ?? false)
+    $classes = 'text-2xl font-light cursor-pointer ' . (($social ?? false)
                 ? 'block text-blue-500 font-light'
                 : 'block text-green-500 font-light');
 @endphp

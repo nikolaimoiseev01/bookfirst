@@ -2,24 +2,27 @@
 
 namespace App\Livewire\Pages\Account\Collection;
 
+use App\Models\Chat\Chat;
 use App\Models\Collection\Collection;
+use App\Models\Collection\Participation;
+use App\Models\Collection\ParticipationWork;
+use App\Models\PrintOrder\PrintOrder;
+use App\Models\Promocode;
 use App\Models\Work\Work;
+use App\Services\CalculateParticipationService;
+use App\Traits\WithCustomValidation;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\URL;
 use Livewire\Component;
+use phpDocumentor\Reflection\Types\Integer;
 
 class ParticipationCreatePage extends Component
 {
-    public $collection;
-    public $userWorks;
-    public $selectedWorks = [];
-    public $name;
-    public $surname;
-    public $nickname;
 
-    public $needCheck;
-    public $needPrint=true;
+    public $collection;
+
 
     public function render()
     {
@@ -28,13 +31,7 @@ class ParticipationCreatePage extends Component
 
     public function mount($collection_id)
     {
-        Session::put('cameFromAppUrl', URL::current());
-        $this->collection = Collection::where('id', $collection_id)->first();
-        $this->userWorks = Work::where('user_id', Auth::user()->id)->get(['id', 'title']);
+        $this->collection = Collection::find($collection_id)->first();
     }
 
-    public function saveApplication()
-    {
-        dd($this->selectedWorks);
-    }
 }

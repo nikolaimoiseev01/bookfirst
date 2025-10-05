@@ -20,7 +20,7 @@ class EditUser extends EditRecord
                 ->label('Войти в аккаунт')
                 ->action(function (Model $record) {
                        Auth::loginUsingId($record->id);
-                    return redirect()->route('account.collections');
+                    return redirect()->route('account.participations');
                 }
                 )
         ];

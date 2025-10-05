@@ -3,9 +3,9 @@
         Собственные книги
     @endsection
     <div class="flex gap-4">
-        <x-ui.link href="{{route('portal.collections.actual')}}" class="mb-6 w-fit">Издать новую книгу
+        <x-ui.link href="{{route('account.own_book.create')}}" class="mb-6 w-fit">Издать новую книгу
         </x-ui.link>
-        <x-ui.link-simple href="{{route('portal.collections.actual')}}" class="mb-6 w-fit">Рассчитать стоимость издания
+        <x-ui.link-simple href="{{route('portal.own_book.application')}}" class="mb-6 w-fit">Рассчитать стоимость издания
             и печати
         </x-ui.link-simple>
     </div>
@@ -27,7 +27,7 @@
                         </p>
                     </div>
                 </div>
-                <x-ui.link>Страница издания</x-ui.link>
+                <x-ui.link href="{{route('account.own_book.index', $own_book['id'])}}">Страница издания</x-ui.link>
             </div>
         @empty
             <p class="italic">Вы еще не издавали у нас книги, но все еще впереди 🙂</p>

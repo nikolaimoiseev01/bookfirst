@@ -34,5 +34,12 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+    'cdek' => [
+        'client_id'     => env('CDEK_CLIENT_ID'),
+        'client_secret' => env('CDEK_CLIENT_SECRET'),
+        'base_uri'      => 'https://api.cdek.ru/',
+        'token_uri'     => '/v2/oauth/token',
+        'api_uri'        => '/v2/',  // базовый путь для API запросов
+    ],
 
 ];

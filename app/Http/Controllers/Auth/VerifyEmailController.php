@@ -21,13 +21,13 @@ class VerifyEmailController extends Controller
         ]);
 
         if ($request->user()->hasVerifiedEmail()) {
-            return redirect()->intended(route('account.collections', absolute: false).'?verified=1');
+            return redirect()->intended(route('account.participations', absolute: false).'?verified=1');
         }
 
         if ($request->user()->markEmailAsVerified()) {
             event(new Verified($request->user()));
         }
 
-        return redirect()->intended(route('account.collections', absolute: false).'?verified=1');
+        return redirect()->intended(route('account.participations', absolute: false).'?verified=1');
     }
 }

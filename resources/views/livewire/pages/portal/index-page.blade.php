@@ -26,7 +26,7 @@
                               relative overflow-hidden rounded-[10px]
                               transition-all duration-300
                               hover:shadow-[5px_5px_2px_#499b897a] hover:scale-[1.03]">
-                        Опубликовать
+                        Опубликовать2
                     </a>
                 </div>
             </div>

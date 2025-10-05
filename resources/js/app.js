@@ -11,6 +11,8 @@ import {Navigation, Pagination} from "swiper/modules";
 Swiper.use([Navigation, Pagination]);
 import collapse from '@alpinejs/collapse'
 import "delicious-hamburgers"
+import {Notyf} from "notyf";
+import 'notyf/notyf.min.css';
 
 Alpine.plugin(collapse)
 
@@ -18,24 +20,41 @@ window.$ = $;
 window.Typewriter = Typewriter;
 
 window.Swiper = Swiper;
+window.notyf = new Notyf();
 
 livewire_hot_reload();
 
-function showSwal(icon, title, text) {
+window.showSwal = function showSwal(type, title, text, confirmButtonText = '', livewireMethod = []) {
+    let showConfirmFlg = confirmButtonText.length > 0;
     Swal.fire({
-        icon: icon,
+        icon: type,
         title: title,
         html: '<p>' + text + '</p>',
-        showConfirmButton: false,
+        showConfirmButton: showConfirmFlg,
+        confirmButtonText: confirmButtonText,
+        showCancelButton: showConfirmFlg,
+        cancelButtonText: 'Отмена',
+    }).then((result) => {
+        if (result.isConfirmed) {
+             Livewire.dispatch(livewireMethod[0], [livewireMethod[1]]);
+        }
     });
 }
 
-window.shoSwal = showSwal
+window.showToast = function showToast(type, text) {
+    if (type === 'success') {
+        notyf.success(text);
+    }
+}
+
 
 window.addEventListener('swal', event => {
-    showSwal(event.detail.icon, event.detail.title, event.detail.text)
+    showSwal(event.detail.type, event.detail.title, event.detail.text, event.detail.confirmButtonText, event.detail.livewireMethod)
 });
 
+window.addEventListener('toast', event => {
+    showToast(event.detail.type, event.detail.text)
+});
 
 window.disableSendButtons = function (state) {
     const submitButtons = document.querySelectorAll('.submitButton');

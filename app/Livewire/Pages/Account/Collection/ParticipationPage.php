@@ -8,6 +8,8 @@ use Livewire\Component;
 class ParticipationPage extends Component
 {
     public $participation;
+    public $isSending;
+
     public function render()
     {
         return view('livewire.pages.account.collection.participation-page')->layout('layouts.account');
@@ -15,6 +17,8 @@ class ParticipationPage extends Component
 
     public function mount($participation_id)
     {
-        $this->participation = Participation::where('id', $participation_id)->with('collection')->first();
+        $this->participation = Participation::where('id', $participation_id)
+            ->with(['collection', 'chat', 'participationWorks', 'participationWorks.work', 'previewComments'])
+            ->first();
     }
 }

@@ -1,9 +1,10 @@
 <div
+    wire:ignore
     x-data="{
         search: '',
         showWorks: false,
         userWorks: @js($userWorks),
-        selectedWorks: $wire.entangle('selectedWorks'),
+        selectedWorks: $wire.entangle('selectedWorks').live,
         dragIndex: null,
         dragOverIndex: null,
 
@@ -53,7 +54,7 @@
             this.dragOverIndex = null
         }
     }"
-    class="relative flex gap-6 w-full p-4 border border-green-500 rounded-2xl"
+    {{ $attributes->merge(['class' => 'relative flex gap-6 w-full p-4 border border-green-500 rounded-2xl']) }}
 >
     <script>
         function workSelector() {
@@ -61,13 +62,13 @@
         }
     </script>
 
-    <div class="relative" @click.outside="showWorks = false">
-        <div class="flex flex-col items-center cursor-pointer" @click="showWorks = !showWorks">
+    <div class="relative z-30 flex items-center" @click.outside="showWorks = false">
+        <div class="flex flex-col items-center cursor-pointer transition hover:scale-105" @click="showWorks = !showWorks">
             <span
                 class="text-5xl font-light flex justify-center items-center p-2 border-2 border-green-400 rounded-full aspect-square w-12 h-12 text-green-400">
                 +
             </span>
-                <span class="text-green-400 text-2xl">Добавить</span>
+            <span class="text-green-400 text-2xl">Добавить</span>
         </div>
 
         <div x-show="showWorks"
@@ -79,20 +80,22 @@
                 <x-ui.input.text x-model="search" class="!text-lg !py-0" placeholder="поиск"/>
             </div>
 
-
-            <!-- Список -->
-            <template x-for="work in filteredWorks()" :key="work.id">
-                <div
-                    class="container !rounded flex justify-between items-center py-2 px-3 hover:bg-gray-100 cursor-pointer hover:scale-[102%] transition"
-                    @click="selectWork(work)"
-                >
-                    <span class="text-dark-400" x-text="work.title.length > 30 ? work.title.slice(0, 30) + '…' : work.title"></span>
-                    <x-bi-chevron-double-right class="fill-green-500 w-5 h-auto" />
-                </div>
-            </template>
+            <div x-show="filteredWorks().length > 0" class="max-h-52 overflow-y-auto p-2 flex flex-col gap-2">
+                <!-- Список -->
+                <template x-for="work in filteredWorks()" :key="work.id">
+                    <div
+                        class="container !rounded flex justify-between items-center py-2 px-3 hover:bg-gray-100 cursor-pointer hover:scale-[102%] transition"
+                        @click="selectWork(work)"
+                    >
+                        <span class="text-dark-400"
+                              x-text="work.title.length > 30 ? work.title.slice(0, 30) + '…' : work.title"></span>
+                        <x-bi-chevron-double-right class="fill-green-500 w-5 h-auto"/>
+                    </div>
+                </template>
+            </div>
 
             <!-- Пусто -->
-            <div x-show="filteredWorks().length === 0" class="text-gray-400 text-sm">
+            <div x-show="filteredWorks().length === 0" class="text-gray-400 text-lg">
                 У Вас еще нет произведений! Для того, чтобы учавствовать в сборниках, произведения должны сначала быть
                 добавлены в нашу систему, а затем выбраны из этого списка.
             </div>
@@ -141,7 +144,7 @@
                     <span class="text-dark-400 block truncate"
                           x-text="work.title.length > 30 ? work.title.slice(0, 30) + '…' : work.title"></span>
                     <x-ui.tooltip-wrap text="Убрать" class="!cursor-pointer" @click="removeWork(work)">
-                        <x-bi-x class="text-dark-400 w-5 h-auto" />
+                        <x-bi-x class="text-dark-400 w-5 h-auto"/>
                     </x-ui.tooltip-wrap>
                 </div>
             </div>

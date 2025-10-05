@@ -1,5 +1,5 @@
 <header x-data="{mobileMenuOpen: false}"
-        class="fixed w-full shadow-[0_1px_4px_#00000026] top-0 px-5 py-2 md:py-4 flex justify-between items-center z-40 bg-white dark:bg-dark_bg">
+        class="fixed w-full shadow-[0_1px_4px_#00000026] top-0 px-5 py-2 md:py-4 flex justify-between items-center z-50 bg-white dark:bg-dark_bg">
     <div class="flex gap-2 items-center">
         <div class="flex gap-2 items-center md:absolute md:left-1/2 md:-translate-x-1/2 md:top-1/2 md:-translate-y-1/2">
             <x-ui.application-logo class="w-12 h-12 mr-2"/>
@@ -63,12 +63,12 @@
             />
             @auth
                 <a  :class="window.location.href.includes('account') ? 'text-green-500' : ''"
-                    class="transition group-hover:text-green-500" wire:navigate href="{{route('account.collections')}}">
+                    class="transition group-hover:text-green-500" wire:navigate href="{{route('account.participations')}}">
                     Мой кабинет</a>
             @else
                 <a
                     :class="window.location.href.includes('login')  || window.location.href.includes('register') ? 'text-green-500' : ''"
-                    class="transition group-hover:text-green-500" wire:navigate href="{{route('auth.login')}}">Войти</a>
+                    class="transition group-hover:text-green-500" wire:navigate href="{{route('login')}}">Войти</a>
             @endauth
         </div>
 

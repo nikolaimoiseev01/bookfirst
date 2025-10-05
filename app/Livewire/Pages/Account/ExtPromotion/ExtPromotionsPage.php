@@ -8,6 +8,6 @@ class ExtPromotionsPage extends Component
 {
     public function render()
     {
-        return view('livewire.pages.account.ext-promotion.ext-promotions-page');
+        return view('livewire.pages.account.ext-promotion.ext-promotions-page')->layout('layouts.account');
     }
 }

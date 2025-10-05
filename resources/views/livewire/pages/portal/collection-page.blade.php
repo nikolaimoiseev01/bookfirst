@@ -38,7 +38,7 @@
                 </div>
             @endforeach
             @if($collection['collection_status_id'] == 1)
-                <x-ui.link href="" class="my-4 py-2 font-medium !text-2xl tracking-wide">Принять участие!</x-ui.link>
+                <x-ui.link href="{{route('account.participation.create', $collection['id'])}}" class="my-4 py-2 font-medium !text-2xl tracking-wide">Принять участие!</x-ui.link>
             @else
                 <p class="my-4 text-center text-red-300 font-normal">Прием заявок окончен</p>
             @endif

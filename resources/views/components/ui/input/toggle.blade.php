@@ -16,11 +16,13 @@
         >
             <input
                 @if($boolean)
-                    wire:model.boolean="{{$model}}"
+                    wire:model.live.boolean="{{$model}}"
+                    x-model.boolean="{{$model}}"
                 @else
-                    wire:model="{{$model}}"
+                    wire:model.live="{{$model}}"
+                    x-model="{{$model}}"
                 @endif
-                x-model="{{$model}}"
+
                 class="hidden"
                 type="radio"
                 id="{{ $model }}_{{ $value }}"

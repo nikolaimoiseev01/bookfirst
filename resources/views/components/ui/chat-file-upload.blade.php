@@ -30,7 +30,6 @@
 
     $pondLocalizations = __('livewire-filepond::filepond');
 @endphp
-
 <div
     class="{{ $attributes->get('class') }}"
     x-show="isDropping"
@@ -97,6 +96,12 @@
       pond.setOptions(@js($pondLocalizations));
 
       pond.setOptions(@js($pondProperties));
+
+      pond.setOptions({
+        maxFileSize: '5MB', // твой лимит
+        labelMaxFileSizeExceeded: 'Файл слишком большой',
+        labelMaxFileSize: 'Макс. размер: {filesize}',
+    });
 
       @if($isCustomPlaceholder)
         pond.setOptions({ labelIdle: @js($placeholder) });

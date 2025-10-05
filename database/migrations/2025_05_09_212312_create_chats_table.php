@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('chats', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_created')->references('id')->on('users');
-            $table->foreignId('user_to')->references('id')->on('users');
+            $table->bigInteger('user_to');
             $table->string('title');
             $table->foreignId('chat_status_id')->references('id')->on('chat_statuses');
             $table->nullableMorphs('model');

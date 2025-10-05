@@ -20,7 +20,7 @@ return new class extends Migration
             $table->bigInteger('rows')->nullable();
             $table->bigInteger('pages');
             $table->foreignId('participation_status_id')->references('id')->on('participation_statuses');
-            $table->foreignId('print_order_id')->nullable()->constrained()->nullable()->references('id')->on('print_orders');
+            $table->bigInteger('print_order_id')->nullable();
             $table->foreignId('promocode_id')->nullable()->references('id')->on('promocodes');
             $table->bigInteger('price_part');
             $table->bigInteger('price_print')-> nullable();

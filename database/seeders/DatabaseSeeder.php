@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\AlmostCompleteAction\AlmostCompleteAction;
 use App\Models\Award\Award;
 use App\Models\Chat\Chat;
+use App\Models\Chat\ChatStatus;
 use App\Models\Chat\Message;
 use App\Models\Chat\MessageTemplate;
 use App\Models\Chat\MessageTemplateType;
@@ -13,10 +14,14 @@ use App\Models\Collection\CollectionNewsLetter;
 use App\Models\Collection\CollectionStatus;
 use App\Models\Collection\CollectionVote;
 use App\Models\Collection\Participation;
+use App\Models\Collection\ParticipationStatus;
 use App\Models\Collection\ParticipationWork;
 use App\Models\DigitalSale;
 use App\Models\EmailSent;
 use App\Models\InnerTask\InnerTask;
+use App\Models\OwnBook\OwnBookCoverStatus;
+use App\Models\OwnBook\OwnBookInsideStatus;
+use App\Models\OwnBook\OwnBookStatus;
 use App\Models\OwnBook\OwnBookWork;
 use App\Models\PreviewComment;
 use App\Models\PrintOrder\AddressType;
@@ -30,12 +35,15 @@ use App\Models\Transaction;
 use App\Models\User\User;
 use App\Models\Work\Work;
 use App\Models\Work\WorkLike;
+use App\Models\Work\WorkTopic;
+use App\Models\Work\WorkType;
 use App\Services\CopyTableService;
 use App\Services\PdfService;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -601,7 +609,7 @@ class DatabaseSeeder extends Seeder
                 'inside_color' => $oldPrintOrder->inside_color == 1 ? 'Цветной' : 'Черно-белый',
                 'color_pages' => $oldPrintOrder->color_pages > 0 ? $oldPrintOrder->color_pages : null,
                 'cover_type' => $oldPrintOrder->cover_type == 'hard' ? 'Твердая' : 'Мягкая',
-                'address' => json_encode($address),
+                'address_json' => json_encode($address),
                 'country' => $oldPrintOrder->address_country,
                 'address_type_id' => AddressType::where('name', $address_type)->first()->id,
                 'paid_at' => $oldPrintOrder->paid_at,
@@ -901,6 +909,136 @@ class DatabaseSeeder extends Seeder
         }
     }
 
+    public function testNewData()
+    {
+        DB::transaction(function () {
+
+            $role = DB::table('roles')->insert([
+                'name' => 'admin',
+                'guard_name' => 'admin',
+                'public_name' => 'admin'
+            ]);
+            $role_id = DB::table('roles')->first()->id;
+            User::firstOrCreate([
+                'name' => 'Admin Name',
+                'surname' => 'Admin Surname',
+                'email' => 'admin@mail.ru',
+                'email_verified_at' => now(),
+                'password' => Hash::make('12345678')
+            ]);
+            $user_id = DB::table('users')->first()->id;
+            DB::table('model_has_roles')->insert([
+                'role_id' => $role_id,
+                'model_type' => 'User',
+                'model_id' => $user_id
+            ]);
+            $titles = [
+                'Идет приём заявок',
+                'Предварительная проверка'
+            ];
+            foreach ($titles as $title) {
+                CollectionStatus::create([
+                    'name' => $title,
+                ]);
+            }
+            Collection::create([
+                'title' => 'Современный Дух Поэзии. Выпуск 60',
+                'title_short' => 'ДУХ 60',
+                'slug' => 'duh-60',
+                'collection_status_id' => 1
+            ]);
+
+            Promocode::create([
+                'name' => 'XYZ',
+                'discount' => 20
+            ]);
+
+
+            $workTypes = [
+                'Поэзия',
+                'Стихи'
+            ];
+            foreach ($workTypes as $workType) {
+                WorkType::create([
+                    'name' => $workType,
+                ]);
+            }
+
+            $workTopics = [
+                'Лирика',
+                'Пейзажная'
+            ];
+            foreach ($workTopics as $workTopic) {
+                WorkTopic::create([
+                    'name' => $workTopic,
+                ]);
+            }
+
+            $participationStatuses = [
+                'Создана, ожадиается подтверждение',
+                'Ожидается оплата'
+            ];
+            foreach ($participationStatuses as $participationStatus) {
+                ParticipationStatus::create([
+                    'name' => $participationStatus,
+                ]);
+            }
+
+             $chatStatuses = [
+                'Создан,пустой',
+                'Ожидает ответа'
+            ];
+            foreach ($chatStatuses as $chatStatus) {
+                ChatStatus::create([
+                    'name' => $chatStatus,
+                ]);
+            }
+
+            $statuses = [
+                'Создана, ожидается подтверждение',
+                'Ожидается оплата'
+            ];
+            foreach ($statuses as $status) {
+                 OwnBookStatus::create([
+                    'name' => $status,
+                ]);
+            }
+
+            $statuses = [
+                'Обложка Создана, ожидается подтверждение',
+                'Обложка Ожидается оплата'
+            ];
+            foreach ($statuses as $status) {
+                OwnBookCoverStatus::create([
+                    'name' => $status,
+                ]);
+            }
+
+            $statuses = [
+                'ВБ Создана, ожидается подтверждение',
+                'ВБ Ожидается оплата'
+            ];
+            foreach ($statuses as $status) {
+                OwnBookInsideStatus::create([
+                    'name' => $status,
+                ]);
+            }
+
+            $statuses = [
+                'Заказ создан',
+                'Заказ оплачен',
+                'Заказ отправлен в печать'
+            ];
+            foreach ($statuses as $status) {
+                PrintOrderStatus::create([
+                    'name' => $status,
+                ]);
+            }
+
+        });
+
+    }
+
 
     public function run(): void
     {
@@ -909,34 +1047,35 @@ class DatabaseSeeder extends Seeder
         $file = new Filesystem;
         $file->cleanDirectory(storage_path('app/public/media'));
 
-        $this->same_tables(test: $test);
+//        $this->same_tables(test: $test);
+        $this->testNewData();
 
-        $this->make_survey_completeds();
-        $this->make_inner_tasks();
-        $this->make_chats($test);
-        $this->make_messages($test);
-        $this->make_awards();
-        $this->make_actions();
-        $this->make_digital_sales();
-        $this->make_message_templates();
-        $this->make_preview_comments();
-        $this->make_print_orders();
-        $this->make_transactions();
-        $this->make_work_likes();
-
-
-        $now_time = Carbon::now()->format('H:i:s');
-        echo "Collections START ($now_time)\n";
-        $this->make_collection_statuses();
-        (new CopyTableService())->copy(sourceTable: 'pat_statuses', targetTable: 'participation_statuses', columnsToRename: ['pat_status_title' => 'name']);
-        $this->make_collections($test);
-        $this->make_participations($test);
-        $this->make_news_letters($test);
-        $this->make_collection_votes($test);
-        $this->make_participation_works($test);
-        $now_time = Carbon::now()->format('H:i:s');
-        echo "Collections END ($now_time)\n";
-
-        (new OwnBookSeeder())->run(test: $test);
+//        $this->make_survey_completeds();
+//        $this->make_inner_tasks();
+//        $this->make_chats($test);
+//        $this->make_messages($test);
+//        $this->make_awards();
+//        $this->make_actions();
+//        $this->make_digital_sales();
+//        $this->make_message_templates();
+//        $this->make_preview_comments();
+//        $this->make_print_orders();
+//        $this->make_transactions();
+//        $this->make_work_likes();
+//
+//
+//        $now_time = Carbon::now()->format('H:i:s');
+//        echo "Collections START ($now_time)\n";
+//        $this->make_collection_statuses();
+//        (new CopyTableService())->copy(sourceTable: 'pat_statuses', targetTable: 'participation_statuses', columnsToRename: ['pat_status_title' => 'name']);
+//        $this->make_collections($test);
+//        $this->make_participations($test);
+//        $this->make_news_letters($test);
+//        $this->make_collection_votes($test);
+//        $this->make_participation_works($test);
+//        $now_time = Carbon::now()->format('H:i:s');
+//        echo "Collections END ($now_time)\n";
+//
+//        (new OwnBookSeeder())->run(test: $test);
     }
 }

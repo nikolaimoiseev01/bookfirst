@@ -4,7 +4,7 @@
     @endsection
 
     <div class="flex gap-8 mx-auto justify-center mb-8 flex-wrap">
-        <x-ui.link-simple href="{{route('auth.login')}}"
+        <x-ui.link-simple href="{{route('login')}}"
                           class="text-6xl  font-normal !text-dark-100 hover:!text-green-500 transition">
             Вход
         </x-ui.link-simple>

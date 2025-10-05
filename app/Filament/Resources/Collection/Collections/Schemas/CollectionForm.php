@@ -66,38 +66,38 @@ class CollectionForm
                         Tab::make('Победители')
                             ->schema([
                                 \Filament\Schemas\Components\Grid::make()->schema([
-                                    Repeater::make('winners')
-                                        ->dehydrated(false)
-                                        ->label('Победители')
-                                        ->simple(
-                                            Select::make('participation_id')
-                                                ->label('Пользователь')
-                                                ->options(fn(Collection $collection) => $collection->participations()->pluck('author_name', 'id')->toArray())
-                                                ->required(),
-                                        )
-                                        ->columnSpan(1)
-                                        ->mutateDehydratedStateUsing(function (array $state): array {
-                                            $intConverted = array_values(array_map(fn($item) => (int)$item['user_id'], $state));
-                                            return $intConverted;
-                                        }),
-                                    ViewField::make('rating')
-                                        ->dehydrated(false)
-                                        ->view('filament.components.collection-votes')
-                                        ->viewData(function(Collection $collection) {
-                                            $collection = $collection->load('collectionVotes');
-                                            $candidates = DB::table('collection_votes')
-                                                ->select(DB::raw('count(*) as votes_count, participations.author_name'))
-                                                ->join('participations', 'participations.id', '=', 'collection_votes.participation_id_to')
-                                                ->where('collection_votes.collection_id', $collection->id)
-                                                ->groupBy('participations.author_name')
-                                                ->orderBy('votes_count', 'desc')
-                                                ->get();
-//                                            dd($candidates);
-                                            return [
-                                                'collection' => $collection,
-                                                'candidates' => $candidates
-                                            ];
-                                        })
+//                                    Repeater::make('winners')
+//                                        ->dehydrated(false)
+//                                        ->label('Победители')
+//                                        ->simple(
+//                                            Select::make('participation_id')
+//                                                ->label('Пользователь')
+//                                                ->options(fn(Collection $collection) => $collection->participations()->pluck('author_name', 'id')->toArray())
+//                                                ->required(),
+//                                        )
+//                                        ->columnSpan(1)
+//                                        ->mutateDehydratedStateUsing(function (array $state): array {
+//                                            $intConverted = array_values(array_map(fn($item) => (int)$item['user_id'], $state));
+//                                            return $intConverted;
+//                                        }),
+//                                    ViewField::make('rating')
+//                                        ->dehydrated(false)
+//                                        ->view('filament.components.collection-votes')
+//                                        ->viewData(function(Collection $collection) {
+//                                            $collection = $collection->load('collectionVotes');
+//                                            $candidates = DB::table('collection_votes')
+//                                                ->select(DB::raw('count(*) as votes_count, participations.author_name'))
+//                                                ->join('participations', 'participations.id', '=', 'collection_votes.participation_id_to')
+//                                                ->where('collection_votes.collection_id', $collection->id)
+//                                                ->groupBy('participations.author_name')
+//                                                ->orderBy('votes_count', 'desc')
+//                                                ->get();
+////                                            dd($candidates);
+//                                            return [
+//                                                'collection' => $collection,
+//                                                'candidates' => $candidates
+//                                            ];
+//                                        })
                                 ])->columns(3)
                             ])
                     ])->columnSpanFull()

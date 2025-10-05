@@ -9,6 +9,7 @@ use App\Models\Collection\Participation;
 use App\Models\OwnBook\OwnBook;
 use App\Models\Chat\Message;
 use App\Models\Award\AwardType;
+use App\Models\Work\Work;
 use Filament\Auth\Pages\PasswordReset\RequestPasswordReset;
 use Filament\Facades\Filament;
 use Filament\Support\Assets\Js;
@@ -52,6 +53,7 @@ class AppServiceProvider extends ServiceProvider
             'Message' => Message::class,
             'AwardType' => AwardType::class,
             'ExtPromotion' => ExtPromotion::class,
+            'Work' => Work::class,
         ]);
 
         Carbon::setLocale(config('app.locale')); // Установим локаль из конфигурации

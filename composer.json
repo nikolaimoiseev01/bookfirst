@@ -24,6 +24,7 @@
         "secondnetwork/blade-tabler-icons": "^3.31",
         "setasign/fpdf": "^1.8",
         "setasign/fpdi": "^2.6",
+        "spatie/laravel-ignition": "^2.9",
         "spatie/laravel-medialibrary": "^11.12",
         "spatie/laravel-permission": "^6.17",
         "spatie/livewire-filepond": "^1.5",

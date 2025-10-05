@@ -97,7 +97,7 @@ class LoginPage extends Component
             Session::regenerate();
 
             $this->redirectIntended(
-                default: route('account.collections', absolute: false),
+                default: route('account.participations', absolute: false),
                 navigate: true
             );
 

@@ -12,7 +12,7 @@ class Dropdown extends Component
     /**
      * Create a new component instance.
      */
-    public function __construct($default)
+    public function __construct($default=null)
     {
         $this->placeholder = $default ?? 'Выберите...';
     }

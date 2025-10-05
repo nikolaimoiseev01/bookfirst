@@ -1,4 +1,4 @@
-<div class="flex flex-col">
+<div class="flex flex-col w-fit">
     <div class="flex justify-between items-center">
         <span class="text-dark-600 dark:text-white">
             @if($role['name'] == 'user')

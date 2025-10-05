@@ -24,18 +24,18 @@
 {{ $slot }}
 {{--<x-book3d/>--}}
 @stack('scripts')
+@filepondScripts
 <x-footer/>
-<script type="module">
-    function showSwal(param) {
-        console.log(param)
-        Swal.fire({
-            icon: param.icon,
-            title: param.title,
-            html: '<p>' + param.text + '</p>',
-            showConfirmButton: false,
-        });
-    }
-</script>
+{{--<script type="module">--}}
+{{--    function showSwal(param) {--}}
+{{--        Swal.fire({--}}
+{{--            icon: param.icon,--}}
+{{--            title: param.title,--}}
+{{--            html: '<p>' + param.text + '</p>',--}}
+{{--            showConfirmButton: false,--}}
+{{--        });--}}
+{{--    }--}}
+{{--</script>--}}
 @if(session('swal'))
     showSwal(@json(session('swal')))
 @endif

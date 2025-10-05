@@ -1,4 +1,4 @@
-<div {{ $attributes->merge(['class' => 'flex flex-col w-full relative']) }}
+<div {{ $attributes->merge(['class' => 'textAreaCustom flex flex-col w-full relative']) }}
      wire:ignore
      x-data="{
         isSending:  $wire.entangle('isSending'),
@@ -39,18 +39,16 @@
 
      x-on:update-is-sending.window="console.log('FINE')"
 >
-
     @if($attachable)
-        @filepondScripts
-        <x-ui.chat-file-upload wire:model="files" multiple="{{$multiple}}"/>
+        <x-ui.chat-file-upload wire:model="{{ $filesModel }}" :multiple="$multiple"/>
     @endif
 
     <!-- Поле ввода -->
-    <div class="flex w-full flex-1 transition rounded-2xl border border-green-500  p-2"
+    <div class="flex w-full flex-1 transition rounded-2xl border border-{{$color}}  p-2"
          :class="isFocused ? 'shadow-[0_0_2px_1px_#47af984a]' : ''">
 
         <textarea
-            wire:model="{{ $model }}"
+            wire:model="{{ $textModel }}"
             @focus="isFocused = true"
             @blur="isFocused = false"
             placeholder="{{$description}}"
@@ -64,7 +62,7 @@
                 <x-ui.tooltip-wrap text="Прикрепить файлы <br>(или перенесите файлы в поле текста)">
                     <x-clarity-attachment-line
                         @click="browseFileTrigger()"
-                        class="rotate-[-30deg] w-5 h-5 cursor-pointer fill-green-500 hover:scale-110 transition"
+                        class="rotate-[-30deg] w-5 h-5 cursor-pointer fill-{{$color}} hover:scale-110 transition"
                     />
                 </x-ui.tooltip-wrap>
             @endif
@@ -74,7 +72,7 @@
                     <x-ui.tooltip-wrap text="Отправить">
                         <x-bi-send
                             @click="sendMessage"
-                            class="mt-auto w-5 h-5 cursor-pointer fill-green-500 transition hover:scale-110"
+                            class="mt-auto w-5 h-5 cursor-pointer fill-{{$color}} transition hover:scale-110"
                         />
                     </x-ui.tooltip-wrap>
                 </a>

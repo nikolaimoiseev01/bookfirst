@@ -28,7 +28,7 @@
     };
 @endphp
 <div :class="open ? 'opacity-100 visible' : 'opacity-0 invisible'"
-{{ $attributes->merge(['class' => 'absolute bottom-[110%] left-1/2 -translate-x-1/2 bg-dark-600 text-white py-2 px-4 rounded text-center w-max max-w-60 z-20 transition' . $classes]) }}
+{{ $attributes->merge(['class' => '!text-lg absolute bottom-[110%] left-1/2 -translate-x-1/2 bg-dark-600 text-white py-1 px-2 rounded text-center w-max max-w-60 z-20 transition' . $classes]) }}
 >
     {{$slot}}
 </div>

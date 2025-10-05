@@ -3,12 +3,15 @@
 namespace App\Models\Collection;
 
 use App\Models\Chat\Chat;
+use App\Models\PreviewComment;
 use App\Models\PrintOrder\PrintOrder;
 use App\Models\Promocode;
 use App\Models\Survey\SurveyCompleted;
 use App\Models\User\User;
 use App\Models\Work\Work;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class Participation extends Model
@@ -46,8 +49,13 @@ class Participation extends Model
         return $this->morphOne(Chat::class, 'model');
     }
 
-    public function works()
+    public function previewComments(): MorphMany
     {
-        return $this->hasMany(Work::class);
+        return $this->morphMany(PreviewComment::class, 'model');
+    }
+
+    public function participationWorks(): HasMany
+    {
+        return $this->hasMany(ParticipationWork::class);
     }
 }

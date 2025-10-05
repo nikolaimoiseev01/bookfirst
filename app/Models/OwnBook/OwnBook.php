@@ -8,6 +8,9 @@ use App\Models\PreviewComment;
 use App\Models\PrintOrder\PrintOrder;
 use App\Models\User\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Spatie\MediaLibrary\HasMedia;
@@ -21,21 +24,26 @@ class OwnBook extends Model implements HasMedia
         return $this->belongsTo(User::class);
     }
 
-    public function ownBookStatus()
+    public function ownBookStatus(): BelongsTo
     {
         return $this->belongsTo(OwnBookStatus::class);
     }
-    public function ownBookInsideStatus()
+    public function ownBookInsideStatus(): BelongsTo
     {
         return $this->belongsTo(OwnBookInsideStatus::class);
     }
-    public function ownBookCoverStatus()
+    public function ownBookCoverStatus(): BelongsTo
     {
         return $this->belongsTo(OwnBookCoverStatus::class);
     }
     public function printOrders(): MorphMany
     {
         return $this->morphMany(PrintOrder::class, 'model');
+    }
+
+    public function works(): HasMany
+    {
+        return $this->hasMany(OwnBookWork::class);
     }
 
     public function firstPrintOrder()

@@ -3,16 +3,19 @@
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Livewire\Pages\Account\Chat\ChatsPage;
 use App\Livewire\Pages\Account\Chat\CreateChatPage;
-use App\Livewire\Pages\Account\Collection\CollectionsPage;
 use App\Livewire\Pages\Account\Collection\ParticipationCreatePage;
+use App\Livewire\Pages\Account\Collection\ParticipationEditPage;
 use App\Livewire\Pages\Account\Collection\ParticipationPage;
+use App\Livewire\Pages\Account\Collection\ParticipationsPage;
 use App\Livewire\Pages\Account\ExtPromotion\ExtPromotionsPage;
+use App\Livewire\Pages\Account\OwnBook\OwnBookCreatePage;
 use App\Livewire\Pages\Account\OwnBook\OwnBooksPage;
 use App\Livewire\Pages\Account\PurchasesPage;
 use App\Livewire\Pages\Account\SettingsPage;
 use App\Livewire\Pages\Account\SubscribtionsPage;
 use App\Livewire\Pages\Account\Work\WorkCreateFromFilePage;
 use App\Livewire\Pages\Account\Work\WorkCreateManualPage;
+use App\Livewire\Pages\Account\Work\WorkEditPage;
 use App\Livewire\Pages\Account\Work\WorksPage;
 use App\Livewire\Pages\Auth\ConfirmPasswordPage;
 use App\Livewire\Pages\Auth\ForgotPasswordPage;
@@ -38,10 +41,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
     Route::get('register', RegisterPage::class)
-        ->name('auth.register');
+        ->name('register');
 
     Route::get('login', LoginPage::class)
-        ->name('auth.login');
+        ->name('login');
 
     Route::get('forgot-password', ForgotPasswordPage::class)
         ->name('auth.password.request');
@@ -79,16 +82,23 @@ Route::get('/own-book/{slug}', OwnBookPage::class)->name('portal.own_book');
 Route::get('/user/{id}', UserPage::class)->name('social.user');
 
 Route::middleware(['auth', 'verified'])->prefix('account')->group(function () {
-    Route::get('collections', CollectionsPage::class)->name('account.collections');
-    Route::get('collections/{collection_id}/participation/create', ParticipationCreatePage::class)->name('account.participation.create');
-    Route::get('collections/participation/{participation_id}', ParticipationPage::class)->name('account.participation.edit');
+    Route::get('participations', ParticipationsPage::class)->name('account.participations');
+    Route::get('participations/create/{collection_id}', ParticipationCreatePage::class)->name('account.participation.create');
+    Route::get('participations/edit/{participation_id}', ParticipationEditPage::class)->name('account.participation.edit');
+    Route::get('participations/{participation_id}', ParticipationPage::class)->name('account.participation.index');
+
     Route::get('own-books', OwnBooksPage::class)->name('account.own_books');
-    Route::get('own-book/{id}', OwnBookPage::class)->name('account.own_book');
+    Route::get('own-books/create', OwnBookCreatePage::class)->name('account.own_book.create');
+    Route::get('own-books/{id}', \App\Livewire\Pages\Account\OwnBook\OwnBookPage::class)->name('account.own_book.index');
+
     Route::get('ext-promotions', ExtPromotionsPage::class)->name('account.ext_promotions');
     Route::get('ext-promotion/{id}', ExtPromotionPage::class)->name('account.ext_promotion');
+
     Route::get('works', WorksPage::class)->name('account.works');
     Route::get('works/create-manual', WorkCreateManualPage::class)->name('account.works.create.manual');
     Route::get('works/create-from-file', WorkCreateFromFilePage::class)->name('account.works.create.file');
+    Route::get('works/edit/{work_id}', WorkEditPage::class)->name('account.work.edit');
+
     Route::get('chats', ChatsPage::class)->name('account.chats');
     Route::get('chats/create', CreateChatPage::class)->name('account.chat_create');
     Route::get('subscriptions', SubscribtionsPage::class)->name('account.subscriptions');

@@ -26,7 +26,7 @@ class CollectionPage extends Component
         $this->info = [
             'Статус сборника' => 'Идет прием заявок',
             'Тираж сборника' => '~ 100 экземпляров',
-            'Формат' => $this->collection->workType['name'],
+//            'Формат' => $this->collection->workType['name'] ?? '',
             'Обложка' => 'Мягкая, цветная'
         ];
 

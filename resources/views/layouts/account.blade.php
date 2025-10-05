@@ -16,7 +16,11 @@
 
     <script src="/plugins/swal/sweetalert2.all.min.js"></script>
     <link href="/plugins/swal/sweetalert2.min.css" rel="stylesheet">
+    <script src="https://api-maps.yandex.ru/v3/?apikey=ad88f427-6fde-4dbd-984f-d65b8e659fd3&lang=ru_RU"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@cdek-it/widget@3" charset="utf-8"></script>
 
+    <link rel="stylesheet" type="text/css" href="/vendor/livewire-filepond/filepond.css?v=1.5.0">
+    <script type="module" src="/vendor/livewire-filepond/filepond.js?v=1.5.0" data-navigate-once defer data-navigate-track></script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="antialiased flex flex-col min-h-screen">
@@ -29,19 +33,10 @@
     </section>
 </main>
 @stack('scripts')
-
 @if(session('swal'))
     <script type="module">
-        function showSwal(param) {
-            console.log(param)
-            Swal.fire({
-                icon: param.icon,
-                title: param.title,
-                html: '<p>' + param.text + '</p>',
-                showConfirmButton: false,
-            });
-        }
-        showSwal(@json(session('swal')))
+        let params = @json(session('swal') ?? []);
+        showSwal(params.type, params.title, params.text)
     </script>
 @endif
 <x-footer/>

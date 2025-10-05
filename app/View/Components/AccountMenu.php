@@ -4,6 +4,7 @@ namespace App\View\Components;
 
 use Closure;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Component;
 
 class AccountMenu extends Component
@@ -18,12 +19,12 @@ class AccountMenu extends Component
             [
                 'name' => 'Моя страница',
                 'icon' => 'bi-person',
-                'url' => route('portal.index'),
+                'url' => route('social.user', Auth::user()->id),
             ],
             [
                 'name' => 'Мои сборники',
                 'icon' => 'uni-books-o',
-                'url' => route('account.collections'),
+                'url' => route('account.participations'),
             ],
             [
                 'name' => 'Собственные книги',

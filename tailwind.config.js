@@ -26,6 +26,19 @@ export default {
             animation: {
                 'pulse-light': 'pulseLight 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
             },
+            safelist: [
+                'border-green-500',
+                'text-green-500',
+                'bg-green-500',
+                'border-dark-300',
+                'text-dark-300',
+                'bg-dark-300',
+                'shadow-[0_0_7px_1px_#47af9880]',
+                'border-brown-400',
+                'text-brown-400',
+                'bg-brown-400',
+                'shadow-[0_0_7px_1px_#FFA50080]',
+            ],
             colors: {
                 green: {
                     300: '#a2e4d6',
@@ -37,6 +50,7 @@ export default {
                 dark: {
                     100: '#E0E0E0',
                     200: '#BDBDBD',
+                    300: '#CBCBCB',
                     400: '#4c4b46',
                     500: '#363531',
                     600: '#1c1c16'
@@ -45,7 +59,8 @@ export default {
                     300: '#ff6262'
                 },
                 brown: {
-                    300: '#ECBA57'
+                    300: '#ECBA57',
+                    400: '#FFA500'
                 },
                 blue: {
                     500: '#66a2e5'
