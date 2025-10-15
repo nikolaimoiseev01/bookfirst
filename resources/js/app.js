@@ -24,6 +24,8 @@ window.notyf = new Notyf();
 
 livewire_hot_reload();
 
+
+
 window.showSwal = function showSwal(type, title, text, confirmButtonText = '', livewireMethod = []) {
     let showConfirmFlg = confirmButtonText.length > 0;
     Swal.fire({

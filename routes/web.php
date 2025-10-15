@@ -29,10 +29,12 @@ use App\Livewire\Pages\Portal\CollectionsActualPage;
 use App\Livewire\Pages\Portal\CollectionsReleasedPage;
 use App\Livewire\Pages\Portal\ExtPromotionPage;
 use App\Livewire\Pages\Portal\IndexPage;
+use App\Livewire\Pages\Social\IndexPage as IndexPageSocial;
 use App\Livewire\Pages\Portal\OwnBookApplicationPage;
 use App\Livewire\Pages\Portal\OwnBookPage;
 use App\Livewire\Pages\Portal\OwnBooksReleasedPage;
 use App\Livewire\Pages\Social\UserPage;
+use App\Livewire\Pages\Social\WorksFeedPage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -79,7 +81,12 @@ Route::get('/own-book/application', OwnBookApplicationPage::class)->name('portal
 Route::get('/own-books/released', OwnBooksReleasedPage::class)->name('portal.own_books.released');
 Route::get('/own-book/{slug}', OwnBookPage::class)->name('portal.own_book');
 
-Route::get('/user/{id}', UserPage::class)->name('social.user');
+Route::prefix('social')->group(function () {
+    Route::get('/', IndexPageSocial::class)->name('social.index');
+    Route::get('/works-feed', WorksFeedPage::class)->name('social.works_feed');
+    Route::get('/user/{id}', UserPage::class)->name('social.user');
+});
+
 
 Route::middleware(['auth', 'verified'])->prefix('account')->group(function () {
     Route::get('participations', ParticipationsPage::class)->name('account.participations');

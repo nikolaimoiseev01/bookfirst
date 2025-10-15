@@ -6,12 +6,16 @@
             <a class="italic text-3xl font-light sm:hidden">Первая Книга</a>
         </div>
         <div class="w-px h-7 bg-gray-300 xl:hidden"></div>
-        <x-ui.link-simple class="italic text-xl xl:hidden" :href="route('portal.index')">Независимое издательство
-        </x-ui.link-simple>
+        <a wire:navigate :class="$store.global.social ? 'text-dark-400 hover:text-green-500' : 'text-green-500'"
+           class="font-light cursor-pointer italic text-xl xl:hidden" href="{{route('portal.index')}}">
+            Независимое издательство
+        </a>
         <div class="w-px h-7 bg-gray-300 xl:hidden"></div>
-        <x-ui.link-simple class="social italic text-xl xl:hidden" :social="true" :href="route('portal.index')">
+
+        <a wire:navigate :class="$store.global.social ? 'text-blue-500' : 'text-dark-400 hover:text-blue-500'"
+           class="font-light cursor-pointer italic text-xl xl:hidden" href="{{route('social.index')}}">
             Социальная сеть
-        </x-ui.link-simple>
+        </a>
     </div>
     <div class="flex gap-6 items-center text-2xl text-black-400 dark:text-white md:justify-between md:w-full">
         @foreach($links as $link)
@@ -32,8 +36,15 @@
                     </div>
                 </div>
             @else
-                <a wire:navigate :class="window.location.href.includes('{{$link['url_part']}}') ? 'text-green-500' : ''"
-                   href="{{$link['route']}}" class="md:hidden transition hover:text-green-500">{{$link['name']}}</a>
+                <a wire:navigate :class="[
+                                        $store.global.social
+                                            ? 'hover:text-blue-500'
+                                            : 'hover:text-green-500',
+                                        window.location.href.includes('{{ $link['url_part'] }}')
+                                            ? ($store.global.social ? '!text-blue-500' : '!text-green-500')
+                                            : ''
+                                    ]"
+                   href="{{$link['route']}}" class="text-dark-400 md:hidden transition">{{$link['name']}}</a>
             @endif
         @endforeach
         <style>
@@ -62,8 +73,9 @@
                 class="w-6 h-auto group-hover:text-green-500 transition"
             />
             @auth
-                <a  :class="window.location.href.includes('account') ? 'text-green-500' : ''"
-                    class="transition group-hover:text-green-500" wire:navigate href="{{route('account.participations')}}">
+                <a :class="window.location.href.includes('account') ? 'text-green-500' : ''"
+                   class="transition group-hover:text-green-500" wire:navigate
+                   href="{{route('account.participations')}}">
                     Мой кабинет</a>
             @else
                 <a
@@ -101,3 +113,10 @@
         @endforeach
     </div>
 </header>
+<script type="module">
+    console.log('test')
+    console.log(123)
+    Alpine.store('global', {
+        social: window.location.href.includes('social'),
+    })
+</script>

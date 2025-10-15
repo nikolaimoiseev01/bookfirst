@@ -598,19 +598,41 @@ class DatabaseSeeder extends Seeder
                 }
 
             }
+            $oldParticipation = DB::connection('old_mysql')
+                ->table('participations')
+                ->where('printorder_id', $oldPrintOrder->id)
+                ->first();
+            $oldOwnBook = DB::connection('old_mysql')
+                ->table('own_books')
+                ->where('id', $oldPrintOrder->own_book_id)
+                ->first();
+            if($oldParticipation ?? null) {
+                $pricePrint = $oldParticipation->print_price;
+                $priceSend = $oldParticipation->send_price;
+
+            } else if ($oldOwnBook ?? null) {
+                $pricePrint = $oldOwnBook->print_price;
+                $priceSend = $oldPrintOrder->send_price;
+            } else {
+                $pricePrint = null;
+                $priceSend = null;
+            }
+
             PrintOrder::create([
                 'id' => $oldPrintOrder->id,
                 'user_id' => $user_id,
                 'model_type' => $model_type,
                 'model_id' => $model_id,
                 'books_cnt' => $oldPrintOrder->books_needed,
-                'full_name' => $oldPrintOrder->send_to_name,
-                'telephone' => $oldPrintOrder->send_to_tel,
+                'receiver_name' => $oldPrintOrder->send_to_name,
+                'receiver_telephone' => $oldPrintOrder->send_to_tel,
                 'inside_color' => $oldPrintOrder->inside_color == 1 ? 'Цветной' : 'Черно-белый',
-                'color_pages' => $oldPrintOrder->color_pages > 0 ? $oldPrintOrder->color_pages : null,
+                'pages_color' => $oldPrintOrder->color_pages > 0 ? $oldPrintOrder->color_pages : null,
                 'cover_type' => $oldPrintOrder->cover_type == 'hard' ? 'Твердая' : 'Мягкая',
                 'address_json' => json_encode($address),
                 'country' => $oldPrintOrder->address_country,
+                'price_print' => $pricePrint,
+                'price_send' => $priceSend,
                 'address_type_id' => AddressType::where('name', $address_type)->first()->id,
                 'paid_at' => $oldPrintOrder->paid_at,
                 'track_number' => $oldPrintOrder->track_number,
@@ -859,10 +881,8 @@ class DatabaseSeeder extends Seeder
                 'print_order_id' => $participation->printorder_id,
                 'promocode_id' => $promocode_id,
                 'price_part' => $participation->part_price,
-                'price_print' => $participation->print_price,
                 'price_check' => $participation->check_price,
-                'price_send' => $participation->send_price,
-                'price_total' => $participation->total_price,
+                'price_total' => $participation->total_price - $participation->print_price,
                 'created_at' => $participation->created_at,
                 'updated_at' => $participation->updated_at
             ]);
@@ -1047,35 +1067,35 @@ class DatabaseSeeder extends Seeder
         $file = new Filesystem;
         $file->cleanDirectory(storage_path('app/public/media'));
 
-//        $this->same_tables(test: $test);
-        $this->testNewData();
+        $this->same_tables(test: $test);
+//        $this->testNewData();
 
-//        $this->make_survey_completeds();
-//        $this->make_inner_tasks();
-//        $this->make_chats($test);
-//        $this->make_messages($test);
-//        $this->make_awards();
-//        $this->make_actions();
-//        $this->make_digital_sales();
-//        $this->make_message_templates();
-//        $this->make_preview_comments();
-//        $this->make_print_orders();
-//        $this->make_transactions();
-//        $this->make_work_likes();
-//
-//
-//        $now_time = Carbon::now()->format('H:i:s');
-//        echo "Collections START ($now_time)\n";
-//        $this->make_collection_statuses();
-//        (new CopyTableService())->copy(sourceTable: 'pat_statuses', targetTable: 'participation_statuses', columnsToRename: ['pat_status_title' => 'name']);
-//        $this->make_collections($test);
-//        $this->make_participations($test);
-//        $this->make_news_letters($test);
-//        $this->make_collection_votes($test);
-//        $this->make_participation_works($test);
-//        $now_time = Carbon::now()->format('H:i:s');
-//        echo "Collections END ($now_time)\n";
-//
-//        (new OwnBookSeeder())->run(test: $test);
+        $this->make_survey_completeds();
+        $this->make_inner_tasks();
+        $this->make_chats($test);
+        $this->make_messages($test);
+        $this->make_awards();
+        $this->make_actions();
+        $this->make_digital_sales();
+        $this->make_message_templates();
+        $this->make_preview_comments();
+        $this->make_print_orders();
+        $this->make_transactions();
+        $this->make_work_likes();
+
+
+        $now_time = Carbon::now()->format('H:i:s');
+        echo "Collections START ($now_time)\n";
+        $this->make_collection_statuses();
+        (new CopyTableService())->copy(sourceTable: 'pat_statuses', targetTable: 'participation_statuses', columnsToRename: ['pat_status_title' => 'name']);
+        $this->make_collections($test);
+        $this->make_participations($test);
+        $this->make_news_letters($test);
+        $this->make_collection_votes($test);
+        $this->make_participation_works($test);
+        $now_time = Carbon::now()->format('H:i:s');
+        echo "Collections END ($now_time)\n";
+
+        (new OwnBookSeeder())->run(test: $test);
     }
 }

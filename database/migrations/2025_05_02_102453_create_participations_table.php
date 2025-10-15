@@ -23,9 +23,7 @@ return new class extends Migration
             $table->bigInteger('print_order_id')->nullable();
             $table->foreignId('promocode_id')->nullable()->references('id')->on('promocodes');
             $table->bigInteger('price_part');
-            $table->bigInteger('price_print')-> nullable();
             $table->bigInteger('price_check')-> nullable();
-            $table->bigInteger('price_send')-> nullable();
             $table->bigInteger('price_total');
             $table->timestamps();
         });

@@ -1,5 +1,6 @@
 @props([
     'price' => 0,
+    'oldPrice' => null,
     'label' => 'Стоимость',
     'direction' => 'column',
     'plus' => false,
@@ -22,14 +23,22 @@
         'order-2' => $direction === 'column',
     ])>{{$label}}</span>
 
-    <span @class([
+    <div class="flex flex-col">
+        @if($oldPrice)
+            <span class="text-center line-through font-normal text-2xl">{{$oldPrice}}</span>
+        @endif
+        <span @class([
         "font-bold flex items-center gap-2",
         'text-5xl' => $color === 'gray',
          'text-6xl' => in_array($color, ['green', 'yellow']),
     ])>
-        @if($plus)<span class="text-3xl font-light">+</span>@endif
-        {{makeMoney($price)}}
+        @if($plus)
+                <span class="text-3xl font-light">+</span>
+            @endif
+            {{makeMoney($price)}}
     </span>
+    </div>
+
 
     <span @class([
         'text text-2xl font-light',

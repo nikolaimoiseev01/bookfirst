@@ -23,10 +23,10 @@
                     <a href="#"
                        class="text-3xl px-10 py-1 text-green-500
                               border border-green-500 no-underline
-                              relative overflow-hidden rounded-[10px]
+                              relative overflow-hidden rounded-[10px]f
                               transition-all duration-300
                               hover:shadow-[5px_5px_2px_#499b897a] hover:scale-[1.03]">
-                        Опубликовать2
+                        Опубликовать
                     </a>
                 </div>
             </div>

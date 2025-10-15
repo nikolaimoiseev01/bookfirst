@@ -83,7 +83,7 @@ body {
 }
 
 main {
-    @apply mt-16 pt-8;
+    /*@apply mt-16 pt-8;*/
 }
 
 input[type="radio"] {

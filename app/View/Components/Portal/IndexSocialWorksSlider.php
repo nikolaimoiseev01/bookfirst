@@ -1,13 +1,13 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\Portal;
 
+use App\Models\Work\Work;
 use Closure;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Str;
 use Illuminate\View\Component;
 
-class Footer extends Component
+class IndexSocialWorksSlider extends Component
 {
     /**
      * Create a new component instance.
@@ -22,11 +22,10 @@ class Footer extends Component
      */
     public function render(): View|Closure|string
     {
-        if (Str::contains(request()->url(), 'social')) {
-            $bg = 'bg-blue-500';
-        } else {
-            $bg = 'bg-green-500';
-        }
-        return view('components.footer', ['bg' => $bg]);
+        $lastWorks = Work::query()
+            ->with(['media', 'user'])
+            ->get()
+            ->take(5);
+        return view('components.portal.index-social-works-slider', ['lastWorks' => $lastWorks]);
     }
 }

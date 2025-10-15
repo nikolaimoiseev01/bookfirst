@@ -22,20 +22,9 @@
 <body class="antialiased flex flex-col min-h-screen">
 <x-header-portal/>
 {{ $slot }}
-{{--<x-book3d/>--}}
 @stack('scripts')
 @filepondScripts
 <x-footer/>
-{{--<script type="module">--}}
-{{--    function showSwal(param) {--}}
-{{--        Swal.fire({--}}
-{{--            icon: param.icon,--}}
-{{--            title: param.title,--}}
-{{--            html: '<p>' + param.text + '</p>',--}}
-{{--            showConfirmButton: false,--}}
-{{--        });--}}
-{{--    }--}}
-{{--</script>--}}
 @if(session('swal'))
     showSwal(@json(session('swal')))
 @endif

@@ -1,5 +1,5 @@
-<footer class="py-4 w-full bg-green-500">
-    <div class="content flex gap-8 items-center justify-evenly  text-xl text-white flex-wrap">
+<footer class="{{$bg}} py-4 w-full">
+    <div class=" content flex gap-8 items-center justify-evenly  text-xl text-white flex-wrap">
         <div class="text-center leading-tight">
             Независимое издательство<br>
                 “Первая Книга”.<br>
@@ -33,13 +33,15 @@
                     </svg>
                 </a>
             </div>
-            <x-ui.link type="white" class="!text-lg !py-0 !px-4">Подписаться на новости</x-ui.link>
+            <x-ui.link color="white" class="!text-lg !py-0 !px-4">Подписаться на новости</x-ui.link>
         </div>
 
         <div class="flex flex-col gap-2 text-center">
             Остались вопросы?<br> Задайте их прямо сейчас
-            <x-ui.link type="white" class="!text-lg !py-0 !px-4">Задать вопрос</x-ui.link>
+            <x-ui.link color="white" class="!text-lg !py-0 !px-4">Задать вопрос</x-ui.link>
         </div>
     </div>
     <!-- Simplicity is the consequence of refined emotions. - Jean D'Alembert -->
 </footer>
+
+

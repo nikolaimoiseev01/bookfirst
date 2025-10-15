@@ -61,7 +61,7 @@
             <div wire:ignore id="cdek-map" class="w-full min-h-[400px] h-[400px] hidden"></div>
 
             <p x-show="addressType == 'СДЭК' && addressJson?.parsed_data" class="flex gap-2">
-                <span class="font-medium">Выбранный адресс: </span>
+                <span class="font-medium text-nowrap">Выбранный адресс: </span>
                 <span x-text="addressJson?.string"></span>
             </p>
         </div>
@@ -96,6 +96,7 @@
                     onChoose(type, tariff, address) {
                         console.log('chosen', type, tariff, address);
                         let alpine = Alpine.$data(document.querySelector('[x-ref=deliveryComponent]'));
+                        alpine.country = 'Россия'
                         alpine.addressJson = {
                             string: address.city + ' (' + address.region + '), ' + address.address + ' (' + address.code + ')',
                             parsed_data: address

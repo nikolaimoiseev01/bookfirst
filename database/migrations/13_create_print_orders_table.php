@@ -12,8 +12,8 @@ return new class extends Migration {
     {
         Schema::create('print_orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->nullable()->references('id')->on('users');
-            $table->foreignId('print_order_status_id')->nullable()->references('id')->on('print_order_statuses');
+            $table->foreignId('user_id')->nullable();
+            $table->foreignId('print_order_status_id')->nullable();
             $table->nullableMorphs('model');
             $table->bigInteger('books_cnt')->nullable();
             $table->string('inside_color')->nullable();

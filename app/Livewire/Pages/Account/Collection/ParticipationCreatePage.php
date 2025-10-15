@@ -31,7 +31,7 @@ class ParticipationCreatePage extends Component
 
     public function mount($collection_id)
     {
-        $this->collection = Collection::find($collection_id)->first();
+        $this->collection = Collection::where('id', $collection_id)->first();
     }
 
 }

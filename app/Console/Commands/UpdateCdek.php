@@ -22,8 +22,8 @@ class UpdateCdek extends Command
     {
         $response = Http::asForm()->post('https://api.cdek.ru/v2/oauth/token', [
             'grant_type' => 'client_credentials',
-            'client_id' => ENV('CDEK_CLIENT_ID'),
-            'client_secret' => ENV('CDEK_CLIENT_SECRET'),
+            'client_id' => ENV('CDEK_LOGIN'),
+            'client_secret' => ENV('CDEK_PASSWORD'),
         ]);
         $this->token = $response->json()['access_token'];
     }

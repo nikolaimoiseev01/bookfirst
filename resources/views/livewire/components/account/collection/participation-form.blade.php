@@ -3,7 +3,7 @@
             needCheck: $wire.entangle('needCheck'),
             hasPromo: $wire.entangle('hasPromo')
         }"
-      wire:submit="checkAndConfirm()" class="mb-16 max-w-5xl">
+      wire:submit="checkAndConfirm()" class="mb-16 max-w-6xl">
 
     <div class="flex container p-8 mb-8">
 
@@ -23,7 +23,7 @@
                 <div class="flex gap-2 items-center">
                     <label for="needCheck">Нужна проверка</label>
                     <x-ui.question-mark>Услуга проверки пунктуации и орфографии</x-ui.question-mark>
-                    <x-ui.input.checkbox wire:model="needCheck" id="needCheck" label=""/>
+                    <x-ui.input.checkbox wire:model.live="needCheck" id="needCheck" label=""/>
                 </div>
             </div>
 
@@ -47,7 +47,7 @@
         <div class="min-w-[20%] max-w-[25%] flex border-l border-dark-100 pl-8">
             @if(count($selectedWorks))
                 <div class="flex flex-col items-center my-auto">
-                    <x-price-element price="{{$prices['pricePart']}}" label="Участие" class="mb-2"/>
+                    <x-price-element price="{{$prices['pricePart']}}" oldPrice="{{$promocode ? $prices['pricePart'] / (100 - $promocode['discount']) * 100 : null}}" label="Участие" class="mb-2"/>
                     <div class="" x-show="needPrint"
                          x-cloak
                          x-collapse.duration.800ms>

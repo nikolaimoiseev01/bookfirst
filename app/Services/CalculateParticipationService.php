@@ -19,7 +19,7 @@ class CalculateParticipationService
     public $discount;
 
 
-    public function __construct($pages, $needPrint, $booksCnt, $needCheck, $discount)
+    public function __construct($pages, $needPrint, $booksCnt, $needCheck, $discount=0)
     {
         $this->pages = intVal($pages);
         $this->needPrint = $needPrint;

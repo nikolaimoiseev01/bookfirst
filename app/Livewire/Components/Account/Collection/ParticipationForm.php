@@ -35,6 +35,8 @@ class ParticipationForm extends Component
 
     public $userWorks;
     public $selectedWorks = [];
+    public $pages;
+    public $rows;
 
     public $authorName;
 
@@ -105,7 +107,7 @@ class ParticipationForm extends Component
             'receiverName' => Rule::requiredIf(fn() => $this->needPrint),
             'receiverTelephone' => Rule::requiredIf(fn() => $this->needPrint),
             'country' => [
-                Rule::requiredIf(fn () => $this->needPrint && $this->addressType == 'foreign'),
+                Rule::requiredIf(fn() => $this->needPrint && $this->addressType == 'foreign'),
                 'min:1',
             ],
             'addressJson' => Rule::requiredIf(fn() => $this->needPrint),
@@ -137,9 +139,11 @@ class ParticipationForm extends Component
         return $messages;
     }
 
-    public function updatedNeedPrint()
+    public function updated($value)
     {
-        $this->updatePrices();
+        if ($value == 'needPrint' || $value == 'needCheck' || $value == 'booksCnt') {
+            $this->updatePrices();
+        }
     }
 
     public function getAddress($country, $addressType, $addressJson)
@@ -157,6 +161,7 @@ class ParticipationForm extends Component
                 $this->promocode = $promocode;
                 $this->hasPromo = false;
                 $discount = $promocode['discount'];
+                $this->updatePrices();
                 $this->dispatch('swal', type: 'success', text: "Промокод применен! Теперь в цене учитывается скидка в {$discount}%.");
             } else {
                 $this->dispatch('swal', type: 'error', title: 'Ошибка', text: "Промокод {$this->promocodeInput} не найден в системе");
@@ -169,11 +174,19 @@ class ParticipationForm extends Component
     public function updatedSelectedWorks()
     {
         $this->updatePrices();
+        $this->rows = collect($this->selectedWorks)->sum('rows');
+        $this->pages = round(ceil($this->rows / 38));
     }
 
     public function updatePrices()
     {
-        $this->prices = ((new CalculateParticipationService())->calculate(7, false, 1, true, 20));
+        $this->prices = ((new CalculateParticipationService(
+            $this->pages,
+            $this->needPrint,
+            $this->booksCnt,
+            $this->needCheck,
+            $this->promocode['discount'] ?? 0)
+        )->calculate());
     }
 
     public function storeApp()
@@ -196,22 +209,18 @@ class ParticipationForm extends Component
     public function saveApplication()
     {
         if ($this->customValidate()) DB::transaction(function () {
-            $rows = collect($this->selectedWorks)->sum('rows');
-            $pages = round(ceil($rows / 38));
             $newParticipation = Participation::create([
                 'collection_id' => $this->collection['id'],
                 'user_id' => Auth::user()->id,
                 'author_name' => $this->authorName,
                 'works_number' => count($this->selectedWorks),
-                'rows' => $rows,
-                'pages' => $pages,
+                'rows' => $this->rows,
+                'pages' => $this->pages,
                 'participation_status_id' => 1,
                 'promocode_id' => $this->promocode ? $this->promocode['id'] : null,
                 'price_part' => $this->prices['pricePart'],
-                'price_print' => $this->prices['pricePrint'],
                 'price_check' => $this->prices['priceCheck'],
-                'price_send' => $this->prices['priceSend'],
-                'price_total' => $this->prices['priceTotal'],
+                'price_total' => $this->prices['priceTotal'] - $this->prices['pricePrint'],
             ]);
             foreach ($this->selectedWorks as $work) {
                 ParticipationWork::create([
@@ -222,7 +231,7 @@ class ParticipationForm extends Component
             Chat::create([
                 'user_created' => Auth::user()->id,
                 'user_to' => 2,
-                'title' => str_replace(self::CHAT_TITLE_PREFIX, '{collection_title}', $this->collection['title']),
+                'title' => str_replace('{collection_title}', $this->collection['title'], self::CHAT_TITLE_PREFIX),
                 'chat_status_id' => 1,
                 'model_type' => 'Participation',
                 'model_id' => $newParticipation['id'],
