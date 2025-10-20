@@ -31,8 +31,8 @@ class Template extends Component
             $this->color = 'green-500';
             $this->icon = '/fixed/icons/check_green.svg';
             $this->shadow = '!shadow-[0_0_7px_1px_#47af9880]';
-        } elseif ($this->color == 'dark') {
-            $this->color = 'dark-300';
+        } elseif ($this->color == 'gray') {
+            $this->color = 'gray-300';
             $this->icon = '/fixed/icons/hourglass_grey.svg';
             $this->shadow = '';
         } elseif ($this->color == 'yellow') {

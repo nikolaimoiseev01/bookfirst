@@ -10,6 +10,7 @@ class ParticipationPage extends Component
     public $participation;
     public $isSending;
 
+    protected $listeners = ['updateParticipationPage' => '$refresh'];
     public function render()
     {
         return view('livewire.pages.account.collection.participation-page')->layout('layouts.account');

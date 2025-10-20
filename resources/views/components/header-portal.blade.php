@@ -114,8 +114,6 @@
     </div>
 </header>
 <script type="module">
-    console.log('test')
-    console.log(123)
     Alpine.store('global', {
         social: window.location.href.includes('social'),
     })

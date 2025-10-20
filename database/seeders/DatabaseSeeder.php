@@ -216,7 +216,6 @@ class DatabaseSeeder extends Seeder
                 'model_type' => $model_type,
                 'model_id' => $model_id,
                 'comment_type' => $comment_type,
-                'participation_id' => $oldComment->participation_id,
                 'page' => $oldComment->page,
                 'text' => $oldComment->text,
                 'flg_done' => $oldComment->status_done,

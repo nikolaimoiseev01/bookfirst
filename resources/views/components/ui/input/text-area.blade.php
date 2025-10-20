@@ -68,7 +68,7 @@
             @endif
 
             @if($sendable)
-                <a x-show="!isSending" id="send-button" class="mt-auto" wire:ignore>
+                <a x-show="!isSending" id="send-button" class="mt-auto flex" wire:ignore>
                     <x-ui.tooltip-wrap text="Отправить">
                         <x-bi-send
                             @click="sendMessage"
@@ -77,8 +77,8 @@
                     </x-ui.tooltip-wrap>
                 </a>
 
-                <div x-show="isSending" id="send-button__spinner" wire:ignore>
-                    <x-ui.spinner class="w-5 h-5 mt-auto"/>
+                <div x-show="isSending" id="send-button__spinner" class="mt-auto" wire:ignore>
+                    <x-ui.spinner class="w-5 h-5 !fill-{{$color}} mt-auto"/>
                 </div>
             @endif
         </div>

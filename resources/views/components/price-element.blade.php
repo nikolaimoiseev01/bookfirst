@@ -4,7 +4,8 @@
     'label' => 'Стоимость',
     'direction' => 'column',
     'plus' => false,
-    'color' => 'gray'
+    'color' => 'gray',
+    'bigElement' => false
 ])
 
 <div
@@ -30,7 +31,7 @@
         <span @class([
         "font-bold flex items-center gap-2",
         'text-5xl' => $color === 'gray',
-         'text-6xl' => in_array($color, ['green', 'yellow']),
+         'text-6xl' => $bigElement,
     ])>
         @if($plus)
                 <span class="text-3xl font-light">+</span>

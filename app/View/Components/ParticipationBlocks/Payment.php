@@ -9,12 +9,18 @@ use Illuminate\View\Component;
 class Payment extends Component
 {
     public $participation;
+    public $blockColor;
     /**
      * Create a new component instance.
      */
     public function __construct($part)
     {
         $this->participation = $part;
+        match ($this->participation['participation_status_id']) {
+            1 => $this->blockColor = 'gray',
+            2 => $this->blockColor = 'yellow',
+            3 => $this->blockColor = 'green'
+        };
     }
 
     /**
@@ -23,5 +29,8 @@ class Payment extends Component
     public function render(): View|Closure|string
     {
         return view('components.participation-blocks.payment');
+    }
+
+    public function mount() {
     }
 }

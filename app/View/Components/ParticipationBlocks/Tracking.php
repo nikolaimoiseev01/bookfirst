@@ -9,12 +9,19 @@ use Illuminate\View\Component;
 class Tracking extends Component
 {
     public $participation;
+    public $collection;
+    public $blockColor;
     /**
      * Create a new component instance.
      */
     public function __construct($part)
     {
         $this->participation = $part;
+        $this->collection = $part->collection;
+        $this->blockColor = 'gray';
+        if ($this->collection['collection_status_id'] == 9 || !($part->printOrder)) {
+            $this->blockColor = 'green';
+        }
     }
 
     /**

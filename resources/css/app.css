@@ -83,7 +83,7 @@ body {
 }
 
 main {
-    /*@apply mt-16 pt-8;*/
+    @apply mt-16 pt-8;
 }
 
 input[type="radio"] {
@@ -102,7 +102,7 @@ input[type="radio"]:checked {
 }
 
 input {
-    @apply border border-green-500 text-xl px-2 py-1 outline-none focus:outline-none focus-visible:shadow-[0_0_2px_1px_#47af984a] transition rounded;
+    @apply border text-xl px-2 py-1 outline-none focus:outline-none focus-visible:shadow-[0_0_2px_1px_#47af984a] transition rounded;
 
     &[type="number"] {
         @apply px-2 !py-0 text-xl w-24 font-light;

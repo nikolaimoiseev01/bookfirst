@@ -38,6 +38,7 @@ export default {
                 'text-brown-400',
                 'bg-brown-400',
                 'shadow-[0_0_7px_1px_#FFA50080]',
+                'fill-brown-400'
             ],
             colors: {
                 green: {
@@ -51,6 +52,7 @@ export default {
                     100: '#E0E0E0',
                     200: '#BDBDBD',
                     300: '#CBCBCB',
+                    350: '#95948e',
                     400: '#4c4b46',
                     500: '#363531',
                     600: '#1c1c16'

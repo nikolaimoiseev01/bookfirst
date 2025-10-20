@@ -9,12 +9,20 @@ use Illuminate\View\Component;
 class Preview extends Component
 {
     public $participation;
+    public $collection;
+    public $blockColor;
     /**
      * Create a new component instance.
      */
     public function __construct($part)
     {
         $this->participation = $part;
+        $this->collection = $part->collection;
+        match ($this->collection['collection_status_id']) {
+            1 => $this->blockColor = 'gray',
+            2 => $this->blockColor = 'yellow',
+            3 => $this->blockColor = 'green'
+        };
     }
 
     /**

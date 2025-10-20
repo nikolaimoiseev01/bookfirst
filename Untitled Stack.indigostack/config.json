@@ -1,0 +1,51 @@
+{
+  "label" : "Untitled Stack",
+  "services" : [
+    {
+      "config" : {
+        "build_order" : 20,
+        "databases" : [
+
+        ],
+        "display_order" : 999,
+        "id" : "966C",
+        "label" : "MySQL server service",
+        "port" : "auto",
+        "requested_version" : "8",
+        "user_and_group" : "current",
+        "users" : [
+
+        ]
+      },
+      "type" : "mysql"
+    },
+    {
+      "config" : {
+        "build_order" : 100,
+        "display_order" : 999,
+        "id" : "B838",
+        "label" : "Nginx server",
+        "requested_version" : "1",
+        "sites" : [
+
+        ],
+        "user_and_group" : "current"
+      },
+      "type" : "nginx"
+    },
+    {
+      "config" : {
+        "build_order" : 10,
+        "display_order" : 999,
+        "id" : "9F1F",
+        "label" : "PHP service",
+        "port" : "auto",
+        "requested_version" : "8.3",
+        "user_and_group" : "current"
+      },
+      "type" : "php"
+    }
+  ],
+  "uuid" : "F5967C",
+  "version" : "122"
+}

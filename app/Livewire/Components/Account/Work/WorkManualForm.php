@@ -89,7 +89,7 @@ class WorkManualForm extends Component
             'title.required' => 'Название обязательно для заполнения',
             'workType.required' => 'Тип произведения обязателен для заполнения',
             'workTopic.required' => 'Тема произведения обязательна для заполнения',
-            'files.mimetypes' => 'У прикрепленного файла должен быть другой формат: jpg, jpeg, png!',
+            'files.*.mimetypes' => 'У прикрепленного файла должен быть другой формат: jpg, jpeg, png!',
             'files.max:3000' => 'Файл должен быть менее 3МБ'
         ];
     }
