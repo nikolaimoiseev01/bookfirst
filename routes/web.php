@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\PaymentController;
 use App\Livewire\Pages\Account\Chat\ChatsPage;
 use App\Livewire\Pages\Account\Chat\CreateChatPage;
 use App\Livewire\Pages\Account\Collection\ParticipationCreatePage;
@@ -34,7 +35,9 @@ use App\Livewire\Pages\Portal\OwnBookApplicationPage;
 use App\Livewire\Pages\Portal\OwnBookPage;
 use App\Livewire\Pages\Portal\OwnBooksReleasedPage;
 use App\Livewire\Pages\Social\UserPage;
+use App\Livewire\Pages\Social\WorkPage;
 use App\Livewire\Pages\Social\WorksFeedPage;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -85,6 +88,7 @@ Route::prefix('social')->group(function () {
     Route::get('/', IndexPageSocial::class)->name('social.index');
     Route::get('/works-feed', WorksFeedPage::class)->name('social.works_feed');
     Route::get('/user/{id}', UserPage::class)->name('social.user');
+    Route::get('/work/{id}', WorkPage::class)->name('social.work');
 });
 
 
@@ -114,10 +118,14 @@ Route::middleware(['auth', 'verified'])->prefix('account')->group(function () {
 });
 
 
-Route::get('login_as_admin_' .  env('LOGIN_AS_ADMIN'), function() {
+Route::match(['POST', 'GET'], '/payments/callback', [PaymentController::class, 'callback']);
+
+
+Route::get('login_as_admin_' . env('LOGIN_AS_ADMIN'), function (Request $request) {
+    $urlRedirect = $request->query('url_redirect');
     Auth::loginUsingId(2);
-    return redirect('/admin');
-});
+    return redirect($urlRedirect ?? '/admin');
+})->name('login_as_admin');
 
 
 Route::middleware(['role:admin'])->group(function () {

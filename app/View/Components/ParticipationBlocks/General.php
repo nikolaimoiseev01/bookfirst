@@ -9,12 +9,14 @@ use Illuminate\View\Component;
 class General extends Component
 {
     public $participation;
+    public $collection;
     /**
      * Create a new component instance.
      */
     public function __construct($part)
     {
         $this->participation = $part;
+        $this->collection = $part->collection;
     }
 
 

@@ -16,6 +16,6 @@ class ParticipationEditPage extends Component
 
     public function mount($participation_id)
     {
-        $this->participation = Participation::find($participation_id)->with('collection')->with('works.work')->first();
+        $this->participation = Participation::where('id', $participation_id)->with(['collection', 'participationWorks.work'])->first();
     }
 }

@@ -15,13 +15,13 @@ return new class extends Migration
             $table->id();
             $table->enum('status', ['CREATED', 'FAILED', 'CONFIRMED'])->default('CREATED');
             $table->foreignId('user_id')->references('id')->on('users');
+            $table->string('type');
             $table->string('description', 255)->nullable();
             $table->decimal('amount', 10, 2)->nullable();
             $table->string('payment_method' )->nullable();
             $table->string('yoo_id' )->nullable();
-            $table->string('transaction_type');
             $table->nullableMorphs('model');
-            $table->json('metadata')->nullable();
+            $table->json('data')->nullable();
             $table->timestamps();
         });
     }

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->bigInteger('works_number');
             $table->bigInteger('rows')->nullable();
             $table->bigInteger('pages');
-            $table->foreignId('participation_status_id')->references('id')->on('participation_statuses');
+            $table->string('status');
             $table->bigInteger('print_order_id')->nullable();
             $table->foreignId('promocode_id')->nullable()->references('id')->on('promocodes');
             $table->bigInteger('price_part');

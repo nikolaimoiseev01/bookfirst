@@ -13,14 +13,16 @@
         "codeat3/blade-codicons": "^1.34",
         "codeat3/blade-unicons": "^1.9",
         "davidhsianturi/blade-bootstrap-icons": "^2.1",
-        "filament/filament": "4.0",
+        "filament/filament": "^4.0",
         "filament/spatie-laravel-media-library-plugin": "^4.0",
+        "laravel-notification-channels/telegram": "^6.0",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
         "livewire/livewire": "^3.4",
         "livewire/volt": "^1.7.0",
         "mallardduck/blade-lucide-icons": "^1.23",
-        "opcodesio/log-viewer": "^3.15",
+        "opcodesio/log-viewer": "^3.21",
+        "owenvoke/blade-fontawesome": "^2.9",
         "secondnetwork/blade-tabler-icons": "^3.31",
         "setasign/fpdf": "^1.8",
         "setasign/fpdi": "^2.6",
@@ -28,7 +30,8 @@
         "spatie/laravel-medialibrary": "^11.12",
         "spatie/laravel-permission": "^6.17",
         "spatie/livewire-filepond": "^1.5",
-        "yoomoney/yookassa-sdk-php": "^3.8"
+        "staudenmeir/eloquent-json-relations": "^1.14",
+        "yoomoney/yookassa-sdk-php": "^3.10"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.15",

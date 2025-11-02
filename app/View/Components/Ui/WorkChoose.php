@@ -9,12 +9,14 @@ use Illuminate\View\Component;
 class WorkChoose extends Component
 {
     public $userWorks;
+    public $disabled;
     /**
      * Create a new component instance.
      */
-    public function __construct($userWorks)
+    public function __construct($userWorks, $disabled=false)
     {
         $this->userWorks = $userWorks;
+        $this->disabled = $disabled;
     }
 
     /**

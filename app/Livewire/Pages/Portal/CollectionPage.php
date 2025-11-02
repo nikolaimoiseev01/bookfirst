@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Pages\Portal;
 
+use App\Enums\CollectionStatusEnums;
 use App\Models\Collection\Collection;
 use Carbon\Carbon;
 use Livewire\Component;
@@ -30,7 +31,7 @@ class CollectionPage extends Component
             'Обложка' => 'Мягкая, цветная'
         ];
 
-        if ($this->collection['collection_status_id'] == 1 ) {
+        if ($this->collection['status'] == CollectionStatusEnums::APPS_IN_PROGRESS) {
             $this->tabs = [
                 'default' => 'process',
                 'tabs' => [

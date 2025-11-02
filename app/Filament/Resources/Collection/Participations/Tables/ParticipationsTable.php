@@ -2,11 +2,16 @@
 
 namespace App\Filament\Resources\Collection\Participations\Tables;
 
+use App\Enums\ParticipationStatusEnums;
+use App\Filament\Resources\Collection\Participations\ParticipationResource;
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 class ParticipationsTable
 {
@@ -14,11 +19,12 @@ class ParticipationsTable
     {
         return $table
             ->columns([
-                TextColumn::make('collection.title')
+                TextColumn::make('collection.title_short')
                     ->label('Сборник')
                     ->sortable(),
-//                TextColumn::make('author_name')
-//                    ->searchable(),
+                TextColumn::make('author_name')
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('works_number')
                     ->label('Произведений')
                     ->numeric()
@@ -34,14 +40,15 @@ class ParticipationsTable
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->numeric()
                     ->sortable(),
-                TextColumn::make('participationStatus.name')
+                TextColumn::make('status')
                     ->label('Статус')
+                    ->sortable()
                     ->badge()
-                    ->color(fn(string $state): string => match ($state) {
-                        'Ожидается подтверждение заявки' => 'warning',
-                        'Заявка подтверждена, ожидается оплата', 'Подготовка к печати' => 'primary',
-                        'Участие подтверждено' => 'success',
-                        'Заявка неактуальна' => 'primary',
+                    ->color(fn(ParticipationStatusEnums $state): string => match ($state) {
+                        ParticipationStatusEnums::APPROVE_NEEDED => 'warning',
+                        ParticipationStatusEnums::PAYMENT_NEEDED,
+                        ParticipationStatusEnums::NOT_ACTUAL => 'gray',
+                        ParticipationStatusEnums::APPROVED => 'success',
                     }),
                 TextColumn::make('printOrder.books_cnt')
                     ->label('Экземпляров')
@@ -86,8 +93,23 @@ class ParticipationsTable
             ->filters([
                 //
             ])
+            ->defaultSort(function (Builder $query): Builder {
+                return $query
+                    ->orderByRaw("
+                        CASE status
+                            WHEN 'Ожидается подтверждение заявки' THEN 1
+                            WHEN 'Заявка подтверждена, ожидается оплата' THEN 2
+                            WHEN 'Участие подтверждено' THEN 3
+                            WHEN 'Заявка неактуальна' THEN 9
+                            ELSE 99
+                        END ASC
+                    ")
+                    ->orderBy('created_at', 'desc');
+            })
             ->recordActions([
-                EditAction::make(),
+                Action::make('edit')
+                    ->url(fn(Model $record): string => ParticipationResource::getUrl('edit', ['user' => $record->user_id, 'record' => $record->id]))
+                    ->openUrlInNewTab()
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

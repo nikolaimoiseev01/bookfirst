@@ -1,7 +1,8 @@
 <form x-data="{
             needPrint: $wire.entangle('needPrint'),
             needCheck: $wire.entangle('needCheck'),
-            hasPromo: $wire.entangle('hasPromo')
+            hasPromo: $wire.entangle('hasPromo'),
+            showChosenAddress: $wire.entangle('showChosenAddress')
         }"
       wire:submit="checkAndConfirm()" class="mb-16 max-w-6xl">
 
@@ -11,7 +12,7 @@
             <x-ui.input.text name="authorName" class="mb-4" label="Имя в сборнике*" wire:model="authorName"/>
             <div class="flex flex-col gap-2 mb-4">
                 <p class="text-xl">Произведения для участия*</p>
-                <x-ui.work-choose :userWorks="$userWorks"/>
+                <x-ui.work-choose :userWorks="$userWorks" :disabled="$collection['status']->order() > 1"/>
             </div>
             <div class="flex gap-4">
                 <div class="flex gap-2 items-center">
@@ -39,7 +40,16 @@
                         <x-ui.input.text name="Имя" label="Фио получателя*" wire:model="receiverName"/>
                         <x-ui.input.text name="surname" label="Телефон получателя*" wire:model="receiverTelephone"/>
                     </div>
-                    <livewire:components.account.address-choose/>
+                    @if($showChosenAddress)
+                        <div class="flex flex-col gap-2">
+                            <p><b>Адрес
+                                    получателя: </b>{{$participation->printOrder['address_json']['string']}}</p>
+                            <x-ui.link-simple @click="showChosenAddress = false">Изменить адрес</x-ui.link-simple>
+                        </div>
+                    @else
+                        <livewire:components.account.address-choose/>
+                    @endif
+
                 </div>
             </div>
         </div>
@@ -47,7 +57,9 @@
         <div class="min-w-[20%] max-w-[25%] flex border-l border-dark-100 pl-8">
             @if(count($selectedWorks))
                 <div class="flex flex-col items-center my-auto">
-                    <x-price-element price="{{$prices['pricePart']}}" oldPrice="{{$promocode ? $prices['pricePart'] / (100 - $promocode['discount']) * 100 : null}}" label="Участие" class="mb-2"/>
+                    <x-price-element price="{{$prices['pricePart']}}"
+                                     oldPrice="{{$promocode ? $prices['pricePart'] / (100 - $promocode['discount']) * 100 : null}}"
+                                     label="Участие" class="mb-2"/>
                     <div class="" x-show="needPrint"
                          x-cloak
                          x-collapse.duration.800ms>
@@ -64,7 +76,9 @@
                             <x-price-element price="{{$prices['priceCheck']}}" label="Проверка"/>
                         </div>
                     </div>
-                    <x-price-element price="{{$prices['priceTotal']}}" label="Итого" direction="column" class="mt-6 mb-4" color="green"/>
+                    <x-price-element price="{{$prices['priceTotal'] + $prices['pricePrint']}}" label="Итого"
+                                     direction="column"
+                                     class="mt-6 mb-4" color="green"/>
                     @if($promocode)
                         <p class="text-dark-200 text-lg italic text-center">Промокод <b>{{$promocode['name']}}</b>
                             применен!

@@ -6,6 +6,8 @@ use App\Filament\Resources\Collection\Collections\Pages\CreateCollection;
 use App\Filament\Resources\Collection\Collections\Pages\EditCollection;
 use App\Filament\Resources\Collection\Collections\Pages\ListCollections;
 use App\Filament\Resources\Collection\Collections\RelationManagers\ParticipationRelationManager;
+use App\Filament\Resources\Collection\Collections\RelationManagers\PreviewCommentsRelationManager;
+use App\Filament\Resources\Collection\Collections\RelationManagers\PrintOrdersRelationManager;
 use App\Filament\Resources\Collection\Collections\Schemas\CollectionForm;
 use App\Filament\Resources\Collection\Collections\Tables\CollectionsTable;
 use App\Models\Collection\Collection;
@@ -40,7 +42,9 @@ class CollectionResource extends Resource
     public static function getRelations(): array
     {
         return [
-            ParticipationRelationManager::make()
+            ParticipationRelationManager::make(),
+            PreviewCommentsRelationManager::make(),
+            PrintOrdersRelationManager::make()
         ];
     }
 

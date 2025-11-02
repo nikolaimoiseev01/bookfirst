@@ -7,6 +7,7 @@
         selectedWorks: $wire.entangle('selectedWorks').live,
         dragIndex: null,
         dragOverIndex: null,
+        disabled: @js($disabled),
 
 
         filteredWorks() {
@@ -63,7 +64,7 @@
     </script>
 
     <div class="relative z-30 flex items-center" @click.outside="showWorks = false">
-        <div class="flex flex-col items-center cursor-pointer transition hover:scale-105" @click="showWorks = !showWorks">
+        <div class="flex flex-col items-center cursor-pointer transition hover:scale-105" x-show="!disabled" @click="showWorks = !showWorks">
             <span
                 class="text-5xl font-light flex justify-center items-center p-2 border-2 border-green-400 rounded-full aspect-square w-12 h-12 text-green-400">
                 +
@@ -121,11 +122,11 @@
             <div
                 class="cursor-grab active:cursor-grabbing transition relative w-[150px] min-h-[42px] max-h-[42px] h-[42px]"
                 :class="{'opacity-50 scale-95': dragIndex === index}"
-                draggable="true"
-                @dragstart="startDrag(index, $event)"
-                @dragover.prevent="onDragOver(index, $event)"
-                @drop="onDrop(index)"
-                @dragend="endDrag"
+                draggable="!disabled"
+                @dragstart="if (!disabled) startDrag(index, $event)"
+                @dragover.prevent="if (!disabled) onDragOver(index, $event)"
+                @drop="if (!disabled) onDrop(index)"
+                @dragend="if (!disabled) endDrag()"
             >
                 <!-- Плейсхолдер -->
                 <div
@@ -143,7 +144,7 @@
                 >
                     <span class="text-dark-400 block truncate"
                           x-text="work.title.length > 30 ? work.title.slice(0, 30) + '…' : work.title"></span>
-                    <x-ui.tooltip-wrap text="Убрать" class="!cursor-pointer" @click="removeWork(work)">
+                    <x-ui.tooltip-wrap x-show="!disabled" text="Убрать" class="!cursor-pointer" @click="removeWork(work)">
                         <x-bi-x class="text-dark-400 w-5 h-auto"/>
                     </x-ui.tooltip-wrap>
                 </div>

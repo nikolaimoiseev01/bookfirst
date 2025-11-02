@@ -3,7 +3,7 @@
     <div class="flex flex-col gap-4">
         @foreach($comments as $comment)
             <div class="flex flex-col w-fit">
-                <p class="px-3 py-1 {{$comment['flg_done'] ? 'bg-green-500' : 'bg-dark-300'}} text-white rounded-xl w-full">
+                <p class="px-3 py-1 {{$comment['flg_done'] ? 'bg-green-500' : 'bg-dark-300'}} text-white rounded-xl text-xl w-full">
                     @if ($comment['page'])
                         Стр.: {{$comment['page']}}.
                     @endif

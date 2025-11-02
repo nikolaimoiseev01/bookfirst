@@ -4,7 +4,7 @@
     @endsection
     <nav class="flex gap-2 mb-12 flex-wrap">
         <x-ui.link-simple href="{{route('portal.collections.actual')}}">Сборники</x-ui.link-simple>
-        @if($collection['collection_status_id'] == 1)
+        @if($collection['status'] == \App\Enums\CollectionStatusEnums::APPS_IN_PROGRESS)
             <p>/</p>
             <x-ui.link-simple href="{{route('portal.collections.actual')}}">Идет приём заявок</x-ui.link-simple>
         @endif
@@ -37,7 +37,7 @@
                     <p class="font-normal text-nowrap text-xl">{{$key}}: <span class="font-light">{{$value}}</span></p>
                 </div>
             @endforeach
-            @if($collection['collection_status_id'] == 1)
+            @if($collection['status'] == \App\Enums\CollectionStatusEnums::APPS_IN_PROGRESS)
                 <x-ui.link href="{{route('account.participation.create', $collection['id'])}}" class="my-4 py-2 font-medium !text-2xl tracking-wide">Принять участие!</x-ui.link>
             @else
                 <p class="my-4 text-center text-red-300 font-normal">Прием заявок окончен</p>

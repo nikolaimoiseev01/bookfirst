@@ -12,6 +12,7 @@ use App\Models\Award\AwardType;
 use App\Models\Work\Work;
 use Filament\Auth\Pages\PasswordReset\RequestPasswordReset;
 use Filament\Facades\Filament;
+use Filament\Support\Assets\Css;
 use Filament\Support\Assets\Js;
 use Filament\Support\Facades\FilamentAsset;
 use Illuminate\Auth\Middleware\RedirectIfAuthenticated;
@@ -22,6 +23,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -43,6 +45,8 @@ class AppServiceProvider extends ServiceProvider
 
         FilamentAsset::register([
             Js::make('custom-script', 'https://code.jquery.com/jquery-3.7.1.min.js'),
+            Js::make('script', url('/vendor/livewire-filepond/filepond.js?v=1.5.0'))->module(),
+            Css::make('custom-stylesheet', ENV('APP_URL') . '/fixed/filament-custom.css'),
         ]);
 
         Relation::morphMap([
@@ -61,8 +65,6 @@ class AppServiceProvider extends ServiceProvider
         RedirectIfAuthenticated::redirectUsing(function () {
             return route('account.settings');
         });
-
-
 
         VerifyEmail::toMailUsing(function (object $notifiable, string $url) {
             return (new MailMessage)

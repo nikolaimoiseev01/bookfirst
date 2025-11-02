@@ -74,7 +74,7 @@
             />
             @auth
                 <a :class="window.location.href.includes('account') ? 'text-green-500' : ''"
-                   class="transition group-hover:text-green-500" wire:navigate
+                   class="transition group-hover:text-green-500"
                    href="{{route('account.participations')}}">
                     Мой кабинет</a>
             @else

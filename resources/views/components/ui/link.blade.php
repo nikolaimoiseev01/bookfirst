@@ -1,5 +1,6 @@
 @props([
     'color' => 'green',
+    'navigate' => true
 ])
 
 @php
@@ -10,6 +11,8 @@
     };
 @endphp
 
-<a :class="$store.global.social ? ' border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white' : ''"  wire:navigate {{ $attributes->merge(['class' => $classes]) }}>
+<a :class="$store.global.social ? ' border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white' : ''"
+   @if($navigate)  wire:navigate @endif
+    {{ $attributes->merge(['class' => $classes]) }}>
     {{ $slot }}
 </a>

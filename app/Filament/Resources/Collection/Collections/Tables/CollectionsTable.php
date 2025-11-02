@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Collection\Collections\Tables;
 
+use App\Enums\CollectionStatusEnums;
 use App\Models\Collection\Collection;
 use App\Models\Work\Work;
 use Filament\Actions\BulkActionGroup;
@@ -35,30 +36,30 @@ class CollectionsTable
                                 ->formatStateUsing(fn(string $state): HtmlString => new HtmlString("<h1 class='text-xl'>{$state}</h1>"))
                                 ->extraAttributes(['class' => 'text-3xl'])
                                 ->searchable(),
-                            TextColumn::make('CollectionStatus.name')
+                            TextColumn::make('status')
                                 ->badge()
-                                ->color(fn(string $state): string => match ($state) {
-                                    'Идет прием заявок' => 'primary',
-                                    'Предварительная проверка', 'Подготовка к печати' => 'warning',
-                                    'Идет печать' => 'danger',
-                                    'Сборник издан' => 'success',
+                                ->color(fn($state): string => match ($state) {
+                                    CollectionStatusEnums::APPS_IN_PROGRESS => 'primary',
+                                    CollectionStatusEnums::PREVIEW, CollectionStatusEnums::PRINT_PREPARE => 'warning',
+                                    CollectionStatusEnums::PRINTING => 'danger',
+                                    CollectionStatusEnums::DONE => 'success',
                                 }),
                             Split::make([
-                                TextColumn::make('participations_count')
-                                    ->icon('heroicon-o-user-group')
-                                    ->tooltip('Участников')
-                                    ->size(TextSize::Large)
-                                    ->counts([
-                                        'participations' => fn(Builder $query) => $query->where('participation_status_id', '>', 2),
-                                    ]),
-                                TextColumn::make('participations_sum_price_total')
-                                    ->icon('heroicon-o-banknotes')
-                                    ->size(TextSize::Large)
-                                    ->formatStateUsing(fn(string $state): HtmlString => new HtmlString("{$state}Р"))
-                                    ->tooltip('Выручка')
-                                    ->sum([
-                                        'participations' => fn(Builder $query) => $query->where('participation_status_id', '>', 2),
-                                    ], 'price_total'),
+//                                TextColumn::make('participations_count')
+//                                    ->icon('heroicon-o-user-group')
+//                                    ->tooltip('Участников')
+//                                    ->size(TextSize::Large)
+//                                    ->counts([
+//                                        'participations' => fn(Builder $query) => $query->where('participation_status_id', '>', 2),
+//                                    ]),
+//                                TextColumn::make('participations_sum_price_total')
+//                                    ->icon('heroicon-o-banknotes')
+//                                    ->size(TextSize::Large)
+//                                    ->formatStateUsing(fn(string $state): HtmlString => new HtmlString("{$state}Р"))
+//                                    ->tooltip('Выручка')
+//                                    ->sum([
+//                                        'participations' => fn(Builder $query) => $query->where('participation_status_id', '>', 2),
+//                                    ], 'price_total'),
                                 TextColumn::make('getTotalWorkPagesAttribute')
                                     ->icon('heroicon-o-user-group')
                                     ->tooltip('Страниц работ')
@@ -82,10 +83,9 @@ class CollectionsTable
             ])
             ->defaultSort('id', 'desc')
             ->filters([
-                SelectFilter::make('collection_status_id')
+                SelectFilter::make('status')
                     ->label('Статус')
                     ->multiple()
-                    ->relationship('CollectionStatus', 'name')
             ])
             ->recordActions([
             ])

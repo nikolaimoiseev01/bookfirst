@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Pages\Portal;
 
+use App\Enums\CollectionStatusEnums;
 use App\Models\Collection\Collection;
 use Livewire\Component;
 
@@ -12,7 +13,7 @@ class IndexPage extends Component
 
     public function render()
     {
-        $this->collections_actual = Collection::where('collection_status_id', 1)->with('media')->get();
+        $this->collections_actual = Collection::where('status', CollectionStatusEnums::APPS_IN_PROGRESS)->with('media')->get();
         $this->reviews = [
             [
                 'text' => 'Дорогая Первая Книга! Очень Вам благодарна.

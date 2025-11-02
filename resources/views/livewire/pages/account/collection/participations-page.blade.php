@@ -12,10 +12,10 @@
                     <p class="font-semibold mb-4 text-3xl">{{$participation->collection['title']}}</p>
                     <div class="flex flex-col gap-2 mt-auto">
                         <p class="text-xl"><span
-                                class="font-normal">Статус участия: </span>{{$participation->participationStatus['name']}}
+                                class="font-normal">Статус участия: </span>{{$participation['status']}}
                         </p>
                         <p class="text-xl"><span
-                                class="font-normal">Статус сборника: </span> {{$participation->collection->collectionStatus['name']}}
+                                class="font-normal">Статус сборника: </span> {{$participation->collection['status']}}
                         </p>
                         <x-ui.link href="{{route('account.participation.index', $participation['id'])}}">Страница моего участия</x-ui.link>
                     </div>

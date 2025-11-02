@@ -2,6 +2,9 @@
 
 namespace App\Livewire\Components\Account\Collection;
 
+use App\Enums\ParticipationStatusEnums;
+use App\Enums\PrintOrderStatusEnums;
+use App\Enums\TransactionStatusEnums;
 use App\Models\Chat\Chat;
 use App\Models\Collection\Collection;
 use App\Models\Collection\Participation;
@@ -9,10 +12,13 @@ use App\Models\Collection\ParticipationWork;
 use App\Models\PrintOrder\PrintOrder;
 use App\Models\Promocode;
 use App\Models\Work\Work;
+use App\Notifications\Collection\ParticipationCreatedNotification;
+use App\Rules\ParticipationLessPrice;
 use App\Services\CalculateParticipationService;
 use App\Traits\WithCustomValidation;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\Rule;
@@ -32,31 +38,27 @@ class ParticipationForm extends Component
     public $collection;
     public $participation;
     public $formType;
-
     public $userWorks;
     public $selectedWorks = [];
     public $pages;
     public $rows;
-
     public $authorName;
-
     public $promocodeInput;
     public $hasPromo = false;
     public $promocode;
-
     public $needPrint = false;
     public $booksCnt = 1;
     public $receiverName;
     public $receiverTelephone;
-
     public $country = 'Россия';
     public $addressType = 'СДЭК';
     public $addressJson;
-
     public $needCheck;
-
     public $prices;
 
+    public $oldSelectedWorks;
+
+    public $showChosenAddress = false;
     protected $listeners = ['getAddress', 'saveApplication'];
 
     public function render()
@@ -74,18 +76,33 @@ class ParticipationForm extends Component
             $this->participation = $participation;
             $this->collection = $this->participation->collection;
             $this->authorName = $this->participation['author_name'];
+            $this->pages = $this->participation['pages'];
+            $this->rows = $this->participation['rows'];
+            $this->needCheck = $participation['price_check'] > 0;
+            $this->needPrint = $this->participation->printOrder ? true : false;
             $this->prices = [
                 'pricePart' => $this->participation['price_part'],
-                'pricePrint' => $this->participation['price_print'],
                 'priceCheck' => $this->participation['price_check'],
-                'priceTotal' => $this->participation['price_total']
+                'priceTotal' => $this->participation['price_total'],
+                'pricePrint' => 0
             ];
-            foreach ($this->participation->works as $participationWork) {
+            if ($this->needPrint) {
+                $this->prices['pricePrint'] = $this->participation->printOrder['price_print'];
+                $this->booksCnt = $this->participation->printOrder['books_cnt'];
+                $this->receiverName = $this->participation->printOrder['receiver_name'];
+                $this->receiverTelephone = $this->participation->printOrder['receiver_telephone'];
+                $this->country = $this->participation->printOrder['country'];
+                $this->addressType = $this->participation->printOrder['address_type'];
+                $this->addressJson = $this->participation->printOrder['address_json'];
+                $this->showChosenAddress = true;
+            }
+            foreach ($this->participation->participationWorks as $participationWork) {
                 $this->selectedWorks[] = [
                     'id' => $participationWork->work['id'],
                     'title' => $participationWork->work['title'],
                     'rows' => $participationWork->work['rows'],
                 ];
+                $this->oldSelectedWorks = $this->selectedWorks;
             }
         }
         $selectedWorksIds = [];
@@ -112,8 +129,21 @@ class ParticipationForm extends Component
             ],
             'addressJson' => Rule::requiredIf(fn() => $this->needPrint),
             'collection' => [
-                Rule::unique('participations', 'collection_id')
-                    ->where(fn($q) => $q->where('user_id', Auth::user()->id)),
+                Rule::when(
+                    $this->formType === 'create',
+                    Rule::unique('participations', 'collection_id')
+                        ->where(fn($q) => $q->where('user_id', Auth::id()))
+                ),
+            ],
+            'prices.priceTotal' => [
+                Rule::when(
+                    $this->formType === 'edit' && $this->participation->transactions()->exists(),
+                    function () {
+                        $paidAmount = $this->participation->transactions->where('status', TransactionStatusEnums::CONFIRMED)->sum('amount');
+                        $currentPriceWithPrint = $this->prices['priceTotal'] + $this->prices['pricePrint'];
+                        return new ParticipationLessPrice($paidAmount, $currentPriceWithPrint);
+                    }
+                ),
             ],
         ];
     }
@@ -189,76 +219,162 @@ class ParticipationForm extends Component
         )->calculate());
     }
 
-    public function storeApp()
+    public function get_notify_text()
     {
+        $promocode = ($this->promocode['name'] ?? null) ? $this->promocode['name'] . ' (' . $this->promocode['discount'] . '%)' : 'нет';
+        $check = ($this->needCheck ?? null) ? 'нужна (' . $this->prices['priceCheck'] . ' ₽)' : 'нет';
+        $print = ($this->needPrint ?? null) ? $this->booksCnt . " шт. (" . $this->prices['pricePrint'] . ' ₽)' : 'нет';
 
+        $text = "*Автор:* " . $this->authorName .
+            "\n*Страниц:* " . $this->pages . " стр. (" . $this->prices['pricePart'] . ' ₽)' .
+            "\n*Промокод:* " . str_replace('_', '', $promocode) .
+            "\n*Печать:* " . $print .
+            "\n*Проверка:* " . $check .
+            "\n\n*ИТОГО:* " . $this->prices['priceTotal'] . " руб.";
+
+        return $text;
     }
+
+    public function getConfirmText()
+    {
+        $promocode = ($this->promocode['name'] ?? null) ? $this->promocode['name'] . ' (' . $this->promocode['discount'] . '%)' : 'нет';
+        $check = ($this->needCheck ?? null) ? 'нужна (' . $this->prices['priceCheck'] . ' ₽)' : 'нет';
+        $print = ($this->needPrint ?? null) ? $this->booksCnt . " шт. (" . $this->prices['pricePrint'] . ' ₽). Адрес: ' . $this->addressJson['string'] : 'нет';
+
+        $text = "<b>Автор:</b> " . $this->authorName .
+            "<br><b>Произведения:</b> " . count($this->selectedWorks) . 'шт.' . $this->pages . " стр. (" . $this->prices['pricePart'] . ' ₽)' .
+            "<br><b>Промокод:</b> " . str_replace('_', '', $promocode) .
+            "<br><b>Печать:</b> " . $print .
+            "<br><b>Проверка:</b> " . $check .
+            "<br><br><b>ИТОГО:</b> " . $this->prices['priceTotal'] . " руб.";
+
+        return $text;
+    }
+
 
     public function checkAndConfirm()
     {
         if ($this->customValidate()) {
             $this->dispatch('swal',
                 title: 'Давайте все проверим',
-                text: 'Вот такая заявка',
+                text: $this->getConfirmText(),
                 confirmButtonText: 'Да, все верно',
                 livewireMethod: ['saveApplication']
             );
         }
     }
 
+    public function getParticipationStatus()
+    {
+        $oldIds = collect($this->oldSelectedWorks)->pluck('id')->sort()->values();
+        $newIds = collect($this->selectedWorks)->pluck('id')->sort()->values();
+
+        if ($this->participation) {
+            $paidAmount = $this->participation->transactions?->where('status', TransactionStatusEnums::CONFIRMED)->sum('amount');
+            $currentPriceWithPrint = $this->prices['priceTotal'] + $this->prices['pricePrint'];
+            $isSameAmount = $paidAmount == $currentPriceWithPrint;
+        } else {
+            $isSameAmount = false;
+        }
+
+        $isSameWorks = $oldIds->toArray() === $newIds->toArray();
+
+
+        if (!$isSameWorks) {
+            return ParticipationStatusEnums::APPROVE_NEEDED;
+        } elseif (!$isSameAmount) {
+            return ParticipationStatusEnums::PAYMENT_NEEDED;
+        } else {
+            return $this->participation['status'];
+        }
+    }
+
+    /** @noinspection D */
     public function saveApplication()
     {
         if ($this->customValidate()) DB::transaction(function () {
-            $newParticipation = Participation::create([
-                'collection_id' => $this->collection['id'],
-                'user_id' => Auth::user()->id,
-                'author_name' => $this->authorName,
-                'works_number' => count($this->selectedWorks),
-                'rows' => $this->rows,
-                'pages' => $this->pages,
-                'participation_status_id' => 1,
-                'promocode_id' => $this->promocode ? $this->promocode['id'] : null,
-                'price_part' => $this->prices['pricePart'],
-                'price_check' => $this->prices['priceCheck'],
-                'price_total' => $this->prices['priceTotal'] - $this->prices['pricePrint'],
-            ]);
+            $newParticipation = Participation::updateOrCreate(
+                [
+                    'collection_id' => $this->collection['id'],
+                    'user_id' => Auth::id(),
+                ],
+                [
+                    'author_name' => $this->authorName,
+                    'works_number' => count($this->selectedWorks),
+                    'rows' => $this->rows,
+                    'pages' => $this->pages,
+                    'status' => $this->getParticipationStatus(),
+                    'promocode_id' => $this->promocode ? $this->promocode['id'] : null,
+                    'price_part' => $this->prices['pricePart'],
+                    'price_check' => $this->prices['priceCheck'],
+                    'price_total' => $this->prices['priceTotal'],
+                ]
+            );
+            ParticipationWork::where('participation_id', $newParticipation['id'])->delete();
             foreach ($this->selectedWorks as $work) {
                 ParticipationWork::create([
                     'participation_id' => $newParticipation['id'],
                     'work_id' => $work['id']
                 ]);
             }
-            Chat::create([
+            Chat::updateOrCreate([
                 'user_created' => Auth::user()->id,
+                'model_type' => 'Participation',
+                'model_id' => $newParticipation['id'],
+            ], [
                 'user_to' => 2,
                 'title' => str_replace('{collection_title}', $this->collection['title'], self::CHAT_TITLE_PREFIX),
                 'chat_status_id' => 1,
-                'model_type' => 'Participation',
-                'model_id' => $newParticipation['id'],
                 'flg_admin_chat' => true,
             ]);
             if ($this->needPrint) {
-                $newPrintOrder = PrintOrder::create([
+                $newPrintOrder = PrintOrder::updateOrCreate([
                     'user_id' => Auth::user()->id,
-                    'print_order_status_id' => 1,
-                    'model_type' => 'Participation',
-                    'model_id' => $newParticipation['id'],
-                    'books_cnt' => $this->booksCnt,
-                    'inside_color' => self::INSIDE_COLOR,
-                    'pages_color' => null,
-                    'price_print' => $this->prices['pricePrint'],
-                    'cover_type' => self::COVER_TYPE,
-                    'receiver_name' => $this->receiverName,
-                    'receiver_telephone' => $this->receiverTelephone,
-                    'country' => $this->country,
-                    'address_type_id' => self::ADDRESS_TYPE_ID,
-                    'address_json' => $this->addressJson,
-                    'logistic_company_id' => self::LOGISTIC_COMPANY_ID,
-                    'printing_company_id' => self::PRINTING_COMPANY_ID
-                ]);
+                    'model_type' => 'Collection',
+                    'model_id' => $this->collection['id'],
+                ],
+                    [
+                        'status' => PrintOrderStatusEnums::CREATED,
+                        'print_order_status_id' => 1,
+                        'books_cnt' => $this->booksCnt,
+                        'inside_color' => self::INSIDE_COLOR,
+                        'pages_color' => null,
+                        'price_print' => $this->prices['pricePrint'],
+                        'cover_type' => self::COVER_TYPE,
+                        'receiver_name' => $this->receiverName,
+                        'receiver_telephone' => $this->receiverTelephone,
+                        'country' => $this->country,
+                        'address_type_id' => self::ADDRESS_TYPE_ID,
+                        'address_json' => $this->addressJson,
+                        'logistic_company_id' => self::LOGISTIC_COMPANY_ID,
+                        'printing_company_id' => self::PRINTING_COMPANY_ID
+                    ]);
                 $newParticipation->update(['print_order_id' => $newPrintOrder['id']]);
+            } else {
+                PrintOrder::query()
+                    ->where('user_id', Auth::user()->id)
+                    ->where('model_type', 'Participation')
+                    ->where('model_id', $newParticipation['id'])
+                    ->delete();
             }
-            $alert_text = 'Участие создано! На этой странице вы можете следить за всей информацией. Чат с личным менеджером тоже здесь.';
+
+            $url = route('login_as_admin', ['url_redirect' => "/admin/collection/participations/{$newParticipation['id']}/edit?user={$newParticipation['user_id']}"]);
+            if ($this->getParticipationStatus() == ParticipationStatusEnums::APPROVE_NEEDED) {
+                $subject = $this->formType == 'create' ?
+                    '💥 *Новая заявка в ' . $this->collection['title_short'] . '!* 💥' . "\n\n" :
+                    '💥 *Изменение заявки в ' . $this->collection['title_short'] . '!* 💥' . "\n\n";
+                Notification::route('telegram', getTelegramChatId())
+                    ->notify(new ParticipationCreatedNotification($this->collection, $subject, $this->get_notify_text(), $url));
+            }
+
+
+            if ($this->formType == 'create') {
+                $alert_text = 'Участие создано! На этой странице вы можете следить за всей информацией. Чат с личным менеджером тоже здесь.';
+            } else {
+                $alert_text = 'Участие успешно изменено!';
+            }
+
+
             session()->flash('swal', [
                 'title' => 'Успешно!',
                 'type' => 'success',

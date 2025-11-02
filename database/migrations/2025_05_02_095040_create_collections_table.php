@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('title_short');
             $table->string('slug');
-            $table->foreignId('collection_status_id')->constrained();
+            $table->string('status');
             $table->integer('pages')->nullable();
             $table->text('description')->nullable();
             $table->date('date_apps_end')->nullable();

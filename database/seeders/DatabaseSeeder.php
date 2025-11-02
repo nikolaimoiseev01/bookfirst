@@ -2,6 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Enums\CollectionStatusEnums;
+use App\Enums\PrintOrderStatusEnums;
+use App\Enums\PrintOrderTypeEnums;
+use App\Enums\TransactionEnums;
+use App\Enums\TransactionTypeEnums;
 use App\Models\AlmostCompleteAction\AlmostCompleteAction;
 use App\Models\Award\Award;
 use App\Models\Chat\Chat;
@@ -11,10 +16,8 @@ use App\Models\Chat\MessageTemplate;
 use App\Models\Chat\MessageTemplateType;
 use App\Models\Collection\Collection;
 use App\Models\Collection\CollectionNewsLetter;
-use App\Models\Collection\CollectionStatus;
 use App\Models\Collection\CollectionVote;
 use App\Models\Collection\Participation;
-use App\Models\Collection\ParticipationStatus;
 use App\Models\Collection\ParticipationWork;
 use App\Models\DigitalSale;
 use App\Models\EmailSent;
@@ -88,6 +91,7 @@ class DatabaseSeeder extends Seeder
 
         (new CopyTableService())->copy(sourceTable: 'work_types', targetTable: 'work_types');
         (new CopyTableService())->copy(sourceTable: 'work_topics', targetTable: 'work_topics');
+        (new CopyTableService())->copy(sourceTable: 'work_comments', targetTable: 'work_comments', columnsToExclude: ['parent_comment_id', 'reply_to_comment_id', 'reply_to_user_id']);
         (new CopyTableService())->copy(
             sourceTable: 'works'
             , modelClass: 'App\Models\Work\Work'
@@ -331,9 +335,8 @@ class DatabaseSeeder extends Seeder
         echo "message_templates OK ($now_time)\n";
     }
 
-    public function make_transactions()
+    public function make_transactions(): void
     {
-
         $oldTransactions = DB::connection('old_mysql')->table('transactions')->get();
         foreach ($oldTransactions as $oldTransaction) {
 
@@ -355,25 +358,25 @@ class DatabaseSeeder extends Seeder
             }
 
             if (str_contains($oldTransaction->description, 'Бронирование дополнительных печатных экземпляров (шт) сборника')) {
-                $transaction_type = 'Бронирование дополнительных печатных экземпляров сборника';
+                $transaction_type = TransactionTypeEnums::ADDITIONAL_COLLECTION_RESERVATION;
             } elseif (str_contains($oldTransaction->description, 'Оплата (без печати) книги')) {
-                $transaction_type = 'Оплата издания собственной книги (без печати)';
+                $transaction_type = TransactionTypeEnums::BOOK_PUBLISHING_NO_PRINT;
             } elseif (str_contains($oldTransaction->description, 'Оплата пересылки книги')) {
-                $transaction_type = 'Оплата пересылки собственной книги';
+                $transaction_type = TransactionTypeEnums::BOOK_SHIPPING;
             } elseif (str_contains($oldTransaction->description, 'Оплата пересылки сборника')) {
-                $transaction_type = 'Оплата пересылки сборника';
+                $transaction_type = TransactionTypeEnums::COLLECTION_SHIPPING;
             } elseif (str_contains($oldTransaction->description, 'Оплата печати книги')) {
-                $transaction_type = 'Оплата печати собственной книги';
+                $transaction_type = TransactionTypeEnums::BOOK_PRINT;
             } elseif (str_contains($oldTransaction->description, 'Оплата участия в сборнике')) {
-                $transaction_type = 'Оплата участия в сборнике';
+                $transaction_type = TransactionTypeEnums::COLLECTION_PARTICIPATION;
             } elseif (str_contains($oldTransaction->description, 'Покупка электронного варианта книги')) {
-                $transaction_type = 'Покупка электронного экземпляра собственной книги';
+                $transaction_type = TransactionTypeEnums::BOOK_EBOOK_PURCHASE;
             } elseif (str_contains($oldTransaction->description, 'Покупка электронного варианта сборника')) {
-                $transaction_type = 'Покупка электронного экземпляра сборника';
+                $transaction_type = TransactionTypeEnums::COLLECTION_EBOOK_PURCHASE;
             } elseif (str_contains($oldTransaction->description, 'Пополнение кошелька')) {
-                $transaction_type = 'Пополнение кошелька';
+                $transaction_type = TransactionTypeEnums::WALLET_TOP_UP;
             } elseif (str_contains($oldTransaction->description, 'Оплата продвижения')) {
-                $transaction_type = 'Оплата продвижения';
+                $transaction_type = TransactionTypeEnums::PROMOTION_PAYMENT;
             } else {
                 $transaction_type = null;
             }
@@ -382,10 +385,10 @@ class DatabaseSeeder extends Seeder
                 'id' => $oldTransaction->id,
                 'status' => $oldTransaction->status,
                 'user_id' => $oldTransaction->user_id,
-                'description' => $oldTransaction->description,
                 'amount' => $oldTransaction->amount,
                 'payment_method' => $oldTransaction->payment_method,
-                'transaction_type' => $transaction_type,
+                'description' => $oldTransaction->description,
+                'type' => $transaction_type,
                 'model_type' => $model_type,
                 'model_id' => $model_id,
                 'yoo_id' => $oldTransaction->yoo_id,
@@ -445,7 +448,6 @@ class DatabaseSeeder extends Seeder
                     ->where('collection_id', $oldChat->collection_id)
                     ->where('user_id', $oldChat->user_created)
                     ->first();
-//                dd($participation);
                 if ($participation ?? null) {
                     $model_id = $participation->id;
                 } else {
@@ -480,6 +482,7 @@ class DatabaseSeeder extends Seeder
         echo "Chats OK ($now_time)\n";
     }
 
+    /** @noinspection D */
     public function make_print_orders()
     {
 
@@ -488,15 +491,21 @@ class DatabaseSeeder extends Seeder
             ->get();
 
         $logistics = [
-            'Почта РФ',
-            'СДЭК'
+            [
+                'name' => 'Почта РФ',
+                'base_tracking_link' => 'https://www.pochta.ru/tracking?barcode='
+            ],
+            [
+                'name' => 'СДЭК',
+                'base_tracking_link' => 'https://www.cdek.ru/ru/tracking/?order_id='
+            ]
         ];
         foreach ($logistics as $logistic) {
             LogisticCompany::create([
-                'name' => $logistic
+                'name' => $logistic['name'],
+                'base_tracking_link' => $logistic['base_tracking_link']
             ]);
         }
-
 
         $printing_companies = [
             'Канцлер',
@@ -509,40 +518,15 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        $print_order_statuses = [
-            [
-                'id' => 1,
-                'name' => 'Создан',
-            ],
-            [
-                'id' => 2,
-                'name' => 'Оплачен, ждет начала печати',
-            ],
-            [
-                'id' => 3,
-                'name' => 'Идет печать',
-            ],
-            [
-                'id' => 4,
-                'name' => 'Напечатан, ждет отправки',
-            ],
-            [
-                'id' => 9,
-                'name' => 'Отправлен',
-            ]
-        ];
-        foreach ($print_order_statuses as $print_order_status) {
-            PrintOrderStatus::create($print_order_status);
-        }
-
-
         foreach ($oldPrintOrders as $oldPrintOrder) {
 
             if ($oldPrintOrder->collection_id ?? null) {
                 $model_type = 'Collection';
+                $type = PrintOrderTypeEnums::COLLECTION_PARTICIPATION;
                 $model_id = $oldPrintOrder->collection_id;
             } elseif ($oldPrintOrder->own_book_id ?? null) {
                 $model_type = 'OwnBook';
+                $type = PrintOrderTypeEnums::OWN_BOOK_PUBLISH;
                 $model_id = $oldPrintOrder->own_book_id;
             };
 
@@ -605,7 +589,7 @@ class DatabaseSeeder extends Seeder
                 ->table('own_books')
                 ->where('id', $oldPrintOrder->own_book_id)
                 ->first();
-            if($oldParticipation ?? null) {
+            if ($oldParticipation ?? null) {
                 $pricePrint = $oldParticipation->print_price;
                 $priceSend = $oldParticipation->send_price;
 
@@ -619,6 +603,7 @@ class DatabaseSeeder extends Seeder
 
             PrintOrder::create([
                 'id' => $oldPrintOrder->id,
+                'type' => $type,
                 'user_id' => $user_id,
                 'model_type' => $model_type,
                 'model_id' => $model_id,
@@ -628,7 +613,7 @@ class DatabaseSeeder extends Seeder
                 'inside_color' => $oldPrintOrder->inside_color == 1 ? 'Цветной' : 'Черно-белый',
                 'pages_color' => $oldPrintOrder->color_pages > 0 ? $oldPrintOrder->color_pages : null,
                 'cover_type' => $oldPrintOrder->cover_type == 'hard' ? 'Твердая' : 'Мягкая',
-                'address_json' => json_encode($address),
+                'address_json' => $address,
                 'country' => $oldPrintOrder->address_country,
                 'price_print' => $pricePrint,
                 'price_send' => $priceSend,
@@ -639,6 +624,7 @@ class DatabaseSeeder extends Seeder
                 'printing_company_id' => $printing_company_id,
                 'created_at' => $oldPrintOrder->created_at,
                 'updated_at' => $oldPrintOrder->updated_at,
+                'status' => PrintOrderStatusEnums::SENT
             ]);
         }
 
@@ -668,7 +654,7 @@ class DatabaseSeeder extends Seeder
                 ->table('collection_winners')
                 ->where('collection_id', $collection->id)
                 ->orderBy('place', 'asc')
-                ->pluck('user_id')
+                ->pluck('participation_id')
                 ->toArray();
 
             $links = null;
@@ -678,7 +664,11 @@ class DatabaseSeeder extends Seeder
                     'link' => $collection->amazon_link
                 ];
             }
-//            dd(json_encode($winners));
+
+            $status = DB::connection('old_mysql')
+                ->table('col_statuses')
+                ->where('id', $collection->col_status_id)
+                ->first()->col_status;
 
             $new_collection = Collection::firstOrCreate(
                 ['title' => $collection->title],
@@ -686,7 +676,7 @@ class DatabaseSeeder extends Seeder
                     'id' => $collection->id,
                     'title_short' => $short_nm,
                     'slug' => $slug,
-                    'collection_status_id' => $collection->col_status_id,
+                    'status' => $status,
                     'description' => $collection->col_desc,
                     'date_apps_end' => $collection->col_date1,
                     'date_preview_start' => $collection->col_date2,
@@ -758,35 +748,6 @@ class DatabaseSeeder extends Seeder
                     }
                 }
             }
-        }
-    }
-
-    public function make_collection_statuses()
-    {
-        $statuses = [
-            [
-                'id' => 1,
-                'name' => 'Идет прием заявок',
-            ],
-            [
-                'id' => 2,
-                'name' => 'Предварительная проверка',
-            ],
-            [
-                'id' => 3,
-                'name' => 'Подготовка к печати',
-            ],
-            [
-                'id' => 4,
-                'name' => 'Идет печать',
-            ],
-            [
-                'id' => 9,
-                'name' => 'Сборник издан',
-            ],
-        ];
-        foreach ($statuses as $status) {
-            CollectionStatus::create($status);
         }
     }
 
@@ -867,7 +828,10 @@ class DatabaseSeeder extends Seeder
                 $author_name = $participation->name . ' ' . $participation->surname;
             }
             $promocode_id = Promocode::where('name', $participation->promocode)->first()['id'] ?? null;
-
+            $status = DB::connection('old_mysql')
+                ->table('pat_statuses')
+                ->where('id', $participation->pat_status_id)
+                ->first()->pat_status_title;
             Participation::create([
                 'id' => $participation->id,
                 'collection_id' => $participation->collection_id,
@@ -876,7 +840,7 @@ class DatabaseSeeder extends Seeder
                 'works_number' => $participation->works_number,
                 'rows' => $participation->rows,
                 'pages' => $participation->pages,
-                'participation_status_id' => $participation->pat_status_id,
+                'status' => $status,
                 'print_order_id' => $participation->printorder_id,
                 'promocode_id' => $promocode_id,
                 'price_part' => $participation->part_price,
@@ -993,17 +957,7 @@ class DatabaseSeeder extends Seeder
                 ]);
             }
 
-            $participationStatuses = [
-                'Создана, ожадиается подтверждение',
-                'Ожидается оплата'
-            ];
-            foreach ($participationStatuses as $participationStatus) {
-                ParticipationStatus::create([
-                    'name' => $participationStatus,
-                ]);
-            }
-
-             $chatStatuses = [
+            $chatStatuses = [
                 'Создан,пустой',
                 'Ожидает ответа'
             ];
@@ -1018,7 +972,7 @@ class DatabaseSeeder extends Seeder
                 'Ожидается оплата'
             ];
             foreach ($statuses as $status) {
-                 OwnBookStatus::create([
+                OwnBookStatus::create([
                     'name' => $status,
                 ]);
             }
@@ -1085,8 +1039,6 @@ class DatabaseSeeder extends Seeder
 
         $now_time = Carbon::now()->format('H:i:s');
         echo "Collections START ($now_time)\n";
-        $this->make_collection_statuses();
-        (new CopyTableService())->copy(sourceTable: 'pat_statuses', targetTable: 'participation_statuses', columnsToRename: ['pat_status_title' => 'name']);
         $this->make_collections($test);
         $this->make_participations($test);
         $this->make_news_letters($test);

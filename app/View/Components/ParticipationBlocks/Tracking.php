@@ -2,6 +2,7 @@
 
 namespace App\View\Components\ParticipationBlocks;
 
+use App\Enums\CollectionStatusEnums;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
@@ -19,7 +20,10 @@ class Tracking extends Component
         $this->participation = $part;
         $this->collection = $part->collection;
         $this->blockColor = 'gray';
-        if ($this->collection['collection_status_id'] == 9 || !($part->printOrder)) {
+        if ($this->collection['status'] == CollectionStatusEnums::PRINTING) {
+            $this->blockColor = 'yellow';
+        }
+        if ($this->collection['status'] == CollectionStatusEnums::DONE || !($part->printOrder)) {
             $this->blockColor = 'green';
         }
     }

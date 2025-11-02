@@ -2,11 +2,13 @@
 
 namespace App\Models\Collection;
 
+use App\Enums\ParticipationStatusEnums;
 use App\Models\Chat\Chat;
 use App\Models\PreviewComment;
 use App\Models\PrintOrder\PrintOrder;
 use App\Models\Promocode;
 use App\Models\Survey\SurveyCompleted;
+use App\Models\Transaction;
 use App\Models\User\User;
 use App\Models\Work\Work;
 use Illuminate\Database\Eloquent\Model;
@@ -17,14 +19,12 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 class Participation extends Model
 {
 
+    protected $casts = [
+        'status' => ParticipationStatusEnums::class,
+    ];
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function participationStatus()
-    {
-        return $this->belongsTo(ParticipationStatus::class);
     }
 
     public function collection()
@@ -57,5 +57,10 @@ class Participation extends Model
     public function participationWorks(): HasMany
     {
         return $this->hasMany(ParticipationWork::class);
+    }
+
+    public function transactions(): morphMany
+    {
+        return $this->morphMany(Transaction::class,'model');
     }
 }

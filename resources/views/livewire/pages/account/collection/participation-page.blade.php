@@ -8,9 +8,9 @@
     <x-ui.link-simple class="mb-4">Инструкция по этой странице</x-ui.link-simple>
     <div class="mb-8 px-4 py-2 flex justify-between items-center gap-4 border rounded-2xl border-green-500">
         <div class="flex flex-col gap-1">
-            <p>Мой статус участия: <span class="font-normal">{{$participation->participationStatus['name']}}</span></p>
+            <p>Мой статус участия: <span class="font-normal">{{$participation['status']}}</span></p>
             <p>Статус издания сборника: <span
-                    class="font-normal">{{$participation->collection->collectionStatus['name']}}</span></p>
+                    class="font-normal">{{$participation->collection['status']}}</span></p>
         </div>
         <div class="flex flex-col">
             <div class="flex gap-2 items-center"><span class="w-4 h-4 rounded-full bg-dark-200"></span>Пункт недоступен
@@ -34,11 +34,18 @@
         </div>
     </div>
     <div class="flex flex-col pl-4">
-        <x-participation-blocks.general :part="$participation"/>
-        <x-participation-blocks.payment :part="$participation"/>
-        <x-participation-blocks.preview :part="$participation"/>
-        <x-participation-blocks.voting :part="$participation"/>
-        <x-participation-blocks.tracking :part="$participation"/>
+        @if($participation['status']->order() < 9)
+            <x-participation-blocks.general :part="$participation"/>
+            <x-participation-blocks.payment :part="$participation"/>
+            <x-participation-blocks.preview :part="$participation"/>
+            <x-participation-blocks.voting :part="$participation"/>
+            <x-participation-blocks.tracking :part="$participation"/>
+        @else
+            <div class="flex flex-col py-8 px-4 gap-4">
+                <span
+                    class="text-dark-300 italic text-2xl text-center">Заявка на участие в статусе "Неактуальна".</span>
+            </div>
+        @endif
     </div>
 
 </div>

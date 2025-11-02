@@ -73,3 +73,58 @@ window.disableSendButtons = function (state) {
     }
 };
 
+window.loggedCheck = function () {
+    const isLogged = document.querySelector('meta[name="user-logged-in"]').content === 'true';
+
+    if (!isLogged) {
+        // Находим все элементы, для которых нужно ограничить действие
+        document.querySelectorAll('[data-check-logged]').forEach(el => {
+            // Удаляем все wire:click и href
+            [...el.attributes].forEach(attr => {
+                if (attr.name.startsWith('wire:') || attr.name === 'href' || attr.name === '@click') {
+                    el.removeAttribute(attr.name);
+                }
+            });
+
+            // Вешаем swal вместо стандартного клика
+            el.addEventListener('click', e => {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Авторизация',
+                    text: 'Чтобы выполнить это действие, пожалуйста, войдите в аккаунт',
+                    icon: 'info',
+                    confirmButtonText: 'Войти',
+                    showCancelButton: true,
+                    cancelButtonText: 'Отмена',
+                }).then(result => {
+                    if (result.isConfirmed) {
+                        window.location.href = '/login'; // или другой путь для входа
+                    }
+                });
+            });
+        });
+    }
+}
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    window.loggedCheck()
+});
+
+Livewire.hook('morph.updated', ({ el, component }) => {
+    // window.loggedCheck()
+})
+
+
+const params = new URLSearchParams(window.location.search);
+const confirmPayment = params.get('confirm_payment');
+
+if (confirmPayment === 'collection_participation') {
+    Swal.fire({
+        title: 'Оплата успешно завершена 🎉',
+        html: '<p>Следующий шаг - дождаться этапа предварительной проверки.</p>',
+        icon: 'success',
+        showConfirmButton: false
+    });
+}

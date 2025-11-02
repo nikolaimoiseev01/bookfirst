@@ -24,9 +24,9 @@ class ChatSummaryCard extends Component
         if ($this->chat['flg_admin_chat']) {
             $this->user_avatar = '/fixed/avatar_admin.svg';
         } elseif ($this->chat['user_created'] != Auth::user()->id) {
-            $this->user_avatar = getAvatarUrl(User::where('id', $this->chat['user_created'])->with('media')->first());
+            $this->user_avatar = getUserAvatar(User::where('id', $this->chat['user_created'])->with('media')->first());
         } else {
-            $this->user_avatar = getAvatarUrl(User::where('id', $this->chat['user_to'])->with('media')->first());
+            $this->user_avatar = getUserAvatar(User::where('id', $this->chat['user_to'])->with('media')->first());
         }
         $this->chosen = $chosen;
     }

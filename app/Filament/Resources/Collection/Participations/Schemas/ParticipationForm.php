@@ -2,11 +2,17 @@
 
 namespace App\Filament\Resources\Collection\Participations\Schemas;
 
+use App\Enums\ParticipationStatusEnums;
+use App\Enums\TransactionStatusEnums;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Infolists\Components\IconEntry;
+use Filament\Infolists\Components\RepeatableEntry;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Livewire;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
@@ -28,9 +34,13 @@ class ParticipationForm
                             Select::make('collection_id')
                                 ->label('Сборник')
                                 ->relationship(name: 'collection', titleAttribute: 'title'),
-                            Select::make('participation_status_id')
+                            Select::make('status')
                                 ->label('Статус')
-                                ->relationship(name: 'participationStatus', titleAttribute: 'name'),
+                                ->options(
+                                    collect(ParticipationStatusEnums::cases())
+                                        ->mapWithKeys(fn($case) => [$case->value => $case->value])
+                                        ->toArray()
+                                )
                         ])->columns(3),
                         Grid::make()->schema([
                             TextInput::make('price_part')
@@ -39,18 +49,8 @@ class ParticipationForm
                                 ->stripCharacters(',')
                                 ->required()
                                 ->numeric(),
-                            TextInput::make('price_print')
-                                ->label('Цена печати')
-                                ->mask(RawJs::make('$money($input)'))
-                                ->stripCharacters(',')
-                                ->numeric(),
                             TextInput::make('price_check')
                                 ->label('Цена проверки')
-                                ->mask(RawJs::make('$money($input)'))
-                                ->stripCharacters(',')
-                                ->numeric(),
-                            TextInput::make('price_send')
-                                ->label('Цена отправки')
                                 ->mask(RawJs::make('$money($input)'))
                                 ->stripCharacters(',')
                                 ->numeric(),
@@ -78,10 +78,61 @@ class ParticipationForm
                                 ->required()
                                 ->numeric(),
                         ])->columns(4),
+                        Section::make('Произведения в заявке')->schema([
+                            RepeatableEntry::make('participationWorks')
+                                ->label('')
+                                ->schema([
+                                    TextEntry::make('work.title'),
+                                    TextEntry::make('work.text'),
+                                ])
+                                ->grid(2)
+                        ])->collapsed(),
+                        Section::make('Транзакции в заявке')->schema([
+                            RepeatableEntry::make('transactions')
+                                ->url('/fixed')
+                                ->label('')
+                                ->schema([
+                                    Grid::make()->schema([
+                                        TextEntry::make('created_at')->date(),
+                                        IconEntry::make('status')
+                                            ->color(fn(string $state): string => match ($state) {
+                                                TransactionStatusEnums::CREATED->value => 'info',
+                                                TransactionStatusEnums::CONFIRMED->value => 'success',
+                                                default => 'gray',
+                                            })
+                                            ->icon(fn(string $state): string => match ($state) {
+                                                TransactionStatusEnums::CREATED->value => 'heroicon-o-clock',
+                                                TransactionStatusEnums::CONFIRMED->value => 'heroicon-o-check-circle',
+                                            }),
+                                        TextEntry::make('amount'),
+                                        TextEntry::make('payment_method'),
+                                        TextEntry::make('yoo_id'),
+                                    ])->columns(5)
+                                ])
+                        ])->collapsed()
                     ]),
                     Tab::make('Печать')->schema([
-                        Placeholder::make('print_order_id')
-                            ->label('Печать')
+                        Grid::make()->schema([
+                            TextEntry::make('printOrder.price_print')
+                                ->label('Цена печати')
+                                ->numeric(),
+                            TextEntry::make('printOrder.price_send')
+                                ->label('Цена отправки')
+                                ->numeric(),
+                            TextEntry::make('printOrder.books_cnt')
+                                ->label('Экземпляров')
+                                ->numeric(),
+                            TextEntry::make('printOrder.address_json')
+                                ->state(fn(\App\Models\Collection\Participation $record) => $record->printOrder?->address_json['string'] ?? '—'
+                                )
+                                ->label('Адрес'),
+                            TextEntry::make('printOrder.receiver_name')
+                                ->label('ФИО')
+                                ->numeric(),
+                            TextEntry::make('printOrder.receiver_telephone')
+                                ->label('Телефон')
+                                ->numeric(),
+                        ])
                     ]),
                     Tab::make('Чат')->schema([
                         Livewire::make('components.account.chat', ['chat' => $schema->getRecord()->chat])

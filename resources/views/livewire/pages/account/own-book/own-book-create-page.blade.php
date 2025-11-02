@@ -8,7 +8,7 @@
             coverType: $wire.entangle('coverType'),
             needPromo: $wire.entangle('needPromo')
         }"
-      wire:submit="saveApplication()" class="mb-16 max-w-6xl">
+      wire:submit="checkAndConfirm()" class="mb-16 max-w-6xl">
     @section('title')
         Создание заявки на издание собственной книги
     @endsection

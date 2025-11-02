@@ -49,6 +49,7 @@ export default {
                 },
                 dark_bg: '#1c1c16',
                 dark: {
+                    50: '#f8f8f8',
                     100: '#E0E0E0',
                     200: '#BDBDBD',
                     300: '#CBCBCB',

@@ -1,3 +1,6 @@
+
+import defaultTheme from 'tailwindcss/defaultTheme';
+
 export default {
     content: [
         './app/Filament/**/*.php',

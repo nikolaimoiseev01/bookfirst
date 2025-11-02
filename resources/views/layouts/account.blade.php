@@ -10,6 +10,8 @@
     <!-- Fonts -->
     <link rel="stylesheet" href="/fixed/fonts/fonts.css">
 
+    <meta name="user-logged-in" content="{{ auth()->check() ? 'true' : 'false' }}">
+
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/textify.js@1.1.1/dist/index.min.js"></script>

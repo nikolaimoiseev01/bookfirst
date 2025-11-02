@@ -75,4 +75,8 @@ class User extends Authenticatable implements FilamentUser, HasMedia, MustVerify
     {
         return $this->HasMany(OwnBook::class);
     }
+    public function subscribers(): HasMany
+    {
+        return $this->HasMany(UserXUserSubscription::class, 'subscribed_to_user_id', 'id');
+    }
 }

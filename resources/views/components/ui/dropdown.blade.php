@@ -23,7 +23,8 @@
         type="button"
         @click="open = !open"
         @click.outside="open = false"
-        class="w-full border border-green-500 rounded-md bg-white px-4 py-1 text-left flex font-light text-xl justify-between items-center"
+        :class="$store.global.social ? ' border-blue-500 ' : ' border-green-500 '"
+        class="w-full border rounded-md bg-white px-4 py-1 text-left flex font-light text-xl justify-between items-center"
     >
         <span class="text-lg" x-text="options.find(o => o.value == selected)?.label ?? '{{ $placeholder }}'"></span>
         <svg class="w-4 h-4 ml-2 transform transition-transform"
@@ -40,7 +41,7 @@
         x-transition
         class="absolute z-10 mt-1 w-full border rounded-md bg-white shadow-md max-h-60 overflow-y-auto"
     >
-        <template x-for="opt in options" :key="opt.value">
+        <template x-for="opt in options" :key="String(opt.value)">
             <li
                 @click="selected = opt.value; open = false"
                 class="px-3 py-2 cursor-pointer hover:bg-gray-100"

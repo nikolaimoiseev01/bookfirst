@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class CardSocialWork extends Component
+class CardSocialWorkMini extends Component
 {
     public $work;
 
@@ -16,12 +16,6 @@ class CardSocialWork extends Component
     public function __construct($work)
     {
         $this->work = $work;
-        if ($this->work->getFirstMediaUrl('cover') ?? null) {
-            $work['cover_url'] = $this->work->getFirstMediaUrl('cover');
-        } else {
-            $rnd = Rand(1, 4);
-            $work['cover_url'] = "/fixed/default_work_pic_{$rnd}.svg";
-        }
     }
 
     /**
@@ -29,6 +23,6 @@ class CardSocialWork extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.ui.card-social-work');
+        return view('components.ui.card-social-work-mini');
     }
 }

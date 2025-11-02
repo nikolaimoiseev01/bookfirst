@@ -26,7 +26,12 @@ class ParticipationResource extends Resource
     protected static ?string $pluralLabel = 'Участия в сборниках';
 
 
-    protected static ?string $parentResource = UserResource::class;
+//    protected static ?string $parentResource = UserResource::class;
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        return true;
+    }
 
     public static function form(Schema $schema): Schema
     {

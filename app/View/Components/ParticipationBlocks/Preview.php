@@ -2,6 +2,8 @@
 
 namespace App\View\Components\ParticipationBlocks;
 
+use App\Enums\CollectionStatusEnums;
+use App\Enums\ParticipationStatusEnums;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
@@ -18,11 +20,14 @@ class Preview extends Component
     {
         $this->participation = $part;
         $this->collection = $part->collection;
-        match ($this->collection['collection_status_id']) {
-            1 => $this->blockColor = 'gray',
-            2 => $this->blockColor = 'yellow',
-            3 => $this->blockColor = 'green'
+        match ($this->collection['status']) {
+            CollectionStatusEnums::APPS_IN_PROGRESS => $this->blockColor = 'gray',
+            CollectionStatusEnums::PREVIEW => $this->blockColor = 'yellow',
+            CollectionStatusEnums::PRINT_PREPARE, CollectionStatusEnums::PRINTING, CollectionStatusEnums::DONE => $this->blockColor = 'green'
         };
+        if ($this->participation['status'] != ParticipationStatusEnums::APPROVED) {
+            $this->blockColor = 'gray';
+        }
     }
 
     /**

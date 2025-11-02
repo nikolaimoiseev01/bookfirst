@@ -41,5 +41,13 @@ return [
         'token_uri'     => '/v2/oauth/token',
         'api_uri'        => '/v2/',  // базовый путь для API запросов
     ],
+    'yookassa' => [
+        'shop_id' => env('YOOKASSA_SHOP_ID', null),
+        'secret_key' => env('YOOKASSA_SECRET_KEY', null),
+    ],
+
+    'telegram-bot-api' => [
+        'token' => env('TELEGRAM_BOT_TOKEN')
+    ],
 
 ];

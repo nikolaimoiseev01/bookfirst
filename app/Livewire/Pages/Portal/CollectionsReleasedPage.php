@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Pages\Portal;
 
+use App\Enums\CollectionStatusEnums;
 use App\Models\Collection\Collection;
 use App\Models\OwnBook\OwnBook;
 use Livewire\Component;
@@ -25,11 +26,11 @@ class CollectionsReleasedPage extends Component
     {
         $this->totalCnt = Collection::query()
             ->where('title', 'like', '%' . $this->searchText . '%')
-            ->where('collection_status_id', '<>', 1)
+            ->where('status', '<>', CollectionStatusEnums::APPS_IN_PROGRESS)
             ->count();
         $this->take = min($this->totalCnt, $this->take);
         $this->collections = Collection::query()
-            ->where('collection_status_id', '<>', 1)
+            ->where('status', '<>', CollectionStatusEnums::APPS_IN_PROGRESS)
             ->where('title', 'like', "%{$this->searchText}%")
             ->orderBy('created_at', 'desc')
             ->take($this->take)

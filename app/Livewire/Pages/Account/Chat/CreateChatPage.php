@@ -7,6 +7,7 @@ use App\Models\Chat\Message;
 use App\Traits\WithCustomValidation;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Spatie\LivewireFilepond\WithFilePond;
@@ -19,6 +20,8 @@ class CreateChatPage extends Component
     public $title;
     public $text;
     public $files = [];
+    #[Url]
+    public $userTo = 2;
 
     public function render()
     {

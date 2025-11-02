@@ -1,9 +1,3 @@
-@import '../../../../vendor/filament/filament/resources/css/theme.css';
-@import 'tailwindcss';
-@config '../../../../resources/css/filament/admin/tailwind.config.js';
-@source '../../../../app/Filament/**/*';
-@source '../../../../resources/views/filament/**/*';
-
 
 
 .filepond--item {

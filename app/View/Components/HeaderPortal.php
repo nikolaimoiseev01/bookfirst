@@ -36,13 +36,13 @@ class HeaderPortal extends Component
                 ],
                 [
                     'name' => 'Разместить',
-                    'url_part' => 'ext-promotion',
-                    'route' => route('portal.ext_promotion')
+                    'url_part' => route('account.works'),
+                    'route' => route('account.works')
                 ],
                 [
                     'name' => 'Конкурсы',
-                    'url_part' => 'ext-promotion',
-                    'route' => route('portal.ext_promotion')
+                    'url_part' => route('portal.collections.actual'),
+                    'route' => route('portal.collections.actual')
                 ],
             ];
         else {

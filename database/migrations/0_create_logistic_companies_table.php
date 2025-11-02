@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('logistic_companies', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('base_tracking_link');
             $table->timestamps();
         });
     }

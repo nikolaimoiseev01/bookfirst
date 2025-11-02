@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('print_order_statuses', function (Blueprint $table) {
+        Schema::create('work_comments', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->foreignId('user_id');
+            $table->foreignId('work_id');
+            $table->text('text');
             $table->timestamps();
         });
     }
@@ -23,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('print_order_statuses');
+        Schema::dropIfExists('work_comments');
     }
 };

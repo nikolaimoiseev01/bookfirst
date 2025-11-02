@@ -17,7 +17,19 @@ class Work extends Model implements HasMedia
         return $this->hasMany(WorkLike::class);
     }
 
+    public function workComments(): hasMany {
+        return $this->hasMany(WorkComment::class);
+    }
+
     public function user(): belongsTo {
         return $this->belongsTo(User::class);
+    }
+
+    public function workType(): belongsTo {
+        return $this->belongsTo(WorkType::class);
+    }
+
+    public function workTopic(): belongsTo {
+        return $this->belongsTo(WorkTopic::class);
     }
 }
