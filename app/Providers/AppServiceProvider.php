@@ -41,53 +41,53 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Model::unguard();
-
-        FilamentAsset::register([
-            Js::make('custom-script', 'https://code.jquery.com/jquery-3.7.1.min.js'),
-            Js::make('script', url('/vendor/livewire-filepond/filepond.js?v=1.5.0'))->module(),
-            Css::make('custom-stylesheet', ENV('APP_URL') . '/fixed/filament-custom.css'),
-        ]);
-
-        Relation::morphMap([
-            'User' => User::class,
-            'Collection' => Collection::class,
-            'Participation' => Participation::class,
-            'OwnBook' => OwnBook::class,
-            'Message' => Message::class,
-            'AwardType' => AwardType::class,
-            'ExtPromotion' => ExtPromotion::class,
-            'Work' => Work::class,
-        ]);
-
-        Carbon::setLocale(config('app.locale')); // Установим локаль из конфигурации
-
-        RedirectIfAuthenticated::redirectUsing(function () {
-            return route('account.settings');
-        });
-
-        VerifyEmail::toMailUsing(function (object $notifiable, string $url) {
-            return (new MailMessage)
-                ->greeting('Здравствуйте, ' . $notifiable->name)
-                ->subject('Подтверждение Email')
-                ->line('Мы рады приветствовать вас на портале независимого издательства "Первая Книга"! Здесь вы сможете публиковать свои произведения, участвовать в сборниках современных поэтов, а также издавать свои собственные книги! Для того, чтобы подтвердить свою электронную почту, пожалуйста, нажмите на кнопку ниже:')
-                ->action('Подтвердить Email', $url)
-                ->line(Lang::get('Если вы не регистрировались на портале "Первая Книга", пожалуйста, просто проигнорируйте это письмо.'))
-                ->salutation('С уважением. Первая Книга');
-        });
-        ResetPassword::toMailUsing(function ($notifiable, string $token) {
-            $url = url(route('password.reset', [
-                'token' => $token,
-                'email' => $notifiable->getEmailForPasswordReset(),
-            ], false));
-
-            return (new MailMessage)
-                ->subject('Сброс пароля')
-                ->greeting('Здравствуйте, ' . $notifiable->name . '!')
-                ->line('Вы получили это письмо, потому что мы получили запрос на сброс пароля для вашей учетной записи.')
-                ->action('Сбросить пароль', $url)
-                ->line('Если вы не запрашивали сброс пароля, никаких дополнительных действий не требуется.')
-                ->salutation('С уважением. Первая Книга');
-        });
+//        Model::unguard();
+//
+//        FilamentAsset::register([
+//            Js::make('custom-script', 'https://code.jquery.com/jquery-3.7.1.min.js'),
+//            Js::make('script', url('/vendor/livewire-filepond/filepond.js?v=1.5.0'))->module(),
+//            Css::make('custom-stylesheet', ENV('APP_URL') . '/fixed/filament-custom.css'),
+//        ]);
+//
+//        Relation::morphMap([
+//            'User' => User::class,
+//            'Collection' => Collection::class,
+//            'Participation' => Participation::class,
+//            'OwnBook' => OwnBook::class,
+//            'Message' => Message::class,
+//            'AwardType' => AwardType::class,
+//            'ExtPromotion' => ExtPromotion::class,
+//            'Work' => Work::class,
+//        ]);
+//
+//        Carbon::setLocale(config('app.locale')); // Установим локаль из конфигурации
+//
+//        RedirectIfAuthenticated::redirectUsing(function () {
+//            return route('account.settings');
+//        });
+//
+//        VerifyEmail::toMailUsing(function (object $notifiable, string $url) {
+//            return (new MailMessage)
+//                ->greeting('Здравствуйте, ' . $notifiable->name)
+//                ->subject('Подтверждение Email')
+//                ->line('Мы рады приветствовать вас на портале независимого издательства "Первая Книга"! Здесь вы сможете публиковать свои произведения, участвовать в сборниках современных поэтов, а также издавать свои собственные книги! Для того, чтобы подтвердить свою электронную почту, пожалуйста, нажмите на кнопку ниже:')
+//                ->action('Подтвердить Email', $url)
+//                ->line(Lang::get('Если вы не регистрировались на портале "Первая Книга", пожалуйста, просто проигнорируйте это письмо.'))
+//                ->salutation('С уважением. Первая Книга');
+//        });
+//        ResetPassword::toMailUsing(function ($notifiable, string $token) {
+//            $url = url(route('password.reset', [
+//                'token' => $token,
+//                'email' => $notifiable->getEmailForPasswordReset(),
+//            ], false));
+//
+//            return (new MailMessage)
+//                ->subject('Сброс пароля')
+//                ->greeting('Здравствуйте, ' . $notifiable->name . '!')
+//                ->line('Вы получили это письмо, потому что мы получили запрос на сброс пароля для вашей учетной записи.')
+//                ->action('Сбросить пароль', $url)
+//                ->line('Если вы не запрашивали сброс пароля, никаких дополнительных действий не требуется.')
+//                ->salutation('С уважением. Первая Книга');
+//        });
     }
 }

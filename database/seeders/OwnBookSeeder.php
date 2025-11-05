@@ -21,6 +21,10 @@ class OwnBookSeeder extends Seeder
      * Run the database seeds.
      */
 
+    public function FC($str) {
+        return mb_convert_case(mb_substr($str, 0, 1), MB_CASE_UPPER, "UTF-8").mb_convert_case(mb_substr($str, 1, mb_strlen($str) -1 ), MB_CASE_LOWER, "UTF-8");
+    }
+
     public function make_own_books($test = false)
     {
         $oldOwnBooks = DB::connection('old_mysql')
@@ -39,15 +43,28 @@ class OwnBookSeeder extends Seeder
                 $selling_links = null;
             }
 
+            $status_general = DB::connection('old_mysql')
+                ->table('own_book_statuses')
+                ->where('id', $oldOwnBook->own_book_status_id)
+                ->first()->status_title;
+            $status_cover = DB::connection('old_mysql')
+                ->table('own_book_cover_statuses')
+                ->where('id', $oldOwnBook->own_book_cover_status_id)
+                ->first()->status_title;
+            $status_inside = DB::connection('old_mysql')
+                ->table('own_book_inside_statuses')
+                ->where('id', $oldOwnBook->own_book_inside_status_id)
+                ->first()->status_title;
+
             $own_book = OwnBook::create([
                 'id' => $oldOwnBook->id,
                 'user_id' => $oldOwnBook->user_id,
                 'author' => $oldOwnBook->author,
                 'title' => $oldOwnBook->title,
                 'slug' => Str::slug($oldOwnBook->title),
-                'own_book_status_id' => $oldOwnBook->own_book_status_id,
-                'own_book_cover_status_id' => $oldOwnBook->own_book_cover_status_id,
-                'own_book_inside_status_id' => $oldOwnBook->own_book_inside_status_id,
+                'status_general' => $this->FC($status_general),
+                'status_cover' => $this->FC($status_cover),
+                'status_inside' => $this->FC($status_inside),
                 'deadline_inside' => $oldOwnBook->inside_deadline,
                 'deadline_cover' => $oldOwnBook->cover_deadline,
                 'pages' => $oldOwnBook->pages,
@@ -118,21 +135,6 @@ class OwnBookSeeder extends Seeder
     {
         $now_time = Carbon::now()->format('H:i:s');
         echo "Own Books START ($now_time)\n";
-        (new CopyTableService())->copy(
-            sourceTable: 'own_book_statuses'
-            , targetTable: 'own_book_statuses'
-            , columnsToRename: ['status_title' => 'name']
-        );
-        (new CopyTableService())->copy(
-            sourceTable: 'own_book_cover_statuses'
-            , targetTable: 'own_book_cover_statuses'
-            , columnsToRename: ['status_title' => 'name']
-        );
-        (new CopyTableService())->copy(
-            sourceTable: 'own_book_inside_statuses'
-            , targetTable: 'own_book_inside_statuses'
-            , columnsToRename: ['status_title' => 'name']
-        );
         $this->make_own_book_works($test);
         if (!$test) {
             (new CopyTableService())->copy(

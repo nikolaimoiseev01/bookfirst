@@ -2,6 +2,9 @@
 
 namespace App\Livewire\Pages\Account\OwnBook;
 
+use App\Enums\OwnBookCoverStatusEnums;
+use App\Enums\OwnBookInsideStatusEnums;
+use App\Enums\OwnBookStatusEnums;
 use App\Enums\ParticipationStatusEnums;
 use App\Jobs\EmailNotificationJob;
 use App\Jobs\TelegramNotificationJob;
@@ -259,9 +262,9 @@ class OwnBookCreatePage extends Component
                 'author' => $this->author,
                 'title' => $this->title,
                 'slug' => Str::slug($this->title),
-                'own_book_status_id' => 1,
-                'own_book_cover_status_id' => 1,
-                'own_book_inside_status_id' => 1,
+                'status_general' => OwnBookStatusEnums::REVIEW,
+                'status_cover' => OwnBookCoverStatusEnums::DEVELOPMENT,
+                'status_inside' => OwnBookInsideStatusEnums::DEVELOPMENT,
                 'pages' => $this->pages,
                 'inside_type' => $this->insideType,
                 'need_text_design' => $this->needTextDesign,
@@ -287,14 +290,14 @@ class OwnBookCreatePage extends Component
                     $newOwnBook
                         ->addMedia($file->getRealPath())       // путь до tmp файла
                         ->usingFileName($file->getClientOriginalName()) // оригинальное имя
-                        ->toMediaCollection('insideFiles');   // твоя коллекция
+                        ->toMediaCollection('from_author_inside');   // твоя коллекция
                 }
             }
             foreach ($this->coverFiles as $file) {
                 $newOwnBook
                     ->addMedia($file->getRealPath())       // путь до tmp файла
                     ->usingFileName($file->getClientOriginalName()) // оригинальное имя
-                    ->toMediaCollection('coverFiles');   // твоя коллекция
+                    ->toMediaCollection('from_author_cover');   // твоя коллекция
             }
             Chat::create([
                 'user_created' => Auth::user()->id,

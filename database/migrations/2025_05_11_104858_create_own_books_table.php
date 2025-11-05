@@ -19,9 +19,9 @@ return new class extends Migration
             $table->string('title');
             $table->string('slug');
 
-            $table->foreignId('own_book_status_id')->references('id')->on('own_book_statuses');
-            $table->foreignId('own_book_cover_status_id')->nullable()->references('id')->on('own_book_cover_statuses');
-            $table->foreignId('own_book_inside_status_id')->nullable()->references('id')->on('own_book_inside_statuses');
+            $table->string('status_general');
+            $table->string('status_cover');
+            $table->string('status_inside');
 
             $table->date('deadline_inside')->nullable();
             $table->date('deadline_cover')->nullable();
