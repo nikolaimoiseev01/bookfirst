@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('ext_promotion_parsed_readers', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->references('id')->on('users');
-            $table->foreignId('ext_promotion_id')->references('id')->on('ext_promotions');
+            $table->bigInteger('ext_promotion_id');
             $table->dateTime('checked_at');
             $table->integer('readers_num');
             $table->timestamps();
