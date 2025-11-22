@@ -68,8 +68,16 @@ return [
             'database' => env('OLD_DB_DATABASE', 'old_db'),
             'username' => env('OLD_DB_USERNAME', 'root'),
             'password' => env('OLD_DB_PASSWORD', ''),
-            'charset' => 'cp1251',
-            'collation' => 'cp1251_general_ci',
+            'unix_socket' => env('DB_SOCKET', ''),
+            'charset' => env('DB_CHARSET', 'utf8mb4'),
+            'collation' => env('DB_COLLATION', 'utf8mb4_unicode_ci'),
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'strict' => true,
+            'engine' => null,
+            'options' => extension_loaded('pdo_mysql') ? array_filter([
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+            ]) : [],
         ],
 
         'mariadb' => [
