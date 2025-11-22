@@ -1,0 +1,379 @@
+/*.woman {*/
+/*    max-width: 835px;*/
+/*    margin-right: 200px;*/
+/*}*/
+
+/*.back-vector-right {*/
+/*    margin-top: 65px;*/
+/*    top: 0;*/
+/*}*/
+
+
+/*.hero h1 {*/
+/*    font-size: 75px;*/
+/*}*/
+
+/*.last_works_block__right_header_block {*/
+/*    width: 100%;*/
+/*    display: flex;*/
+/*    flex-wrap: wrap;*/
+/*    align-items: center;*/
+/*    justify-content: space-between;*/
+/*}*/
+
+
+/*.last_users_block {*/
+/*    display: flex;*/
+/*    flex-wrap: wrap;*/
+/*    margin-top: 10px;*/
+/*    margin-bottom: 50px;*/
+/*    max-width: 1500px;*/
+/*    justify-content: center;*/
+/*}*/
+
+/*.last_users_block .container {*/
+/*    align-items: center;*/
+
+/*    padding: 10px 10px;*/
+/*    margin: 20px;*/
+/*    height: fit-content;*/
+/*    flex-direction: column;*/
+/*    width: 300px;*/
+/*    position: relative;*/
+/*}*/
+
+/*.last_users_stat_block {*/
+/*    display: flex;*/
+/*    margin-top: 10px;*/
+/*    width: 100%;*/
+/*    justify-content: space-evenly;*/
+
+/*}*/
+
+/*.last_users_stat_block div {*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*    margin: 0 10px;*/
+/*    align-items: center;*/
+
+/*}*/
+
+/*.last_users_stat_block span {*/
+/*    flex-direction: column;*/
+/*    display: flex;*/
+/*    align-items: center;*/
+/*    justify-content: space-between;*/
+/*}*/
+
+/*.last_users_stat_block div .fa-heart {*/
+/*    color: var(--red);*/
+/*}*/
+
+/*.last_users_stat_block div .fa-comment {*/
+/*    color: var(--social_blue);*/
+/*}*/
+
+/*.last_users_stat_over_block {*/
+/*    position: absolute;*/
+/*    width: 100%;*/
+/*    height: 0;*/
+/*    opacity: 0;*/
+/*    display: flex;*/
+/*    bottom: 0;*/
+/*    transition: all 0.2s ease-in-out;*/
+/*    align-items: center;*/
+/*    justify-content: center;*/
+/*    z-index: 1;*/
+/*    background: white;*/
+/*}*/
+
+/*.last_users_block .container:hover .last_users_stat_over_block {*/
+/*    opacity: 1;*/
+/*    transition: all 0.2s ease-in-out;*/
+/*    height: 65px;*/
+/*}*/
+
+
+/*.last_users_stat_block div p {*/
+/*    font-size: 20px;*/
+
+/*}*/
+
+
+/*@media screen and (max-width: 1700px) {*/
+/*    .woman {*/
+/*        max-width: 750px !important;*/
+/*        margin-right: 100px !important;*/
+/*    }*/
+
+/*    #hero_tablet_text {*/
+/*        display: none !important;*/
+/*    }*/
+
+/*}*/
+
+/*@media screen and (max-width: 1500px) {*/
+/*    .hero-woman-wrap {*/
+/*        width: 75%;*/
+/*    }*/
+
+/*    .woman {*/
+/*        !* max-width: 835px; *!*/
+/*        margin-right: auto !important;*/
+/*    }*/
+
+/*    .social_hero_word_block h2 {*/
+/*        font-size: 1.7vw;*/
+/*    }*/
+
+/*    .call-buttons {*/
+/*        margin-top: 10px;*/
+/*    }*/
+
+/*    .social_cta_button {*/
+/*        font-size: 25px;*/
+/*    }*/
+
+/*    .social_hero_word_block {*/
+/*        margin-bottom: 50px;*/
+/*    }*/
+/*}*/
+
+/*@media screen and (max-width: 1400px) {*/
+/*    .main_work {*/
+/*        width: 560px;*/
+/*        height: 372px;*/
+/*    }*/
+
+
+/*    .other_work {*/
+/*        height: 210px !important;*/
+/*    }*/
+
+/*    .other_work_image_wrap {*/
+/*        height: 140px !important;*/
+/*    }*/
+
+/*    .other_works_block {*/
+/*        top: 80px !important;*/
+/*    }*/
+/*}*/
+
+/*@media screen and (max-width: 1350px) {*/
+/*    .back-vector-left, .back-vector-right {*/
+/*        display: none !important;*/
+/*    }*/
+
+/*    .hero-woman-wrap {*/
+/*        height: auto;*/
+/*    }*/
+
+/*    .welcome-block {*/
+/*        margin-top: 100px;*/
+/*    }*/
+/*}*/
+
+/*@media screen and (max-width: 1300px) {*/
+/*    .last_works_block__right h2 {*/
+/*        font-size: 40px;*/
+/*    }*/
+/*}*/
+
+
+/*@media screen and (max-width: 1200px) {*/
+/*    .main_work {*/
+/*        width: 500px;*/
+/*        height: 322px;*/
+/*    }*/
+
+/*    .other_work {*/
+/*        height: 197px !important;*/
+/*    }*/
+
+/*    .other_work_image_wrap {*/
+/*        height: 127px !important;*/
+/*    }*/
+
+/*    .other_works_block {*/
+/*        top: 60px !important;*/
+/*    }*/
+
+/*    .last_works_block {*/
+/*        margin-top: 50px !important;*/
+/*    }*/
+/*}*/
+
+
+/*@media screen and (max-width: 1150px) {*/
+/*    .last_works_block__left, .change_ex_buttons {*/
+/*        display: none;*/
+/*    }*/
+
+/*    .other_works_block, .other_works_block_in {*/
+/*        position: initial;*/
+/*    }*/
+
+/*    .other_works_block {*/
+/*        width: 100%;*/
+/*        overflow-x: auto;*/
+/*        max-height: none;*/
+/*        padding-bottom: 15px;*/
+/*        height: 262px;*/
+/*    }*/
+
+/*    .last_works_block__right h2 {*/
+/*        font-size: 45px;*/
+/*    }*/
+
+/*    .other_works_block::-webkit-scrollbar {*/
+/*        height: 10px;*/
+/*    }*/
+
+/*    .other_work {*/
+/*        height: 217px !important;*/
+/*        min-width: 250px !important;*/
+/*    }*/
+
+/*    .other_work_image_wrap {*/
+/*        height: 147px !important;*/
+/*    }*/
+
+/*    .last_works_block {*/
+/*        flex-direction: column-reverse;*/
+/*    }*/
+
+/*    .last_works_block__right {*/
+/*        width: auto;*/
+/*        margin-bottom: 20px;*/
+/*    }*/
+
+/*    .last_works_block__right h2 {*/
+/*        margin-left: 0 !important;*/
+/*    }*/
+/*}*/
+
+/*@media screen and (max-width: 1000px) {*/
+
+/*    .actual-title {*/
+/*        margin-bottom: 80px;*/
+/*    }*/
+
+/*    .hero {*/
+/*        margin-left: auto !important;*/
+/*        max-width: none !important;*/
+/*    }*/
+
+/*    .social_hero_word_block {*/
+/*        justify-content: center;*/
+/*    }*/
+
+/*    .hero h1 {*/
+/*        margin: 50px 50px;*/
+/*        line-height: 70px;*/
+/*    }*/
+
+/*    #hero_tablet_text {*/
+/*        display: none !important;*/
+/*    }*/
+
+/*    .social_hero_word_block h2 {*/
+/*        font-size: calc(12px + 1.3vw);*/
+/*    }*/
+
+/*    .hero-woman-wrap {*/
+/*        width: 100% !important;*/
+/*        margin-top: 30px;*/
+/*    }*/
+
+/*    .woman {*/
+/*        margin: auto !important;*/
+/*    }*/
+
+
+/*}*/
+
+/*@media screen and (max-width: 688px) {*/
+/*    .other_works_block {*/
+/*        z-index: 0;*/
+/*        height: auto;*/
+/*    }*/
+
+/*    .other_works_block_in {*/
+/*        flex-wrap: wrap;*/
+/*        justify-content: center;*/
+/*    }*/
+
+/*    .last_works_block__right {*/
+/*        align-items: center;*/
+
+/*    }*/
+
+/*    .last_works_block {*/
+/*        margin-bottom: 100px;*/
+/*    }*/
+/*}*/
+
+
+/*@media screen and (max-width: 600px) {*/
+/*    .last_works_block__right_header_block {*/
+/*        justify-content: center;*/
+/*        flex-direction: column;*/
+/*    }*/
+/*}*/
+
+
+/*@media screen and (max-width: 498px) {*/
+/*    .social_hero_word_block h2 {*/
+/*        margin-top: 20px;*/
+/*    }*/
+
+/*    .woman {*/
+/*        width: 90%;*/
+/*        margin-bottom: 20px !important;*/
+/*    }*/
+
+/*    .social_hero_word_block {*/
+/*        margin-bottom: 20px;*/
+/*    }*/
+
+/*    .hero h1 {*/
+/*        font-size: 50px;*/
+/*        line-height: 50px;*/
+/*        margin: 20px auto;*/
+/*    }*/
+/*}*/
+
+
+/*@media screen and (max-width: 350px) {*/
+/*    .hero h1 {*/
+/*        font-size: 35px;*/
+/*    }*/
+
+/*    .account-mobile {*/
+/*        margin-left: 0 !important;*/
+/*    }*/
+/*}*/
+
+
+/*@media screen and (max-width: 300px) {*/
+/*    .hero h1 {*/
+/*        font-size: 32px;*/
+/*    }*/
+
+/*    .social_cta_button {*/
+/*        font-size: 22px;*/
+/*    }*/
+/*}*/
+
+
+
+
+
+
+
+
+
+
+
+
+

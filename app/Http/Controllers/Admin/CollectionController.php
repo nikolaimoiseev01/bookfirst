@@ -1,0 +1,845 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use App\Models\award;
+use App\Models\Chat;
+use App\Models\Collection;
+use App\Models\Col_status;
+use App\Models\collection_winner;
+use App\Models\EmailSent;
+use App\Models\Message;
+use App\Models\Participation;
+use App\Models\Participation_work;
+use App\Models\preview_comment;
+use App\Models\Printorder;
+use App\Models\User;
+use App\Models\vote;
+use App\Models\Work;
+use App\Notifications\AllParticipantsEmail;
+use App\Notifications\EmailNotification;
+use App\Notifications\UserNotification;
+use App\Service\DangerTasksService;
+use Carbon\Carbon;
+use Illuminate\Notifications\Notification;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
+use Jenssegers\Date\Date;
+use PhpOffice\PhpWord\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
+class CollectionController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
+     */
+    public function index()
+    {
+        $col_statuses = Col_status::orderBY('id')->get();
+        $collections = DB::table('collections')
+            ->leftJoin('participations', function ($join) {
+                $join->on('collections.id', '=', 'participations.collection_id');
+            })
+            ->Join('col_statuses', 'collections.col_status_id', '=', 'col_statuses.id')
+            ->select('collections.*', 'col_statuses.col_status',
+                DB::raw('sum((CASE WHEN participations.pat_status_id = 1 THEN 1 ELSE 0 END)) AS new_participants'),
+                DB::raw('sum(CASE WHEN participations.pat_status_id = 3 THEN 1 ELSE 0 END) AS total_participants')
+            )
+            ->where('col_status_id', '<>', 9)
+            ->groupBy('collections.id')
+            ->orderBy('collections.created_at', 'desc')
+            ->paginate(10);
+
+
+        return view('admin.collection.index', [
+            'collections' => $collections,
+            'col_statuses' => $col_statuses
+        ]);
+    }
+
+    public function closed_collections()
+    {
+        $col_statuses = Col_status::orderBY('id')->get();
+        $collections = Collection::where('col_status_id', 9)->orderBy('id', 'desc')->paginate(10);
+
+
+        return view('admin.collection.closed_collections', [
+            'collections' => $collections,
+            'col_statuses' => $col_statuses
+        ]);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
+     */
+    public function create()
+    {
+        $col_statuses = Col_status::orderBY('id')->get();
+
+        return
+            view('admin.collection.create', [
+                'col_statuses' => $col_statuses
+            ]);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+
+        File::makeDirectory('admin_files/Collections/' . $request->folder_name);
+        $new_col = new Collection();
+        $new_col->title = $request->title;
+        $new_col->col_desc = $request->col_desc;
+        $new_col->cover_2d = 'admin_files/Collections/' . $request->folder_name . '/' . $request->cover_2d->getClientOriginalName();
+        $new_col->cover_3d = 'admin_files/Collections/' . $request->folder_name . '/' . $request->cover_3d->getClientOriginalName();
+        $new_col->col_status_id = 1;
+        $new_col->col_date1 = $request->col_date1;
+        $new_col->col_date2 = $request->col_date2;
+        $new_col->col_date3 = $request->col_date3;
+        $new_col->col_date4 = $request->col_date4;
+        $new_col->save();
+        $request->cover_2d->move(public_path('admin_files/Collections/' . $request->folder_name . '/'), $request->cover_2d->getClientOriginalName());
+        $request->cover_3d->move(public_path('admin_files/Collections/' . $request->folder_name . '/'), $request->cover_3d->getClientOriginalName());
+        return redirect()->back()->withSuccess('Книга была добавлена!');
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param \App\Models\Collection $collection
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Collection $collection)
+    {
+        //
+    }
+
+    public function download_all_prints(Request $request)
+    {
+        $authors = Participation::where('collection_id', $request->col_id)->where('pat_status_id', 3)->where('printorder_id', '>', 0)->get();
+        $prints = Printorder::where('collection_id', $request->col_id)->where('paid_at', '<>', null)->get();
+
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('Номер отправления', 'ФИО');
+        $sheet->setCellValue('B1', 'Адрес');
+        $sheet->setCellValue('C1', 'Кол-во');
+        $sheet->setCellValue('D1', 'Трек-номер');
+        $sheet->setCellValue('E1', 'Для пересылки');
+
+        $spreadsheet->getActiveSheet()->getStyle("A1:D1")->getFont()->setBold(true);
+
+
+        foreach ($authors as $key => $author) {
+            $print = Printorder::where('id', $author['printorder_id'])->first();
+            $address = $print['send_to_country'] . ', ' .
+                $print['send_to_city'] . ', ' . $print['send_to_address'];
+
+            $print_address_to_envelope = "Кому: {$print['send_to_name']} \n Куда: {$address} \n Индекс: {$print['send_to_index']} \n Телефон: {$print['send_to_tel']}";
+            $print_address_to_typography = print_address($print);
+
+            $sheet->setCellValue("A" . ($key + 2), $print['send_to_name']);
+            $sheet->setCellValue("B" . ($key + 2), print_address($print));
+            $sheet->setCellValue("C" . ($key + 2), $print['books_needed']);
+            $sheet->setCellValue("E" . ($key + 2), $print_address_to_envelope);
+        }
+
+        /* Наш экземпляр */
+        $print_address_to_envelope = "Кому: 'Моисеев Николай Евгеньевич' \n Куда: 'Россия. г. Москва, ул. Милашенкова 3к2, кв. 83' \n Индекс: 127322 \n Телефон: +79095713756";
+        $sheet->setCellValue("A" . ($key + 3), 'Моисеев Николай Евгеньевич');
+        $sheet->setCellValue("B" . ($key + 3), 'Россия, Москва, Милашенкова 3к2, кв. 83, индекс: 127322, +79095713756');
+        $sheet->setCellValue("C" . ($key + 3), 1);
+        $sheet->setCellValue("E" . ($key + 3), $print_address_to_envelope);
+
+        foreach (range('A', 'D') as $columnID) {
+            $spreadsheet->getActiveSheet()->getColumnDimension($columnID)
+                ->setAutoSize(true);
+        }
+
+
+        $writer = new Xlsx($spreadsheet);
+        $col_title = 'Печать ' . Collection::where('id', $request->col_id)->value('title');
+        $writer->save($col_title . '.xlsx');
+        return response()->download($col_title . '.xlsx')->deleteFileAfterSend(true);
+
+    }
+
+    public function download_cdek_prints(Request $request)
+    {
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A1', 'Номер отправления');
+        $sheet->setCellValue('B1', 'Город получателя');
+        $sheet->setCellValue('C1', 'Индекс города получателя');
+        $sheet->setCellValue('D1', 'Получатель');
+        $sheet->setCellValue('E1', 'ФИО получателя');
+        $sheet->setCellValue('F1', 'Адрес получателя');
+        $sheet->setCellValue('G1', 'Код ПВЗ');
+        $sheet->setCellValue('H1', 'Телефон получателя');
+        $sheet->setCellValue('I1', 'Доп сбор за доставку с получателя в т.ч. НДС');
+        $sheet->setCellValue('J1', 'Ставка НДС с доп.сбора за доставку');
+        $sheet->setCellValue('K1', 'Сумма НДС с доп.сбора за доставку');
+        $sheet->setCellValue('L1', 'Истинный продавец');
+        $sheet->setCellValue('M1', 'Комментарий');
+        $sheet->setCellValue('N1', 'Порядковый номер места');
+        $sheet->setCellValue('O1', 'Вес места, кг');
+        $sheet->setCellValue('P1', 'Длина места, см');
+        $sheet->setCellValue('Q1', 'Ширина места, см');
+        $sheet->setCellValue('R1', 'Высота места, см');
+        $sheet->setCellValue('S1', 'Описание места');
+        $sheet->setCellValue('T1', 'Код маркировки');
+        $sheet->setCellValue('U1', 'Код товара/артикул');
+        $sheet->setCellValue('V1', 'Наименование товара');
+        $sheet->setCellValue('W1', 'Стоимость единицы товара');
+        $sheet->setCellValue('X1', 'Оплата с получателя за ед товара в т.ч. НДС');
+        $sheet->setCellValue('Y1', 'Вес товара, кг');
+        $sheet->setCellValue('Z1', 'Количество, шт');
+        $sheet->setCellValue('AA1', 'Ставка НДС, %');
+        $sheet->setCellValue('AB1', 'Сумма НДС за ед.');
+        $sheet->setCellValue('AC1', 'Наименование компании');
+        $sheet->setCellValue('AD1', 'Страна продавца');
+        $sheet->setCellValue('AE1', 'Форма собственности');
+        $sheet->setCellValue('AF1', 'ИНН истинного продавца');
+        $sheet->setCellValue('AG1', 'Телефон истинного продавца');
+
+        $spreadsheet->getActiveSheet()->getStyle("A1:D1")->getFont()->setBold(true);
+
+//        $sendings = Participation::where('collection_id', $request->col_id)->where('pat_status_id', 3)->where('printorder_id', '>', 0)->orderBy('books_needed')->get();
+
+        $sendings = Participation::join('printorders', 'participations.printorder_id', '=', 'printorders.id')
+            ->where('participations.collection_id', $request->col_id)
+            ->where('participations.pat_status_id', 3)
+            ->where('participations.printorder_id', '>', 0)
+            ->orderBy('printorders.books_needed')
+            ->select('participations.*') // важно, чтобы вернулись модели Participation
+            ->get();
+
+
+        $book_weight = $request->book_weight;
+        $book_thickness = $request->book_thickness; // мм
+
+
+
+        foreach ($sendings as $key => $sending) {
+            $print = Printorder::where('id', $sending['printorder_id'])->first();
+
+            $comment = $sending->collection['title'] . ', ' . $print['books_needed'] . ' шт.';
+            $sending_weight = ($book_weight * $print['books_needed'] + 20) / 1000;
+            $sending_thickness = $book_thickness * $print['books_needed'] + 1;
+
+            $shor_collection_nm = str_replace(['Современный ', 'Поэзии. ', 'Сокровенные ', 'Выпуск '], '', $sending->collection['title']);
+            $cdek_desc = $shor_collection_nm . '. ' . $print['books_needed'] . ' шт. ' . 'part_id=' . $sending['id'] . '. ' . 'print_id=' . $print['id'];
+
+            $address = collect(json_decode($print['address']));
+            if ($address['type'] == 'DaData RUS') {
+                $city = $address['data']->city;
+                $postal_code = $address['data']->postal_code;
+            } else {
+                $city = $print['send_to_city'];
+                $postal_code = $print['send_to_index'];
+            }
+
+            $sheet->setCellValue('A' . $key + 2, $cdek_desc); // Номер отправления
+            $sheet->setCellValue('B' . $key + 2, $city); // Город получателя
+            $sheet->setCellValue('C' . $key + 2, $postal_code); // Индекс города получателя
+            $sheet->setCellValue('D' . $key + 2, $print['send_to_name']); // Получатель
+            $sheet->setCellValue('E' . $key + 2, $print['send_to_name']); // ФИО Получателя
+            $sheet->setCellValue('F' . $key + 2, $address['unrestricted_value']); // Адрес получателя
+            $sheet->setCellValue('G' . $key + 2, ''); // КОД ПВЗ
+            $sheet->setCellValue('H' . $key + 2, $print['send_to_tel']); // Телефон получателя
+            $sheet->setCellValue('I' . $key + 2, 1); // Доп сбор за доставку с получателя в т.ч. НДС
+            $sheet->setCellValue('J' . $key + 2, 0); // Ставка НДС с доп.сбора за доставку
+            $sheet->setCellValue('K' . $key + 2, 0); // Сумма НДС с доп.сбора за доставку
+            $sheet->setCellValue('L' . $key + 2, '');
+            $sheet->setCellValue('M' . $key + 2, $comment); // Комментарий
+            $sheet->setCellValue('N' . $key + 2, 1); // Порядковый номер места
+            $sheet->setCellValue('O' . $key + 2, $sending_weight); // Вес места, кг
+            $sheet->setCellValue('P' . $key + 2, '22,9'); // Длина места, см
+            $sheet->setCellValue('Q' . $key + 2, '16,5'); // Ширина места, см
+            $sheet->setCellValue('R' . $key + 2, $sending_thickness); // Высота места, см
+            $sheet->setCellValue('S' . $key + 2, "Книги ({$print['books_needed']} шт.)"); // Описание места
+            $sheet->setCellValue('T' . $key + 2, '');// Код маркировки
+            $sheet->setCellValue('U' . $key + 2, $cdek_desc); // Код товара/артикул
+            $sheet->setCellValue('V' . $key + 2, 'Книги'); // Наименование товара
+            $sheet->setCellValue('W' . $key + 2, 0); // Стоимость единицы товара
+            $sheet->setCellValue('X' . $key + 2, 0); // Оплата с получателя за ед товара в т.ч. НДС
+            $sheet->setCellValue('Y' . $key + 2, $sending_weight); // Вес товара, кг
+            $sheet->setCellValue('Z' . $key + 2, 1); // Количество, шт
+            $sheet->setCellValue('AA' . $key + 2, 0); // Ставка НДС, %
+            $sheet->setCellValue('AB' . $key + 2, 0); // Сумма НДС за ед.
+            $sheet->setCellValue('AC' . $key + 2, ''); // Наименование компании
+            $sheet->setCellValue('AD' . $key + 2, ''); // Страна продавца
+            $sheet->setCellValue('AE' . $key + 2, ''); // Форма собственности
+            $sheet->setCellValue('AF' . $key + 2, ''); // ИНН истинного продавца
+            $sheet->setCellValue('AG' . $key + 2, ''); // Телефон истинного продавца
+        }
+
+        foreach (range('A', 'D') as $columnID) {
+            $spreadsheet->getActiveSheet()->getColumnDimension($columnID)
+                ->setAutoSize(true);
+        }
+
+
+        $writer = new Xlsx($spreadsheet);
+        $col_title = 'Печать ' . Collection::where('id', $request->col_id)->value('title');
+        $writer->save($col_title . '.xlsx');
+        return response()->download($col_title . '.xlsx')->deleteFileAfterSend(true);
+
+    }
+
+    public function move_to_another_collection(Request $request)
+    {
+        $collection_id_from = $request->collection_from;
+        $collection_to = Collection::where('id', $request->collection_to)->first();
+
+        $participants = Participation::where('collection_id', $collection_id_from)->where('pat_status_id', 2)->get();
+
+        foreach ($participants as $participantion) {
+
+            $participation_check = Participation::where('user_id', $participantion['user_id'])->where('collection_id', $collection_to['id'])->first();
+
+            if (!($participation_check ?? null)) {
+
+                // ---- Меняем сборник в участии ---- //
+                Participation::where('id', $participantion['id'])->update(array(
+                    'collection_id' => $collection_to['id']
+                ));
+
+                // ---- Меняем сборник в печатном заказе ---- //
+                if ($participation['printorder_id'] ?? 0 > 0) {
+                    Printorder::where('id', $participantion['printorder_id'])->update(array(
+                        'collection_id' => $collection_to['id']
+                    ));
+                }
+
+                // ---- Меняем сборник в чате ---- //
+                Chat::where('collection_id', $participantion['collection_id'])
+                    ->where('user_created', $participantion['user_id'])
+                    ->update(array(
+                        'collection_id' => $collection_to['id'],
+                        'title' => 'Личный чат по сборнику: ' . $collection_to['title']
+                    ));
+            }
+        }
+
+        session()->flash('success', 'change_printorder');
+        session()->flash('alert_type', 'success');
+        session()->flash('alert_title', 'Успешно!');
+        session()->flash('alert_text', 'Перенесли всех неоплаченных в следующий сборник!');
+
+        return redirect()->back();
+
+    }
+
+
+    public function create_col_file(Request $request)
+    {
+        $authors = Participation::where('collection_id', $request->col_id)->orderBy('paid_at', 'asc')->where('pat_status_id', 3)->get();
+
+        // Creating the new document...
+        $phpWord = new \PhpOffice\PhpWord\PhpWord();
+
+        // Делаем стили для разных сборников
+        if (str_contains($authors[1]->collection['title'], 'Дух')) {
+            $page_size = "A5";
+            $author_name_style = array('name' => 'a_BentTitulNr', 'size' => 16, 'color' => 'F79646', 'bold' => true);
+            $author_name_footer_style = array('name' => 'Bad Script', 'size' => 14, 'color' => '000000', 'bold' => true);
+            $work_title_style = array('name' => 'Bad Script', 'size' => 16, 'color' => 'FF0000', 'bold' => true);
+            $work_title_align = array('align' => 'left');
+            $work_text_style = array('name' => 'Ayuthaya', 'size' => 10, 'color' => '000000', 'bold' => false);
+            $phpWord->getSettings()->setMirrorMargins(true);
+
+        } else {
+            $page_size = "A4";
+            $author_name_style = array('name' => 'Days', 'size' => 16, 'color' => 'F79646', 'bold' => true);
+            $author_name_footer_style = array('name' => 'Accuratist', 'size' => 14, 'color' => '000000', 'bold' => false);
+            $work_title_style = array('name' => 'Ayuthaya', 'size' => 14, 'color' => 'FF0000', 'bold' => false, 'italic' => true);
+            $work_title_align = array('align' => 'center');
+            $work_text_style = array('name' => 'Calibri Light', 'size' => 14, 'color' => '000000', 'bold' => false);
+        }
+
+        $PidPageSettings = array(
+            'marginTop' => 1000,
+            'footerHeight' => \PhpOffice\PhpWord\Shared\Converter::inchToTwip(.35),
+            'marginBottom' => 1100,
+            "paperSize" => $page_size,
+            'headerHeight' => \PhpOffice\PhpWord\Shared\Converter::inchToTwip(.28)
+        );
+
+
+        foreach ($authors as $author) {
+
+            // Создаем новый раздел для автора
+            $section = $phpWord->addSection($PidPageSettings);
+
+            $phpWord->setDefaultParagraphStyle(
+                array(
+                    'spaceAfter' => \PhpOffice\PhpWord\Shared\Converter::pointToTwip(0),
+                    'spacing' => 120,
+                    'lineHeight' => 1,
+                )
+            );
+
+            if ($author['nickname']) {
+                $author_name = $author['nickname'];
+            } else {
+                $author_name = $author['name'] . ' ' . $author['surname'];
+            }
+
+            // Пишем имя автора
+            $section->addText(
+                $author_name,
+                $author_name_style,
+                ['align' => 'center']
+            );
+
+            // Делаем отступ от автора
+            $section->addText(' ',
+                array('name' => 'Calibri', 'size' => 5, 'color' => '000000', 'bold' => false)
+            );
+
+            // Пишем имя автора в колонтитул
+            $footer = $section->addFooter();
+            $footer->addText(
+                $author_name,
+                $author_name_footer_style
+            );
+
+            // Делаем изображение в хедер
+            if (str_contains($author->collection['title'], 'Дух')) {
+                $header = $section->addHeader();
+                $header->firstPage();
+                $header->addText("");
+
+                $header_sub = $section->addHeader();
+                $header_sub->addImage('img/duh_header_img.png',
+                    array('width' => 200,
+                        'height' => 27.27,
+                        'alignment' => 'center'
+                    )
+                );
+            }
+
+
+            $author_works = Participation_work::where('participation_id', $author['id'])->get();
+
+            foreach ($author_works as $author_work) {
+
+                $work = Work::where('id', $author_work['work_id'])->first();
+                // Пишем название
+                $section->addText($work['title'],
+                    $work_title_style,
+                    $work_title_align
+                );
+
+                $work_text = str_replace("\n", '<w:br/>', htmlspecialchars($work['text']));
+
+                \PhpOffice\PhpWord\Settings::setOutputEscapingEnabled(false);
+
+
+                // Пишем текст работы
+                $section->addText(
+//                        xmlEntities(htmlentities($work_text)),
+                    $work_text,
+                    $work_text_style
+                );
+            }
+
+        }
+
+
+        // Создаем контактную информацию авторов
+
+        $section = $phpWord->addSection($PidPageSettings);
+        $table = $section->addTable();
+
+        foreach ($authors as $author) {
+            if ($author['nickname']) {
+                $author_name = $author['nickname'];
+            } else {
+                $author_name = $author['name'] . ' ' . $author['surname'];
+            }
+            $table->addRow();
+            $table->addCell(1750)->addText($author_name);
+            $table->addCell(1750)->addText($author->user['email']);
+        }
+
+        \PhpOffice\PhpWord\Settings::setCompatibility(false);
+        \PhpOffice\PhpWord\Settings::setOutputEscapingEnabled(false);
+        // Saving the document as HTML file...
+        $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
+        $col_title = Collection::where('id', $request->col_id)->value('title');
+        $objWriter->save($col_title . '.docx');
+        return response()->download($col_title . '.docx')->deleteFileAfterSend(true);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param \App\Models\Collection $collection
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
+     */
+    public function edit(Collection $collection)
+    {
+        $col_statuses = Col_status::orderBY('id')->get();
+        $participations = Participation::orderBy('pat_status_id', 'asc')->orderBy('paid_at', 'asc')->orderBy('check_price', 'desc')->where('collection_id', $collection->id)->get();
+
+
+
+        $filteredParticipations = $participations->where('pat_status_id', 3);
+
+        // Получим сумму поля books_needed из связанной модели printorder
+        $totalBooksNeeded = $filteredParticipations->sum(function ($participation) {
+            return $participation->printorder ? $participation->printorder->books_needed : 0;
+        });
+
+        $collection_title = DB::table('collections')->where('id', $collection->id)->value('title');
+
+        $printorders = PrintOrder::orderBy('id', 'desc')->where('collection_id', $collection->id)->get();
+
+        $printorder_groups = PrintOrder::select('books_needed', DB::raw('count(*) as total'))
+            ->join('participations', 'participations.printorder_id', '=', 'printorders.id') // Предполагается, что у вас есть внешний ключ на PrintOrder
+            ->where('participations.pat_status_id', 3) // Условие на статус участия
+            ->where('participations.collection_id', $collection->id) // Условие на collection_id
+//            ->where('printorders.id', 1192)
+            ->groupBy('books_needed')
+            ->orderBy('books_needed')
+            ->get()
+            ->toArray();
+//        $printorder_groups = PrintOrder::join('participations', 'participations.printorder_id', '=', 'printorders.id') // Предполагается, что у вас есть внешний ключ на PrintOrder
+//            ->where('printorders.collection_id', $collection->id) // Условие на collection_id
+//            ->get()
+//            ->toArray();
+//        dd(collect($printorder_groups));
+
+        $pre_comments = preview_comment::where('collection_id', $collection->id)->with('participation')->get();
+//        $votes = vote::where('collection_id', $collection->id)->with('Collection')->with('Participation')->get();
+        $votes = DB::table('votes')
+            ->Join('participations as p1', function ($join) {
+                $join->on('p1.user_id', '=', 'votes.user_id_from');
+                $join->on('p1.collection_id', '=', 'votes.collection_id');
+            })
+            ->Join('participations as p2', function ($join) {
+                $join->on('p2.user_id', '=', 'votes.user_id_to');
+                $join->on('p2.collection_id', '=', 'votes.collection_id');
+            })
+            ->select('votes.*'
+                , 'p1.id as participation_id_from'
+                , 'p2.id as participation_id_to'
+                , 'p1.name as user_from_name'
+                , 'p1.surname as user_from_surname'
+                , 'p1.nickname as user_from_nickname'
+                , 'p2.name as user_to_name'
+                , 'p2.surname as user_to_surname'
+                , 'p2.nickname as user_to_nickname'
+            )
+            ->where('votes.collection_id', $collection->id)
+            ->get();
+
+        $winners_candidates = DB::table('votes')
+            ->Join('participations as p2', function ($join) {
+                $join->on('p2.user_id', '=', 'votes.user_id_to');
+                $join->on('p2.collection_id', '=', 'votes.collection_id');
+            })
+            ->select('p2.id as participation_id', 'p2.name', 'p2.surname', 'p2.nickname'
+                , DB::raw('count(votes.user_id_from) AS votes_got')
+            )
+            ->where('votes.collection_id', $collection->id)
+            ->groupBy('votes.user_id_to')
+            ->orderBy('votes_got', 'desc')
+            ->get();
+        $emails_sent = EmailSent::where('collection_id', $collection->id)->get();
+        $winners = collection_winner::where('collection_id', $collection->id)->orderBy('place', 'asc')->get();
+
+        $collections_to_update = Collection::OrderBy('created_at', 'desc')->get();
+
+        return view('admin.collection.collection-page', [
+            'collection' => $collection,
+            'col_statuses' => $col_statuses,
+            'participations' => $participations,
+            'collection_title' => $collection_title,
+            'printorders' => $printorders,
+            'pre_comments' => $pre_comments,
+            'votes' => $votes,
+            'winners_candidates' => $winners_candidates,
+            'emails_sent' => $emails_sent,
+            'winners' => $winners,
+            'collections_to_update' => $collections_to_update,
+            'totalBooksNeeded' => $totalBooksNeeded,
+            'printorder_groups' => $printorder_groups
+        ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Collection $collection
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, Collection $collection)
+    {
+
+        App::setLocale('ru');
+//dd($request->folder_name);
+
+        if (($request->col_status_id === "2") && $collection->pre_var === null && !$request->file('pre_var')) {
+            session()->flash('success', 'change_printorder');
+            session()->flash('alert_type', 'error');
+            session()->flash('alert_title', 'Что-то пошло не так :(');
+            session()->flash('alert_text', 'Сначала нужно загрузить файл предварительного варианта!');
+        } elseif (!$request->folder_name) {
+            session()->flash('success', 'change_printorder');
+            session()->flash('alert_type', 'error');
+            session()->flash('alert_title', 'Что-то пошло не так :(');
+            session()->flash('alert_text', 'Укажите название папки!');
+        } else {
+
+            // Сохраняем файлы из формы
+            if (!is_null($request->file('cover_2d'))) {
+                $cover_2d = 'admin_files/Collections/' . $request->folder_name . '/' . $request->file('cover_2d')->getClientOriginalName();
+                $collection->cover_2d = $cover_2d;
+                File::delete($collection->cover_2d);
+                $request->file('cover_2d')->move(public_path('admin_files/Collections/' . $request->folder_name . '/'), $request->file('cover_2d')->getClientOriginalName());
+            }
+            if (!is_null($request->file('cover_3d'))) {
+                $cover_3d = 'admin_files/Collections/' . $request->folder_name . '/' . $request->file('cover_3d')->getClientOriginalName();
+                $collection->cover_3d = $cover_3d;
+                File::delete($collection->cover_3d);
+                $request->file('cover_3d')->move(public_path('admin_files/Collections/' . $request->folder_name . '/'), $request->file('cover_3d')->getClientOriginalName());
+            }
+
+            if (!is_null($request->file('pre_var'))) {
+                $pre_var = 'admin_files/Collections/' . $request->folder_name . '/' . $request->file('pre_var')->getClientOriginalName();
+                File::delete($collection->pre_var);
+                $collection->pre_var = $pre_var;
+                $request->file('pre_var')->move(public_path('admin_files/Collections/' . $request->folder_name . '/'), $request->file('pre_var')->getClientOriginalName());
+            }
+
+
+            // Создаем тексты уведомлений
+
+            if ($collection['col_status_id'] === $request->col_status_id
+                && $collection['amazon_link'] === null
+                && $request->amazon_link <> null) { // Если статус не менялся, а просто появилась ссылка
+
+                $subject = "Сборник '" . $request->title . "' успешно появился на Amazon.com! ";
+                $text = "Ссылка на покупку доступна на странице наших сборников.";
+
+            } elseif ($request->col_status_id == 2) {
+                $subject = 'Процесс издания сборника';
+                $text = "Спешим вам сообщить, что произошла смена этапа издания сборника: '" . $request->title .
+                    "'! Сборник сменил свой статус на \"предварительная проверка\". Теперь его можно скачать на странице участия и внести правки. " .
+                    "Срок внесения изменений: до " . Date::parse($collection->col_date3)->format('j F') . " (19:59 МСК). " .
+                    "Вся подробная информация об издании сборника и вашем процессе указана на странице участия.";
+
+            } elseif ($request->col_status_id == 3) {
+                $subject = 'Процесс издания сборника';
+                $text = "Спешим вам сообщить, что произошла смена этапа издания сборника: '" . $request->title .
+                    "'! В сборнике были учтены все исправления, и сейчас начинается печать экземпляров. " .
+                    "Обычно это занимает 14 рабочих дней. Как только экземпляры будут напечатаны, Вы получите оповещние об этом по Email. "
+                    . "Далее в личном кабинете на странице участия Вы сможете отследить свою посылку. " .
+                    "Вся подробная информация об издании сборника и вашем процессе указана на странице участия.";
+
+
+            } elseif ($request->col_status_id == 9) {
+
+                $subject = 'Процесс издания сборника';
+                $text = "Произошла смена этапа издания сборника: '" . $request->title .
+                    "'! Спешим сообщить, что все печатные экземпляры были успешно отправлены в указанные пункты назначения. На странице участия Вы всегда можете отследить нахождение лично Вашей посылки.";
+
+            }
+
+
+            // Посылаем уведомление всем оплатившим пользователям
+            if (!ENV('APP_DEBUG')) {
+                $users_from_participation = Participation::where('collection_id', $collection->id)->where('pat_status_id', 3)->get('user_id')->toArray();
+                $users = User::whereIn('id', $users_from_participation)->get();
+                foreach ($users as $user) {
+                    $button_link = route('homePortal') . "/myaccount/collections/" . $collection->id . "/participation/" . Participation::where([['user_id', $user->id], ['collection_id', $collection->id]])->value('id');
+                    try {
+                        $user->notify(new EmailNotification(
+                            $subject,
+                            $user['name'],
+                            $text,
+                            'Страница участия',
+                            $button_link));
+                    } catch (\Exception $e) {
+                        continue;
+                    }
+                    \Illuminate\Support\Facades\Notification::send($user, new UserNotification(
+                        $subject,
+                        $button_link
+                    ));
+
+                }
+            }
+
+            // Обновляем значения сборника
+            $collection->title = $request->title;
+            $collection->col_desc = $request->col_desc;
+            $collection->col_status_id = $request->col_status_id;
+            $collection->col_date1 = $request->col_date1;
+            $collection->col_date2 = $request->col_date2;
+            $collection->col_date3 = $request->col_date3;
+            $collection->col_date4 = $request->col_date4;
+            $collection->amazon_link = $request->amazon_link;
+
+            $collection->save();
+            session()->flash('success', 'change_printorder');
+            session()->flash('alert_type', 'success');
+            session()->flash('alert_title', 'Сборник успешно обновлен!');
+
+        }
+        (new DangerTasksService())->update($manual_update = true);
+        return redirect()->back();
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param \App\Models\Collection $collection
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Collection $collection)
+    {
+        //
+    }
+
+    public function send_email_all_participants(Request $request)
+    {
+
+        if ($request->subject === "" || $request->email_text === null || $request->email_text === "" || $request->email_text === null) {
+            session()->flash('success', 'change_printorder');
+            session()->flash('alert_type', 'error');
+            session()->flash('alert_title', 'Что-то пошло не так :(');
+            session()->flash('alert_text', 'Не все поля заполнены :(');
+            return redirect()->back();
+        } else {
+
+
+            $users_from_participation = Participation::where('collection_id', $request->col_id)->where('pat_status_id', 3)->get('user_id')->toArray();
+            $users = User::whereIn('id', $users_from_participation)->get();
+            $sent_to_users = "";
+
+            foreach ($users as $user) {
+                $sent_to_users = $sent_to_users . $user['id'] . ";";
+                $user->notify(new AllParticipantsEmail(
+                        $request->subject,
+                        $user['name'],
+                        $request->email_text,
+                        route('homePortal') . "/myaccount/collections/" . $request->col_id . "/participation/" . Participation::where([['user_id', $user->id], ['collection_id', $request->col_id]])->value('id'))
+                );
+            }
+
+
+            // ---- Сохраняем письмо! ---- //
+            $new_EmailSent = new EmailSent();
+            $new_EmailSent->collection_id = $request->col_id;
+            $new_EmailSent->subject = $request->subject;
+            $new_EmailSent->email_text = $request->email_text;
+            $new_EmailSent->sent_to_user = substr($sent_to_users, 0, -1);
+            $new_EmailSent->save();
+            // ---- //// Сохраняем письмо! ---- //
+
+
+            session()->flash('success', 'change_printorder');
+            session()->flash('alert_type', 'success');
+            session()->flash('alert_title', 'Успешно!');
+            session()->flash('alert_text', 'Мы послали всем участникам емейлы :)');
+
+            return redirect()->back();
+        }
+    }
+
+    public function change_all_preview_collection_comment_status(Request $request)
+    {
+        $prev_comments = preview_comment::where('collection_id', $request->collection_id)
+            ->update(['status_done' => 1]);
+
+        return redirect(url()->previous());
+    }
+
+
+    public function add_winner($collection_id, Request $request)
+    {
+        $user = User::where('id', Participation::where('id', $request->winner_participation_id)->value('user_id'))->first();
+        $collection = Collection::where('id', $collection_id)->first();
+        $chat = Chat::where('user_created', $user['id'])->where('collection_id', $collection_id)->first();
+        $message_text_email = "Поздравляем! Вы заняли " . $request->place . " место в конкурсе авторов сборника '" . $collection['title'] . "'! " .
+            "Сейчас необходимо прислать небольшой блок информации о себе для добавления в сборник. Пожалуйста, отправьте его в чате на странице участия.";
+
+        $message_text_chat = "Здравствуйте, " . $user['name'] . "!" . "\n\n" .
+            "Спешим Вам сообщить, что вы заняли " . $request->place . " место в конкурсе авторов сборника '" . $collection['title'] . "'!\n" .
+            "За вас проголосовало большое количество участников! Пожалуйста, пришлите информацию о себе, которую вы бы хотели видеть в сборнике (она будет вставлена в блок призеров конкурса)." . "\n\n" .
+            "О том, как получить приз, мы сообщим позднее." . "\n\n" .
+            "Поздравляем!";
+
+        // Создаем награду юзеру
+        award::create([
+            'user_id' => $user['id'],
+            'award_type_id' => $request->place,
+            'collection_id' => $collection['id']
+        ]);
+
+        (new DangerTasksService())->update($manual_update = true);
+
+        // ---- Сохраняем победителя! ---- //
+        $new_winner = new collection_winner();
+        $new_winner->collection_id = $collection['id'];
+        $new_winner->participation_id = $request->winner_participation_id;
+        $new_winner->place = $request->place;
+        $new_winner->user_id = $user['id'];
+        $new_winner->save();
+        // ---- //// Сохраняем победителя! ---- //
+
+        // ---- //// Пишем по почте! ---- //
+        $user->notify(new EmailNotification(
+                'Вы были выбраны призёром конкурса!',
+                $user['name'],
+                $message_text_email,
+                "На страницу участия",
+                route('participation_index', ['participation_id' => $request->winner_participation_id, 'collection_id' => $collection['id']]))
+        );
+
+        // ---- //// Пишем в личном кабинете (нотификация) ---- //
+        \Illuminate\Support\Facades\Notification::send($user, new UserNotification(
+            'Вы были выбраны призёром конкурса!',
+            route('participation_index', ['participation_id' => $request->winner_participation_id, 'collection_id' => $collection['id']])
+        ));
+
+        // ---- //// Пишем в чат! ---- //
+        $new_message = new Message();
+        $new_message->chat_id = $chat['id'];
+        $new_message->user_from = 2;
+        $new_message->user_to = $user['id'];
+        $new_message->text = $message_text_chat;
+        $new_message->save();
+
+        session()->flash('success', 'change_printorder');
+        session()->flash('alert_type', 'success');
+        session()->flash('alert_title', 'Успешно!');
+        session()->flash('alert_text', 'Выбрали победителя и даже послали письмо :)');
+
+        return redirect()->back();
+
+
+    }
+
+
+}
