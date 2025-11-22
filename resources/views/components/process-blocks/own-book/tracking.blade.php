@@ -1,8 +1,8 @@
 <x-process-blocks.template status="{{$blockColor}}" title="Отслеживание">
     <div class="p-4">
-        <p class="">Статус издания: <b>{{$ownBook['status_general']}}</b></p>
-        <x-ui.link-simple :isLivewire="false" href="#Моя заявка">Подробности заказа</x-ui.link-simple>
         @if ($ownBook->firstPrintOrder() ?? null)
+            <p class="">Статус издания: <b>{{$ownBook['status_general']}}</b></p>
+            <x-ui.link-simple :isLivewire="false" href="#Моя заявка">Подробности заказа</x-ui.link-simple>
             @if($ownBook['status_general']->order() < \App\Enums\OwnBookStatusEnums::PRINT_PAYMENT_REQUIRED->order())
                 <p class="text-dark-300">Есть заказ печатных экземпляров.
                     Как только работа с макетами будет завершена, в этом блоке появится возможность оплатить заказ.</p>
@@ -24,7 +24,7 @@
                 <x-ui.link>Отследить</x-ui.link>
             @endif
         @else
-            <p class="text-green-500 font-normal">У вас нет заказа печатных экземплярв</p>
+            <p class="text-dark-300 font-normal">У вас нет заказа печатных экземплярв</p>
         @endif
     </div>
 </x-process-blocks.template>

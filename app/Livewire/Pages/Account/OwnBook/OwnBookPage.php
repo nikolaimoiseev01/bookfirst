@@ -18,7 +18,7 @@ class OwnBookPage extends Component
     }
 
     public function mount($own_book_id) {
-        $this->ownBook = OwnBook::where('id', $own_book_id)->with('chat', 'works', 'media', 'ownBookStatus', 'ownBookCoverStatus', 'ownBookInsideStatus')->first();
+        $this->ownBook = OwnBook::where('id', $own_book_id)->with('chat', 'works', 'media')->first();
     }
 
     public function createPayment($amount, $type)

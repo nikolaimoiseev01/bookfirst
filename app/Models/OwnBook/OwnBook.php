@@ -27,19 +27,6 @@ class OwnBook extends Model implements HasMedia
     {
         return $this->belongsTo(User::class);
     }
-
-    public function ownBookStatus(): BelongsTo
-    {
-        return $this->belongsTo(OwnBookStatus::class);
-    }
-    public function ownBookInsideStatus(): BelongsTo
-    {
-        return $this->belongsTo(OwnBookInsideStatus::class);
-    }
-    public function ownBookCoverStatus(): BelongsTo
-    {
-        return $this->belongsTo(OwnBookCoverStatus::class);
-    }
     public function printOrders(): MorphMany
     {
         return $this->morphMany(PrintOrder::class, 'model');

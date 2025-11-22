@@ -34,10 +34,10 @@
     </div>
     <div class="flex flex-col pl-4">
         @if($ownBook['status_general']->order() < 9)
-            <x-process-blocks.ownbook.general :own-book="$ownBook"/>
-            <x-process-blocks.ownbook.payment :own-book="$ownBook"/>
-            <x-process-blocks.ownbook.preview :own-book="$ownBook"/>
-            <x-process-blocks.ownbook.tracking :own-book="$ownBook"/>
+            <x-process-blocks.own-book.general :own-book="$ownBook"/>
+            <x-process-blocks.own-book.payment :own-book="$ownBook"/>
+            <x-process-blocks.own-book.preview :own-book="$ownBook"/>
+            <x-process-blocks.own-book.tracking :own-book="$ownBook"/>
         @else
             <div class="flex flex-col py-8 px-4 gap-4">
                 <span
