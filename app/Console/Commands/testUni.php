@@ -27,6 +27,6 @@ class testUni extends Command
     public function handle()
     {
         $text = DB::connection('old_mysql')->table('work_comments')->get()[0];
-        dd(bin2hex($text->text));
+        dd($text->text);
     }
 }
