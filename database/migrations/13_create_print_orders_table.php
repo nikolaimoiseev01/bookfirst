@@ -15,7 +15,6 @@ return new class extends Migration {
             $table->string('status')->nullable();
             $table->string('type')->nullable();
             $table->foreignId('user_id')->nullable();
-            $table->foreignId('print_order_status_id')->nullable();
             $table->nullableMorphs('model');
             $table->bigInteger('books_cnt')->nullable();
             $table->string('inside_color')->nullable();
@@ -26,7 +25,7 @@ return new class extends Migration {
             $table->string('receiver_name')->nullable();
             $table->string('receiver_telephone')->nullable();
             $table->string('country')->nullable();
-            $table->bigInteger('address_type_id')->nullable();
+            $table->string('address_type')->nullable();
             $table->json('address_json');
             $table->dateTime('paid_at')->nullable();
             $table->string('track_number')->nullable();

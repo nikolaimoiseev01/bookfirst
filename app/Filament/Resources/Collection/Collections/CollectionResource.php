@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Collection\Collections;
 
+use App\Enums\ParticipationStatusEnums;
 use App\Filament\Resources\Collection\Collections\Pages\CreateCollection;
 use App\Filament\Resources\Collection\Collections\Pages\EditCollection;
 use App\Filament\Resources\Collection\Collections\Pages\ListCollections;
@@ -11,11 +12,13 @@ use App\Filament\Resources\Collection\Collections\RelationManagers\PrintOrdersRe
 use App\Filament\Resources\Collection\Collections\Schemas\CollectionForm;
 use App\Filament\Resources\Collection\Collections\Tables\CollectionsTable;
 use App\Models\Collection\Collection;
+use App\Models\Collection\Participation;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class CollectionResource extends Resource
 {
@@ -56,4 +59,10 @@ class CollectionResource extends Resource
             'edit' => EditCollection::route('/{record}/edit'),
         ];
     }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return Participation::where('status', ParticipationStatusEnums::APPROVE_NEEDED)->count();
+    }
+
 }

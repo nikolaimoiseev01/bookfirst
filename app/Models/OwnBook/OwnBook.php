@@ -2,10 +2,14 @@
 
 namespace App\Models\OwnBook;
 
+use App\Enums\OwnBookCoverStatusEnums;
+use App\Enums\OwnBookInsideStatusEnums;
+use App\Enums\OwnBookStatusEnums;
+use App\Filament\Resources\OwnBook\OwnBooks\Pages\EditOwnBook;
 use App\Models\Chat\Chat;
-use App\Models\Collection\CollectionStatus;
 use App\Models\PreviewComment;
 use App\Models\PrintOrder\PrintOrder;
+use App\Models\Survey\SurveyCompleted;
 use App\Models\User\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -54,9 +58,30 @@ class OwnBook extends Model implements HasMedia
          return $firstOrder;
     }
 
-    public function previewComments(): MorphMany
+//    public function previewComments(): MorphMany
+//    {
+//        return $this->morphMany(PreviewComment::class, 'model');
+//    }
+
+
+    public function previewCommentsCover(): MorphMany
     {
-        return $this->morphMany(PreviewComment::class, 'model');
+        return $this->morphMany(PreviewComment::class, 'model')->where('comment_type', 'cover');
+    }
+
+    public function adminEditPage(): string
+    {
+        return EditOwnBook::getUrl(['record' => $this]);
+    }
+
+    public function accountIndexPage(): string
+    {
+        return route('account.own_book.index', $this->id);
+    }
+
+    public function previewCommentsInside(): MorphMany
+    {
+        return $this->morphMany(PreviewComment::class, 'model')->where('comment_type', 'inside');
     }
 
     public function chat(): MorphOne
@@ -64,8 +89,22 @@ class OwnBook extends Model implements HasMedia
         return $this->morphOne(Chat::class, 'model');
     }
 
+    public function surveyCompleted() {
+        return $this->morphOne(SurveyCompleted::class, 'model');
+    }
+
 
     protected $casts = [
-        'selling_links' => 'array'
+        'selling_links' => 'array',
+        'status_general' => OwnBookStatusEnums::class,
+        'status_cover' => OwnBookCoverStatusEnums::class,
+        'status_inside' => OwnBookInsideStatusEnums::class,
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'deadline_inside' => 'date',
+        'deadline_cover' => 'date',
+        'deadline_print' => 'date',
+        'paid_at_without_print' => 'date',
+        'paid_at_print_only' => 'date'
     ];
 }

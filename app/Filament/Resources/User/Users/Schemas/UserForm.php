@@ -2,10 +2,10 @@
 
 namespace App\Filament\Resources\User\Users\Schemas;
 
-use Filament\Forms\Components\Card;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Infolists\Components\ImageEntry;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 

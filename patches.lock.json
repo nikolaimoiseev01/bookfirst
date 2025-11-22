@@ -1,0 +1,17 @@
+{
+    "_hash": "eca976edafb63fa6e52bdba242cf24cc9ee2672fd60503a1d7074a9221626e72",
+    "patches": {
+        "filament/forms": [
+            {
+                "package": "filament/forms",
+                "description": "Исправление отображения имени файла через name или file_name",
+                "url": "patches/filament-medialibrary-fileupload.patch",
+                "sha256": "81dd9fdda2e527db54eb1d93a7d7f737b34dfd67e10f337785d97cb7e53a4927",
+                "depth": 1,
+                "extra": {
+                    "provenance": "root"
+                }
+            }
+        ]
+    }
+}

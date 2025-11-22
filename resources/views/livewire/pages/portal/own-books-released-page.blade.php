@@ -15,7 +15,7 @@
 
     <div class="flex gap-8 flex-wrap">
         @forelse($ownBooks as $ownBook)
-            <x-portal.card-own-book :ownbook="$ownBook"/>
+            <x-ui.cards.card-own-book :ownbook="$ownBook"/>
         @empty
             <h3 class="text-6xl font-bold text-dark-100 mx-auto text-nowrap text-center col-span-3">Ничего не найдено</h3>
         @endforelse

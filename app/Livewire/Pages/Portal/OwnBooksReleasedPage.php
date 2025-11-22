@@ -2,7 +2,9 @@
 
 namespace App\Livewire\Pages\Portal;
 
+use App\Enums\OwnBookStatusEnums;
 use App\Models\OwnBook\OwnBook;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 
 class OwnBooksReleasedPage extends Component
@@ -10,7 +12,8 @@ class OwnBooksReleasedPage extends Component
     public $take = 10;
     public $moreCnt = 10;
     public $ownBooks;
-    public $searchText = null;
+    #[Url]
+    public $searchText;
     public $totalCnt;
 
     public function render()
@@ -22,7 +25,7 @@ class OwnBooksReleasedPage extends Component
     public function resetBooks()
     {
         $this->totalCnt = OwnBook::query()
-            ->where('own_book_status_id', 9)
+            ->where('status_general', OwnBookStatusEnums::DONE)
             ->when($this->searchText != '', function ($query) {
                 $query->where('title', 'like', "%{$this->searchText}%")
                     ->orWhere('author', 'like', "%{$this->searchText}%");
@@ -31,7 +34,7 @@ class OwnBooksReleasedPage extends Component
 
         $this->take = min($this->totalCnt, $this->take);
         $this->ownBooks = OwnBook::query()
-            ->where('own_book_status_id', 9)
+            ->where('status_general', OwnBookStatusEnums::DONE)
             ->when($this->searchText != '', function ($query) {
                 $query->where('title', 'like', "%{$this->searchText}%")
                     ->orWhere('author', 'like', "%{$this->searchText}%");

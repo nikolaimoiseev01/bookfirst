@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('ext_promotions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->references('id')->on('users');
-            $table->foreignId('ext_promotion_status_id')->references('id')->on('ext_promotion_statuses');
+            $table->string('status');
             $table->string('login');
             $table->string('password');
             $table->string('site');

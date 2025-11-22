@@ -15,7 +15,7 @@
         />
         <div class="flex gap-4 mt-8 w-full">
             <x-ui.button class="flex-1">Напомнить пароль</x-ui.button>
-            <x-ui.link-simple href="{{route('auth.login')}}">Войти</x-ui.link-simple>
+            <x-ui.link-simple href="{{route('login')}}">Войти</x-ui.link-simple>
         </div>
         @if (session('status'))
             <p class="text-green-500"><b>{{ __('Письмо с инструкцией восстановления отправлена на Email!') }}</b></p>

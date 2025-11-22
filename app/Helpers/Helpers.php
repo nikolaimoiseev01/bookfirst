@@ -13,7 +13,7 @@ function getUserAvatar($user)
 {
     $avatar = $user->getFirstMediaUrl('avatar');
     if ($avatar == null || $avatar == '') {
-        return '/fixed/default_avatar.svg';
+        return ENV('APP_URL') . '/fixed/default_avatar.svg';
     } else {
         return $avatar;
     }
@@ -35,15 +35,20 @@ function getWorkCover($work)
     return $cover;
 }
 
-function formatDate($date, $format) {
-    return Carbon::parse($date)->translatedFormat($format);
+function formatDate($date, $format='j F', $addDays=0):string {
+    return Carbon::parse($date)->addDays($addDays)->translatedFormat($format);
 }
 
-function getTelegramChatId() {
+function getTelegramChatId($chat = null) {
     if (ENV('APP_ENV') == 'local') {
         return ENV('TELEGRAM_CHAT_ID_TEST');
     } else {
-        return ENV('TELEGRAM_CHAT_ID');
+        if ($chat == 'extPromotion') {
+            return ENV('TELEGRAM_PROMO_CHAT_ID');
+        } else {
+            return ENV('TELEGRAM_MAIN_CHAT_ID');
+        }
+
     }
 }
 

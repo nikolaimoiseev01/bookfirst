@@ -11,11 +11,13 @@ class UserHeader extends Component
     public $user;
     public $userStat;
     public $userIsSubscribed;
+    public $userOnline;
 
     public function render()
     {
         return view('livewire.components.social.user-header');
     }
+
 
     public function mount($user)
     {
@@ -23,22 +25,27 @@ class UserHeader extends Component
         $this->userStat = [
             [
                 'title' => 'Читателей',
-                'value' => 0
+                'value' => $user->subscribers_count,
+                'icon' => 'bi-people-fill',
             ],
             [
                 'title' => 'Читает',
-                'value' => 0
+                'value' => $user->subscribed_to_users_count,
+                'icon' => 'bi-eye',
             ],
             [
                 'title' => 'Работ',
-                'value' => 0
+                'value' => $user->works_count,
+                'icon' => 'bi-book-half',
             ],
             [
                 'title' => 'Наград',
-                'value' => 0
+                'value' => $user->awards_count,
+                'icon' => 'bi-award',
             ]
         ];
         $this->userIsSubscribed = auth()->id() ? $user->subscribers()->where('user_id', auth()->user()->id)->exists() : false;
+        $this->userOnline = $user->isOnline();
     }
 
     public function subscribe()
@@ -62,9 +69,9 @@ class UserHeader extends Component
 
     public function sendMessage() {
         if (auth()->user()->id == $this->user['id']) {
-            $this->dispatch('swal', type: 'error', title: 'Ошибка', text: 'Нельзя подписаться на себя');
+            $this->dispatch('swal', type: 'error', title: 'Ошибка', text: 'Нельзя написать сообщение себе');
         } else {
-            $this->redirect(route('account.chat_create'));
+            $this->redirect(route('account.chat_create',['userToId' => $this->user['id']]));
         }
     }
 }

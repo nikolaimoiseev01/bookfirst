@@ -2,11 +2,14 @@
 
 namespace App\Livewire\Components\Account\Collection;
 
+use App\Enums\ChatStatusEnums;
 use App\Enums\ParticipationStatusEnums;
 use App\Enums\PrintOrderStatusEnums;
+use App\Enums\PrintOrderTypeEnums;
 use App\Enums\TransactionStatusEnums;
+use App\Filament\Resources\Collection\Participations\Pages\EditParticipation;
+use App\Jobs\TelegramNotificationJob;
 use App\Models\Chat\Chat;
-use App\Models\Collection\Collection;
 use App\Models\Collection\Participation;
 use App\Models\Collection\ParticipationWork;
 use App\Models\PrintOrder\PrintOrder;
@@ -14,11 +17,10 @@ use App\Models\Promocode;
 use App\Models\Work\Work;
 use App\Notifications\Collection\ParticipationCreatedNotification;
 use App\Rules\ParticipationLessPrice;
-use App\Services\CalculateParticipationService;
+use App\Services\PriceCalculation\CalculateParticipationService;
 use App\Traits\WithCustomValidation;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\Rule;
@@ -30,7 +32,6 @@ class ParticipationForm extends Component
 
     private const INSIDE_COLOR = 'Черно-белый';
     private const COVER_TYPE = 'Мягкая';
-    private const ADDRESS_TYPE_ID = 4;
     private const LOGISTIC_COMPANY_ID = 1;
     private const PRINTING_COMPANY_ID = 1;
     private const CHAT_TITLE_PREFIX = 'Личный чат по участию в сборнике {collection_title}';
@@ -219,7 +220,7 @@ class ParticipationForm extends Component
         )->calculate());
     }
 
-    public function get_notify_text()
+    public function getNotifyText()
     {
         $promocode = ($this->promocode['name'] ?? null) ? $this->promocode['name'] . ' (' . $this->promocode['discount'] . '%)' : 'нет';
         $check = ($this->needCheck ?? null) ? 'нужна (' . $this->prices['priceCheck'] . ' ₽)' : 'нет';
@@ -230,7 +231,7 @@ class ParticipationForm extends Component
             "\n*Промокод:* " . str_replace('_', '', $promocode) .
             "\n*Печать:* " . $print .
             "\n*Проверка:* " . $check .
-            "\n\n*ИТОГО:* " . $this->prices['priceTotal'] . " руб.";
+            "\n\n*ИТОГО:* " . ($this->prices['priceTotal'] + $this->prices['pricePrint'])  . " руб.";
 
         return $text;
     }
@@ -246,7 +247,7 @@ class ParticipationForm extends Component
             "<br><b>Промокод:</b> " . str_replace('_', '', $promocode) .
             "<br><b>Печать:</b> " . $print .
             "<br><b>Проверка:</b> " . $check .
-            "<br><br><b>ИТОГО:</b> " . $this->prices['priceTotal'] . " руб.";
+            "<br><br><b>ИТОГО:</b> " . ($this->prices['priceTotal'] + $this->prices['pricePrint']) . " руб.";
 
         return $text;
     }
@@ -272,18 +273,19 @@ class ParticipationForm extends Component
         if ($this->participation) {
             $paidAmount = $this->participation->transactions?->where('status', TransactionStatusEnums::CONFIRMED)->sum('amount');
             $currentPriceWithPrint = $this->prices['priceTotal'] + $this->prices['pricePrint'];
-            $isSameAmount = $paidAmount == $currentPriceWithPrint;
+            if ($paidAmount == $currentPriceWithPrint || $paidAmount == 0) {
+                $isSameAmount = true;
+            }
         } else {
             $isSameAmount = false;
         }
 
         $isSameWorks = $oldIds->toArray() === $newIds->toArray();
 
-
         if (!$isSameWorks) {
             return ParticipationStatusEnums::APPROVE_NEEDED;
         } elseif (!$isSameAmount) {
-            return ParticipationStatusEnums::PAYMENT_NEEDED;
+            return ParticipationStatusEnums::PAYMENT_REQUIRED;
         } else {
             return $this->participation['status'];
         }
@@ -324,7 +326,7 @@ class ParticipationForm extends Component
             ], [
                 'user_to' => 2,
                 'title' => str_replace('{collection_title}', $this->collection['title'], self::CHAT_TITLE_PREFIX),
-                'chat_status_id' => 1,
+                'status' => ChatStatusEnums::EMPTY,
                 'flg_admin_chat' => true,
             ]);
             if ($this->needPrint) {
@@ -335,7 +337,7 @@ class ParticipationForm extends Component
                 ],
                     [
                         'status' => PrintOrderStatusEnums::CREATED,
-                        'print_order_status_id' => 1,
+                        'type' => PrintOrderTypeEnums::COLLECTION_PARTICIPATION,
                         'books_cnt' => $this->booksCnt,
                         'inside_color' => self::INSIDE_COLOR,
                         'pages_color' => null,
@@ -344,7 +346,7 @@ class ParticipationForm extends Component
                         'receiver_name' => $this->receiverName,
                         'receiver_telephone' => $this->receiverTelephone,
                         'country' => $this->country,
-                        'address_type_id' => self::ADDRESS_TYPE_ID,
+                        'address_type' => $this->addressType,
                         'address_json' => $this->addressJson,
                         'logistic_company_id' => self::LOGISTIC_COMPANY_ID,
                         'printing_company_id' => self::PRINTING_COMPANY_ID
@@ -358,13 +360,12 @@ class ParticipationForm extends Component
                     ->delete();
             }
 
-            $url = route('login_as_admin', ['url_redirect' => "/admin/collection/participations/{$newParticipation['id']}/edit?user={$newParticipation['user_id']}"]);
+            $url = route('login_as_admin', ['url_redirect' => EditParticipation::getUrl(['record' => $newParticipation])]);
             if ($this->getParticipationStatus() == ParticipationStatusEnums::APPROVE_NEEDED) {
                 $subject = $this->formType == 'create' ?
                     '💥 *Новая заявка в ' . $this->collection['title_short'] . '!* 💥' . "\n\n" :
                     '💥 *Изменение заявки в ' . $this->collection['title_short'] . '!* 💥' . "\n\n";
-                Notification::route('telegram', getTelegramChatId())
-                    ->notify(new ParticipationCreatedNotification($this->collection, $subject, $this->get_notify_text(), $url));
+                TelegramNotificationJob::dispatch(new ParticipationCreatedNotification($this->collection, $subject, $this->getNotifyText(), $url));
             }
 
 

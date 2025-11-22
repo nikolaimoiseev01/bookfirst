@@ -14,12 +14,13 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class ParticipationResource extends Resource
 {
     protected static ?string $model = Participation::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::QueueList;
 
     protected static ?string $label = 'Участия';
     protected static ?string $navigationLabel = 'Участия';

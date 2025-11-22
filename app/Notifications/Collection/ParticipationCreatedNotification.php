@@ -43,6 +43,7 @@ class ParticipationCreatedNotification extends Notification
      */
     public function toTelegram(object $notifiable): TelegramMessage
     {
+        $this->url = str_replace('http://localhost:8000', 'https://vk.com', $this->url);
         return TelegramMessage::create()
             ->to(getTelegramChatId())
             ->content($this->subject . $this->text)

@@ -1,5 +1,6 @@
 <header x-data="{mobileMenuOpen: false}"
         class="fixed w-full shadow-[0_1px_4px_#00000026] top-0 px-5 py-2 md:py-4 flex justify-between items-center z-50 bg-white dark:bg-dark_bg">
+    <x-search-modal/>
     <div class="flex gap-2 items-center">
         <div class="flex gap-2 items-center md:absolute md:left-1/2 md:-translate-x-1/2 md:top-1/2 md:-translate-y-1/2">
             <x-ui.application-logo class="w-12 h-12 mr-2"/>
@@ -18,6 +19,7 @@
         </a>
     </div>
     <div class="flex gap-6 items-center text-2xl text-black-400 dark:text-white md:justify-between md:w-full">
+        <x-heroicon-c-magnifying-glass @click="$dispatch('open-modal', 'searchModal')" class="w-6 h-auto transition hover:fill-green-500 cursor-pointer"/>
         @foreach($links as $link)
             @if($link['routes'] ?? null)
                 <div class="relative group md:hidden">
@@ -83,9 +85,8 @@
                     class="transition group-hover:text-green-500" wire:navigate href="{{route('login')}}">Войти</a>
             @endauth
         </div>
-
-
     </div>
+
     <div x-show="mobileMenuOpen"
          x-transition:enter="transition ease-out duration-300"
          x-transition:enter-start="opacity-0"

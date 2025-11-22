@@ -3,6 +3,7 @@
 namespace App\Models\Collection;
 
 use App\Enums\ParticipationStatusEnums;
+use App\Filament\Resources\Collection\Participations\Pages\EditParticipation;
 use App\Models\Chat\Chat;
 use App\Models\PreviewComment;
 use App\Models\PrintOrder\PrintOrder;
@@ -62,5 +63,15 @@ class Participation extends Model
     public function transactions(): morphMany
     {
         return $this->morphMany(Transaction::class,'model');
+    }
+
+    public function adminEditPage(): string
+    {
+        return EditParticipation::getUrl(['record' => $this]);
+    }
+
+    public function accountIndexPage(): string
+    {
+        return route('account.participation.index', $this->id);
     }
 }

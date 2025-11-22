@@ -27,6 +27,18 @@
             <x-ui.button class="flex-1">Войти</x-ui.button>
             <x-ui.link-simple href="{{route('auth.password.request')}}">Восстановить пароль</x-ui.link-simple>
         </div>
+        <div class="flex gap-2">
+            <p>Войти через соц.сети:</p>
+            <a href="{{route('auth.social.redirect', 'vkontakte')}}">
+                <img src="/fixed/icons/logo_vk.svg" class="w-8 h-8" alt="">
+            </a>
+            <a href="{{route('auth.social.redirect', 'google')}}">
+                <img src="/fixed/icons/logo_google.svg" class="w-8 h-8" alt="">
+            </a>
+            <a href="{{route('auth.social.redirect', 'yandex')}}">
+                <img src="/fixed/icons/logo_yandex.svg" class="w-8 h-8" alt="">
+            </a>
+        </div>
 
     </form>
 </main>

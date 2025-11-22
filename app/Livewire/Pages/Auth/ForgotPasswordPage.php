@@ -19,6 +19,13 @@ class ForgotPasswordPage extends Component
     /**
      * Send a password reset link to the provided email address.
      */
+
+    public function messages() {
+        return [
+            'email.required' => 'Поле Email обязательно для заполнения.',
+            'email.email' => 'Поле Email должно быть валидным email.',
+        ];
+    }
     public function sendPasswordResetLink(): void
     {
         try {

@@ -2,6 +2,9 @@
 
 namespace App\Filament\Resources\OwnBook\OwnBooks\Tables;
 
+use App\Enums\OwnBookCoverStatusEnums;
+use App\Enums\OwnBookInsideStatusEnums;
+use App\Enums\OwnBookStatusEnums;
 use App\Models\Collection\Collection;
 use App\Models\OwnBook\OwnBook;
 use App\Models\Work\Work;
@@ -17,10 +20,12 @@ use Filament\Tables\Columns\Layout\Split;
 use Filament\Tables\Columns\Layout\Stack;
 use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\HtmlString;
+use Illuminate\Support\Str;
 
 class OwnBooksTable
 {
@@ -30,10 +35,6 @@ class OwnBooksTable
             ->columns([
                 Grid::make()->schema([
                     Split::make([
-//                        SpatieMediaLibraryImageColumn::make('cover')
-//                            ->width(150)
-//                            ->height(210)
-//                            ->collection('cover_front'),
                         ImageColumn::make('cover')
                             ->width(150)
                             ->height(210)
@@ -44,41 +45,41 @@ class OwnBooksTable
                         Stack::make([
                             Stack::make([
                                 TextColumn::make('title')
-                                    ->formatStateUsing(fn(string $state): HtmlString => new HtmlString("<h1 class='text-2xl'>{$state}</h1>"))
+                                    ->formatStateUsing(fn(string $state): HtmlString =>  new HtmlString("<h1 class='text-2xl'>" . e(Str::limit($state, 15)) . "</h1>"))
                                     ->searchable(),
                                 TextColumn::make('author')
                                     ->formatStateUsing(fn(string $state): HtmlString => new HtmlString("<h1 class='text-base'>{$state}</h1>"))
                                     ->searchable(),
                             ]),
                             Stack::make([
-                                TextColumn::make('ownBookStatus.name')
+                                TextColumn::make('status_general')
                                     ->badge()
-                                    ->formatStateUsing(fn(string $state): HtmlString => new HtmlString("<h1 class='text-sm'>Статус: {$state}</h1>"))
-                                    ->color(fn(string $state): string => match ($state) {
-                                        'рассмотрение заявки', 'идёт работа с файлами' => 'warning',
-                                        'необходима оплата (кроме печати)', 'необходима оплата печати', 'идеть печать книги', 'Подготовка к печати', 'неактуально' => 'gray',
-                                        'печать оплачена, скоро начнется' => 'danger',
-                                        'процесс завершен' => 'success',
+                                    ->formatStateUsing(function(OwnBookStatusEnums $state): HtmlString {
+                                        return new HtmlString("<h1 class='text-sm'>Статус: {$state->value}</h1>");
+                                    })
+                                    ->color(fn($state): string => match ($state) {
+                                        OwnBookStatusEnums::REVIEW, OwnBookStatusEnums::WORK_IN_PROGRESS => 'warning',
+                                        OwnBookStatusEnums::PAYMENT_REQUIRED, OwnBookStatusEnums::PRINT_PAYMENT_REQUIRED, OwnBookStatusEnums::PRINTING, OwnBookStatusEnums::NOT_ACTUAL => 'gray',
+                                        OwnBookStatusEnums::PRINT_WAITING => 'danger',
+                                        OwnBookStatusEnums::DONE => 'success',
                                         default => 'secondary',
                                     }),
-                                TextColumn::make('ownBookInsideStatus.name')
+                                TextColumn::make('status_inside')
                                     ->badge()
-                                    ->formatStateUsing(fn(string $state): HtmlString => new HtmlString("<h1 class='text-sm'>ВБ: {$state}</h1>"))
-                                    ->color(fn(string $state): string => match ($state) {
-                                        'ожидание автора в чате' => 'warning',
-                                        'на проверке автором', 'готов от автора' => 'gray',
-                                        'в разработке', 'внесение исправлений' => 'danger',
-                                        'готов к изданию' => 'success',
+                                    ->formatStateUsing(fn(OwnBookInsideStatusEnums $state): HtmlString => new HtmlString("<h1 class='text-sm'>ВБ: {$state->value}</h1>"))
+                                    ->color(fn(OwnBookInsideStatusEnums $state): string => match ($state) {
+                                        OwnBookInsideStatusEnums::PREVIEW, OwnBookInsideStatusEnums::READY_FROM_AUTHOR, OwnBookInsideStatusEnums::WAITING_FOR_AUTHOR_IN_CHAT => 'gray',
+                                        OwnBookInsideStatusEnums::DEVELOPMENT, OwnBookInsideStatusEnums::CORRECTIONS => 'danger',
+                                        OwnBookInsideStatusEnums::READY_FOR_PUBLICATION => 'success',
                                         default => 'secondary',
                                     }),
-                                TextColumn::make('ownBookCoverStatus.name')
+                                TextColumn::make('status_cover')
                                     ->badge()
-                                    ->formatStateUsing(fn(string $state): HtmlString => new HtmlString("<h1 class='text-sm'>Обложка: {$state}</h1>"))
-                                    ->color(fn(string $state): string => match ($state) {
-                                        'ожидание автора в чате' => 'warning',
-                                        'на проверке автором', 'готова от автора' => 'gray',
-                                        'в разработке', 'внесение исправлений' => 'danger',
-                                        'готова к изданию' => 'success',
+                                    ->formatStateUsing(fn(OwnBookCoverStatusEnums $state): HtmlString => new HtmlString("<h1 class='text-sm'>Обложка: {$state->value}</h1>"))
+                                    ->color(fn(OwnBookCoverStatusEnums $state): string => match ($state) {
+                                        OwnBookCoverStatusEnums::PREVIEW, OwnBookCoverStatusEnums::READY_FROM_AUTHOR, OwnBookCoverStatusEnums::WAITING_FOR_AUTHOR_IN_CHAT => 'gray',
+                                        OwnBookCoverStatusEnums::DEVELOPMENT, OwnBookCoverStatusEnums::CORRECTIONS => 'danger',
+                                        OwnBookCoverStatusEnums::READY_FOR_PUBLICATION => 'success',
                                         default => 'secondary',
                                     }),
                             ])->extraAttributes(['class' => 'gap-2']),
@@ -114,11 +115,18 @@ class OwnBooksTable
                 '2xl' => 3
             ])
             ->filters([
-                //
+                SelectFilter::make('status_general')
+                    ->label('Общий статус')
+                    ->options([
+                        collect(OwnBookStatusEnums::cases())
+                            ->mapWithKeys(fn($case) => [$case->value => $case->value])
+                            ->toArray()
+                    ])
+                    ->multiple()
             ])
             ->defaultSort('created_at', 'desc')
             ->recordActions([
-                EditAction::make()
+//                EditAction::make()
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

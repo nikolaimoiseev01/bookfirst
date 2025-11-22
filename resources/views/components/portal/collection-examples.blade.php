@@ -39,7 +39,7 @@
                 class="w-12 transition duration-100 hover:scale-110 cursor-pointer"
                 @click="prev"
             />
-            <div class="h-[2px] w-56 bg-black-400 relative">
+            <div class="h-[2px] w-56 bg-dark-400 relative">
                 <div
                     class="h-1 bg-brown-300 absolute -top-px transition-all duration-500"
                     :style="`width: ${100 / images.length}%; left: ${(100 / images.length) * currentIndex}%;`"
@@ -56,15 +56,15 @@
         <h2 class="mb-4" x-ref="titleEl"></h2>
         <p x-ref="descEl"></p>
         <div class="flex gap-4 mt-8">
-            <x-ui.link>Купить на Amazon</x-ui.link>
-            <x-ui.link>Купить на Amazon</x-ui.link>
+            <x-ui.link href="{{route('portal.collections.released')}}">Подробнее</x-ui.link>
+            <x-ui.link :navigate="false" target="_blank" href="https://www.ozon.ru/product/broshyura-1869093918">Купить на Ozon</x-ui.link>
+            <x-ui.link :navigate="false" target="_blank" href="https://www.amazon.com/%D0%A1%D0%BE%D0%B2%D1%80%D0%B5%D0%BC%D0%B5%D0%BD%D0%BD%D1%8B%D0%B9-%D0%94%D1%83%D1%85-%D0%9F%D0%BE%D1%8D%D0%B7%D0%B8%D0%B8-19-2-Russian/dp/035993868X/ref=sr_1_3?dib=eyJ2IjoiMSJ9._ALVMZa-Ri7dggCl0Nk15REeLqZ3CLJ3Vc8_9SPooTU17a1f5fIEDJhTMFWrmX9S5JjXfzGRcPy9rMu70hEng_pFGXmt-65iecRNXwLwgWpZjeI-qazoFZYsPxRa2zzuqw2shXJ4gLgXEuCd0Ffs7VKG4UO8k-QtUcnUe2WmPzXmy6hNLQNcBYSVAecxesnRl3kFuFd5s4wJRwW81Q2-3WuoqO6KcuZzDb3R9_egJ9c.N3raipLn_zNwY_vPaSv7jXfIVFhZpDF4CL3fIJy1v8o&dib_tag=se&qid=1763407494&refinements=p_27%3A%26%231053%3B%26%231048%3B+%26%231055%3B%26%231077%3B%26%231088%3B%26%231074%3B%26%231072%3B%26%231103%3B+%26%231050%3B%26%231085%3B%26%231080%3B%26%231075%3B%26%231072%3B&s=books&sr=1-3&text=%26%231053%3B%26%231048%3B+%26%231055%3B%26%231077%3B%26%231088%3B%26%231074%3B%26%231072%3B%26%231103%3B+%26%231050%3B%26%231085%3B%26%231080%3B%26%231075%3B%26%231072%3B">Купить на Amazon</x-ui.link>
         </div>
     </div>
 </section>
 
 
 @push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
     <script>
         function exSlider() {
             return {
@@ -75,6 +75,22 @@
                     '/fixed/main_ex_1.png',
                     '/fixed/main_ex_2.png'
                 ],
+                loadAnime() {
+                    return new Promise((resolve) => {
+                        if (window.anime) {
+                            resolve();
+                            return;
+                        }
+
+                        const script = document.createElement("script");
+                        script.src = "/plugins/anime.min.js";
+                        script.onload = () => {
+                            window.anime = anime;
+                            resolve();
+                        };
+                        document.head.appendChild(script);
+                    });
+                },
                 titles: [
                     'Современный Дух Поэзии',
                     'Сокровенные Мысли',
@@ -86,7 +102,8 @@
                     'Так же мы часто выпускаем тематические сборники. Новогодние сборники, военные рассказы, фанфики сегодняшних писателей как нельзя лучше передают культуру современной литературы.'
                 ],
 
-                init() {
+                async init() {
+                    await this.loadAnime();
                     this.animateText(this.$refs.titleEl, this.titles[this.currentIndex], 60, 1000);
                     this.animateText(this.$refs.descEl, this.descs[this.currentIndex], 18, 300);
                 },

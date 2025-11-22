@@ -14,11 +14,7 @@ class Book2d extends Component
      */
     public function __construct($cover)
     {
-        if ($cover == null || $cover == '') {
-            $this->cover = '/fixed/cover_wip.png';
-        } else {
-            $this->cover = $cover;
-        }
+        $this->cover = $cover ?: '/fixed/cover_wip.png';
     }
 
     /**

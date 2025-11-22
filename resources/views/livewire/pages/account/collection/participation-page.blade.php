@@ -35,11 +35,11 @@
     </div>
     <div class="flex flex-col pl-4">
         @if($participation['status']->order() < 9)
-            <x-participation-blocks.general :part="$participation"/>
-            <x-participation-blocks.payment :part="$participation"/>
-            <x-participation-blocks.preview :part="$participation"/>
-            <x-participation-blocks.voting :part="$participation"/>
-            <x-participation-blocks.tracking :part="$participation"/>
+            <x-process-blocks.participation.general :part="$participation"/>
+            <x-process-blocks.participation.payment :part="$participation"/>
+            <x-process-blocks.participation.preview :part="$participation"/>
+            <x-process-blocks.participation.voting :part="$participation"/>
+            <x-process-blocks.participation.tracking :part="$participation"/>
         @else
             <div class="flex flex-col py-8 px-4 gap-4">
                 <span

@@ -20,8 +20,8 @@ class WorkCard extends Component
 
     public function mount($work) {
         $this->work = $work;
-        $this->workLikesCount = $work['work_likes_count'];
-        $this->userHasLike = auth()->id() ? $work->workLikes()->where('user_id', auth()->user()->id)->exists() : false;
+        $this->workLikesCount = $work['likes_count'];
+        $this->userHasLike = auth()->id() ? $work->likes()->where('user_id', auth()->user()->id)->exists() : false;
         $this->workCreatedAt = Carbon::parse($this->work['created_at'])->translatedFormat('j F Y H:i');
     }
 

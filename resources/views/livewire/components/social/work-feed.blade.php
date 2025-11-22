@@ -30,7 +30,9 @@
             </x-ui.tooltip-wrap>
 
             <x-ui.tooltip-wrap text="Список">
-                <svg wire:click="changeLayout('lines')" class="@if($layout == 'lines') fill-blue-300 @else fill-dark-300 @endif cursor-pointer w-6"  fill="currentColor"
+                <svg wire:click="changeLayout('lines')"
+                     class="@if($layout == 'lines') fill-blue-300 @else fill-dark-300 @endif cursor-pointer w-6"
+                     fill="currentColor"
                      xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                     <path
                         d="M0 96C0 78.3 14.3 64 32 64l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 128C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 288c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32L32 448c-17.7 0-32-14.3-32-32s14.3-32 32-32l384 0c17.7 0 32 14.3 32 32z"></path>
@@ -46,17 +48,22 @@
     @else
         <div class="flex flex-col gap-4">
             @foreach($works as $work)
-                <div class="flex gap-2 py-2 px-1 cursor-pointer border-b border-dark-300 items-center hover:bg-dark-50">
-                    <x-ui.link-simple href="{{route('social.user', $work['user_id'])}}"
-                                      class="text-blue-500 text-3xl font-medium">
-                        {{ getUserName($work->user) }}:
-                    </x-ui.link-simple>
-                    <x-ui.link-simple href="{{route('social.work', $work['id'])}}"
-                                      class="text-3xl">{{ $work['title'] }}</x-ui.link-simple>
-                    <span
-                        class="text-dark-350 ml-auto">{{ $work->workType['name'] }} / {{ $work->workTopic['name'] }}</span>
-                    <span
-                        class="text-dark-350 ml-auto font-light">{{ formatDate($work['created_at'], 'j F Y H:i') }}</span>
+                <div
+                    class="flex gap-2 py-2 px-1 cursor-pointer border-b border-dark-300 items-center hover:bg-dark-50 justify-between">
+                    <div class="flex gap-2">
+                        <x-ui.link-simple href="{{route('social.user', $work['user_id'])}}"
+                                          class="text-blue-500 text-2xl font-medium">
+                            {{ getUserName($work->user) }}:
+                        </x-ui.link-simple>
+                        <x-ui.link-simple href="{{route('social.work', $work['id'])}}"
+                                          class="text-2xl">{{\Illuminate\Support\Str::limit($work['title'], 70) }}</x-ui.link-simple>
+                    </div>
+                    <div class="flex gap-2">
+                        <span
+                            class="text-dark-350 ml-auto">{{ $work['work_type_id'] == 999 ? '' : $work->workType['name'] . '/' }} {{ $work['work_topic_id'] == 999 ? '' : $work->workTopic['name'] }}</span>
+                        <span
+                            class="text-dark-350 ml-auto font-light">{{ formatDate($work['created_at'], 'j F Y H:i') }}</span>
+                    </div>
                 </div>
             @endforeach
         </div>
@@ -66,6 +73,7 @@
             <x-ui.link-simple wire:click="loadMore" wire:loading.remove>
                 Загрузить ещё
             </x-ui.link-simple>
+            <x-ui.spinner class="w-8" wire:loading/>
         @else
             <span class="text-dark-350 text-xl font-light italic">Все работы ({{$works->count()}}) загружены</span>
         @endif

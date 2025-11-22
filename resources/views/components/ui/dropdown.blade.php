@@ -39,12 +39,12 @@
     <ul
         x-show="open"
         x-transition
-        class="absolute z-10 mt-1 w-full border rounded-md bg-white shadow-md max-h-60 overflow-y-auto"
+        class="absolute z-10 mt-1 w-fit border rounded-md bg-white shadow-md max-h-60 overflow-y-auto"
     >
         <template x-for="opt in options" :key="String(opt.value)">
             <li
                 @click="selected = opt.value; open = false"
-                class="px-3 py-2 cursor-pointer hover:bg-gray-100"
+                class="px-3 py-2 text-lg cursor-pointer hover:bg-gray-100"
                 :class="selected == opt.value ? 'bg-gray-50 font-medium' : ''"
                 x-text="opt.label"
             ></li>

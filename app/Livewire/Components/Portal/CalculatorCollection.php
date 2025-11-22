@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Components\Portal;
 
-use App\Services\CalculateParticipationService;
+use App\Services\PriceCalculation\CalculateParticipationService;
 use Livewire\Component;
 
 class CalculatorCollection extends Component

@@ -32,6 +32,7 @@
                     <p>{{$key+1}} Место: {{$winner['author_name']}}</p>
                 @endforeach
             </div>
+            <p>За вас проголосовало авторов: {{$userVotes}}</p>
             @if($currentVote)
                 <p>Вы успешно отдали свой голос за {{$authorChosen}}.</p>
             @endif

@@ -99,7 +99,9 @@ body.swal2-shown:not(.swal2-no-backdrop,.swal2-toast-shown) {
 body.swal2-height-auto {
     height: auto !important
 }
-
+.swal2-container {
+    z-index: 9999999;
+}
 body.swal2-no-backdrop .swal2-container {
     background-color: rgba(0, 0, 0, 0) !important;
     pointer-events: none

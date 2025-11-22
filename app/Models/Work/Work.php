@@ -13,11 +13,11 @@ class Work extends Model implements HasMedia
 {
 
     use InteractsWithMedia;
-    public function workLikes(): hasMany {
+    public function likes(): hasMany {
         return $this->hasMany(WorkLike::class);
     }
 
-    public function workComments(): hasMany {
+    public function comments(): hasMany {
         return $this->hasMany(WorkComment::class);
     }
 

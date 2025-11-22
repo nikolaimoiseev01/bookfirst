@@ -14,6 +14,7 @@ use Livewire\Component;
 class SurveyParticipation extends Component
 {
     use WithCustomValidation;
+
     public $rating = 0;
     public $step = 0;
     public $text;
@@ -26,24 +27,27 @@ class SurveyParticipation extends Component
         return view('livewire.components.account.collection.survey-participation');
     }
 
-    public function rules() {
+    public function rules()
+    {
         return [
-          'rating' => 'integer|min:1'
+            'rating' => 'integer|min:1'
         ];
     }
 
-    public function messages() {
+    public function messages()
+    {
         return [
             'rating.min' => 'Выберите рейтинг!'
         ];
     }
 
-    public function makeSurvey() {
+    public function makeSurvey()
+    {
         $surveyCompleted = SurveyCompleted::create([
             'user_id' => $this->participation['user_id'],
             'model_type' => 'Participation',
             'model_id' => $this->participation['id'],
-            'title' => 'Заявка участия в сборнике'
+            'title' => 'Заявка на участие в сборнике'
         ]);
         SurveyAnswer::create([
             'survey_completed_id' => $surveyCompleted->id,
@@ -51,7 +55,7 @@ class SurveyParticipation extends Component
             'stars' => $this->rating,
             'question' => 'Общая оценка',
         ]);
-        if($this->rating < 5) {
+        if ($this->rating < 5) {
             SurveyAnswer::create([
                 'survey_completed_id' => $surveyCompleted->id,
                 'step' => 2,
@@ -66,11 +70,12 @@ class SurveyParticipation extends Component
         );
     }
 
-    public function sendSurvey() {
+    public function sendSurvey()
+    {
 
         if ($this->customValidate()) {
             DB::transaction(function () {
-                if ($this->rating < 5) {
+                if ($this->rating < 5 && $this->step == 0) {
                     $this->step = 1;
                 } else {
                     $this->makeSurvey();

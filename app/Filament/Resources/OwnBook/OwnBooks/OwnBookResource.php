@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\OwnBook\OwnBooks;
 
+use App\Enums\OwnBookStatusEnums;
 use App\Filament\Resources\OwnBook\OwnBooks\Pages\CreateOwnBook;
 use App\Filament\Resources\OwnBook\OwnBooks\Pages\EditOwnBook;
 use App\Filament\Resources\OwnBook\OwnBooks\Pages\ListOwnBooks;
@@ -21,7 +22,8 @@ class OwnBookResource extends Resource
 {
     protected static ?string $model = OwnBook::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBookOpen;
+    protected static ?int $navigationSort = 3;
 
     protected static ?string $label = 'Собственные книги';
     protected static ?string $navigationLabel = 'Собственные книги';
@@ -61,5 +63,10 @@ class OwnBookResource extends Resource
             'create' => CreateOwnBook::route('/create'),
             'edit' => EditOwnBook::route('/{record}/edit'),
         ];
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return OwnBook::where('status_general', OwnBookStatusEnums::REVIEW)->count();
     }
 }

@@ -25,6 +25,7 @@ return new class extends Migration
 
             $table->date('deadline_inside')->nullable();
             $table->date('deadline_cover')->nullable();
+            $table->date('deadline_print')->nullable();
 
             $table->bigInteger('pages');
             $table->string('inside_type'); // из системы или фалом
@@ -42,6 +43,7 @@ return new class extends Migration
 
             $table->bigInteger('price_text_design')->nullable();
             $table->bigInteger('price_text_check')->nullable();
+            $table->bigInteger('price_inside')->nullable();
             $table->bigInteger('price_cover')->nullable();
             $table->bigInteger('price_promo')->nullable();
             $table->bigInteger('price_total')->nullable();

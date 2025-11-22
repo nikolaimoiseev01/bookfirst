@@ -46,7 +46,7 @@ class ParticipationsTable
                     ->badge()
                     ->color(fn(ParticipationStatusEnums $state): string => match ($state) {
                         ParticipationStatusEnums::APPROVE_NEEDED => 'warning',
-                        ParticipationStatusEnums::PAYMENT_NEEDED,
+                        ParticipationStatusEnums::PAYMENT_REQUIRED,
                         ParticipationStatusEnums::NOT_ACTUAL => 'gray',
                         ParticipationStatusEnums::APPROVED => 'success',
                     }),

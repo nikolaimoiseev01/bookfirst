@@ -40,8 +40,8 @@ class WorkFeed extends Component
                 $this->sortOptionsDict[$this->sortOption]['value'],
                 $this->sortOptionsDict[$this->sortOption]['dir']
             )
-            ->with(['user', 'user.media', 'workTopic', 'workType'])
-            ->withCount(['workLikes', 'workComments'])
+            ->with(['user', 'workTopic', 'workType'])
+            ->withCount(['likes', 'comments'])
             ->take($this->take)
             ->get();
         return view('livewire.components.social.work-feed');
@@ -105,7 +105,7 @@ class WorkFeed extends Component
                 'dir' => 'asc'
             ],
             'popularity' => [
-                'value' => 'work_likes_count',
+                'value' => 'likes_count',
                 'dir' => 'desc'
             ],
         ];

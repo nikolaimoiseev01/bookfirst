@@ -2,7 +2,14 @@
 
 namespace App\Livewire\Components\Account;
 
+use App\Enums\ChatStatusEnums;
+use App\Filament\Resources\Chats\Pages\ViewChat;
+use App\Jobs\EmailNotificationJob;
+use App\Jobs\TelegramNotificationJob;
 use App\Models\Chat\Message;
+use App\Notifications\ChatMessageEmailNotification;
+use App\Notifications\OwnBook\OwnBookCreatedNotification;
+use App\Notifications\TelegramDefaultNotification;
 use App\Traits\WithCustomValidation;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -22,6 +29,7 @@ class Chat extends Component
 
     public $chat;
     public $text;
+    public $editedText;
 
     public $files = [];
 
@@ -35,15 +43,41 @@ class Chat extends Component
         return view('livewire.components.account.chat');
     }
 
+    public function editMessage($id)
+    {
+        $this->editedText = collect($this->chat['messages'])->where('id', $id)->first()['text'];
+    }
+
+    public function saveEditedMessage($id)
+    {
+        Message::where('id', $id)->update([
+            'text' => $this->editedText
+        ]);
+    }
+
+    public function deleteMessage($id)
+    {
+        Message::where('id', $id)->update([
+            'text' => $this->editedText
+        ]);
+    }
+
     public function mount($chat)
     {
         $this->chat = $chat->load(['messages.user', 'chatStatus']);
+        if (Auth::user()->hasRole(['admin', 'ext_promotion_admin', 'secondary_admin'])) {
+            $author = $this->chat['user_created'] == 2 ?
+                $this->chat->userTo->getUserFullName() :
+                $this->chat->userCreated->getUserFullName();
+            $this->text = "Здравствуйте, {$author}!";
+        }
     }
 
     protected function rules(): array
     {
         return [
             'text' => 'required',
+            'files.*' => 'max:3000',
         ];
     }
 
@@ -54,6 +88,48 @@ class Chat extends Component
         ];
     }
 
+    public function notifyNewMessage()
+    {
+        if (Auth::user()->hasRole('user') && $this->chat['flg_admin_chat']) {
+            if ($this->chat['model_type'] == 'ExtPromotion') {
+                $chatToSend = 'extPromotion';
+            } else {
+                $chatToSend = 'main';
+            }
+            $url = match ($this->chat['model_type']) {
+                'Collection', 'OwnBook', 'ExtPromotion' => $this->chat->model->getAdminEditPage,
+                default => ViewChat::getUrl(['record' => $this->chat])
+            };
+            $userName = Auth::user()->getUserFullName();
+            $notificationText = "💬 {$userName}: {$this->text}";
+            $notification = new TelegramDefaultNotification(null, $notificationText, $url, $chatToSend);
+            TelegramNotificationJob::dispatch($notification);
+        } else {
+            $userIdToNotify = $this->chat['user_created'] == 2 ? $this->chat['user_to'] : $this->chat['user_created'];
+            $notification = new ChatMessageEmailNotification($this->chat);
+            EmailNotificationJob::dispatch($userIdToNotify, $notification);
+        }
+    }
+
+    public function notifyNewMessageEmail() {
+
+    }
+
+    public function updateChatStatus()
+    {
+        if ($this->chat['flg_admin_chat']) {
+            if (Auth::user()->hasRole('user')) {
+                $status = ChatStatusEnums::WAIT_FOR_ADMIN;
+            } else {
+                $status = ChatStatusEnums::WAIT_FOR_USER;
+            }
+        } else {
+            $status = ChatStatusEnums::PERSONAL_CHAT;
+        }
+        $this->chat->update([
+            'status' => $status
+        ]);
+    }
 
 
     public function sendMessage()
@@ -73,6 +149,10 @@ class Chat extends Component
                             ->toMediaCollection('files');
                     }
                 }
+
+                $this->updateChatStatus();
+                $this->notifyNewMessage();
+
                 $this->dispatch('scrollChatToEnd');
                 $this->reset('files');
                 $this->text = '';
@@ -81,7 +161,5 @@ class Chat extends Component
         }
 
         $this->isSending = false;
-
-//        dd($this->file);
     }
 }

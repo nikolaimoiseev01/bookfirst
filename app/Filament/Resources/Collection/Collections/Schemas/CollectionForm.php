@@ -36,37 +36,32 @@ class CollectionForm
                                 ->maxLength(255),
                             Select::make('status')
                                 ->label('Статус')
+                                ->visibleOn('edit')
                                 ->options(
                                     collect(CollectionStatusEnums::cases())
                                         ->mapWithKeys(fn($case) => [$case->value => $case->value])
                                         ->toArray()
                                 ),
-                            \Filament\Schemas\Components\Grid::make()->schema([
-                                TextInput::make('slug')
-                                    ->required()
-                                    ->maxLength(255),
-                                TextInput::make('title_short')
-                                    ->label('Краткое название')
-                                    ->required()
-                                    ->columnSpan(1)
-                                    ->maxLength(255),
-                                TextInput::make('pages')
-                                    ->label('Страниц')
-                                    ->columnSpan(1)
-                                    ->numeric(),
-                            ])->columns(3),
+                            TextInput::make('pages')
+                                ->label('Страниц')
+                                ->visibleOn('edit')
+                                ->columnSpan(1)
+                                ->numeric(),
                             Textarea::make('description')
+                                ->label('Описание')
                                 ->columnSpanFull(),
-                        ])->columns(2)->columnSpan(2),
+                        ])->columns(3)->columnSpan(2),
                         \Filament\Schemas\Components\Grid::make()->schema([
-                            DatePicker::make('date_apps_end'),
-                            DatePicker::make('date_preview_start'),
-                            DatePicker::make('date_preview_end'),
-                            DatePicker::make('date_print_start'),
-                            DatePicker::make('date_print_end'),
+                            DatePicker::make('date_apps_end')->label('Конец приема заявок'),
+                            DatePicker::make('date_preview_start')->label('Начало проверки'),
+                            DatePicker::make('date_preview_end')->label('Конец  проверки'),
+                            DatePicker::make('date_print_start')->label('Начало печати'),
+                            DatePicker::make('date_print_end')->label('Отправка экземпляров'),
                         ])->columns(5)->columnSpanFull(),
                     ]),
-                    Tab::make('Конкурс')->schema([
+                    Tab::make('Конкурс')
+                        ->visibleOn('edit')
+                        ->schema([
                         Repeater::make('winner_participations')
 //                            ->dehydrated(false)
                             ->label('Победители')
@@ -79,7 +74,6 @@ class CollectionForm
                             ->columnSpan(1),
 //                            ->mutateDehydratedStateUsing(function (array $state): array {
 //                                $intConverted = array_values(array_map(fn($item) => (int)$item['user_id'], $state));
-//                                dd(123);
 //                                return $intConverted;
 //                            }),
                         ViewField::make('rating')

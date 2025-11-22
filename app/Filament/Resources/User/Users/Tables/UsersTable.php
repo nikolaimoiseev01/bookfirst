@@ -18,11 +18,17 @@ class UsersTable
                 TextColumn::make('id')
                     ->searchable(),
                 TextColumn::make('name')
-                    ->label('Имя')
-                    ->searchable(),
-                TextColumn::make('surname')
-                    ->label('Фамилия')
-                    ->searchable(),
+                    ->getStateUsing(function ($record) {
+                        return $record->getUserFullName();
+                    })
+                    ->label('ФИО')
+                    ->searchable(query: function ($query, $search) {
+                        $query->where(function ($q) use ($search) {
+                            $q->where('name', 'like', "%{$search}%")
+                                ->orWhere('surname', 'like', "%{$search}%")
+                                ->orWhereRaw("CONCAT(name, ' ', surname) like ?", ["%{$search}%"]);
+                        });
+                    }),
                 TextColumn::make('nickname')
                     ->label('Псевдоним')
                     ->searchable(),

@@ -8,6 +8,7 @@ use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\HtmlString;
 
 class EditUser extends EditRecord
 {
@@ -25,15 +26,22 @@ class EditUser extends EditRecord
                 )
         ];
     }
-    public function getTitle(): string
+    public function getTitle(): HtmlString
     {
         $name = $this->record['name'] . ' ' . $this->record['surname'];
         $nickname = $this->record['nickname'];
-        return "{$name} ({$nickname})";
+        $avatar = getUserAvatar($this->record);
+        $avatar = "<img class='w-8 rounded-full' src='{$avatar}'/>";
+        return new HtmlString("<div class='flex gap-2'>$avatar {$name} ({$nickname})</div>");
     }
 
     public function hasCombinedRelationManagerTabsWithContent(): bool
     {
         return true;
+    }
+
+    public function getContentTabLabel(): ?string
+    {
+        return 'Общее';
     }
 }

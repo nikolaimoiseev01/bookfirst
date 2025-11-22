@@ -1,5 +1,4 @@
 import './bootstrap';
-import Typewriter from 'typewriter-effect/dist/core';
 import {livewire_hot_reload} from 'virtual:livewire-hot-reload'
 import $ from 'jquery'
 import Swiper from 'swiper';
@@ -7,20 +6,15 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import {Navigation, Pagination} from "swiper/modules";
+import collapse from '@alpinejs/collapse'
+
 
 Swiper.use([Navigation, Pagination]);
-import collapse from '@alpinejs/collapse'
-import "delicious-hamburgers"
-import {Notyf} from "notyf";
-import 'notyf/notyf.min.css';
 
 Alpine.plugin(collapse)
 
 window.$ = $;
-window.Typewriter = Typewriter;
-
 window.Swiper = Swiper;
-window.notyf = new Notyf();
 
 livewire_hot_reload();
 
@@ -43,20 +37,24 @@ window.showSwal = function showSwal(type, title, text, confirmButtonText = '', l
     });
 }
 
-window.showToast = function showToast(type, text) {
-    if (type === 'success') {
-        notyf.success(text);
-    }
-}
-
-
 window.addEventListener('swal', event => {
     showSwal(event.detail.type, event.detail.title, event.detail.text, event.detail.confirmButtonText, event.detail.livewireMethod)
 });
 
-window.addEventListener('toast', event => {
-    showToast(event.detail.type, event.detail.text)
-});
+
+// window.showToast = function showToast(type, text) {
+//     if (type === 'success') {
+//         notyf.success(text);
+//     }
+// }
+
+
+// window.addEventListener('toast', event => {
+//     showToast(event.detail.type, event.detail.text)
+// });
+
+
+
 
 window.disableSendButtons = function (state) {
     const submitButtons = document.querySelectorAll('.submitButton');
@@ -90,16 +88,15 @@ window.loggedCheck = function () {
             el.addEventListener('click', e => {
                 e.preventDefault();
                 Swal.fire({
-                    title: 'Авторизация',
-                    text: 'Чтобы выполнить это действие, пожалуйста, войдите в аккаунт',
-                    icon: 'info',
-                    confirmButtonText: 'Войти',
-                    showCancelButton: true,
-                    cancelButtonText: 'Отмена',
-                }).then(result => {
-                    if (result.isConfirmed) {
-                        window.location.href = '/login'; // или другой путь для входа
-                    }
+                    title: 'Внимание!',
+                    html: `
+                        <p>Чтобы выполнить это действие, пожалуйста, войдите в аккаунт или зарегистрируйтесь.</p>
+                        <div class="flex justify-center gap-3 mt-4">
+                            <a href="/login" wire:navigate class="!outline-none block border text-xl min-w-max flex gap-2 items-center justify-center rounded-lg py-1 px-8 cursor-pointer transition text-green-500 border-green-500 hover:bg-green-500 hover:text-white">Войти</a>
+                            <a href="/register" wire:navigate class="!outline-noneblock border text-xl min-w-max flex gap-2 items-center justify-center rounded-lg py-1 px-8 cursor-pointer transition text-green-500 border-green-500 hover:bg-green-500 hover:text-white">Зарегистрироваться</a>
+                        </div>
+                    `,
+                    showConfirmButton: false
                 });
             });
         });
@@ -112,18 +109,43 @@ document.addEventListener('DOMContentLoaded', () => {
     window.loggedCheck()
 });
 
-Livewire.hook('morph.updated', ({ el, component }) => {
-    // window.loggedCheck()
-})
+document.addEventListener('livewire:navigate', () => {
+    window.loggedCheck()
+});
 
 
 const params = new URLSearchParams(window.location.search);
 const confirmPayment = params.get('confirm_payment');
 
-if (confirmPayment === 'collection_participation') {
+if (confirmPayment) {
+    let title = '';
+    let html = '';
+
+    switch (confirmPayment) {
+        case 'collection_participation':
+            title = 'Оплата успешно завершена 🎉';
+            html = '<p>Следующий шаг - дождаться этапа предварительной проверки.</p>';
+            break;
+
+        case 'own_book_without_print':
+            title = 'Оплата прошла успешно 💫';
+            html = '<p>Ваша книга принята в работу. Следующий шаг - дождаться этапа предварительной проверки.</p>';
+            break;
+
+        case 'own_book_print_only':
+            title = 'Оплата прошла успешно 💫';
+            html = '<p>Мы начали подготовку к печати. Как только мы отправим заказ в работу, вы получите отдельное уведомление, а общий статус книги изменится. Обычно это занимает 3 дня.</p>';
+            break;
+
+        case 'ext_promotion':
+            title = 'Оплата прошла успешно 💫';
+            html = '<p>В течение 3-х дней мы начнем продвижение. Вы получите отдельное уведомление по Email, а за процессом можно будет следить на этой странице.</p>';
+            break;
+    }
+
     Swal.fire({
-        title: 'Оплата успешно завершена 🎉',
-        html: '<p>Следующий шаг - дождаться этапа предварительной проверки.</p>',
+        title,
+        html,
         icon: 'success',
         showConfirmButton: false
     });

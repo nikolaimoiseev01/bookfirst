@@ -2,11 +2,17 @@
 
 namespace App\Livewire\Pages\Account\Chat;
 
+use App\Enums\ChatStatusEnums;
+use App\Filament\Resources\Chats\Pages\EditChat;
+use App\Jobs\TelegramNotificationJob;
 use App\Models\Chat\Chat;
 use App\Models\Chat\Message;
+use App\Models\User\User;
+use App\Notifications\TelegramDefaultNotification;
 use App\Traits\WithCustomValidation;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\Rule;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
@@ -20,19 +26,27 @@ class CreateChatPage extends Component
     public $title;
     public $text;
     public $files = [];
+    public $isSending;
     #[Url]
-    public $userTo = 2;
+    public $userToId = 2;
+    public $userTo;
 
     public function render()
     {
         return view('livewire.pages.account.chat.create-chat-page')->layout('layouts.account');
     }
 
+    public function mount() {
+        if ($this->userToId != 2) {
+            $this->userTo = User::where('id', $this->userToId)->first();
+        }
+    }
+
     protected function rules(): array
     {
         return [
             'text' => 'required',
-            'title' => 'required', // ~10MB
+            'title' => \Illuminate\Validation\Rule::requiredIf(fn() => $this->userToId == 2), // ~10MB
         ];
     }
 
@@ -50,10 +64,10 @@ class CreateChatPage extends Component
             DB::transaction(function () {
                 $chat = Chat::create([
                     'user_created' => Auth::user()->id,
-                    'user_to' => 2,
-                    'title' => $this->title,
-                    'chat_status_id' => 1,
-                    'flg_admin_chat' => true
+                    'user_to' => $this->userToId,
+                    'title' => $this->userToId == 2 ? $this->title : 'Личная переписка c автором ' . $this->userTo->getUserFullName(),
+                    'status' => $this->userToId == 2 ? ChatStatusEnums::WAIT_FOR_ADMIN : ChatStatusEnums::PERSONAL_CHAT,
+                    'flg_admin_chat' => $this->userToId == 2
                 ]);
                 $message = Message::create([
                     'chat_id' => $chat['id'],
@@ -70,10 +84,19 @@ class CreateChatPage extends Component
                     }
                 }
 
+                if ($this->userToId == 2) {
+                    $subject = '📌Открыт новый чат!📌';
+                    $userFromName = Auth::user()->getUserFullName();
+                    $text = "Автор: {$userFromName} \n $this->text";
+                    $url = EditChat::getUrl(['record' => $chat]);
+                    $notification = new TelegramDefaultNotification($subject, $text, $url);
+                    TelegramNotificationJob::dispatch($notification);
+                }
+
                 session()->flash('swal', [
                     'title' => 'Успешно!',
                     'icon' => 'success',
-                    'text' => 'Обсуждение успешно создано! Мы ответим в ближайшее время.'
+                    'text' => 'Обсуждение успешно создано!'
                 ]);
 
                 $this->redirect(route('account.chats'), navigate: true);

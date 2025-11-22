@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('text');
-            $table->foreignId('message_template_type_id')->references('id')->on('message_template_types');
+            $table->string('type');
             $table->timestamps();
         });
     }

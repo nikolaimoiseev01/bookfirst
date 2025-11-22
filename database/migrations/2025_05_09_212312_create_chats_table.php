@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_created')->references('id')->on('users');
             $table->bigInteger('user_to');
             $table->string('title');
-            $table->foreignId('chat_status_id')->references('id')->on('chat_statuses');
+            $table->string('status');
             $table->nullableMorphs('model');
             $table->integer('flg_admin_chat');
             $table->timestamps();

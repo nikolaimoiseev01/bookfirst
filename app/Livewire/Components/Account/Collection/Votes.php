@@ -19,6 +19,7 @@ class Votes extends Component
 
     public $currentVote;
     public $authorChosen;
+    public $userVotes;
 
     protected $listeners = ['deleteVote' => 'deleteVote'];
 
@@ -28,6 +29,7 @@ class Votes extends Component
         if ($this->currentVote) {
             $this->authorChosen = $this->participations->where('id', $this->currentVote['participation_id_to'])->first()['author_name'];
         }
+        $this->userVotes = CollectionVote::query()->where('participation_id_to', $this->participationId)->count() + 3;
         return view('livewire.components.account.collection.votes');
     }
 

@@ -44,7 +44,7 @@ class ParticipationStatusUpdate extends Notification
         return (new MailMessage)
             ->subject('Статус участия в сборнике')
             ->greeting('Здравствуйте, ' . $notifiable->name . '!')
-            ->line("Статус участия в сборнике: '" . $this->participation->collection['title'] . "' изменен с '" . $this->oldStatus . "' на '" . $this->newStatus . "'!")
+            ->line("Ваш статус участия в сборнике: '" . $this->participation->collection['title'] . "' изменен с '" . $this->oldStatus . "' на '" . $this->newStatus . "'!")
             ->line("Вся подробная информация об издании сборника и вашем процессе указана на странице участия:")
             ->action('Ваша страница участия', route('account.participation.index', $this->participation['id']));
     }

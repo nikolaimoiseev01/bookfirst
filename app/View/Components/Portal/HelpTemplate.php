@@ -1,0 +1,46 @@
+<?php
+
+namespace App\View\Components\Portal;
+
+use Closure;
+use Illuminate\Contracts\View\View;
+use Illuminate\View\Component;
+
+class HelpTemplate extends Component
+{
+    /**
+     * Create a new component instance.
+     */
+    public function __construct()
+    {
+        //
+    }
+
+    /**
+     * Get the view / contents that represent the component.
+     */
+    public function render(): View|Closure|string
+    {
+        $links = [
+            [
+                'name' => 'Личный кабинет',
+                'route' => route('portal.help.account')
+            ],
+            [
+                'name' => 'Участия в сборниках',
+                'route' => route('portal.help.collection')
+            ],
+            [
+                'name' => 'Издание собственной книги',
+                'route' => route('portal.help.own_book')
+            ],
+            [
+                'name' => 'Продвижение',
+                'route' => route('portal.help.ext_promotion')
+            ]
+        ];
+        return view('components.portal.help-template', [
+            'links' => $links
+        ]);
+    }
+}

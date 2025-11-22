@@ -2,7 +2,10 @@
 
 namespace App\Livewire\Pages\Account\Work;
 
+use App\Enums\ParticipationStatusEnums;
+use App\Models\Collection\ParticipationWork;
 use App\Models\Work\Work;
+use App\Traits\WithCustomValidation;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -11,7 +14,7 @@ use Livewire\WithPagination;
 
 class WorksPage extends Component
 {
-    use WithPagination;
+    use WithPagination, WithCustomValidation;
 
     public $searchText = '';
 
@@ -52,12 +55,19 @@ class WorksPage extends Component
     public function deleteWork($id)
     {
         DB::transaction(function () use ($id) {
-            $work = Work::where('id', $id)->first();
-            if ($work->getFirstMediaUrl('cover') ?? null) {
-                $work->clearMediaCollection('cover');
+            $participationWork = ParticipationWork::where('work_id', $id)->first();
+            if (!$participationWork || $participationWork->participation['status'] == ParticipationStatusEnums::NOT_ACTUAL) {
+                $work = Work::where('id', $id)->first();
+                if ($work->getFirstMediaUrl('cover') ?? null) {
+                    $work->clearMediaCollection('cover');
+                }
+                $work->likes()->delete();
+                $work->comments()->delete();
+                $work->delete();
+                $this->dispatch('toast', type: 'success', text: 'Произведение удалено');
+            } else {
+                $this->dispatch('swal', type: 'error', title: 'Ошибка', text: 'Произведение участвует в сборнике. Его нельзя сейчас удалить.');
             }
-            $work->delete();
-            $this->dispatch('toast', type: 'success', text: 'Произведение удалено');
         });
     }
 }

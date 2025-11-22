@@ -4,6 +4,8 @@ namespace App\Models\Collection;
 
 use App\Enums\CollectionStatusEnums;
 use App\Enums\ParticipationStatusEnums;
+use App\Filament\Resources\Collection\Collections\Pages\EditCollection;
+use App\Filament\Resources\OwnBook\OwnBooks\Pages\EditOwnBook;
 use App\Livewire\Components\Account\PreviewComments;
 use App\Models\PreviewComment;
 use App\Models\PrintOrder\PrintOrder;
@@ -29,6 +31,13 @@ class Collection extends Model implements HasMedia
         'winner_participations' => 'array',
         'selling_links' => 'array',
         'status' => CollectionStatusEnums::class,
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'date_apps_end' => 'date',
+        'date_preview_star' => 'date',
+        'date_preview_end' => 'date',
+        'date_print_start' => 'date',
+        'date_print_end' => 'date'
     ];
 
     public function workType()
@@ -71,7 +80,7 @@ class Collection extends Model implements HasMedia
 
     public function winnerParticipations(): belongsToJson
     {
-        return $this->belongsToJson(Participation::class,'winner_participations','id');
+        return $this->belongsToJson(Participation::class, 'winner_participations', 'id');
     }
 
     public function printOrders(): morphMany
@@ -79,6 +88,10 @@ class Collection extends Model implements HasMedia
         return $this->morphMany(PrintOrder::class, 'model');
     }
 
+    public function adminEditPage(): string
+    {
+        return EditCollection::getUrl(['record' => $this]);
+    }
 //    public function digital_sale() {
 //        return $this->belongsTo(digital_sale::class, 'id', 'bought_collection_id');
 //    }

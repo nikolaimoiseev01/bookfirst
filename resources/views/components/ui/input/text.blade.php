@@ -15,6 +15,7 @@
 
     <input
         {{$attributes->thatStartWith('wire:model')}}
+        {{$attributes->thatStartWith('x-model')}}
         {{$attributes->thatStartWith('placeholder')}}
         {{$attributes->thatStartWith('type')}}
         type="text"
@@ -24,10 +25,10 @@
         'border-green-500' => $color === 'green',
         'border-brown-400' => $color === 'yellow',
         ])
-        class="border rounded-md px-3 py-2 w-full focus:outline-none  {{($errors->has($attributes->get('wire:model')) ? 'border-red-500' : 'border-gray-300')}}"
+        class="placeholder:text-dark-200 border rounded-md px-3 py-2 w-full focus:outline-none  {{($errors->has($attributes->get('wire:model')) ? 'border-red-500' : 'border-gray-300')}}"
     />
 
-    @error($attributes->get('wire:model'))
-    <p class="text-sm text-red-500">{{ $message }}</p>
-    @enderror
+{{--    @error($attributes->get('wire:model'))--}}
+{{--    <p class="text-sm text-red-500">{{ $message }}</p>--}}
+{{--    @enderror--}}
 </div>

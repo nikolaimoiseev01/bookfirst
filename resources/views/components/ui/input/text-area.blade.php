@@ -4,6 +4,7 @@
         isSending:  $wire.entangle('isSending'),
         isFocused: false,
         isDropping: false,
+        isLivewire: @js($isLivewire),
       leaveTimeout: null,
         browseFileTrigger() {
              $el.closest('[x-data]').querySelector('.filepond--drop-label')?.click()
@@ -48,11 +49,14 @@
          :class="isFocused ? 'shadow-[0_0_2px_1px_#47af984a]' : ''">
 
         <textarea
-            wire:model="{{ $textModel }}"
+            @if($isLivewire)
+                wire:model="{{ $textModel }}"
+            @endif
+            {{$attributes->thatStartWith('x-model')}}
             @focus="isFocused = true"
             @blur="isFocused = false"
             placeholder="{{$description}}"
-            class="rounded-l-xl w-full min-h-28 text-xl outline-none ring-0 resize-none text-dark-400 dark:text-white bg-white dark:bg-dark_bg dark:border-gray-300"
+            class="w-full min-h-28 text-xl outline-none ring-0 resize-none text-dark-400 dark:text-white bg-transparent dark:bg-dark_bg dark:border-gray-300"
         ></textarea>
 
         <div

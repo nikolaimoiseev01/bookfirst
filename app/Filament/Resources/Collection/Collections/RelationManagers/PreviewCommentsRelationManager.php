@@ -14,14 +14,18 @@ use Filament\Actions\ViewAction;
 use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 
 class PreviewCommentsRelationManager extends RelationManager
 {
     protected static string $relationship = 'previewComments';
+
+    protected static ?string $title = 'Исправления';
 
     public function form(Schema $schema): Schema
     {
@@ -68,5 +72,11 @@ class PreviewCommentsRelationManager extends RelationManager
                     DissociateBulkAction::make(),
                 ]),
             ]);
+    }
+
+    public static function getTabComponent(Model $ownerRecord, string $pageClass): Tab
+    {
+        return Tab::make('Исправления')
+            ->badge($ownerRecord->previewComments->count());
     }
 }

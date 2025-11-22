@@ -1,6 +1,6 @@
 <div
     x-data="{ expanded: false }"
-    class="flex flex-col container p-4"
+    class="flex flex-col container p-4 min-w-full w-full"
 >
     <div class="flex gap-4 items-center mb-4">
         <img src="{{ getUserAvatar($work->user) }}" class="w-10 h-10 rounded-xl" alt="">
@@ -10,7 +10,7 @@
                 {{ getUserName($work->user) }}:
             </x-ui.link-simple>
             <x-ui.link-simple href="{{route('social.work', $work['id'])}}"
-                              class="text-3xl">{{ $work['title'] }}</x-ui.link-simple>
+                              class="text-3xl">{{ \Illuminate\Support\Str::limit($work['title'], 25) }}</x-ui.link-simple>
         </div>
         <span class="text-dark-350 ml-auto">{{ $work->workType['name'] }} / {{ $work->workTopic['name'] }}</span>
     </div>
@@ -39,7 +39,7 @@
         <x-ui.link-simple href="{{route('social.work', $work['id'])}}" class="flex gap-1 items-center">
             <x-bi-chat class="w-5 h-5 fill-dark-350"/>
             <span class="text-xl text-dark-350">
-                        {{ $work->work_comments_count }}
+                        {{ $work->comments_count }}
                     </span>
         </x-ui.link-simple>
         <div

@@ -26,6 +26,7 @@
         "@yandex/ymaps3-default-ui-theme": "^0.0.19",
         "delicious-hamburgers": "^1.2.3",
         "filepond": "^4.32.8",
+        "filepond-plugin-file-validate-type": "^1.2.9",
         "gsap": "^3.13.0",
         "jquery": "^3.7.1",
         "notyf": "^3.10.0",

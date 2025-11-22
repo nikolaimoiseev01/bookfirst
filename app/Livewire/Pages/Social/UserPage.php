@@ -3,12 +3,14 @@
 namespace App\Livewire\Pages\Social;
 
 use App\Models\User\User;
+use App\Models\Work\Work;
 use Livewire\Component;
 
 class UserPage extends Component
 {
     public $user;
     public $userStat;
+    public $randomWorks;
 
     public function render()
     {
@@ -17,6 +19,7 @@ class UserPage extends Component
 
     public function mount($id)
     {
-        $this->user = User::where('id', $id)->first();
+        $this->user = User::where('id', $id)->with(['ownBooks', 'media'])->withCount('works', 'awards', 'subscribers', 'subscribedToUsers')->first();
+        $this->randomWorks = Work::inRandomOrder()->with('media')->limit(5)->get();
     }
 }

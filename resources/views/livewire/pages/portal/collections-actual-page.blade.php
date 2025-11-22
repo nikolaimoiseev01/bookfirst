@@ -8,7 +8,7 @@
     </div>
     <div class="flex flex-col gap-16 content items-center">
         @foreach($collections as $collection)
-            <x-portal.card-collection-wide :collection="$collection"/>
+            <x-ui.cards.card-collection-wide :collection="$collection"/>
         @endforeach
     </div>
 </main>

@@ -1,13 +1,16 @@
 @props([
-    'social',
+    'color' => 'green',
+    'isLivewire' => true
 ])
 
 @php
-    $classes = 'text-2xl font-light cursor-pointer ' . (($social ?? false)
-                ? 'block font-light'
-                : 'block font-light');
+    $classes = 'text-2xl font-light cursor-pointer ' . (($color == 'yellow')
+                ? 'text-brown-400 hover:text-brown-500'
+                : 'text-green-500 0 hover:text-green-600');
 @endphp
 
-<a wire:navigate :class="$store.global.social ? ' text-blue-500 hover:text-blue-600' : ' text-green-500 0 hover:text-green-600'" {{ $attributes->merge(['class' => 'w-fit ' . $classes])}}>
-   {{$slot}}
+<a @if($isLivewire)
+       wire:navigate
+   @endif :class="$store.global.social ? ' !text-blue-500 !hover:text-blue-600' : ''" {{ $attributes->merge(['class' => 'block w-fit ' . $classes])}}>
+    {{$slot}}
 </a>

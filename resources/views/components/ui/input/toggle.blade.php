@@ -3,6 +3,7 @@
     'disabled' => false,
     'boolean' => false,
     'model' => '',
+    'isLivewire' => true,
     'size' => 'md',    // sm | md | lg
 ])
 <div class="flex rounded-2xl border border-green-500 w-fit overflow-hidden min-h-fit">
@@ -16,10 +17,10 @@
         >
             <input
                 @if($boolean)
-                    wire:model.live.boolean="{{$model}}"
+                    @if($isLivewire) wire:model.live.boolean="{{$model}}" @endif
                     x-model.boolean="{{$model}}"
                 @else
-                    wire:model.live="{{$model}}"
+                    @if($isLivewire) wire:model.live="{{$model}}" @endif
                     x-model="{{$model}}"
                 @endif
 

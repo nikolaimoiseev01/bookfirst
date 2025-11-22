@@ -14,7 +14,7 @@
         <div class="flex flex-col gap-4 lg:items-center">
             <h3 class="border-b border-b-dark-600 w-fit">{{$ownBook['title']}}</h3>
             <div class="flex gap-2 items-center">
-                <img src="{{getAvatarUrl($ownBook->user)}}" class="w-8 h-8 rounded-full" alt="">
+                <img src="{{getUserAvatar($ownBook->user)}}" class="w-8 h-8 rounded-full" alt="">
                 <x-ui.link-simple href="{{route('social.user', ['id' => $ownBook['user_id']])}}">{{$ownBook['author']}}</x-ui.link-simple>
             </div>
             @if($ownBook['annotation'])
@@ -34,7 +34,7 @@
                         {{$name}}
                     </a>
                 @endforeach
-                <a href="" target="_blank" class="flex gap-4 border text-xl border-dark-100 rounded px-4 py-2 hover:bg-green-500 hover:text-white transition">
+                <a href="" data-check-logged target="_blank" class="flex gap-4 border text-xl border-dark-100 rounded px-4 py-2 hover:bg-green-500 hover:text-white transition">
                     Электронная версия (100 руб.)
                 </a>
             </div>

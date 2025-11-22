@@ -16,6 +16,7 @@ class TextArea extends Component
     public $sendable;
     public $multiple;
     public $color;
+    public $isLivewire = true;
 
     /**
      * Create a new component instance.

@@ -12,11 +12,10 @@ class ChatsPage extends Component
 {
     public $allChats;
     public $tab = 'support';
-    public $chat;
 
     #[Url]
-    public $cur_chat_id;
-    public $cur_chat;
+    public $curChatId;
+    public $curChat;
     public $user_avatar;
 
     public function render()
@@ -32,8 +31,8 @@ class ChatsPage extends Component
             ->withMax('messages', 'created_at') // получаем поле messages_max_created_at
             ->orderBy('messages_max_created_at', 'desc')
             ->get();
-        if (!$this->cur_chat_id && count($this->allChats) > 0) {
-            $this->cur_chat_id = Chat::where('id', $this->allChats[0]['id'])->first()['id'];
+        if (!$this->curChatId && count($this->allChats) > 0) {
+            $this->curChatId = Chat::where('id', $this->allChats[0]['id'])->first()['id'];
         }
         if (count($this->allChats) > 0) {
             $this->makeCurChat();
@@ -43,19 +42,20 @@ class ChatsPage extends Component
 
     function makeCurChat()
     {
-        $this->cur_chat = Chat::where('id', $this->cur_chat_id)->first();
-        if ($this->cur_chat['flg_admin_chat']) {
+        $this->curChat = Chat::where('id', $this->curChatId)->first();
+        $this->tab = $this->curChat['flg_admin_chat'] ? 'support' : 'personal';
+        if ($this->curChat['flg_admin_chat']) {
             $this->user_avatar = '/fixed/avatar_admin.svg';
-        } elseif ($this->chat['user_created'] != Auth::user()->id) {
-            $this->user_avatar = getAvatarUrl(User::where('id', $this->chat['user_created'])->with('media')->first());
+        } elseif ($this->curChat['user_created'] != Auth::user()->id) {
+            $this->user_avatar = getUserAvatar(User::where('id', $this->curChat['user_created'])->with('media')->first());
         } else {
-            $this->user_avatar = getAvatarUrl(User::where('id', $this->chat['user_to'])->with('media')->first());
+            $this->user_avatar = getUserAvatar(User::where('id', $this->curChat['user_to'])->with('media')->first());
         }
     }
 
     public function changeChat($id)
     {
-        $this->cur_chat_id = $id;
+        $this->curChatId = $id;
         $this->makeCurChat();
         $this->dispatch('refreshChat');
     }

@@ -2,25 +2,25 @@
 
 namespace App\Livewire\Pages\Account\OwnBook;
 
+use App\Enums\ChatStatusEnums;
 use App\Enums\OwnBookCoverStatusEnums;
 use App\Enums\OwnBookInsideStatusEnums;
 use App\Enums\OwnBookStatusEnums;
-use App\Enums\ParticipationStatusEnums;
-use App\Jobs\EmailNotificationJob;
+use App\Enums\PrintOrderStatusEnums;
+use App\Enums\PrintOrderTypeEnums;
+use App\Filament\Resources\OwnBook\OwnBooks\Pages\EditOwnBook;
 use App\Jobs\TelegramNotificationJob;
 use App\Models\Chat\Chat;
-use App\Models\Collection\ParticipationWork;
 use App\Models\OwnBook\OwnBook;
 use App\Models\OwnBook\OwnBookWork;
+use App\Models\PrintOrder\AddressType;
 use App\Models\PrintOrder\PrintOrder;
 use App\Models\Work\Work;
-use App\Notifications\Collection\ParticipationCreatedNotification;
-use App\Notifications\OwnBookCreatedNotification;
-use App\Services\CalculateOwnBookService;
+use App\Notifications\OwnBook\OwnBookCreatedNotification;
+use App\Services\PriceCalculation\CalculateOwnBookService;
 use App\Traits\WithCustomValidation;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
@@ -50,10 +50,8 @@ class OwnBookCreatePage extends Component
     public $insideColor = 'Черно-белый';
     public $pagesColor;
 
-    public $receiverCountry;
     public $addressType = 'СДЭК';
     public $country = 'Россия';
-    public $address_type_id;
     public $addressJson;
 
     public $receiverName;
@@ -274,9 +272,10 @@ class OwnBookCreatePage extends Component
                 'comment_author_cover' => $this->commentAuthorCover,
                 'internal_promo_type' => $this->needPromo ? $this->internalPromoType : null,
                 'price_text_design' => $this->prices['priceTextDesign'],
-                'price_text_check' => $this->prices['priceTextDesign'],
-                'price_cover' => $this->prices['priceTextDesign'],
-                'price_promo' => $this->prices['priceTextDesign'],
+                'price_text_check' => $this->prices['priceTextCheck'],
+                'price_inside' => $this->prices['priceInside'],
+                'price_cover' => $this->prices['priceCover'],
+                'price_promo' => $this->prices['pricePromo'],
                 'price_total' => $this->prices['priceTotal'],
             ]);
             foreach ($this->selectedWorks as $work) {
@@ -289,6 +288,7 @@ class OwnBookCreatePage extends Component
                 foreach ($this->insideFiles as $file) {
                     $newOwnBook
                         ->addMedia($file->getRealPath())       // путь до tmp файла
+                        ->usingName($file->getClientOriginalName())
                         ->usingFileName($file->getClientOriginalName()) // оригинальное имя
                         ->toMediaCollection('from_author_inside');   // твоя коллекция
                 }
@@ -296,6 +296,7 @@ class OwnBookCreatePage extends Component
             foreach ($this->coverFiles as $file) {
                 $newOwnBook
                     ->addMedia($file->getRealPath())       // путь до tmp файла
+                    ->usingName($file->getClientOriginalName())
                     ->usingFileName($file->getClientOriginalName()) // оригинальное имя
                     ->toMediaCollection('from_author_cover');   // твоя коллекция
             }
@@ -303,7 +304,7 @@ class OwnBookCreatePage extends Component
                 'user_created' => Auth::user()->id,
                 'user_to' => 2,
                 'title' => str_replace(self::CHAT_TITLE_PREFIX, '{title}', $this->title),
-                'chat_status_id' => 1,
+                'status' => ChatStatusEnums::EMPTY,
                 'model_type' => 'OwnBook',
                 'model_id' => $newOwnBook['id'],
                 'flg_admin_chat' => true,
@@ -311,7 +312,8 @@ class OwnBookCreatePage extends Component
             if ($this->needPrint) {
                 $newPrintOrder = PrintOrder::create([
                     'user_id' => Auth::user()->id,
-                    'print_order_status_id' => 1,
+                    'type' => PrintOrderTypeEnums::OWN_BOOK_PUBLISH,
+                    'status' => PrintOrderStatusEnums::CREATED,
                     'model_type' => 'OwnBook',
                     'model_id' => $newOwnBook['id'],
                     'books_cnt' => $this->booksCnt,
@@ -320,23 +322,21 @@ class OwnBookCreatePage extends Component
                     'cover_type' => $this->coverType,
                     'receiver_name' => $this->receiverName,
                     'receiver_telephone' => $this->receiverTelephone,
-                    'country' => $this->receiverCountry,
-                    'address_type_id' => $this->address_type_id,
+                    'country' => $this->country,
+                    'address_type' => $this->addressType,
                     'address_json' => $this->addressJson,
+                    'price_print' => $this->prices['pricePrint'],
                     'logistic_company_id' => self::LOGISTIC_COMPANY_ID,
                     'printing_company_id' => self::PRINTING_COMPANY_ID
                 ]);
                 $newOwnBook->update(['print_order_id' => $newPrintOrder['id']]);
             }
 
-
-            $adminRedirect = route('login_as_admin', ['url_redirect' => "/admin/own-book/own-books/{$newOwnBook['id']}/edit?user={$newOwnBook['user_id']}"]);
+            $adminRedirect = route('login_as_admin', ['url_redirect' => EditOwnBook::getUrl(['record' => $newOwnBook])]);
             $url = route('login_as_admin', ['redirect' => $adminRedirect]);
             $subject = '💥 Новая книга от ' . Auth::user()->name . ' ' . Auth::user()->surname . "!💥" . "\n\n";
             $notification = new OwnBookCreatedNotification($subject, $this->getNotifyText(), $url);
             TelegramNotificationJob::dispatch($notification);
-
-
 
             $alert_text = 'Заявка на издание книги создана! На этой странице вы можете следить за всей информацией. Чат с личным менеджером тоже здесь.';
             session()->flash('swal', [

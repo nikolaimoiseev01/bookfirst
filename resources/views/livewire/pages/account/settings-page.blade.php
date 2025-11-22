@@ -1,4 +1,4 @@
-<div x-data="{showEdit: false}">
+<div x-data="{showEdit: false}" class="flex gap-4">
     @section('title')
         Настройки
     @endsection
@@ -17,6 +17,10 @@
         </form>
         <x-ui.link-simple @click="showEdit = !showEdit" x-text="showEdit ? 'Отменить' : 'Редактировать'"/>
     </div>
+
+        <div class="flex flex-col">
+
+        </div>
 
     <x-ui.link wire:click="logout" class="mt-8 w-fit">Выйти</x-ui.link>
 </div>

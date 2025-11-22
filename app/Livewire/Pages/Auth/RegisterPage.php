@@ -43,6 +43,7 @@ class RegisterPage extends Component
 
             event(new Registered($user = User::create($validated)));
 
+            $user->assignRole('User');
             Auth::login($user);
 
             $this->redirect(route('account.participations', absolute: false), navigate: true);

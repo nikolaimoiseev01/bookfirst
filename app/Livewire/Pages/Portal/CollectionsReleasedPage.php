@@ -5,6 +5,7 @@ namespace App\Livewire\Pages\Portal;
 use App\Enums\CollectionStatusEnums;
 use App\Models\Collection\Collection;
 use App\Models\OwnBook\OwnBook;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 
 class CollectionsReleasedPage extends Component
@@ -13,7 +14,8 @@ class CollectionsReleasedPage extends Component
 
     public $take = 10;
     public $moreCnt = 10;
-    public $searchText = null;
+    #[Url]
+    public $searchText;
     public $totalCnt;
 
 

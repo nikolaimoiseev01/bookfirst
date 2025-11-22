@@ -1,33 +1,48 @@
-<div class="h-20">
+<div x-data="welcomeTyper()" x-init="init()" class="h-20">
     <div class="relative">
         <p class="italic text-3xl" id="welcome-running-line"></p>
-{{--        <p class="italic text-3xl absolute top-0 left-0 text-green-50 z-0">Хорошо унаследовать библиотеку, а еще лучше собрать свою--}}
-{{--            собственную.</p>--}}
     </div>
-
-
 </div>
 
-@push('page-js')
+@push('scripts')
     <script>
-        window.onload = function () {
-            const app = document.getElementById('app');
+        function welcomeTyper() {
+            return {
+                textArray: [
+                    "Хорошо унаследовать библиотеку, а еще лучше собрать свою собственную.",
+                    "Что разум человека может постигнуть и во что он может поверить, того он способен достичь.",
+                    "Книги – это и самолет, и поезд, и дорога. Они и пункт назначения, и путешествие."
+                ],
 
-            // Typerwrite text content. Use a pipe to indicate the start of the second line "|".
-            var textArray = [
-                "Хорошо унаследовать библиотеку, а еще лучше собрать свою собственную.",
-                "Что разум человека может постигнуть и во что он может поверить, того он способен достичь.",
-                "Книги – это и самолет, и поезд, и дорога. Они и пункт назначения, и путешествие."
-            ];
+                async init() {
+                    await this.loadTypewriter();
+                    this.startTypewriter();
+                },
 
-            new Typewriter('#welcome-running-line', {
-                strings: textArray,
-                autoStart: true,
-                cursor: '',
-                delay: 40,
-                loop: true
-            });
+                loadTypewriter() {
+                    return new Promise((resolve) => {
+                        if (window.Typewriter) {
+                            resolve();
+                            return;
+                        }
+
+                        const script = document.createElement("script");
+                        script.src = "/plugins/typewriter.js";
+                        script.onload = () => resolve();
+                        document.head.appendChild(script);
+                    });
+                },
+
+                startTypewriter() {
+                    new Typewriter('#welcome-running-line', {
+                        strings: this.textArray,
+                        autoStart: true,
+                        cursor: '',
+                        delay: 40,
+                        loop: true,
+                    });
+                }
+            }
         }
-
     </script>
 @endpush

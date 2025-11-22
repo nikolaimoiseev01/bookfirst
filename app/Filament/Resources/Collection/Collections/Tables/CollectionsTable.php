@@ -3,8 +3,10 @@
 namespace App\Filament\Resources\Collection\Collections\Tables;
 
 use App\Enums\CollectionStatusEnums;
+use App\Enums\ParticipationStatusEnums;
 use App\Models\Collection\Collection;
 use App\Models\Work\Work;
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -45,23 +47,33 @@ class CollectionsTable
                                     CollectionStatusEnums::DONE => 'success',
                                 }),
                             Split::make([
-//                                TextColumn::make('participations_count')
-//                                    ->icon('heroicon-o-user-group')
-//                                    ->tooltip('Участников')
-//                                    ->size(TextSize::Large)
-//                                    ->counts([
-//                                        'participations' => fn(Builder $query) => $query->where('participation_status_id', '>', 2),
-//                                    ]),
-//                                TextColumn::make('participations_sum_price_total')
-//                                    ->icon('heroicon-o-banknotes')
-//                                    ->size(TextSize::Large)
-//                                    ->formatStateUsing(fn(string $state): HtmlString => new HtmlString("{$state}Р"))
-//                                    ->tooltip('Выручка')
-//                                    ->sum([
-//                                        'participations' => fn(Builder $query) => $query->where('participation_status_id', '>', 2),
-//                                    ], 'price_total'),
-                                TextColumn::make('getTotalWorkPagesAttribute')
+                                TextColumn::make('participations_count')
                                     ->icon('heroicon-o-user-group')
+                                    ->tooltip('Участников')
+                                    ->size(TextSize::Large)
+                                    ->counts([
+                                        'participations' => function(Builder $query) {
+                                            $statuses = collect(ParticipationStatusEnums::cases())
+                                                ->filter(fn ($case) => $case->order() > ParticipationStatusEnums::APPROVE_NEEDED->order())
+                                                ->map(fn ($case) => $case->value);
+                                             return $query->whereIn('status', $statuses);
+                                        } ,
+                                    ]),
+                                TextColumn::make('participations_sum_price_total')
+                                    ->icon('heroicon-o-banknotes')
+                                    ->size(TextSize::Large)
+                                    ->formatStateUsing(fn(string $state): HtmlString => new HtmlString("{$state}"))
+                                    ->tooltip('Выручка')
+                                    ->sum([
+                                        'participations' => function(Builder $query) {
+                                            $statuses = collect(ParticipationStatusEnums::cases())
+                                                ->filter(fn ($case) => $case->order() > ParticipationStatusEnums::APPROVE_NEEDED->order())
+                                                ->map(fn ($case) => $case->value);
+                                            return $query->whereIn('status', $statuses);
+                                        } ,
+                                    ], 'price_total'),
+                                TextColumn::make('getTotalWorkPagesAttribute')
+                                    ->icon('heroicon-o-document-duplicate')
                                     ->tooltip('Страниц работ')
                                     ->size(TextSize::Large)
                                     ->getStateUsing(function (Collection $collection): int {

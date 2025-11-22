@@ -20,7 +20,12 @@ class PrintOrderResource extends Resource
 {
     protected static ?string $model = PrintOrder::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedPrinter;
+
+    protected static ?string $label = 'Заказы печати';
+    protected static ?string $navigationLabel = 'Заказы печати';
+    protected static ?string $pluralLabel = 'Заказы печати';
+
 
     public static function form(Schema $schema): Schema
     {
@@ -49,7 +54,6 @@ class PrintOrderResource extends Resource
         return [
             'index' => ListPrintOrders::route('/'),
             'create' => CreatePrintOrder::route('/create'),
-            'view' => ViewPrintOrder::route('/{record}'),
             'edit' => EditPrintOrder::route('/{record}/edit'),
         ];
     }

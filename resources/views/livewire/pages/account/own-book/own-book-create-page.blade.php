@@ -181,7 +181,7 @@
         <div class="flex flex-col w-[30%] max-w-[30%] items-center p-4 my-auto">
             @if($pages > 0)
                 <div class="flex flex-col mb-6 text-center">
-                    <x-price-element price="{{$prices['priceTextInside']}}" label="Работа с макетом ({{$pages}} стр.)"/>
+                    <x-price-element price="{{$prices['priceInside']}}" label="Работа с макетом ({{$pages}} стр.)"/>
                     <span class="text-dark-200 italic text-xl font-light">Подготовка к публикации: 500</span>
                     <span class="text-dark-200 italic text-xl font-light">ISBN: 300</span>
                     <span x-show="needTextDesign" x-collapse.duration.400ms

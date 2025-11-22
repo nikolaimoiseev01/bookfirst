@@ -11,7 +11,7 @@ enum OwnBookStatusEnums: string
     case PRINT_PAYMENT_REQUIRED = 'Необходима оплата печати';
     case PRINT_WAITING = 'Печать оплачена, скоро начнётся';
     case PRINTING = 'Идёт печать книги';
-    case DONE = 'Процесс завершён';
+    case DONE = 'Процесс завершен';
     case NOT_ACTUAL = 'Неактуально';
 
 

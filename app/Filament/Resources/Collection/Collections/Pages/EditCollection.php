@@ -68,4 +68,9 @@ class EditCollection extends EditRecord
     {
         return $this->record['title'];
     }
+
+    public function getContentTabLabel(): ?string
+    {
+        return 'Общее';
+    }
 }

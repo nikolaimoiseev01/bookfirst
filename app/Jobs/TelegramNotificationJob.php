@@ -12,10 +12,12 @@ class TelegramNotificationJob implements ShouldQueue
     use Queueable;
 
     private Notification $notification;
+    private $chat;
 
-    public function __construct(Notification $notification)
+    public function __construct(Notification $notification, $chat=null)
     {
         $this->notification = $notification;
+        $this->chat = $chat;
     }
 
     /**
@@ -23,7 +25,7 @@ class TelegramNotificationJob implements ShouldQueue
      */
     public function handle(): void
     {
-        \Illuminate\Support\Facades\Notification::route('telegram', getTelegramChatId())
+        \Illuminate\Support\Facades\Notification::route('telegram', getTelegramChatId($this->chat))
             ->notify($this->notification);
 
     }

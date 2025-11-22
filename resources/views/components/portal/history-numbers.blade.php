@@ -16,7 +16,7 @@
     </div>
 </div>
 
-@push('page-js')
+@push('scripts')
     <script type="module">
         function animateValue(obj, start, end, duration) {
             let startTimestamp = null;
@@ -33,9 +33,9 @@
 
         $(window).on("scroll", function () {
             if (parseInt($('#c1').text()) < 1 && $(this).scrollTop() > $('#history-container').offset().top - $(window).height()) {
-                animateValue(document.getElementById("c1"), 0, 70, 3000);
-                animateValue(document.getElementById("c2"), 0, 1100, 3000);
-                animateValue(document.getElementById("c3"), 0, 150, 3000);
+                animateValue(document.getElementById("c1"), 0, 120, 3000);
+                animateValue(document.getElementById("c2"), 0, 4050, 3000);
+                animateValue(document.getElementById("c3"), 0, 300, 3000);
             }
 
         })

@@ -5,7 +5,9 @@ namespace App\Filament\Resources\User\Users\RelationManagers;
 use App\Filament\Resources\Collection\Participations\ParticipationResource;
 use Filament\Actions\CreateAction;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 
 class ParticipationsRelationManager extends RelationManager
 {
@@ -19,5 +21,12 @@ class ParticipationsRelationManager extends RelationManager
             ->headerActions([
 //                CreateAction::make(),
             ]);
+    }
+
+    public static function getTabComponent(Model $ownerRecord, string $pageClass): Tab
+    {
+        return Tab::make('Участия в сборниках')
+            ->badge($ownerRecord->participations->count())
+            ->badgeTooltip('Подтвержденных участий');
     }
 }

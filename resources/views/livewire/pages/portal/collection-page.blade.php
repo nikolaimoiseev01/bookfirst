@@ -26,7 +26,7 @@
                         {{$name}}
                     </a>
                 @endforeach
-                <a href="" target="_blank" class="flex gap-4 border text-xl border-dark-100 rounded px-4 py-2 hover:bg-green-500 hover:text-white transition">
+                <a href="" data-check-logged target="_blank" class="flex gap-4 border text-xl border-dark-100 rounded px-4 py-2 hover:bg-green-500 hover:text-white transition">
                     Электронная версия (100 руб.)
                 </a>
             </div>
@@ -38,7 +38,7 @@
                 </div>
             @endforeach
             @if($collection['status'] == \App\Enums\CollectionStatusEnums::APPS_IN_PROGRESS)
-                <x-ui.link href="{{route('account.participation.create', $collection['id'])}}" class="my-4 py-2 font-medium !text-2xl tracking-wide">Принять участие!</x-ui.link>
+                <x-ui.link href="{{route('account.participation.create', $collection['id'])}}" data-check-logged class="my-4 py-2 font-medium !text-2xl tracking-wide">Принять участие!</x-ui.link>
             @else
                 <p class="my-4 text-center text-red-300 font-normal">Прием заявок окончен</p>
             @endif
