@@ -68,6 +68,8 @@ return [
             'database' => env('OLD_DB_DATABASE', 'old_db'),
             'username' => env('OLD_DB_USERNAME', 'root'),
             'password' => env('OLD_DB_PASSWORD', ''),
+            'charset' => 'latin1',
+            'collation' => 'latin1_swedish_ci',
         ],
 
         'mariadb' => [
