@@ -2,11 +2,11 @@
         class="fixed w-full shadow-[0_1px_4px_#00000026] top-0 px-5 py-2 md:py-4 flex justify-between items-center z-50 bg-white dark:bg-dark_bg">
     <x-search-modal/>
     <div class="flex gap-2 items-center">
-        <div
+        <a wire:navigate href="{{route('portal.index')}}"
             class="flex gap-2 items-center lg:absolute lg:left-1/2 lg:-translate-x-1/2 lg:top-1/2 lg:-translate-y-1/2">
             <x-ui.application-logo class="w-12 h-12 mr-2"/>
             <a class="italic text-3xl font-light sm:hidden">Первая Книга</a>
-        </div>
+        </a>
         <div class="w-px h-7 bg-gray-300 xl:hidden"></div>
         <a wire:navigate
            :class="$store.global.social ? 'text-dark-400 hover:text-green-500' : 'text-green-500'"
