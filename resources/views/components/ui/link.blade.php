@@ -11,7 +11,17 @@
     };
 @endphp
 
-<a :class="$store.global.social ? ' !border-blue-500 !text-blue-500 !hover:bg-blue-500 hover:text-white' : ''"
+<a     :class="[
+        // первое условие
+        ($store.global.social && color != 'white')
+            ? '!border-blue-500 !text-blue-500 !hover:bg-blue-500 hover:text-white'
+            : '',
+
+        // второе условие
+        ($store.global.social && color == 'white')
+            ? 'hover:!text-blue-500'
+            : ''
+    ]"
    @if($navigate)  wire:navigate @endif
     {{ $attributes->merge(['class' => $classes]) }}>
     {{ $slot }}
