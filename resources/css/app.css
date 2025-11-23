@@ -16,7 +16,7 @@
         [&::-webkit-scrollbar-track]:rounded-full
         [&::-webkit-scrollbar-track]:bg-gray-100
         [&::-webkit-scrollbar-thumb]:rounded-full
-        [&::-webkit-scrollbar-thumb]:bg-green-500;
+        [&::-webkit-scrollbar-thumb]:bg-[var(--scrollbar-color)];
     }
 
     html {
@@ -29,11 +29,11 @@
     }
 
     h2 {
-        @apply text-6xl;
+        @apply text-6xl md:text-5xl;
     }
 
     h3 {
-        @apply text-[42px] font-medium md:!text-4xl;
+        @apply text-[42px] font-medium md:text-4xl;
     }
 
     h4 {
@@ -99,10 +99,15 @@ input[type="radio"]:checked {
 }
 
 input {
-    @apply border text-xl placeholder:text-dark-200 text-dark-400 px-2 py-1 outline-none focus:outline-none focus-visible:shadow-[0_0_2px_1px_#47af984a] transition rounded;
+    @apply border text-xl border-green-500 placeholder:text-dark-200 text-dark-400 px-2 py-1 outline-none focus:outline-none focus-visible:shadow-[0_0_2px_1px_#47af984a] transition rounded;
 
     &[type="number"] {
         @apply px-2 !py-0 text-xl w-24 font-light;
+        &::-webkit-inner-spin-button,
+        &::-webkit-outer-spin-button {
+            @apply appearance-none;
+            margin: 0;
+        }
     }
 
     /*&[type="radio"] {*/
@@ -207,5 +212,20 @@ input {
 
     .filepond--list-scroller[data-state=overflow] {
         overflow: auto !important;
+    }
+}
+
+.swiper-button-disabled {
+    @apply opacity-30 cursor-not-allowed;
+}
+
+@layer utilities {
+    .scrollbar-none::-webkit-scrollbar {
+        display: none;
+    }
+
+    .scrollbar-none {
+        -ms-overflow-style: none; /* IE/Edge */
+        scrollbar-width: none;    /* Firefox */
     }
 }

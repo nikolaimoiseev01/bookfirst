@@ -21,8 +21,24 @@
                 <x-ui.input.checkbox wire:model.live="needCheck" id="needCheck" label=""/>
             </div>
 
-            <div class="flex gap-4 items-center">
-                <label for="hasPromo">У меня есть скидка в 20%</label>
+            <div class="flex gap-3 items-center">
+                <label for="hasPromo">У меня есть скидка в </label>
+                <div class="flex gap-1">
+                    <input
+                        wire:model.live="promocodeInput"
+                        type="number"
+                        class="!w-12"
+                        x-on:input="
+                        if ($el.value !== '') {
+                            if ($el.value < 1) $el.value = 1;
+                            if ($el.value > 99) $el.value = 99;
+                        }
+                    "
+                        min="1"
+                        max="99"
+                    >
+                    <label for="hasPromo">%</label>
+                </div>
                 <x-ui.input.checkbox wire:model.live="hasPromo" id="hasPromo" label=""/>
             </div>
         </div>

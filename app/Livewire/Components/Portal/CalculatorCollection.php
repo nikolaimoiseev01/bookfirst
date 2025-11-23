@@ -17,6 +17,7 @@ class CalculatorCollection extends Component
     public $prices;
     public $needCheck = false;
     public $hasPromo = false;
+    public $promocodeInput = 20;
     public $booksCnt = 1;
 
 
@@ -32,12 +33,13 @@ class CalculatorCollection extends Component
 
     public function updated(): void
     {
+        $this->promocodeInput = min((int)$this->promocodeInput, 99);
         $this->prices = ((new CalculateParticipationService(
             $this->pages,
             true,
             $this->booksCnt,
             $this->needCheck,
-            $this->hasPromo ? 20 : 0)
+            $this->hasPromo ? $this->promocodeInput : 0)
         )->calculate());
     }
 

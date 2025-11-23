@@ -63,7 +63,7 @@
             class="flex flex-col justify-between rounded-r-xl dark:bg-dark_bg dark:border-gray-300 p-2"
         >
             @if($attachable)
-                <x-ui.tooltip-wrap text="Прикрепить файлы <br>(или перенесите файлы в поле текста)">
+                <x-ui.tooltip-wrap class="md:hidden" text="Прикрепить файлы <br>(или перенесите файлы в поле текста)">
                     <x-clarity-attachment-line
                         @click="browseFileTrigger()"
                         class="rotate-[-30deg] w-5 h-5 cursor-pointer fill-{{$color}} hover:scale-110 transition"

@@ -1,11 +1,11 @@
 <section id="reviews" class="content mb-32">
-    <div class="flex w-full justify-between items-center mb-8">
+    <div class="flex w-full justify-between items-center mb-8 md:flex-col md:text-center md:justify-center gap-8">
         <h2>Отзывы</h2>
         <x-ui.link-simple :isLivewire="false" target="_blank" class="text-3xl" href="https://vk.com/topic-122176261_35858257">Больше отзывов</x-ui.link-simple>
     </div>
-    <div class="flex justify-between gap-8 mb-32">
+    <div class="flex justify-between gap-8 mb-32 lg:flex-col">
         @foreach($reviews as $review)
-            <div class="flex flex-col max-w-96">
+            <div class="flex flex-col max-w-96 lg:max-w-full">
                 <div class="relative mb-8 p-4 container flex flex-col gap-2">
                     <svg class="absolute w-[50px] h-[50px] -bottom-[35px]"
                          xmlns="http://www.w3.org/2000/svg"
@@ -46,7 +46,7 @@
         @endforeach
     </div>
 
-    <div class="flex w-full justify-between mb-8">
+    <div class="flex w-full justify-between mb-8 md:flex-col md:text-center md:justify-center">
         <h2>Фото наших авторов</h2>
     </div>
 
@@ -64,7 +64,7 @@
             <div class="swiper-wrapper">
                 @for($i=1; $i<=17; $i++)
                     <div class="swiper-slide !w-fit container p-4">
-                        <img src="/fixed/review_imgs/{{$i}}.jpg" class="h-96 object-cover rounded-xl" alt="">
+                        <img src="/fixed/review_imgs/{{$i}}.jpg" class="h-96 object-cover rounded-xl md:h-64" alt="">
                     </div>
                 @endfor
             </div>

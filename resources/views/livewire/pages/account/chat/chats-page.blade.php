@@ -8,8 +8,8 @@
         </x-ui.link-simple>
     </div>
     @if(count($allChats) > 0)
-        <div class="flex max-h-[600px] max-w-5xl" x-data="{tab: @entangle('tab')}">
-            <div class="flex flex-col max-w-80 border-r border-dark-100 pr-2">
+        <div class="flex max-h-[600px] max-w-5xl md:flex-col md:max-h-max md:gap-4" x-data="{tab: @entangle('tab')}">
+            <div class="flex flex-col max-w-80 border-r border-dark-100 pr-2 md:max-h-[200px] md:max-w-full md:w-full">
                 <x-ui.input.toggle :options="['personal' => 'Личные', 'support' => 'Поддержка']" model="tab"/>
                 <div x-show="tab == 'support'" class="flex flex-col overflow-y-auto pt-4 pr-2">
                     @forelse($allChats->where('flg_admin_chat') as $chat)

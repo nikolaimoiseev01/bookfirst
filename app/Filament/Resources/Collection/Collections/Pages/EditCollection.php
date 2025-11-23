@@ -7,8 +7,10 @@ use App\Enums\ParticipationStatusEnums;
 use App\Enums\PrintOrderStatusEnums;
 use App\Filament\Resources\Collection\Collections\CollectionResource;
 use App\Jobs\EmailNotificationJob;
+use App\Jobs\PdfCutJob;
 use App\Notifications\Collection\CollectionStatusUpdate;
 use App\Notifications\Collection\CollectionWinnerNotification;
+use App\Services\PdfService;
 use Filament\Resources\Pages\EditRecord;
 
 class EditCollection extends EditRecord
@@ -41,6 +43,13 @@ class EditCollection extends EditRecord
                         'status' => PrintOrderStatusEnums::PRINTING
                     ]);
                 }
+
+                PdfCutJob::dispatch(
+                    $this->record,
+                    $this->record->getFirstMediaPath('inside_file'),
+                    10,
+                    'inside_file_preview'
+                );
             }
 
             foreach ($participations as $participation) {

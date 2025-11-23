@@ -1,9 +1,9 @@
 <section
-    class="max-w-(--breakpoint-3xl) mx-auto w-[90%] flex justify-between items-center relative mb-32 lg:flex-col"
+    class="max-w-(--breakpoint-3xl) mx-auto w-[90%] flex justify-between items-center relative mb-32 lg:flex-col gap-16"
     x-data="exSlider()"
     x-init="init()"
 >
-    <svg class="absolute left-[15%] -bottom-28 w-16" id="Слой_1" data-name="Слой 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 254.8 358.1">
+    <svg class="absolute left-[15%] -bottom-28 w-16 md:hidden" id="Слой_1" data-name="Слой 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 254.8 358.1">
         <path
             d="M195.6,122.6c23.1,21.7,31,54.1,12.8,98.5S98.4,283.6,69.1,256c-29.5-27.5-15.3-130.7,33-134.6C150.6,117.4,172.3,100.8,195.6,122.6Z"
             style="fill:#ffedcc"/>
@@ -16,19 +16,13 @@
     </svg>
     <div class="flex flex-col md:w-full">
         <!-- Изображение -->
-        <div class="w-[650px] h-[340px] md:w-full relative overflow-hidden">
+        <div class="relative overflow-hidden">
             <template x-for="(img, index) in images" :key="index">
                 <img
                     :src="img"
                     alt=""
-                    class="absolute w-full h-full object-cover"
-                    x-show="currentIndex === index"
-                    x-transition:enter="transition-opacity duration-500"
-                    x-transition:enter-start="opacity-0"
-                    x-transition:enter-end="opacity-100"
-                    x-transition:leave="transition-opacity duration-500"
-                    x-transition:leave-start="opacity-100"
-                    x-transition:leave-end="opacity-0"
+                    class="w-full object-cover transition-opacity duration-500"
+                    :class="currentIndex === index ? 'opacity-100' : 'opacity-0 absolute inset-0'"
                 >
             </template>
         </div>
@@ -52,10 +46,10 @@
         </div>
     </div>
     <!-- Тексты -->
-    <div class="max-w-3xl flex flex-col lg:justify-center lg:text-center">
-        <h2 class="mb-4" x-ref="titleEl"></h2>
-        <p x-ref="descEl"></p>
-        <div class="flex gap-4 mt-8" lg:mx-auto>
+    <div class="max-w-3xl flex flex-col xl:max-w-xl lg:justify-center lg:text-center">
+        <h2 class="mb-4 md:text-4xl" x-ref="titleEl"></h2>
+        <p x-ref="descEl" class="md:xl"></p>
+        <div class="flex gap-4 mt-8 md:flex-wrap lg:justify-center" lg:mx-auto>
             <x-ui.link href="{{route('portal.collections.released')}}">Подробнее</x-ui.link>
             <x-ui.link :navigate="false" target="_blank" href="https://www.ozon.ru/product/broshyura-1869093918">Купить на Ozon</x-ui.link>
             <x-ui.link :navigate="false" target="_blank" href="https://www.amazon.com/%D0%A1%D0%BE%D0%B2%D1%80%D0%B5%D0%BC%D0%B5%D0%BD%D0%BD%D1%8B%D0%B9-%D0%94%D1%83%D1%85-%D0%9F%D0%BE%D1%8D%D0%B7%D0%B8%D0%B8-19-2-Russian/dp/035993868X/ref=sr_1_3?dib=eyJ2IjoiMSJ9._ALVMZa-Ri7dggCl0Nk15REeLqZ3CLJ3Vc8_9SPooTU17a1f5fIEDJhTMFWrmX9S5JjXfzGRcPy9rMu70hEng_pFGXmt-65iecRNXwLwgWpZjeI-qazoFZYsPxRa2zzuqw2shXJ4gLgXEuCd0Ffs7VKG4UO8k-QtUcnUe2WmPzXmy6hNLQNcBYSVAecxesnRl3kFuFd5s4wJRwW81Q2-3WuoqO6KcuZzDb3R9_egJ9c.N3raipLn_zNwY_vPaSv7jXfIVFhZpDF4CL3fIJy1v8o&dib_tag=se&qid=1763407494&refinements=p_27%3A%26%231053%3B%26%231048%3B+%26%231055%3B%26%231077%3B%26%231088%3B%26%231074%3B%26%231072%3B%26%231103%3B+%26%231050%3B%26%231085%3B%26%231080%3B%26%231075%3B%26%231072%3B&s=books&sr=1-3&text=%26%231053%3B%26%231048%3B+%26%231055%3B%26%231077%3B%26%231088%3B%26%231074%3B%26%231072%3B%26%231103%3B+%26%231050%3B%26%231085%3B%26%231080%3B%26%231075%3B%26%231072%3B">Купить на Amazon</x-ui.link>

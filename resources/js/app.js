@@ -7,6 +7,8 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import {Navigation, Pagination} from "swiper/modules";
 import collapse from '@alpinejs/collapse'
+import "delicious-hamburgers/scss/_base.scss"
+import "delicious-hamburgers/scss/animations/_converge.scss";
 
 
 Swiper.use([Navigation, Pagination]);
@@ -140,6 +142,11 @@ if (confirmPayment) {
         case 'ext_promotion':
             title = 'Оплата прошла успешно 💫';
             html = '<p>В течение 3-х дней мы начнем продвижение. Вы получите отдельное уведомление по Email, а за процессом можно будет следить на этой странице.</p>';
+            break;
+
+        case 'collection_purchase':
+            title = 'Оплата прошла успешно 💫';
+            html = '<p>На этой странице вы можете скачать электронную версию приобретенных книг.</p>';
             break;
     }
 

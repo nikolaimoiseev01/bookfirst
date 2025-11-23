@@ -3,9 +3,9 @@
         Книги выпущенные
     @endsection
     <h1 class="mb-8">Выпущенные книги</h1>
-    <div class="flex justify-between items-center mb-8">
+    <div class="flex justify-between items-center mb-8 gap-4 flex-wrap md:justify-center">
         <x-ui.input.search-bar class=""/>
-        <div class="flex gap-4 ml-auto items-center w-fit">
+        <div class="flex gap-4 ml-auto items-center w-fit md:!mx-auto">
             <span>{{$take}} / {{$totalCnt}}</span>
             @if($take < $totalCnt)
                 <x-ui.load-more-button/>
@@ -13,7 +13,7 @@
         </div>
     </div>
 
-    <div class="flex gap-8 flex-wrap">
+    <div class="flex gap-8 flex-wrap justify-evenly">
         @forelse($ownBooks as $ownBook)
             <x-ui.cards.card-own-book :ownbook="$ownBook"/>
         @empty

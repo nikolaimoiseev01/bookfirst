@@ -4,7 +4,7 @@
     @endsection
     <x-ui.link
         href="{{route('account.ext_promotion.create')}}"
-        class="mb-6 w-fit">
+        class="mb-6 w-fit sm:mx-auto">
         Подать заявку на продвижение
     </x-ui.link>
     <div class="flex gap-6 flex-wrap">

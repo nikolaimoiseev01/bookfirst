@@ -2,17 +2,18 @@
     x-data="{ expanded: false }"
     class="flex flex-col container p-4 min-w-full w-full"
 >
-    <div class="flex gap-4 items-center mb-4">
-        <img src="{{ getUserAvatar($work->user) }}" class="w-10 h-10 rounded-xl" alt="">
-        <div class="flex gap-2">
+    <div class="flex gap-4 items-center mb-4 md:flex-col md:justify-center">
+        <div class="flex gap-4">
+            <img src="{{ getUserAvatar($work->user) }}" class="w-10 h-10 rounded-xl" alt="">
             <x-ui.link-simple href="{{route('social.user', $work['user_id'])}}"
                               class="text-blue-500 text-3xl font-medium">
                 {{ getUserName($work->user) }}:
             </x-ui.link-simple>
-            <x-ui.link-simple href="{{route('social.work', $work['id'])}}"
-                              class="text-3xl">{{ \Illuminate\Support\Str::limit($work['title'], 25) }}</x-ui.link-simple>
         </div>
-        <span class="text-dark-350 ml-auto">{{ $work->workType['name'] }} / {{ $work->workTopic['name'] }}</span>
+        <x-ui.link-simple href="{{route('social.work', $work['id'])}}"
+                          class="text-3xl">{{ \Illuminate\Support\Str::limit($work['title'], 25) }}</x-ui.link-simple>
+        <span
+            class="text-dark-350 ml-auto md:!mx-auto">{{ $work->workType['name'] }} / {{ $work->workTopic['name'] }}</span>
     </div>
 
     <div class="relative mb-4">
@@ -36,7 +37,8 @@
 
     <div class="flex gap-4">
         <x-ui.work-likes-button :workLikesCount="$workLikesCount" :userHasLike="$userHasLike"/>
-        <x-ui.link-simple href="{{route('social.work', $work['id'])}}" class="flex gap-1 items-center">
+        <x-ui.link-simple href="{{route('social.work', $work['id'])}}"
+                          class="flex gap-1 items-center">
             <x-bi-chat class="w-5 h-5 fill-dark-350"/>
             <span class="text-xl text-dark-350">
                         {{ $work->comments_count }}

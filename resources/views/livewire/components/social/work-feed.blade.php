@@ -1,25 +1,27 @@
 <div class="flex flex-col gap-8">
-    <div class="flex gap-4 items-center">
-        <x-ui.dropdown
-            wire:model.live="workType"
-            default="Выберите тип"
-            class=""
-            :options="$workTypeOptions"
-        />
-        <x-ui.dropdown
-            wire:model.live="workTopic"
-            default="Выберите тему"
-            class=""
-            :options="$workTopicOptions"
-        />
-        <x-ui.dropdown
-            wire:model.live="sortOption"
-            default="Выберите тему"
-            class=""
-            :options="$sortOptions"
-        />
+    <div class="flex gap-4 items-center md:flex-col md:justify-center">
+        <div class="flex gap-4 flex-wrap">
+            <x-ui.dropdown
+                wire:model.live="workType"
+                default="Выберите тип"
+                class=""
+                :options="$workTypeOptions"
+            />
+            <x-ui.dropdown
+                wire:model.live="workTopic"
+                default="Выберите тему"
+                class=""
+                :options="$workTopicOptions"
+            />
+            <x-ui.dropdown
+                wire:model.live="sortOption"
+                default="Выберите тему"
+                class=""
+                :options="$sortOptions"
+            />
+        </div>
         <x-ui.spinner class="w-6 h-6" wire:loading/>
-        <div class="flex gap-2 ml-auto">
+        <div class="flex gap-2 ml-auto md:!mx-auto">
             <x-ui.tooltip-wrap text="Блоки">
                 <svg wire:click="changeLayout('blocks')"
                      class="@if($layout == 'blocks') fill-blue-300 @else fill-dark-300 @endif cursor-pointer w-7"

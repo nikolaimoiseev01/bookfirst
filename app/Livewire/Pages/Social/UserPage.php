@@ -19,7 +19,7 @@ class UserPage extends Component
 
     public function mount($id)
     {
-        $this->user = User::where('id', $id)->with(['ownBooks', 'media'])->withCount('works', 'awards', 'subscribers', 'subscribedToUsers')->first();
-        $this->randomWorks = Work::inRandomOrder()->with('media')->limit(5)->get();
+        $this->user = User::where('id', $id)->with(['ownBooks', 'media', 'awards', 'awards.awardType', 'awards.awardType.media'])->withCount('works', 'awards', 'subscribers', 'subscribedToUsers')->first();
+        $this->randomWorks = Work::inRandomOrder()->with('media', 'user')->limit(5)->get();
     }
 }

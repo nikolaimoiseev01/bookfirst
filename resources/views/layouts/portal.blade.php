@@ -17,7 +17,12 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="antialiased flex flex-col min-h-screen">
+<body class="antialiased flex flex-col min-h-screen" x-data  x-init="
+        document.documentElement.style.setProperty(
+            '--scrollbar-color',
+            $store.global.social ? '#66a2e5' : '#47af98' // blue-500 / green-500
+        )
+    ">
 <x-header-portal/>
 {{ $slot }}
 @stack('scripts')

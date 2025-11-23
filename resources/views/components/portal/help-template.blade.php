@@ -3,7 +3,7 @@
 ])
 <div x-data="{ current: window.location.pathname }"
      class="container flex flex-col p-4 w-full">
-    <div class="flex border-b-2 border-dark-100 gap-8 pb-2 mb-4">
+    <div class="flex border-b-2 border-dark-100 gap-8 pb-2 mb-4 flex-wrap">
         @foreach($links as $link)
             <a wire:navigate href="{{ $link['route'] }}"
                :class="current === '{{ parse_url($link['route'], PHP_URL_PATH) }}'
@@ -18,7 +18,7 @@
     </div>
     <h3 class="text-4xl mb-2">Содержание</h3>
 
-    <div class="flex flex-col gap-2 z-[99]">
+    <div class="flex flex-col gap-2 z-[99] mb-8">
         @foreach($data as $key=>$item)
             <x-ui.link-simple :isLivewire="false" href="#{{$item['id']}}">{{$key + 1}}
                 . {{$item['title']}}</x-ui.link-simple>
@@ -35,7 +35,7 @@
         @foreach($data as $key=>$item)
             <div id="{{$item['id']}}" style="z-index: {{count($data) - $key}}"
                  class="pt-28 -mt-28 relative flex flex-col after:content-[''] after:border after:mt-8 after:border-dark-50">
-                <h3 class="text-4xl mx-auto">{{$key + 1}}. {{$item['title']}}</h3>
+                <h3 class="text-4xl mx-auto mb-4">{{$key + 1}}. {{$item['title']}}</h3>
                 <div class="mb-2">
                     {!! $item['content'] !!}
                 </div>

@@ -90,7 +90,7 @@
                         door: true,
                     },
                     root: 'cdek-map',
-                    apiKey: 'ad88f427-6fde-4dbd-984f-d65b8e659fd3',
+                    apiKey: '{{ENV('YANDEX_API_KEY')}}',
                     servicePath: "/service.php?city_code=" + city_code,
                     defaultLocation: city,
                     onChoose(type, tariff, address) {

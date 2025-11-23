@@ -7,7 +7,7 @@
             after:border-l-[6px] after:border-l-transparent
             after:border-r-[6px] after:border-r-transparent
             after:border-t-[6px] after:border-t-dark-600",
-        'bottom' => "        top-[110%] left-1/2 -translate-x-1/2
+        'bottom' => "top-[110%] left-1/2 -translate-x-1/2
             after:content-[''] after:absolute after:left-1/2 after:-translate-x-1/2 after:-top-1
             after:w-0 after:h-0
             after:border-l-[6px] after:border-l-transparent
@@ -28,7 +28,7 @@
     };
 @endphp
 <div :class="open ? 'opacity-100 visible' : 'opacity-0 invisible'"
-{{ $attributes->merge(['class' => '!text-lg absolute bottom-[110%] left-1/2 -translate-x-1/2 bg-dark-600 text-white py-1 px-2 rounded text-center w-max max-w-60 z-20 transition' . $classes]) }}
+{{ $attributes->merge(['class' => '!text-lg absolute bg-dark-600 text-white py-1 px-2 rounded text-center w-max max-w-60 z-20 transition ' . $classes]) }}
 >
     {{$slot}}
 </div>

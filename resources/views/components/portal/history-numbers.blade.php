@@ -1,5 +1,5 @@
 <div
-    class="container flex justify-between w-full max-w-4xl"
+    class="container flex justify-between w-full max-w-4xl lg:flex-col"
     id="history-container"
 >
     <div class="flex flex-col items-center m-8">

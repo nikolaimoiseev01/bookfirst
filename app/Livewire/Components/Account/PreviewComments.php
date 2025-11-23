@@ -6,6 +6,7 @@ use App\Enums\OwnBookCoverStatusEnums;
 use App\Enums\OwnBookInsideStatusEnums;
 use App\Enums\OwnBookStatusEnums;
 use App\Filament\Resources\OwnBook\OwnBooks\Pages\EditOwnBook;
+use App\Jobs\PdfCutJob;
 use App\Jobs\TelegramNotificationJob;
 use App\Models\OwnBook\OwnBook;
 use App\Models\PreviewComment;
@@ -125,6 +126,12 @@ class PreviewComments extends Component
             } else {
                 $text = 'Отлично!' . $this->commentType == 'inside' ? 'Внутренний блок утвержден.' : 'Обложка утверждена.' . ' Как только будут утверждены и ВБ и обложка, можно будет приступить к печати.';
             }
+            PdfCutJob::dispatch(
+                $this->ownBook,
+                $this->ownBook->getFirstMediaPath('inside_file'),
+                10,
+                'inside_file_preview'
+            );
             $this->sendApproverdNotification();
             $this->dispatch('updateOwnBookPage');
             $this->dispatch('swal', type: 'success', text: $text);

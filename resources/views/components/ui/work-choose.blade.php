@@ -55,7 +55,7 @@
             this.dragOverIndex = null
         }
     }"
-    {{ $attributes->merge(['class' => 'relative flex gap-6 w-full p-4 border border-green-500 rounded-2xl']) }}
+    {{ $attributes->merge(['class' => 'relative flex md:flex-col gap-6 w-full p-4 border border-green-500 rounded-2xl']) }}
 >
     <script>
         function workSelector() {
@@ -63,10 +63,10 @@
         }
     </script>
 
-    <div class="relative z-30 flex items-center" @click.outside="showWorks = false">
+    <div class="relative z-30 flex items-center md:flex-col" @click.outside="showWorks = false">
         <div class="flex flex-col items-center cursor-pointer transition hover:scale-105" x-show="!disabled" @click="showWorks = !showWorks">
             <span
-                class="text-5xl font-light flex justify-center items-center p-2 border-2 border-green-400 rounded-full aspect-square w-12 h-12 text-green-400">
+                class="text-5xl font-light flex justify-center items-center p-2 border-2 border-green-400 rounded-full aspect-square w-12 h-12 md:w-8 md:h-8 text-green-400">
                 +
             </span>
             <span class="text-green-400 text-2xl">Добавить</span>
@@ -144,15 +144,15 @@
                 >
                     <span class="text-dark-400 block truncate"
                           x-text="work.title.length > 30 ? work.title.slice(0, 30) + '…' : work.title"></span>
-                    <x-ui.tooltip-wrap x-show="!disabled" text="Убрать" class="!cursor-pointer" @click="removeWork(work)">
+                    <div x-show="!disabled" text="Убрать" class="!cursor-pointer" @click="removeWork(work)">
                         <x-bi-x class="text-dark-400 w-5 h-auto"/>
-                    </x-ui.tooltip-wrap>
+                    </div>
                 </div>
             </div>
         </template>
     </div>
 
-    <x-ui.question-mark class="!absolute bottom-4 right-4">
+    <x-ui.question-mark class="!absolute bottom-4 right-4 md:hidden">
         Произведения можно перемещать для изменения порядка
     </x-ui.question-mark>
 </div>

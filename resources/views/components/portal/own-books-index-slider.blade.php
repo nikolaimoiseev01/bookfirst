@@ -1,5 +1,5 @@
 <section id="ownBooks" class="content mb-32">
-    <div class="flex w-full justify-between items-center mb-8">
+    <div class="flex w-full justify-between items-center mb-8 flex-wrap md:text-center md:justify-center gap-8">
         <h2>Книги наших авторов</h2>
         <x-ui.link-simple class="text-3xl" href="{{route('portal.own_books.released')}}">Все книги</x-ui.link-simple>
     </div>

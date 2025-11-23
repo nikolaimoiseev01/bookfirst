@@ -2,12 +2,12 @@
     @section('title')
         Участие в сборниках
     @endsection
-    <x-ui.link href="{{route('portal.collections.actual')}}" class="mb-6 w-fit">
+    <x-ui.link href="{{route('portal.collections.actual')}}" class="mb-6 w-fit sm:mx-auto">
         Актуальные сборники для участия
     </x-ui.link>
     <div class="flex gap-6 flex-wrap">
         @forelse ($participations as $participation)
-            <div class="container flex gap-4 p-4 w-fit max-w-2xl">
+            <div class="container flex gap-4 p-4 w-fit max-w-2xl md:flex-col md:items-center md:text-center">
                 <x-book2d :cover="$participation->collection->getFirstMediaUrl('cover_front')" class="w-32"/>
                 <div class="flex flex-col">
                     <p class="font-semibold mb-4 text-3xl">{{$participation->collection['title']}}</p>

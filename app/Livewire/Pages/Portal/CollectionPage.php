@@ -3,8 +3,12 @@
 namespace App\Livewire\Pages\Portal;
 
 use App\Enums\CollectionStatusEnums;
+use App\Enums\TransactionTypeEnums;
 use App\Models\Collection\Collection;
+use App\Models\DigitalSale;
+use App\Services\PaymentService;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class CollectionPage extends Component
@@ -46,11 +50,20 @@ class CollectionPage extends Component
                 'default' => 'dates',
                 'tabs' => [
                     'dates' => 'Даты издания',
-                    'read_part' => 'Читать фрагмент',
                 ]
             ];
+            if ($this->collection->getFirstMediaUrl('inside_file_preview')) {
+                $this->tabs['tabs']['read_part'] = 'Читать фрагмент';
+            }
         }
 
+        $collectionDates = [
+            'date_apps_end' => Carbon::parse($this->collection['date_print_start'])->translatedFormat('j F'),
+            'date_preview_start' => Carbon::parse($this->collection['date_print_start'])->translatedFormat('j F'),
+            'date_preview_end' => Carbon::parse($this->collection['date_print_start'])->translatedFormat('j F'),
+            'date_print_start' => Carbon::parse($this->collection['date_print_start'])->translatedFormat('j F'),
+            'date_print_end' => Carbon::parse($this->collection['date_print_start'])->translatedFormat('j F'),
+        ];
         $this->process = [
             [
                 'title' => 'Шаг 1. Страница участия',
@@ -82,7 +95,7 @@ class CollectionPage extends Component
             [
                 'title' => 'Шаг 4. Предварительная проверка',
                 'text' => "
-                    <a class=''>В указаную дату</a> на странице вашего участия в личном
+                    {$collectionDates['date_preview_start']} на странице вашего участия в личном
                     кабинете будет открыт блок предварительной проверки.
                     В этом блоке можно будет скачать PDF файл сборника и указать необходимые изменения в
                     специальной форме.
@@ -92,8 +105,7 @@ class CollectionPage extends Component
             [
                 'title' => 'Шаг 5. Получение печатного экземпляра',
                 'text' => "
-                    <p>Если вы заказывали печатные экземпляры, то <a class='triger_dates link'>в
-                    указанную дату</a> на странице участия будет доступна ссылка для отслеживания.
+                    <p>Если вы заказывали печатные экземпляры, то {$collectionDates['date_print_end']} на странице участия будет доступна ссылка для отслеживания.
                     <span class='text-green-500'>При получении заказа оплачивается фактическая стоимость пересылки.</span>
                     Мы отправляем сборники через СДЭК, но при необходимости готовы
                     использовать любую другую транспортную компанию.</p>
@@ -102,29 +114,64 @@ class CollectionPage extends Component
         ];
         $this->dates = [
             [
-                'date' => Carbon::parse($this->collection['date_apps_end'])->translatedFormat('j F'),
+                'date' => $collectionDates['date_apps_end'],
                 'desc' => 'Конец приема заявок через личный кабинет',
                 'tooltip' => 'Прием заявок заканчивается в 23:59 МСК указанного дня'
             ],
             [
-                'date' => Carbon::parse($this->collection['date_preview_start'])->translatedFormat('j F'),
+                'date' => $collectionDates['date_preview_start'],
                 'desc' => 'Отправка предварительного варианта сборника',
                 'tooltip' => 'До 23:59 МСК указанного дня в вашем личном кабинете будет доступно скачивание предварительного экземпляра сборника, а также форма указания исправлений. В эту дату также открывается голосование за лучшего автора в сборнике (конкурс).'
             ],
             [
-                'date' => Carbon::parse($this->collection['date_preview_end'])->translatedFormat('j F'),
+                'date' => $collectionDates['date_preview_end'],
                 'desc' => 'Конец предварительной проверки',
                 'tooltip' => 'После окончания предварительной проверки исправленный макет снова загружается в систему (без возможности внесения изменений). С этого момента до начала печати победители конкурса присылают информацию о себе'
             ],
             [
-                'date' => Carbon::parse($this->collection['date_print_start'])->translatedFormat('j F'),
+                'date' => $collectionDates['date_print_start'],
                 'desc' => 'Отправка сборника в печать'
             ],
             [
-                'date' => Carbon::parse($this->collection['date_print_end'])->translatedFormat('j F'),
+                'date' => $collectionDates['date_print_end'],
                 'desc' => 'Отправка экземпляров авторам',
                 'tooltip' => 'После отправки печатных экземпляров в вашем личном кабинете будет доступна ссылка для отслеживания посылки.'
             ]
         ];
+    }
+
+    public function createPayment($amount)
+    {
+        $user = Auth::user();
+        $alreadyHasCollection = DigitalSale::query()
+            ->where('model_type', 'Collection')
+            ->where('model_id', $this->collection['id'])
+            ->where('user_id', $user->id)
+            ->exists();
+
+        if (!$alreadyHasCollection) {
+            $userName = $user->getUserFullName();
+            $paymentService = new PaymentService();
+            $description = "Покупка электронного сборника '{$this->collection['title_short']}' от автора $userName";
+            $transactionData = [
+                'type' => TransactionTypeEnums::COLLECTION_EBOOK_PURCHASE->value,
+                'description' => $description,
+                'model_type' => 'Collection',
+                'model_id' => $this->collection['id'],
+                'data' => [
+                    'collection_id' => $this->collection['id'],
+                    'user_id' => Auth::user()->id
+                ]
+            ];
+            $urlRedirect = route('account.purchases') . '?confirm_payment=collection_purchase';
+            $paymentUrl = $paymentService->createPayment(
+                amount: $amount,
+                urlRedirect: $urlRedirect,
+                transactionData: $transactionData
+            );
+            $this->redirect($paymentUrl);
+        } else {
+            $this->dispatch('swal', type: 'success', text: 'У вас уже куплена эта книга');
+        }
     }
 }

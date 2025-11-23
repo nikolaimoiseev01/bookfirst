@@ -12,9 +12,11 @@ class UserHeader extends Component
     public $userStat;
     public $userIsSubscribed;
     public $userOnline;
+    public $userHasAwards;
 
     public function render()
     {
+        $this->userHasAwards = $this->user->awards()->exists();
         return view('livewire.components.social.user-header');
     }
 

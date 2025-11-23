@@ -11,14 +11,15 @@
     };
 @endphp
 
-<a     :class="[
+<a
+    :class="[
         // первое условие
-        ($store.global.social && color != 'white')
+        ($store.global.social && '{{$color}}' != 'white')
             ? '!border-blue-500 !text-blue-500 !hover:bg-blue-500 hover:text-white'
             : '',
 
         // второе условие
-        ($store.global.social && color == 'white')
+        ($store.global.social && '{{$color}}' == 'white')
             ? 'hover:!text-blue-500'
             : ''
     ]"

@@ -34,12 +34,12 @@
                         {{$name}}
                     </a>
                 @endforeach
-                <a href="" data-check-logged target="_blank" class="flex gap-4 border text-xl border-dark-100 rounded px-4 py-2 hover:bg-green-500 hover:text-white transition">
+                <a wire:click="createPayment(100)" data-check-logged target="_blank" class="flex gap-4 border text-xl border-dark-100 rounded px-4 py-2 hover:bg-green-500 hover:text-white transition">
                     Электронная версия (100 руб.)
                 </a>
             </div>
         </div>
-        <div class="container ml-auto flex flex-col w-fit px-4 h-fit">
+        <div class="container ml-auto flex flex-col w-fit px-4 h-fit lg:!mx-auto">
             @foreach($info as $key => $value)
                 <div class="border-b border-b-dark-100 py-4">
                     <p class="font-normal text-nowrap text-xl">{{$key}}: <span class="font-light">{{$value}}</span></p>

@@ -8,6 +8,7 @@ use App\Enums\TransactionTypeEnums;
 use App\Models\award;
 use App\Models\Collection\Participation;
 use App\Models\Transaction;
+use App\Services\PaymentCallbackServices\CollectionPaymentService;
 use App\Services\PaymentCallbackServices\ExtPromotionPaymentService;
 use App\Services\PaymentCallbackServices\OwnBookPaymentService;
 use App\Services\PaymentCallbackServices\ParticipationPaymentService;
@@ -97,6 +98,12 @@ class PaymentService
         }
         if ($metadata['transaction_type'] == TransactionTypeEnums::EXT_PROMOTION_PAYMENT->value) {
             (new ExtPromotionPaymentService($yooKassaObject))->update();
+        }
+        if ($metadata['transaction_type'] == TransactionTypeEnums::COLLECTION_EBOOK_PURCHASE->value) {
+            (new CollectionPaymentService($yooKassaObject))->ebookPuchase();
+        }
+        if ($metadata['transaction_type'] == TransactionTypeEnums::OWN_BOOK_EBOOK_PURCHASE->value) {
+            (new OwnBookPaymentService($yooKassaObject))->ebookPuchase();
         }
     }
 }

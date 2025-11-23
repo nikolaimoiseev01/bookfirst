@@ -13,8 +13,8 @@
         Создание заявки на издание собственной книги
     @endsection
 
-    <div class="flex container mb-8">
-        <div class="flex flex-col flex-1 border-r border-dark-300">
+    <div class="flex container mb-8 lg:flex-col">
+        <div class="flex flex-col flex-1 border-r border-dark-300 lg:border-r-0 lg:border-b">
             <div class="flex flex-col p-4 border-b border-dark-300" x-data="{show:false}">
                 <div @click="show = !show" class="flex justify-between cursor-pointer">
                     <h3 class="text-3xl font-medium">Общая информация</h3>
@@ -22,14 +22,14 @@
                                        class="w-8 h-auto cursor-pointer transition"/>
                 </div>
 
-                <div class="flex gap-4" x-show="show" x-cloak x-collapse.duration.400ms>
+                <div class="flex gap-4 md:flex-wrap" x-show="show" x-cloak x-collapse.duration.400ms>
                     <x-ui.input.text name="author" class="" label="Автор*" wire:model="author"/>
                     <x-ui.input.text name="title" class="" label="Название книги*" wire:model="title"/>
                 </div>
             </div>
 
             <div class="flex flex-col p-4 border-b border-dark-300" x-data="{show:false}">
-                <div class="flex justify-between cursor-pointer">
+                <div class="flex justify-between cursor-pointer flex-wrap gap-2">
                     <h3 @click="show = !show" class="text-3xl font-medium">Внутренний блок</h3>
                     <div class="flex gap-2">
                         <div x-show="show" @click="show = true" x-transition>
@@ -50,9 +50,9 @@
                                                   text-model="commentAuthorInside" files-model="insideFiles"
                                                   :attachable="true"
                                                   :sendable="false" :multiple="true"/>
-                            <div class="flex gap-2 items-center">
+                            <div class="flex gap-2 items-center flex-wrap">
                                 <p class="text-nowrap">Количество загруженных страниц:</p>
-                                <x-ui.question-mark>Несмотря на то, что количество может имзениться при редактировании,
+                                <x-ui.question-mark class="md:hidden">Несмотря на то, что количество может имзениться при редактировании,
                                     стоимость считается от количества загруженных страниц
                                 </x-ui.question-mark>
                                 <input id="pages" min:30 wire:model.live="pages" type="number">
@@ -70,7 +70,7 @@
                                               :sendable="false" :multiple="true"/>
                     </div>
 
-                    <div class="flex gap-2">
+                    <div class="flex gap-2 flex-wrap">
                         <div class="flex gap-2 items-center">
                             <label for="needTextDesign">Нужен дизайн текста</label>
                             <x-ui.question-mark>Подбор шрифтов, цветов, общего оформления и подготовка к печати
@@ -100,7 +100,7 @@
                                               text-model="commentAuthorCover" files-model="coverFiles"
                                               :attachable="true"
                                               :sendable="false" :multiple="true"/>
-                        <div class="flex gap-2">
+                        <div class="flex gap-2 flex-wrap">
                             <p>Обложка полностью готова</p>
                             <x-ui.input.toggle :boolean="true" model="coverReady"
                                                :options="[false => 'Нужна помощь', true => 'Готовая']"/>
@@ -144,7 +144,7 @@
                                 <input type="number" wire:model.live="pagesColor">
                             </div>
                         </div>
-                        <div class="flex gap-4">
+                        <div class="flex gap-4 md:flex-wrap">
                             <x-ui.input.text name="Имя" label="Фио получателя*" wire:model="receiverName"/>
                             <x-ui.input.text name="surname" label="Телефон получателя*" wire:model="receiverTelephone"/>
                         </div>
@@ -177,8 +177,7 @@
             </div>
         </div>
 
-
-        <div class="flex flex-col w-[30%] max-w-[30%] items-center p-4 my-auto">
+        <div class="flex flex-col w-[30%] max-w-[30%] items-center p-4 my-auto lg:w-full lg:max-w-full lg:justify-center">
             @if($pages > 0)
                 <div class="flex flex-col mb-6 text-center">
                     <x-price-element price="{{$prices['priceInside']}}" label="Работа с макетом ({{$pages}} стр.)"/>

@@ -25,12 +25,16 @@
     <script type="module" src="/vendor/livewire-filepond/filepond.js?v=1.5.0" data-navigate-once defer data-navigate-track></script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="antialiased flex flex-col min-h-screen">
+<body class="antialiased flex flex-col min-h-screen"  x-data x-init="
+        document.documentElement.style.setProperty(
+            '--scrollbar-color', '#47af98'
+        )
+    ">
 <x-header-portal/>
 <main class="flex flex-1 gap-4 !py-0">
     <x-account-menu/>
     <section class="p-4 max-w-8xl flex-1">
-        <h1 class="text-dark-500 text-4xl font-semibold mb-6 w-fit mx-0">@yield('title')</h1>
+        <h1 class="text-dark-500 text-4xl font-semibold mb-6 w-fit mx-0 sm:mx-auto">@yield('title')</h1>
         {{ $slot }}
     </section>
 </main>

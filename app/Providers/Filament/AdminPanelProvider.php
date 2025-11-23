@@ -58,6 +58,11 @@ class AdminPanelProvider extends PanelProvider
                     ...SurveyCompletedResource::getNavigationItems(),
                     ...PromocodeResource::getNavigationItems(),
                     ...InnerTaskResource::getNavigationItems(),
+                    NavigationItem::make('Log Viewer')
+                        ->url('/log-viewer')     // << внешний/внутренний URL
+                        ->icon('heroicon-o-code-bracket')
+                        ->group('Настройки')     // если нужно отправить в группу
+                        ->sort(999),
                 ])->groups([
                     NavigationGroup::make('Настройки')
                         ->collapsed()

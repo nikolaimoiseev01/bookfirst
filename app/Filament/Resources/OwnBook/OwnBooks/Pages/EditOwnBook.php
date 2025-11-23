@@ -4,6 +4,7 @@ namespace App\Filament\Resources\OwnBook\OwnBooks\Pages;
 
 use App\Filament\Resources\OwnBook\OwnBooks\OwnBookResource;
 use App\Jobs\EmailNotificationJob;
+use App\Jobs\PdfCutJob;
 use App\Notifications\Collection\ParticipationStatusUpdate;
 use App\Notifications\OwnBook\OwnBookStatusUpdateNotification;
 use Filament\Actions\DeleteAction;

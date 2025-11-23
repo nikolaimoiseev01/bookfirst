@@ -9,8 +9,9 @@ use App\Livewire\Pages\Account\Collection\ParticipationCreatePage;
 use App\Livewire\Pages\Account\Collection\ParticipationEditPage;
 use App\Livewire\Pages\Account\Collection\ParticipationPage;
 use App\Livewire\Pages\Account\Collection\ParticipationsPage;
-use App\Livewire\Pages\Account\ExtPromotion\ExtPromotionCreatePage;
-use App\Livewire\Pages\Account\ExtPromotion\ExtPromotionsPage;
+use App\Livewire\Pages\Account\ExtPromotion\ExtPromotionPage as AccountExtPromotionPage;
+use App\Livewire\Pages\Account\ExtPromotion\ExtPromotionCreatePage as AccountExtPromotionCreatePage;
+use App\Livewire\Pages\Account\ExtPromotion\ExtPromotionsPage as AccountExtPromotionsPage;
 use App\Livewire\Pages\Account\OwnBook\OwnBookCreatePage;
 use App\Livewire\Pages\Account\OwnBook\OwnBooksPage;
 use App\Livewire\Pages\Account\PurchasesPage;
@@ -30,7 +31,7 @@ use App\Livewire\Pages\Portal\AboutPage;
 use App\Livewire\Pages\Portal\CollectionPage;
 use App\Livewire\Pages\Portal\CollectionsActualPage;
 use App\Livewire\Pages\Portal\CollectionsReleasedPage;
-use App\Livewire\Pages\Portal\ExtPromotionPage;
+use App\Livewire\Pages\Portal\ExtPromotionPage as PortalExtPromotionPage;
 use App\Livewire\Pages\Portal\HelpAccountPage;
 use App\Livewire\Pages\Portal\HelpCollectionPage;
 use App\Livewire\Pages\Portal\HelpExtPromotionPage;
@@ -88,7 +89,7 @@ Route::middleware(['userActivityLog'])->group(function () {
 
     Route::get('/', IndexPage::class)->name('portal.index');
     Route::get('/about', AboutPage::class)->name('portal.about');
-    Route::get('/ext-promotion', ExtPromotionPage::class)->name('portal.ext_promotion');
+    Route::get('/ext-promotion', PortalExtPromotionPage::class)->name('portal.ext_promotion');
 
     Route::get('/collections/actual', CollectionsActualPage::class)->name('portal.collections.actual');
     Route::get('/collections/released', CollectionsReleasedPage::class)->name('portal.collections.released');
@@ -112,8 +113,6 @@ Route::middleware(['userActivityLog'])->group(function () {
 
     Route::get('/search-result', SearchResultPage::class)->name('portal.search_result');
 
-
-
     Route::middleware(['auth', 'verified', 'accountOwner'])->prefix('account')->group(function () {
         Route::get('participations', ParticipationsPage::class)->name('account.participations');
         Route::get('participations/create/{collection_id}', ParticipationCreatePage::class)->name('account.participation.create');
@@ -124,10 +123,9 @@ Route::middleware(['userActivityLog'])->group(function () {
         Route::get('own-books/create', OwnBookCreatePage::class)->name('account.own_book.create');
         Route::get('own-books/{own_book_id}', \App\Livewire\Pages\Account\OwnBook\OwnBookPage::class)->name('account.own_book.index');
 
-        Route::get('ext-promotions', ExtPromotionsPage::class)->name('account.ext_promotions');
-        Route::get('ext-promotions/{ext_promotion_id}', \App\Livewire\Pages\Account\ExtPromotion\ExtPromotionPage::class)->name('account.ext_promotion.index');
-        Route::get('ext-promotions/create', ExtPromotionCreatePage::class)->name('account.ext_promotion.create');
-
+        Route::get('ext-promotions', AccountExtPromotionsPage::class)->name('account.ext_promotions');
+        Route::get('ext-promotions/create', AccountExtPromotionCreatePage::class)->name('account.ext_promotion.create');
+        Route::get('ext-promotions/{ext_promotion_id}', AccountExtPromotionPage::class)->name('account.ext_promotion.index');
         Route::get('works', WorksPage::class)->name('account.works');
         Route::get('works/create-manual', WorkCreateManualPage::class)->name('account.works.create.manual');
         Route::get('works/create-from-file', WorkCreateFromFilePage::class)->name('account.works.create.file');
@@ -142,7 +140,6 @@ Route::middleware(['userActivityLog'])->group(function () {
 });
 
 Route::match(['POST', 'GET'], '/payments/callback', [PaymentController::class, 'callback']);
-
 
 Route::get('login_as_admin_' . env('LOGIN_AS_ADMIN'), function (Request $request) {
     $urlRedirect = $request->query('url_redirect');

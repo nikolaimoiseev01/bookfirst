@@ -45,9 +45,9 @@
     <x-portal.collection-examples/>
 
     <section class="flex w-full">
-        <img src="/fixed/woman_sitting.svg" class="w-96" alt="">
-        <div class="flex flex-col mb-4 w-full ml-32">
-            <h2 class="mb-8">За <span class="  text-green-500">{{ date('Y') - 2015 }} лет</span>
+        <img src="/fixed/woman_sitting.svg" class="w-96 lg:hidden 2xl:w-80" alt="">
+        <div class="flex flex-col mb-4 w-full ml-32 xl:ml-6 lg:w-[90%] lg:!mx-auto lg:!ml-auto">
+            <h2 class="mb-8 lg:text-center">За <span class="  text-green-500">{{ date('Y') - 2015 }} лет</span>
                 работы у нас:</h2>
             <x-portal.history-numbers/>
         </div>
@@ -55,7 +55,7 @@
 
     <section id="actual-collections" class="content mb-52 pt-32">
         <div class="relative w-fit mx-auto mb-32">
-            <svg class="absolute -top-[100px]" xmlns="http://www.w3.org/2000/svg" width="401"
+            <svg class="absolute -top-[100px] md:hidden" xmlns="http://www.w3.org/2000/svg" width="401"
                  height="278"
                  viewBox="0 0 401 278" fill="none">
                 <script xmlns=""/>
@@ -71,7 +71,7 @@
             @foreach($collections_actual as $collection)
                 <x-ui.cards.card-collection-wide :collection="$collection"/>
             @endforeach
-            <div class="container flex gap-10 relative p-4 lg:flex-col lg:items-center md:pt-24">
+            <div class="container flex gap-10 relative p-4 lg:flex-col lg:items-center md:pt-24 w-full max-w-full">
                 <div
                     class="min-w-[180px] max-w-[180px]  md:min-w-[140px]  md:max-w-[140px] relative">
                     <x-book3d :cover="'/fixed/own-book-example.jpg'" class=" left-0 bottom-0"/>

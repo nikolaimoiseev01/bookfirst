@@ -2,9 +2,9 @@
     @section('title')
         Произведения
     @endsection
-    <div class="flex w-full justify-between mb-6">
+    <div class="flex w-full justify-between mb-6 sm:flex-col sm:justify-center gap-4">
         <div class="flex gap-4">
-            <div x-data="{ open: false }" class="relative inline-block text-left">
+            <div x-data="{ open: false }" class="relative inline-block text-left sm:mx-auto">
                 <button @click="open = !open"
                         class="text-green-500 border text-xl border-green-500 min-w-max flex gap-2 items-center justify-center w-full rounded-lg py-1 px-8 cursor-pointer transition hover:bg-green-500 hover:text-white">
                     Добавить
@@ -29,12 +29,12 @@
                 </div>
             </div>
         </div>
-        <x-ui.input.search-bar/>
+        <x-ui.input.search-bar class="sm:mx-auto"/>
     </div>
     <div class="flex flex-col">
         <div class="flex gap-6 flex-wrap">
             @forelse ($works as $work)
-                <div class="container p-4 flex flex-col w-fit">
+                <div class="container p-4 flex flex-col w-fit sm:w-full">
                     <x-ui.link-simple href="{{route('social.work', $work['id'])}}" class="truncate w-52 text-xl">{{$work['title']}}</x-ui.link-simple>
                     <p class="text-base">
                         Опубликовано: {{ \Carbon\Carbon::parse($work['created_at'])->translatedFormat('j F') }}</p>

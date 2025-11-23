@@ -8,13 +8,16 @@ use App\Enums\OwnBookStatusEnums;
 use App\Enums\ParticipationStatusEnums;
 use App\Enums\PrintOrderStatusEnums;
 use App\Enums\TransactionTypeEnums;
+use App\Jobs\TelegramNotificationJob;
 use App\Models\Award\Award;
 use App\Models\Collection\Participation;
+use App\Models\DigitalSale;
 use App\Models\OwnBook\OwnBook;
 use App\Models\User\User;
 use App\Notifications\Collection\PaymentParticipationSuccessNotification;
 use App\Notifications\OwnBook\OwnBookPaymentSuccessNotification;
 use App\Notifications\OwnBook\OwnBookStatusUpdateNotification;
+use App\Notifications\TelegramDefaultNotification;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 
@@ -61,5 +64,17 @@ class OwnBookPaymentService
         ]);
         $user = User::where('id', $ownBook['user_id'])->first();
         $user->notify(new OwnBookPaymentSuccessNotification($ownBook, $this->yooKassaObject['amount']['value'], TransactionTypeEnums::OWN_BOOK_PRINT));
+    }
+
+    public function ebookPuchase() {
+
+        $transactionData = json_decode($this->yooKassaObject['metadata']['transaction_data'], true);
+        DigitalSale::create([
+            'user_id' => $transactionData['user_id'],
+            'model_type' => 'OwnBook',
+            'model_id' => $transactionData['own_book_id'],
+            'price' => $this->yooKassaObject['amount']['value'],
+        ]);
+        TelegramNotificationJob::dispatch(new TelegramDefaultNotification("💸 Покупка электронной книги 💸", "" ));
     }
 }

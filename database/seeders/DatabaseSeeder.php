@@ -249,7 +249,7 @@ class DatabaseSeeder extends Seeder
             DigitalSale::create([
                 'id' => $oldSale->id,
                 'user_id' => $oldSale->user_id,
-                'price' => $oldSale->price * 100,
+                'price' => $oldSale->price,
                 'model_type' => $model_type,
                 'model_id' => $model_id,
                 'created_at' => $oldSale->created_at,

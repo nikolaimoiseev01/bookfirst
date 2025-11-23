@@ -2,13 +2,13 @@
             needPrint: $wire.entangle('needPrint'),
             needCheck: $wire.entangle('needCheck'),
             hasPromo: $wire.entangle('hasPromo'),
-            showChosenAddress: @js('showChosenAddress')
+            showChosenAddress: @js($showChosenAddress)
         }"
       wire:submit="checkAndConfirm()" class="mb-16 max-w-6xl">
 
-    <div class="flex container p-8 mb-8">
+    <div class="flex container p-8 mb-8 lg:flex-col lg:gap-4">
 
-        <div class="flex flex-col flex-1 pr-8">
+        <div class="flex flex-col flex-1 pr-8 lg:pr-0">
             <x-ui.input.text name="authorName" class="mb-4" label="Имя в сборнике*"
                              wire:model="authorName"/>
             <div class="flex flex-col gap-2 mb-4">
@@ -16,15 +16,15 @@
                 <x-ui.work-choose :userWorks="$userWorks"
                                   :disabled="$collection['status']->order() > 1"/>
             </div>
-            <div class="flex gap-4">
-                <div class="flex gap-2 items-center">
+            <div class="flex gap-4 flex-wrap">
+                <div class="flex gap-2 items-center flex-wrap md:justify-center md:text-center">
                     <label for="needPrint">Необходимы печатные экземпляры</label>
                     <x-ui.question-mark>Электронный вариант доступен каждому участнику
                     </x-ui.question-mark>
                     <x-ui.input.checkbox wire:model.live="needPrint" id="needPrint" label=""/>
                 </div>
 
-                <div class="flex gap-2 items-center">
+                <div class="flex gap-2 items-center flex-wrap md:justify-center md:text-center">
                     <label for="needCheck">Нужна проверка</label>
                     <x-ui.question-mark>Услуга проверки пунктуации и орфографии</x-ui.question-mark>
                     <x-ui.input.checkbox wire:model.live="needCheck" id="needCheck" label=""/>
@@ -54,14 +54,14 @@
                             </x-ui.link-simple>
                         </div>
                     @endif
-                    {{--                    <div x-show="!showChosenAddress">--}}
-                    <livewire:components.account.address-choose/>
-                    {{--                    </div>--}}
+                    <div x-show="!showChosenAddress">
+                        <livewire:components.account.address-choose/>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="min-w-[20%] max-w-[25%] flex border-l border-dark-100 pl-8">
+        <div class="min-w-[20%] max-w-[25%] flex border-l border-dark-100 pl-8 lg:w-full lg:max-w-full lg:justify-center lg:text-center lg:border-l-0 lg:border-t lg:py-4 lg:pl-0">
             @if(count($selectedWorks))
                 <div class="flex flex-col items-center my-auto">
                     <x-price-element price="{{$prices['pricePart']}}"

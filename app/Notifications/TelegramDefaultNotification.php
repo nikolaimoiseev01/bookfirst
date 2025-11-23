@@ -20,7 +20,7 @@ class TelegramDefaultNotification extends Notification
     public $url;
     public $chat;
 
-    public function __construct($subject, $text, $url, $chat=null)
+    public function __construct($subject, $text, $url=null, $chat=null)
     {
         $this->subject = $subject;
         $this->text = $text;
@@ -43,11 +43,14 @@ class TelegramDefaultNotification extends Notification
      */
     public function toTelegram($notifiable)
     {
-        $this->url = str_replace('http://localhost:8000', 'https://vk.com', $this->url);
-        return TelegramMessage::create()
+        $message = TelegramMessage::create()
             ->to(getTelegramChatId($this->chat))
-            ->content("$this->subject\n\n$this->text")
-            ->button('Подробнее', $this->url);
+            ->content("*$this->subject*\n\n$this->text");
+        if($this->url) {
+            $this->url = str_replace('http://localhost:8000', 'https://vk.com', $this->url);
+            $message->button('Подробнее', $this->url);
+        }
+        return $message;
     }
 
 

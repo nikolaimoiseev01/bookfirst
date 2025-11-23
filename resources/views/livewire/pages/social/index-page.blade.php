@@ -2,15 +2,15 @@
     @section('title')
         Соц. сеть
     @endsection
-    <section class="h-screen w-full flex items-center">
-        <svg class="absolute left-0 top-0 h-full" id="Слой_1" data-name="Слой 1"
+    <section class="h-screen w-full flex items-center mb-16 lg:h-auto">
+        <svg class="absolute left-0 top-0 h-full lg:hidden" id="Слой_1" data-name="Слой 1"
              xmlns="http://www.w3.org/2000/svg"
              viewBox="0 0 531.37 733.2">
             <path
                 d="M0,0V733.2c160.82-13.53,151.4-116.91,245-168.7C561,453.3,564.65,307.64,494.5,213,454.77,159.4,298.39,0,270.8,0Z"
                 class="fill-[#F8F2EF] dark:fill-[#F8F2EF]"/>
         </svg>
-        <svg class="absolute right-0 max-h-[70vh] top-1/2 -translate-y-1/2" id="Слой_1"
+        <svg class="absolute right-0 max-h-[70vh] top-1/2 -translate-y-1/2 lg:hidden" id="Слой_1"
              data-name="Слой 1"
              xmlns="http://www.w3.org/2000/svg" viewBox="0 0 681 673">
             <path
@@ -18,22 +18,22 @@
                 class="fill-[#F8F2EF] dark:fill-[#F8F2EF]"/>
         </svg>
         <div
-            class="max-w-(--breakpoint-3xl) mx-auto w-[90%] flex justify-between items-center relative">
-            <div class="w-1/2">
-                <img src="/fixed/woman_social_welcome.svg" class="max-w-3xl" alt="">
+            class="max-w-(--breakpoint-3xl) mx-auto w-[90%] flex lg:flex-col gap-16 justify-between items-center relative lg:pt-16">
+            <div class="w-1/2 lg:w-full lg:order-2">
+                <img src="/fixed/woman_social_welcome.svg" class="max-w-3xl lg:mx-auto" alt="">
             </div>
 
-            <div class="flex flex-col gap-16 max-w-1/2 pl-32">
-                <h2 class="text-7xl font-medium text-black-500 dark:text-white">Еще и просто
+            <div class="flex flex-col gap-16 max-w-1/2 pl-32 lg:w-full lg:pl-0 lg:max-w-full lg:justify-center lg:text-center">
+                <h2 class="text-7xl md:text-6xl font-medium text-black-500 dark:text-white">Еще и просто
                     социальная сеть</h2>
-                <div class="flex gap-y-2 gap-x-8 text-blue-500  flex-wrap">
-                    <h3 class="text-3xl"># Создавай</h3>
-                    <h3 class="text-3xl"># Публикуй</h3>
-                    <h3 class="text-3xl"># Вдохновляй</h3>
-                    <h3 class="text-3xl"># Общайся</h3>
+                <div class="flex gap-y-2 gap-x-8 text-blue-500  flex-wrap lg:mx-auto lg:justify-center lg:gap-8">
+                    <h3 class="text-3xl "># Создавай</h3>
+                    <h3 class="text-3xl "># Публикуй</h3>
+                    <h3 class="text-3xl "># Вдохновляй</h3>
+                    <h3 class="text-3xl "># Общайся</h3>
                 </div>
 
-                <div class="flex gap-8 mt-auto">
+                <div class="flex gap-8 mt-auto lg:mx-auto">
                     <a data-check-logged href="{{route('account.works')}}"
                        class="text-3xl px-10 py-1 text-blue-500
                               border border-blue-500 no-underline
@@ -48,11 +48,11 @@
     </section>
 
     {{--    <x-portal.index-social-works-slider/>--}}
-    <div class="content mb-16" x-data="{tab: 'works'}">
+    <section class="content mb-16" x-data="{tab: 'works'}">
         <div class="flex flex-col max-w-6xl mx-auto">
-            <div class="flex justify-between mb-16">
-                <div class="relative w-fit ">
-                    <svg x-show="tab == 'works'" class="absolute -top-[100px]"
+            <div class="flex justify-between mb-16 md:flex-col md:items-center md:text-center gap-4 md:mb-8">
+                <div class="relative w-fit">
+                    <svg x-show="tab == 'works'" class="absolute -top-[100px] lg:hidden"
                          xmlns="http://www.w3.org/2000/svg"
                          width="401" height="278"
                          viewBox="0 0 401 278" fill="none">
@@ -67,7 +67,7 @@
                         @click="tab = 'works'">Лента произведений</h2>
                 </div>
                 <div class="relative w-fit">
-                    <svg x-show="tab == 'authors'" class="absolute -top-[100px]"
+                    <svg x-show="tab == 'authors'" class="absolute -top-[100px] lg:hidden"
                          xmlns="http://www.w3.org/2000/svg"
                          width="401" height="278"
                          viewBox="0 0 401 278" fill="none">
@@ -97,5 +97,5 @@
                 <x-ui.spinner class="w-8 mx-auto" wire:loading/>
             </div>
         </div>
-    </div>
+    </section>
 </main>
