@@ -1,4 +1,4 @@
-<div x-data="welcomeTyper()" x-init="init()" class="h-20">
+<div x-data="welcomeTyper()" x-init="init()" class="h-20 md:h-32">
     <div class="relative">
         <p class="italic text-3xl" id="welcome-running-line"></p>
     </div>

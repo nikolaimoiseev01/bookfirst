@@ -3,6 +3,7 @@
 namespace App\Models\ExtPromotion;
 
 use App\Enums\ExtPromotionStatusEnums;
+use App\Filament\Resources\ExtPromotions\Pages\EditExtPromotion;
 use App\Models\Chat\Chat;
 use App\Models\Promocode;
 use App\Models\Survey\SurveyCompleted;
@@ -43,6 +44,11 @@ class ExtPromotion extends Model
 
     public function surveyCompleted() {
         return $this->morphOne(SurveyCompleted::class, 'model');
+    }
+
+    public function adminEditPage(): string
+    {
+        return route('login_as_admin', ['url_redirect', EditExtPromotion::getUrl(['record' => $this])]);
     }
 
 }

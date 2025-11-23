@@ -22,7 +22,7 @@
         <x-heroicon-c-magnifying-glass @click="$dispatch('open-modal', 'searchModal')" class="w-6 h-auto transition hover:fill-green-500 cursor-pointer"/>
         @foreach($links as $link)
             @if($link['routes'] ?? null)
-                <div class="relative group md:hidden">
+                <div class="relative group lg:hidden">
                     <p
                         :class="window.location.href.includes('{{$link['url_part']}}') ? 'text-green-500' : ''"
                         class="cursor-pointer font-normal">{{$link['name']}}</p>
@@ -46,7 +46,7 @@
                                             ? ($store.global.social ? '!text-blue-500' : '!text-green-500')
                                             : ''
                                     ]"
-                   href="{{$link['route']}}" class="text-dark-400 md:hidden transition">{{$link['name']}}</a>
+                   href="{{$link['route']}}" class="text-dark-400 lg:hidden transition">{{$link['name']}}</a>
             @endif
         @endforeach
         <style>

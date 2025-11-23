@@ -1,5 +1,5 @@
 <section
-    class="max-w-(--breakpoint-3xl) mx-auto w-[90%] flex justify-between items-center relative mb-32"
+    class="max-w-(--breakpoint-3xl) mx-auto w-[90%] flex justify-between items-center relative mb-32 lg:flex-col"
     x-data="exSlider()"
     x-init="init()"
 >
@@ -14,9 +14,9 @@
             <polygon points="163.5 284 27.1 178.7 87.3 87.4 223.7 192.6 163.5 284" style="fill:none"/>
         </g>
     </svg>
-    <div class="flex flex-col">
+    <div class="flex flex-col md:w-full">
         <!-- Изображение -->
-        <div class="w-[650px] h-[340px] relative overflow-hidden">
+        <div class="w-[650px] h-[340px] md:w-full relative overflow-hidden">
             <template x-for="(img, index) in images" :key="index">
                 <img
                     :src="img"
@@ -52,10 +52,10 @@
         </div>
     </div>
     <!-- Тексты -->
-    <div class="max-w-3xl flex flex-col">
+    <div class="max-w-3xl flex flex-col lg:justify-center lg:text-center">
         <h2 class="mb-4" x-ref="titleEl"></h2>
         <p x-ref="descEl"></p>
-        <div class="flex gap-4 mt-8">
+        <div class="flex gap-4 mt-8" lg:mx-auto>
             <x-ui.link href="{{route('portal.collections.released')}}">Подробнее</x-ui.link>
             <x-ui.link :navigate="false" target="_blank" href="https://www.ozon.ru/product/broshyura-1869093918">Купить на Ozon</x-ui.link>
             <x-ui.link :navigate="false" target="_blank" href="https://www.amazon.com/%D0%A1%D0%BE%D0%B2%D1%80%D0%B5%D0%BC%D0%B5%D0%BD%D0%BD%D1%8B%D0%B9-%D0%94%D1%83%D1%85-%D0%9F%D0%BE%D1%8D%D0%B7%D0%B8%D0%B8-19-2-Russian/dp/035993868X/ref=sr_1_3?dib=eyJ2IjoiMSJ9._ALVMZa-Ri7dggCl0Nk15REeLqZ3CLJ3Vc8_9SPooTU17a1f5fIEDJhTMFWrmX9S5JjXfzGRcPy9rMu70hEng_pFGXmt-65iecRNXwLwgWpZjeI-qazoFZYsPxRa2zzuqw2shXJ4gLgXEuCd0Ffs7VKG4UO8k-QtUcnUe2WmPzXmy6hNLQNcBYSVAecxesnRl3kFuFd5s4wJRwW81Q2-3WuoqO6KcuZzDb3R9_egJ9c.N3raipLn_zNwY_vPaSv7jXfIVFhZpDF4CL3fIJy1v8o&dib_tag=se&qid=1763407494&refinements=p_27%3A%26%231053%3B%26%231048%3B+%26%231055%3B%26%231077%3B%26%231088%3B%26%231074%3B%26%231072%3B%26%231103%3B+%26%231050%3B%26%231085%3B%26%231080%3B%26%231075%3B%26%231072%3B&s=books&sr=1-3&text=%26%231053%3B%26%231048%3B+%26%231055%3B%26%231077%3B%26%231088%3B%26%231074%3B%26%231072%3B%26%231103%3B+%26%231050%3B%26%231085%3B%26%231080%3B%26%231075%3B%26%231072%3B">Купить на Amazon</x-ui.link>
