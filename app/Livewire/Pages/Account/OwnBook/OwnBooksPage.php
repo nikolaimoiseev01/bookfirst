@@ -13,7 +13,7 @@ class OwnBooksPage extends Component
     public function render()
     {
         return view('livewire.pages.account.own-book.own-books-page', [
-            'own_books' => Auth::user()->ownBooks()->with(['media', 'ownBookStatus', 'ownBookInsideStatus', 'ownBookCoverStatus'])->simplePaginate(4)
+            'own_books' => Auth::user()->ownBooks()->with(['media'])->simplePaginate(4)
         ])->layout('layouts.account');
     }
 }
