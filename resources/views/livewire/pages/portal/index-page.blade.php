@@ -44,56 +44,56 @@
 
     <x-portal.collection-examples/>
 
-{{--    <section class="flex w-full">--}}
-{{--        <img src="/fixed/woman_sitting.svg" class="w-96" alt="">--}}
-{{--        <div class="flex flex-col mb-4 w-full ml-32">--}}
-{{--            <h2 class="mb-8">За <span class="  text-green-500">{{ date('Y') - 2015 }} лет</span>--}}
-{{--                работы у нас:</h2>--}}
-{{--            <x-portal.history-numbers/>--}}
-{{--        </div>--}}
-{{--    </section>--}}
+    <section class="flex w-full">
+        <img src="/fixed/woman_sitting.svg" class="w-96" alt="">
+        <div class="flex flex-col mb-4 w-full ml-32">
+            <h2 class="mb-8">За <span class="  text-green-500">{{ date('Y') - 2015 }} лет</span>
+                работы у нас:</h2>
+            <x-portal.history-numbers/>
+        </div>
+    </section>
 
-{{--    <section id="actual-collections" class="content mb-52 pt-32">--}}
-{{--        <div class="relative w-fit mx-auto mb-32">--}}
-{{--            <svg class="absolute -top-[100px]" xmlns="http://www.w3.org/2000/svg" width="401"--}}
-{{--                 height="278"--}}
-{{--                 viewBox="0 0 401 278" fill="none">--}}
-{{--                <script xmlns=""/>--}}
-{{--                <path--}}
-{{--                    d="M56.385 83.5782C162.464 106.477 137.685 49.9122 241.152 77.093C344.619 104.274 386.775 169.962 371.842 207.864C356.909 245.766 274.186 248.669 187.075 214.349C99.9639 180.028 -49.6943 60.6796 56.385 83.5782Z"--}}
-{{--                    stroke="#73A096" stroke-width="2" stroke-linecap="round"--}}
-{{--                    stroke-dasharray="10 15"/>--}}
-{{--                <script xmlns=""/>--}}
-{{--            </svg>--}}
-{{--            <h2>Идет прием заявок</h2>--}}
-{{--        </div>--}}
-{{--        <div class="flex flex-col gap-16">--}}
-{{--            @foreach($collections_actual as $collection)--}}
-{{--                <x-ui.cards.card-collection-wide :collection="$collection"/>--}}
-{{--            @endforeach--}}
-{{--            <div class="container flex gap-10 relative p-4 lg:flex-col lg:items-center md:pt-24">--}}
-{{--                <div--}}
-{{--                    class="min-w-[180px] max-w-[180px]  md:min-w-[140px]  md:max-w-[140px] relative">--}}
-{{--                    <x-book3d :cover="'/fixed/own-book-example.jpg'" class=" left-0 bottom-0"/>--}}
-{{--                </div>--}}
-{{--                <div class="flex flex-col gap-4 lg:items-center lg:text-center">--}}
-{{--                    <h3>Ваша собственная книга</h3>--}}
-{{--                    <p>Мы также предлагаем издать Вашу собственную книгу. Мы возьмем на себя весь--}}
-{{--                        процесс, начиная от верстки, проверки текста, и заканчивая регистрацией--}}
-{{--                        книги, присвоения ей уникального номера ISBN, а также ее размещение на--}}
-{{--                        всемирных книжных интернет площадках (Amazon.com, Books.ru и т. д.).</p>--}}
-{{--                </div>--}}
-{{--                <div class="flex flex-col justify-center gap-4 lg:w-full">--}}
-{{--                    <x-ui.link href="{{route('portal.own_book.application')}}">Подробнее</x-ui.link>--}}
-{{--                    <x-ui.link data-check-logged href="{{route('account.own_book.create')}}">Подать--}}
-{{--                        заявку--}}
-{{--                    </x-ui.link>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </section>--}}
+    <section id="actual-collections" class="content mb-52 pt-32">
+        <div class="relative w-fit mx-auto mb-32">
+            <svg class="absolute -top-[100px]" xmlns="http://www.w3.org/2000/svg" width="401"
+                 height="278"
+                 viewBox="0 0 401 278" fill="none">
+                <script xmlns=""/>
+                <path
+                    d="M56.385 83.5782C162.464 106.477 137.685 49.9122 241.152 77.093C344.619 104.274 386.775 169.962 371.842 207.864C356.909 245.766 274.186 248.669 187.075 214.349C99.9639 180.028 -49.6943 60.6796 56.385 83.5782Z"
+                    stroke="#73A096" stroke-width="2" stroke-linecap="round"
+                    stroke-dasharray="10 15"/>
+                <script xmlns=""/>
+            </svg>
+            <h2>Идет прием заявок</h2>
+        </div>
+        <div class="flex flex-col gap-16">
+            @foreach($collections_actual as $collection)
+                <x-ui.cards.card-collection-wide :collection="$collection"/>
+            @endforeach
+            <div class="container flex gap-10 relative p-4 lg:flex-col lg:items-center md:pt-24">
+                <div
+                    class="min-w-[180px] max-w-[180px]  md:min-w-[140px]  md:max-w-[140px] relative">
+                    <x-book3d :cover="'/fixed/own-book-example.jpg'" class=" left-0 bottom-0"/>
+                </div>
+                <div class="flex flex-col gap-4 lg:items-center lg:text-center">
+                    <h3>Ваша собственная книга</h3>
+                    <p>Мы также предлагаем издать Вашу собственную книгу. Мы возьмем на себя весь
+                        процесс, начиная от верстки, проверки текста, и заканчивая регистрацией
+                        книги, присвоения ей уникального номера ISBN, а также ее размещение на
+                        всемирных книжных интернет площадках (Amazon.com, Books.ru и т. д.).</p>
+                </div>
+                <div class="flex flex-col justify-center gap-4 lg:w-full">
+                    <x-ui.link href="{{route('portal.own_book.application')}}">Подробнее</x-ui.link>
+                    <x-ui.link data-check-logged href="{{route('account.own_book.create')}}">Подать
+                        заявку
+                    </x-ui.link>
+                </div>
+            </div>
+        </div>
+    </section>
 
-{{--    <x-portal.own-books-index-slider/>--}}
+    <x-portal.own-books-index-slider/>
 
-{{--    <x-portal.reviews-portal-index/>--}}
+    <x-portal.reviews-portal-index/>
 </main>
