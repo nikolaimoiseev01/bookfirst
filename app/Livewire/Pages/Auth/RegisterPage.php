@@ -28,13 +28,27 @@ class RegisterPage extends Component
     /**
      * Handle an incoming registration request.
      */
+
+    protected function messages(): array
+    {
+        return [
+            'name.required' => 'Имя автора обязательно для заполнения',
+            'surname.required' => 'Фамилия автора обязательно для заполнения',
+            'email.required' => 'Email обязателен для заполнения',
+            'password.required' => 'Пароль обязателен для заполнения',
+            'password_confirmation.required' => 'Повторение пароля обязательно для заполнения',
+            'email.unique' => 'Такой email уже есть в системе',
+            'password.min' => 'Минимальное количество символов для пароля: :min',
+            'password.confirmed' => 'Пароли не совпадают',
+        ];
+    }
     public function register(): void
     {
         try {
             $validated = $this->validate([
                 'name' => ['required', 'string', 'max:255'],
                 'surname' => ['required', 'string', 'max:255'],
-                'nickname' => ['required', 'string', 'max:255'],
+                'nickname' => ['string', 'max:255'],
                 'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
                 'password' => ['required', 'string', 'confirmed', Password::defaults()],
             ]);
