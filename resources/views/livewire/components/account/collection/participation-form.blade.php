@@ -45,17 +45,18 @@
                         <x-ui.input.text name="surname" label="Телефон получателя*"
                                          wire:model="receiverTelephone"/>
                     </div>
-                    <div x-show="showChosenAddress" class="flex flex-col gap-2">
-                        <p><b>Адрес
-                                получателя: </b>{{$participation->printOrder['address_json']['string']}}
-                        </p>
-                        <x-ui.link-simple @click="showChosenAddress = false">Изменить адрес
-                        </x-ui.link-simple>
-                    </div>
-                    <div x-show="!showChosenAddress">
-                        <livewire:components.account.address-choose/>
-                    </div>
-
+                    @if($showChosenAddress)
+                        <div x-show="showChosenAddress" class="flex flex-col gap-2">
+                            <p><b>Адрес
+                                    получателя: </b>{{$participation->printOrder['address_json']['string']}}
+                            </p>
+                            <x-ui.link-simple @click="showChosenAddress = false">Изменить адрес
+                            </x-ui.link-simple>
+                        </div>
+                    @endif
+                    {{--                    <div x-show="!showChosenAddress">--}}
+                    <livewire:components.account.address-choose/>
+                    {{--                    </div>--}}
                 </div>
             </div>
         </div>
