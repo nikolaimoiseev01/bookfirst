@@ -69,8 +69,8 @@
 
     <div x-show="addressType == 'Заграницу'" x-cloak x-collapse.duration.400ms>
         <div class="pt-4 grid grid-cols-3 gap-4">
-            <x-ui.input.text name="Страна" wire:model.live="country" class="col-span-1" label="Страна на латинице"/>
-            <x-ui.input.text name="Адрес" x-model="foreignAddress" @input="updateAddressJson()" class="col-span-2"
+            <x-ui.input.text name="Страна" wire:model.live.debounce.500ms="country" class="col-span-1" label="Страна на латинице"/>
+            <x-ui.input.text name="Адрес" x-model="foreignAddress" @input.debounce="updateAddressJson()" class="col-span-2"
                              label="Полный адрес на латинице, начиная с города"/>
         </div>
     </div>
