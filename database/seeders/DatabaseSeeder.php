@@ -57,13 +57,6 @@ class DatabaseSeeder extends Seeder
     {
 
         (new CopyTableService())->copy(
-            sourceTable: 'users'
-            , modelClass: 'App\Models\User\User'
-            , columnsToExclude: ['two_factor_secret', 'two_factor_recovery_codes', 'avatar_cropped', 'avatar']
-            , columnsMedia: $test ? [] : ['avatar' => 'avatar']
-        );
-
-        (new CopyTableService())->copy(
             sourceTable: 'almost_complete_action_types'
             , modelClass: 'App\Models\AlmostCompleteAction\AlmostCompleteActionType'
             , columnsToRename: ['title' => 'name']
@@ -988,10 +981,17 @@ class DatabaseSeeder extends Seeder
 
     public function run(): void
     {
-        $test = False;
+        $test = True;
 
         $file = new Filesystem;
         $file->cleanDirectory(storage_path('app/public/media'));
+
+        (new CopyTableService())->copy(
+            sourceTable: 'users'
+            , modelClass: 'App\Models\User\User'
+            , columnsToExclude: ['two_factor_secret', 'two_factor_recovery_codes', 'avatar_cropped', 'avatar']
+            , columnsMedia: $test ? [] : ['avatar' => 'avatar']
+        );
 
         $this->same_tables(test: $test);
 

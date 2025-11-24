@@ -37,8 +37,6 @@ class ExtPromotionCreatedNotification extends Notification
      */
     public function toTelegram(object $notifiable): TelegramMessage
     {
-        $url = route('account.ext_promotion.index', $this->newExtPromotion['id']);
-        $url = str_replace('http://localhost:8000', 'https://vk.com', $url);
         $subject = '💥 *Новая заявка на продвижение!* 💥';
         $userName = $this->newExtPromotion->user->getUserFullName();
         $promocode_info = $this->newExtPromotion['promocode_id'] ?? null ? "*Промокод*: " . $this->newExtPromotion->promocode['name'] . "\n" : "";
@@ -50,8 +48,7 @@ class ExtPromotionCreatedNotification extends Notification
             "*Общая стоимость*: {$this->newExtPromotion['price_total']}";
         return TelegramMessage::create()
             ->to(getTelegramChatId('extPromotion'))
-            ->content("$subject\n\n$text")
-            ->button('Подробнее', $url);
+            ->content("$subject\n\n$text");
     }
 
     /**

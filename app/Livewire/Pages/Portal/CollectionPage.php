@@ -58,11 +58,11 @@ class CollectionPage extends Component
         }
 
         $collectionDates = [
-            'date_apps_end' => Carbon::parse($this->collection['date_print_start'])->translatedFormat('j F'),
-            'date_preview_start' => Carbon::parse($this->collection['date_print_start'])->translatedFormat('j F'),
-            'date_preview_end' => Carbon::parse($this->collection['date_print_start'])->translatedFormat('j F'),
+            'date_apps_end' => Carbon::parse($this->collection['date_apps_end'])->translatedFormat('j F'),
+            'date_preview_start' => Carbon::parse($this->collection['date_preview_start'])->translatedFormat('j F'),
+            'date_preview_end' => Carbon::parse($this->collection['date_preview_end'])->translatedFormat('j F'),
             'date_print_start' => Carbon::parse($this->collection['date_print_start'])->translatedFormat('j F'),
-            'date_print_end' => Carbon::parse($this->collection['date_print_start'])->translatedFormat('j F'),
+            'date_print_end' => Carbon::parse($this->collection['date_print_end'])->translatedFormat('j F'),
         ];
         $this->process = [
             [

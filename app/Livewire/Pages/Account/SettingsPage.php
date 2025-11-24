@@ -82,7 +82,7 @@ class SettingsPage extends Component
                         ->toMediaCollection('avatar');   // твоя коллекция
                 }
                 $this->showEdit = false;
-                $this->dispatch('swal', type: 'success', title: 'Данные успешно обновлены');
+                $this->dispatch('swal', type: 'success', title: 'Данные успешно обновлены', text: '');
                 $this->dispatch('$refresh');
             });
         }

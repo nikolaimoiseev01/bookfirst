@@ -2,15 +2,14 @@
 
 namespace Database\Seeders;
 
-use App\Models\Collection\CollectionVote;
+use App\Enums\OwnBookCoverStatusEnums;
+use App\Enums\OwnBookInsideStatusEnums;
+use App\Enums\OwnBookStatusEnums;
 use App\Models\OwnBook\OwnBook;
 use App\Models\OwnBook\OwnBookWork;
-use App\Models\OwnBook\OwnBookWorks;
-use App\Models\PrintOrder\PrintOrder;
 use App\Models\Work\Work;
 use App\Services\CopyTableService;
 use Carbon\Carbon;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -43,18 +42,21 @@ class OwnBookSeeder extends Seeder
                 $selling_links = null;
             }
 
-            $status_general = DB::connection('old_mysql')
-                ->table('own_book_statuses')
-                ->where('id', $oldOwnBook->own_book_status_id)
-                ->first()->status_title;
-            $status_cover = DB::connection('old_mysql')
+            $status_general = optional(
+                DB::connection('old_mysql')
+                    ->table('own_book_statuses')
+                    ->where('id', $oldOwnBook->own_book_status_id)
+                    ->first()
+            )->status_title ?? OwnBookStatusEnums::DONE->value;
+
+            $status_cover = optional(DB::connection('old_mysql')
                 ->table('own_book_cover_statuses')
                 ->where('id', $oldOwnBook->own_book_cover_status_id)
-                ->first()->status_title;
-            $status_inside = DB::connection('old_mysql')
+                ->first())->status_title ?? OwnBookCoverStatusEnums::READY_FOR_PUBLICATION->value;
+            $status_inside = optional(DB::connection('old_mysql')
                 ->table('own_book_inside_statuses')
                 ->where('id', $oldOwnBook->own_book_inside_status_id)
-                ->first()->status_title;
+                ->first())->status_title ?? OwnBookInsideStatusEnums::READY_FOR_PUBLICATION->value;
 
             $own_book = OwnBook::create([
                 'id' => $oldOwnBook->id,
@@ -85,12 +87,12 @@ class OwnBookSeeder extends Seeder
                 'annotation' => $oldOwnBook->own_book_desc,
                 'selling_links' => $selling_links
             ]);
-            $author_inside_file = DB::connection('old_mysql')
+            $author_inside_files = DB::connection('old_mysql')
                 ->table('own_book_files')
                 ->where('own_book_id', $oldOwnBook->id)
                 ->get();
-            if (count($author_inside_file) > 0 && $author_inside_file) {
-                foreach ($author_inside_file as $file) {
+            if (count($author_inside_files) > 0 && $author_inside_files && $oldOwnBook->id > 230) {
+                foreach ($author_inside_files as $file) {
                     if ($file->file_type == 'inside') {
                         $own_book->addMediaFromUrl('https://pervajakniga.ru/' . $file->file)->toMediaCollection('from_author_inside');
                     } elseif ($file->file_type == 'cover') {
@@ -138,14 +140,11 @@ class OwnBookSeeder extends Seeder
         $now_time = Carbon::now()->format('H:i:s');
         echo "Own Books START ($now_time)\n";
         $this->make_own_book_works($test);
-        if (!$test) {
-            (new CopyTableService())->copy(
-                sourceTable: 'own_book_reviews'
-                , targetTable: 'own_book_reviews'
-            );
-        }
-
         $this->make_own_books($test);
+        (new CopyTableService())->copy(
+            sourceTable: 'own_book_reviews'
+            , targetTable: 'own_book_reviews'
+        );
         $now_time = Carbon::now()->format('H:i:s');
         echo "Own Books END ($now_time)\n";
     }
