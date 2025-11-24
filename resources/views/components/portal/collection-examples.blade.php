@@ -3,7 +3,7 @@
     x-data="exSlider()"
     x-init="init()"
 >
-    <svg class="absolute left-[15%] -bottom-28 w-16 md:hidden" id="Слой_1" data-name="Слой 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 254.8 358.1">
+    <svg class="absolute left-[15%] -bottom-28 w-16 lg:hidden" id="Слой_1" data-name="Слой 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 254.8 358.1">
         <path
             d="M195.6,122.6c23.1,21.7,31,54.1,12.8,98.5S98.4,283.6,69.1,256c-29.5-27.5-15.3-130.7,33-134.6C150.6,117.4,172.3,100.8,195.6,122.6Z"
             style="fill:#ffedcc"/>

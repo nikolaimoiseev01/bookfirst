@@ -135,7 +135,7 @@
                             <p class="text-4xl font-normal text-dark-400 mb-2">{{$date['date']}}</p>
                             <p class="text-dark-400">{{$date['desc']}}</p>
                             @if($date['tooltip'] ?? null)
-                                <x-ui.question-mark :direction="$loop->last ? 'left' : 'top'"
+                                <x-ui.question-mark direction="left"
                                                     class="!absolute bottom-4 right-4">
                                     {{$date['tooltip']}}
                                 </x-ui.question-mark>

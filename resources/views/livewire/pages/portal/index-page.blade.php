@@ -3,7 +3,7 @@
         Главная
     @endsection
     <x-video-modal/>
-    <section class="h-screen w-full flex items-center">
+    <section class="h-screen lg:h-auto lg:mb-32 w-full flex items-center">
         <svg class="absolute lg:hidden left-0 top-0 h-full" id="Слой_1" data-name="Слой 1"
              xmlns="http://www.w3.org/2000/svg"
              viewBox="0 0 531.37 733.2">
@@ -21,6 +21,7 @@
         <div
             class="max-w-(--breakpoint-3xl) mx-auto w-[90%] gap-16 flex lg:flex-col lg:content justify-between items-center relative">
             <div class="flex flex-col gap-4 lg:max-w-auto lg:w-full lg:text-center max-w-[600px]">
+                <p class="hidden md:block">Независимое издательство<br>Первая Книга</p>
                 <h2 class="text-7xl font-medium text-black-500 dark:text-white text-nowrap md:text-5xl">Ваш шаг в мир<br>литературы
                 </h2>
                 <x-portal.welcome-running-line/>
