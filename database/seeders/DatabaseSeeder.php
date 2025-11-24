@@ -44,6 +44,7 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
@@ -103,8 +104,6 @@ class DatabaseSeeder extends Seeder
             sourceTable: 'user_subscriptions'
             , targetTable: 'user_x_user_subscriptions'
         );
-
-
     }
 
     public function make_actions()
@@ -306,7 +305,16 @@ class DatabaseSeeder extends Seeder
             if (!$test) {
                 $files = DB::connection('old_mysql')->table('message_files')->where('message_id', $oldMessage->id)->get();
                 foreach ($files as $file) {
-                    $message->addMediaFromUrl('https://pervajakniga.ru/' . $file->file)->toMediaCollection('files');
+                    try {
+                        $message
+                            ->addMediaFromUrl('https://pervajakniga.ru/' . $file->file)
+                            ->toMediaCollection('files');
+                    } catch (FileIsTooBig $e) {
+                        logger()->warning("Файл слишком большой и пропущен: " . $file->file);
+                    } catch (\Throwable $e) {
+                        // Любая другая ошибка — пробрасываем дальше
+                        throw $e;
+                    }
                 }
             }
         }
@@ -980,7 +988,7 @@ class DatabaseSeeder extends Seeder
 
     public function run(): void
     {
-        $test = True;
+        $test = False;
 
         $file = new Filesystem;
         $file->cleanDirectory(storage_path('app/public/media'));

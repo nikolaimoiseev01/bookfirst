@@ -37,7 +37,7 @@ class ChatMessageEmailNotification extends Notification
         $subject = 'Новое сообщение в чате!';
         $text = "Вы получили новое сообщение в чате '{$this->chat['title']}'.";
         $url = match ($this->chat['model_type']) {
-            'Collection', 'OwnBook', 'ExtPromotion' => $this->chat->accountIndexPage(),
+            'Collection', 'OwnBook', 'ExtPromotion' => $this->chat->model->accountIndexPage(),
             default => route('account.chats', ['curChatId', $this->chat['id']])
         };
         return (new MailMessage)
