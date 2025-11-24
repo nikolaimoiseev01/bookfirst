@@ -205,6 +205,7 @@ class DatabaseSeeder extends Seeder
                 ->table('ext_promotion_statuses')
                 ->where('id', $oldExtPromotion->ext_promotion_status_id)->first()->title;
             ExtPromotion::create([
+                'id' => $oldExtPromotion->id,
                 'user_id' => $oldExtPromotion->user_id,
                 'status' => $status,
                 'login' => $oldExtPromotion->login,
@@ -295,6 +296,7 @@ class DatabaseSeeder extends Seeder
             ->get();
         foreach ($oldMessages as $oldMessage) {
             $message = Message::create([
+                'id' => $oldMessage->id,
                 'chat_id' => $oldMessage->chat_id,
                 'user_id' => $oldMessage->user_from,
                 'text' => $oldMessage->text,
@@ -318,6 +320,7 @@ class DatabaseSeeder extends Seeder
         $oldTemplates = DB::connection('old_mysql')->table('message_templates')->get();
         foreach ($oldTemplates as $oldTemplate) {
             MessageTemplate::create([
+                'id' => $oldTemplate->id,
                 'type' => $oldTemplate->template_type,
                 'title' => $oldTemplate->title,
                 'text' => $oldTemplate->text
@@ -825,6 +828,7 @@ class DatabaseSeeder extends Seeder
             ->get();
         foreach ($oldParticipationWorks as $oldParticipationWork) {
             ParticipationWork::create([
+                'id' => $oldParticipationWork->id,
                 'work_id' => $oldParticipationWork->work_id,
                 'participation_id' => $oldParticipationWork->participation_id,
                 'created_at' => $oldParticipationWork->created_at,

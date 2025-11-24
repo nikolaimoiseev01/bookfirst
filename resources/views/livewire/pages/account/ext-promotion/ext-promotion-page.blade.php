@@ -5,7 +5,7 @@
     <div class="mb-4">
         <livewire:components.account.ext-promotion.survey-ext-promotion :ext-promotion="$extPromotion"/>
     </div>
-    <x-ui.link-simple class="mb-4">Инструкция по этой странице</x-ui.link-simple>
+    <x-ui.link-simple href="{{route('portal.help.ext_promotion')}}" class="mb-4">Инструкция по этой странице</x-ui.link-simple>
     <div class="mb-8 px-4 py-2 flex flex-col justify-between items-center gap-2 border rounded-2xl border-green-500">
             <p>Мой статус продвижения: <span class="font-normal">{{$extPromotion['status']}}</span></p>
         <div class="flex gap-4 text-lg">

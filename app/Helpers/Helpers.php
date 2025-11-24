@@ -41,15 +41,15 @@ function formatDate($date, $format='j F', $addDays=0):string {
 
 function getTelegramChatId($chat = null) {
     if (ENV('APP_ENV') == 'local') {
-        return ENV('TELEGRAM_CHAT_ID_TEST');
+        $chatId = config('services.telegram-chats.test');
     } else {
         if ($chat == 'extPromotion') {
-            return ENV('TELEGRAM_PROMO_CHAT_ID');
+            $chatId =  config('services.telegram-chats.ext_promotion');
         } else {
-            return ENV('TELEGRAM_MAIN_CHAT_ID');
+            $chatId =  config('services.telegram-chats.main');
         }
-
     }
+    return $chatId;
 }
 
 

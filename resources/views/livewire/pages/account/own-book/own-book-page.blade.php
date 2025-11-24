@@ -5,6 +5,7 @@
     <div class="mb-4">
         <livewire:components.account.own-book.survey-own-book-application :own-book="$ownBook"/>
     </div>
+    <x-ui.link-simple href="{{route('portal.help.own_book')}}" class="mb-4">Инструкция по этой странице</x-ui.link-simple>
     <div class="mb-8 px-4 py-2 flex justify-between items-center gap-4 border rounded-2xl border-green-500">
         <div class="flex flex-col gap-1">
             <p>Общий статус: <span class="font-normal">{{$ownBook['status_general']}}</span></p>

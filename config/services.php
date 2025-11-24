@@ -50,6 +50,12 @@ return [
         'token' => env('TELEGRAM_BOT_TOKEN')
     ],
 
+    'telegram-chats' => [
+        'test' => ENV('TELEGRAM_CHAT_ID_TEST'),
+        'main' => ENV('TELEGRAM_MAIN_CHAT_ID'),
+        'ext_promotion' => ENV('TELEGRAM_PROMO_CHAT_ID'),
+    ],
+
     'vkontakte' => [
         'client_id' => env('VKONTAKTE_CLIENT_ID'),
         'client_secret' => env('VKONTAKTE_CLIENT_SECRET'),
@@ -65,5 +71,6 @@ return [
         'client_secret' => env('YANDEX_CLIENT_SECRET'),
         'redirect' => env('YANDEX_REDIRECT_URI')
     ],
+
 
 ];

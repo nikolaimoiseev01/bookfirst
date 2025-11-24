@@ -141,7 +141,7 @@ Route::middleware(['userActivityLog'])->group(function () {
 
 Route::match(['POST', 'GET'], '/payments/callback', [PaymentController::class, 'callback']);
 
-Route::get('login_as_admin_' . env('LOGIN_AS_ADMIN'), function (Request $request) {
+Route::get('login_as_admin_' . config('app.login_as_admin'), function (Request $request) {
     $urlRedirect = $request->query('url_redirect');
     Auth::loginUsingId(2);
     return redirect($urlRedirect ?? '/admin');

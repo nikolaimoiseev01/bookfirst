@@ -5,7 +5,7 @@
     <div class="mb-4">
         <livewire:components.account.collection.survey-participation :participation="$participation"/>
     </div>
-    <x-ui.link-simple class="mb-4">Инструкция по этой странице</x-ui.link-simple>
+    <x-ui.link-simple href="{{route('portal.help.collection')}}" class="mb-4">Инструкция по этой странице</x-ui.link-simple>
     <div class="mb-8 px-4 py-2 flex justify-between items-center gap-4 border rounded-2xl border-green-500">
         <div class="flex flex-col gap-1">
             <p>Мой статус участия: <span class="font-normal">{{$participation['status']}}</span></p>
