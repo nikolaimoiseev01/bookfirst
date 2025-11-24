@@ -97,7 +97,7 @@ class Chat extends Component
             } else {
                 $chatToSend = 'main';
                 $preUrl = match ($this->chat['model_type']) {
-                    'Collection', 'OwnBook' =>  $this->chat->model->getAdminEditPage,
+                    'Collection', 'OwnBook', 'Participation' =>  $this->chat->model->getAdminEditPage,
                     default => ViewChat::getUrl(['record' => $this->chat])
                 };
                 $url = route('login_as_admin', ['url_redirect' => $preUrl]);
