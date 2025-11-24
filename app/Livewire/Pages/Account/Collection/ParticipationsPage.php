@@ -15,7 +15,7 @@ class ParticipationsPage extends Component
     public function render()
     {
         return view('livewire.pages.account.collection.participations-page', [
-            'participations' => Auth::user()->participations()->with('collection')->with('collection.media')->simplePaginate(4)
+            'participations' => Auth::user()->participations()->with('collection')->with('collection.media')->orderBy('created_at', 'desc')->simplePaginate(4)
         ])->layout('layouts.account');
     }
 }

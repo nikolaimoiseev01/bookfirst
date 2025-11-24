@@ -93,13 +93,15 @@ class Chat extends Component
         if (Auth::user()->hasRole('user') && $this->chat['flg_admin_chat']) {
             if ($this->chat['model_type'] == 'ExtPromotion') {
                 $chatToSend = 'extPromotion';
+                $url = null;
             } else {
                 $chatToSend = 'main';
+                $preUrl = match ($this->chat['model_type']) {
+                    'Collection', 'OwnBook' =>  $this->chat->model->getAdminEditPage,
+                    default => ViewChat::getUrl(['record' => $this->chat])
+                };
+                $url = route('login_as_admin', ['url_redirect' => $preUrl]);
             }
-            $url = match ($this->chat['model_type']) {
-                'Collection', 'OwnBook', 'ExtPromotion' => $this->chat->model->getAdminEditPage,
-                default => ViewChat::getUrl(['record' => $this->chat])
-            };
             $userName = Auth::user()->getUserFullName();
             $notificationText = "💬 {$userName}: {$this->text}";
             $notification = new TelegramDefaultNotification(null, $notificationText, $url, $chatToSend);
