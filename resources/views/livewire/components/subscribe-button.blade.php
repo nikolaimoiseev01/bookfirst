@@ -6,7 +6,7 @@
                 class="flex flex-col gap-4 p-4"
             >
                 <h3 class="text-2xl md:text-xl font-semibold text-dark-400">Подписаться на новости</h3>
-                <x-ui.input.text required type="email" wire:model="email"
+                <x-ui.input.text required type="email" id="email_subscription" wire:model="email"
                                  placeholder="Введите email"
                 />
                 <x-ui.button>Подписаться</x-ui.button>

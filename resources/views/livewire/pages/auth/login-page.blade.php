@@ -15,6 +15,7 @@
         <x-ui.input.text
             name="email"
             label="Email"
+            id="email"
             wire:model="email"
         />
         <x-ui.input.password

@@ -1,7 +1,12 @@
 @props([
-    'label' => null, // подпись над полем
+    'label' => null,
     'color' => 'green',
+    'id' => null,
 ])
+
+@php
+    $inputId = $id ?? $attributes->get('wire:model');
+@endphp
 
 <div
     {{ $attributes->merge([
@@ -17,9 +22,10 @@
         {{$attributes->thatStartWith('wire:model')}}
         {{$attributes->thatStartWith('x-model')}}
         {{$attributes->thatStartWith('placeholder')}}
+        autocomplete="{{$inputId}}"
         {{$attributes->thatStartWith('type')}}
         type="text"
-        id="{{ $attributes->get('wire:model') }}"
+        id="{{ $inputId }}"
         name="{{ $attributes->get('wire:model') }}"
         @class([
         'border-green-500' => $color === 'green',
