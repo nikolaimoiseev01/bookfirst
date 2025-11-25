@@ -37,11 +37,12 @@ class EditCollection extends EditRecord
             }
             if ($this->record['status'] == CollectionStatusEnums::PRINTING) {
                 $participations = $this->record->approvedParticipations()->get();
-                $printOrders = $this->record->printOrders()->get();
-                foreach ($printOrders as $printOrder) {
-                    $printOrder->update([
-                        'status' => PrintOrderStatusEnums::PRINTING
-                    ]);
+                foreach ($participations as $participation) {
+                    if($participation->printOrder ?? null) {
+                        $participation->printOrder->update([
+                            'status' => PrintOrderStatusEnums::PRINTING
+                        ]);
+                    }
                 }
 
                 PdfCutJob::dispatch(
