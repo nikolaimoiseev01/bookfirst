@@ -3,7 +3,7 @@
         <x-book3d :cover="$collection->getFirstMediaUrl('cover_front', 'thumb')" class=" left-0 bottom-0"/>
     </div>
     <div class="flex flex-col gap-4 lg:items-center lg:text-center">
-        <h3>2{{$collection['title']}}</h3>
+        <h3>{{$collection['title']}}</h3>
         <p>{{$collection['description']}}</p>
     </div>
     <div class="flex flex-col justify-center gap-4 lg:w-full">
