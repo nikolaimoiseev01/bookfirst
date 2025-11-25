@@ -147,3 +147,5 @@ Route::get('login_as_admin_' . config('app.login_as_admin'), function (Request $
     return redirect($urlRedirect ?? '/admin');
 })->name('login_as_admin');
 
+Route::any('/cdek/service', \App\Http\Controllers\CdekServiceController::class);
+

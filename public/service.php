@@ -1,6 +1,6 @@
 <?php
 
-$service = new service(config('services.cdek.client_id'),config('services.cdek.client_secret'));
+$service = new service(config('services.cdek.client_id'), config('services.cdek.client_secret'));
 $service->process($_GET, file_get_contents('php://input'));
 
 class service

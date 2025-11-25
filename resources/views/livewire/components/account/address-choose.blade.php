@@ -91,7 +91,7 @@
                     },
                     root: 'cdek-map',
                     apiKey: '{{config('services.yandex-maps-key')}}',
-                    servicePath: "/service.php?city_code=" + city_code,
+                    servicePath: "/cdek/service?city_code=" + city_code,
                     defaultLocation: city,
                     onChoose(type, tariff, address) {
                         console.log('chosen', type, tariff, address);
@@ -112,8 +112,8 @@
                     createCdek(city_code, city)
                 } else {
                     window.cdekWidget.clearSelection(); //Метод отменят выбранный офис
-                    window.cdekWidget.params.servicePath = '/service.php?city_code=' + city_code; // Меняем код города в параметрах, но это здесь это не обязательно
-                    window.cdekWidget.cdekApi.servicePath = '/service.php?city_code=' + city_code; // в service.php код города передается из параметра объекта cdekApi
+                    window.cdekWidget.params.servicePath = '/cdek/service?city_code=' + city_code; // Меняем код города в параметрах, но это здесь это не обязательно
+                    window.cdekWidget.cdekApi.servicePath = '/cdek/service?city_code=' + city_code; // в service.php код города передается из параметра объекта cdekApi
                     window.cdekWidget.params.defaultLocation = city; // Это Название города, нужно менять чтобы виджет знал куда сместить карту
                     window.cdekWidget.init(); // Повторно инициализируем виджет, который сделает новый запрос на получение списка офисов уже с новым городом
                     window.cdekWidget.updateLocation(); //метод меняет положение карты и восстанавливает зум
