@@ -282,13 +282,19 @@ class ParticipationForm extends Component
 
         $isSameWorks = $oldIds->toArray() === $newIds->toArray();
 
+        $needToNotify = false;
         if (!$isSameWorks) {
-            return ParticipationStatusEnums::APPROVE_NEEDED;
+            $status = ParticipationStatusEnums::APPROVE_NEEDED;
+            $needToNotify = true;
         } elseif (!$isSameAmount) {
-            return ParticipationStatusEnums::PAYMENT_REQUIRED;
+            $status = ParticipationStatusEnums::PAYMENT_REQUIRED;
         } else {
-            return $this->participation['status'];
+            $status = $this->participation['status'];
         }
+        return [
+            'status' => $status,
+            'needToNotify' => $needToNotify
+        ];
     }
 
     /** @noinspection D */
@@ -305,7 +311,7 @@ class ParticipationForm extends Component
                     'works_number' => count($this->selectedWorks),
                     'rows' => $this->rows,
                     'pages' => $this->pages,
-                    'status' => $this->getParticipationStatus(),
+                    'status' => $this->getParticipationStatus()['status'],
                     'promocode_id' => $this->promocode ? $this->promocode['id'] : null,
                     'price_part' => $this->prices['pricePart'],
                     'price_check' => $this->prices['priceCheck'],
@@ -355,13 +361,13 @@ class ParticipationForm extends Component
             } else {
                 PrintOrder::query()
                     ->where('user_id', Auth::user()->id)
-                    ->where('model_type', 'Participation')
-                    ->where('model_id', $newParticipation['id'])
+                    ->where('model_type', 'Collection')
+                    ->where('model_id', $newParticipation['collection_id'])
                     ->delete();
             }
 
             $url = route('login_as_admin', ['url_redirect' => EditParticipation::getUrl(['record' => $newParticipation])]);
-            if ($this->getParticipationStatus() == ParticipationStatusEnums::APPROVE_NEEDED) {
+            if ($this->getParticipationStatus()['needToNotify']) {
                 $subject = $this->formType == 'create' ?
                     '💥 *Новая заявка в ' . $this->collection['title_short'] . '!* 💥' . "\n\n" :
                     '💥 *Изменение заявки в ' . $this->collection['title_short'] . '!* 💥' . "\n\n";

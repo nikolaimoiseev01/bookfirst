@@ -98,7 +98,7 @@ class LoginPage extends Component
 
             $this->redirectIntended(
                 default: route('account.participations', absolute: false),
-                navigate: true
+                navigate: false
             );
 
         } catch (ValidationException $e) {

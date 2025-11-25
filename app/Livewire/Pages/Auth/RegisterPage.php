@@ -60,7 +60,10 @@ class RegisterPage extends Component
             $user->assignRole('User');
             Auth::login($user);
 
-            $this->redirect(route('account.participations', absolute: false), navigate: true);
+            $this->redirectIntended(
+                default: route('account.participations', absolute: false),
+                navigate: false
+            );
         } catch (ValidationException $e) {
             // Собираем все ошибки в одну строку или массив
             $messages = collect($e->validator->errors()->all())->implode("<br>");

@@ -4,7 +4,7 @@
         search: '',
         showWorks: false,
         userWorks: @js($userWorks),
-        selectedWorks: $wire.entangle('selectedWorks').live,
+        selectedWorks: $wire.entangle('selectedWorks'),
         dragIndex: null,
         dragOverIndex: null,
         disabled: @js($disabled),
@@ -41,13 +41,16 @@
         },
 
         onDrop(index) {
-            if (this.dragIndex === null || this.dragIndex === index) return
+            if (this.dragIndex === null || this.dragIndex === index) return;
 
-            const moved = this.selectedWorks.splice(this.dragIndex, 1)[0]
-            this.selectedWorks.splice(index, 0, moved)
+            const moved = this.selectedWorks.splice(this.dragIndex, 1)[0];
+            this.selectedWorks.splice(index, 0, moved);
 
-            this.dragIndex = null
-            this.dragOverIndex = null
+            this.dragIndex = null;
+            this.dragOverIndex = null;
+
+            // мгновенная синхронизация без лагов
+            $wire.set('selectedWorks', this.selectedWorks);
         },
 
         endDrag() {
@@ -120,9 +123,8 @@
     <div class="flex flex-wrap gap-4 items-start flex-1">
         <template x-for="(work, index) in selectedWorks" :key="work.id">
             <div
-                class="cursor-grab active:cursor-grabbing transition relative w-[150px] min-h-[42px] max-h-[42px] h-[42px]"
+                class="cursor-grab touch-none active:cursor-grabbing transition relative w-[150px] min-h-[42px] max-h-[42px] h-[42px]"
                 :class="{'opacity-50 scale-95': dragIndex === index}"
-                draggable="!disabled"
                 @dragstart="if (!disabled) startDrag(index, $event)"
                 @dragover.prevent="if (!disabled) onDragOver(index, $event)"
                 @drop="if (!disabled) onDrop(index)"
@@ -141,6 +143,7 @@
                         'opacity-50 scale-95': dragIndex === index,
                         'hover:scale-[102%]': dragIndex !== index
                     }"
+                    :draggable="!disabled"
                 >
                     <span class="text-dark-400 block truncate"
                           x-text="work.title.length > 30 ? work.title.slice(0, 30) + '…' : work.title"></span>
