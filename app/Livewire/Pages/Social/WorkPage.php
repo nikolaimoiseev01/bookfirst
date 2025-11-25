@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Pages\Social;
 
+use App\Models\User\User;
 use App\Models\Work\Work;
 use App\Models\Work\WorkComment;
 use App\Models\Work\WorkLike;
@@ -16,6 +17,7 @@ class WorkPage extends Component
     use WithCustomValidation;
 
     public $work;
+    public $user;
     public $workLikesCount;
     public $userHasLike;
     public $workComments;
@@ -26,6 +28,7 @@ class WorkPage extends Component
 
     public function render()
     {
+        $this->user = User::where('id', $this->work['user_id'])->withCount('works', 'awards', 'subscribers', 'subscribedToUsers')->first();
         $this->workComments = WorkComment::where('work_id', $this->work['id'])->orderBy('created_at', 'desc')->get();
         return view('livewire.pages.social.work-page');
     }
