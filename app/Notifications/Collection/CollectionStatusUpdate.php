@@ -22,9 +22,9 @@ class CollectionStatusUpdate extends Notification
 
     public function __construct($collection, $participationId, $newStatus)
     {
-        $this->newStatus = $newStatus->value;
         $this->collection = $collection;
         $this->participationId = $participationId;
+        $this->newStatus = $newStatus->value;
     }
 
     /**

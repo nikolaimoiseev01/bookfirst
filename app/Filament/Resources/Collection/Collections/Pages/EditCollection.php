@@ -55,7 +55,7 @@ class EditCollection extends EditRecord
 
             foreach ($participations as $participation) {
                 $notification = new CollectionStatusUpdate($this->record, $participation['id'], $this->record['status']);
-                EmailNotificationJob::dispatch($participation['id'], $notification);
+                EmailNotificationJob::dispatch($participation['user_id'], $notification);
             }
         }
 

@@ -13,8 +13,6 @@ class PaymentController
 {
     public function callback()
     {
-        Log::info('YooKassa callback started!');
-
         $source = file_get_contents('php://input');
         $yooKassaObject = json_decode($source, true)['object'];
         $transaction = Transaction::where('id', $yooKassaObject['metadata']['transaction_id'])->first();
