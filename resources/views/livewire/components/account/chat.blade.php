@@ -1,4 +1,4 @@
-<div class="w-full h-full chat-wrap">
+<div style="height: 100%" class="w-full h-[100%] chat-wrap">
     <div class="bg-white dark:bg-dark_bg dark:border dark:border-gray-300 h-full flex flex-col">
         <!-- список сообщений -->
         <div id="chatMessagesWrap"

@@ -20,24 +20,28 @@ class InnerTasksService
         $collections = Collection::get();
         foreach ($collections as $collection) {
 
-            [$title, $deadline] = match ($collection['status']) {
+            [$title, $description,$deadline] = match ($collection['status']) {
                 CollectionStatusEnums::APPS_IN_PROGRESS => [
-                    "Нужно сверстать сборник {$collection['title_short']}",
+                    "Сверстать ВБ",
+                    "Сверстать сборник {$collection['title_short']}",
                     $collection['date_preview_start']
                 ],
                 CollectionStatusEnums::PREVIEW => [
-                    "Нужно выбрать победителей в сборник {$collection['title_short']}",
+                    "Выбрать победителей",
+                    "Выбрать победителей в сборник {$collection['title_short']}",
                     $collection['date_preview_end']
                 ],
                 CollectionStatusEnums::PRINT_PREPARE => [
-                    "Нужно отправить сборник {$collection['title_short']} в печать",
+                    "Отрпавить в печать",
+                    "Отправить сборник {$collection['title_short']} в печать",
                     $collection['date_print_start']
                 ],
                 CollectionStatusEnums::PRINTING => [
-                    "Нужно отправить сборник {$collection['title_short']} авторам",
+                    "Заполнить трек-номера",
+                    "Отправить сборник {$collection['title_short']} авторам",
                     $collection['date_print_end']
                 ],
-                default => [null, null]
+                default => [null, null, null]
             };
 
             if ($title) {
@@ -46,6 +50,7 @@ class InnerTasksService
                     'model_type' => 'Collection',
                     'model_id' => $collection['id'],
                     'title' => $title,
+                    'description' => $description,
                     'deadline' => $deadline,
                     'flg_custom_task' => false
                 ]);
@@ -53,7 +58,7 @@ class InnerTasksService
         }
     }
 
-    private function createOwnBookTask($ownBook, $title, $deadline, $type)
+    private function createOwnBookTask($ownBook, $title, $description, $deadline, $type)
     {
         if (!$title) {
             return;
@@ -64,6 +69,7 @@ class InnerTasksService
             'model_type' => 'OwnBook',
             'model_id' => $ownBook['id'],
             'title' => $title,
+            'description' => $description,
             'deadline' => $deadline,
             'flg_custom_task' => false,
         ]);
@@ -74,18 +80,21 @@ class InnerTasksService
     {
         return match ($ownBook['status_general']) {
             OwnBookStatusEnums::REVIEW =>
-            ["Нужно принять заявку на издание книги: {$ownBook['title']}",
+            ["Принять заявку",
+            "Принять заявку на издание книги: {$ownBook['title']}",
                 $ownBook['created_at']->copy()->addDays(3)],
 
             OwnBookStatusEnums::PRINT_WAITING =>
-            ["Нужно отправить книгу в печать: {$ownBook['title']}",
+            ["Отправить в печать",
+            "Отправить книгу в печать: {$ownBook['title']}",
                 $ownBook['paid_at_print_only']->addDays(3)],
 
             OwnBookStatusEnums::PRINTING =>
-            ["Нужно отправить книгу автору: {$ownBook['title']}",
+            ["Птправить заказ автору",
+            "Отправить книгу автору: {$ownBook['title']}",
                 $ownBook['deadline_print']],
 
-            default => [null, null]
+            default => [null, null, null]
         };
     }
 
@@ -93,14 +102,16 @@ class InnerTasksService
     {
         return match ($ownBook['status_cover']) {
             OwnBookCoverStatusEnums::DEVELOPMENT =>
-            ["Нужно сделать обложку: {$ownBook['author']}",
+            ["Создать обложку",
+            "Сделать обложку: {$ownBook['author']}",
                 $ownBook['deadline_cover']],
 
             OwnBookCoverStatusEnums::CORRECTIONS =>
-            ["Нужно исправить обложку: {$ownBook['author']}",
+            ["Исправить обложку",
+            "Исправить обложку: {$ownBook['author']}",
                 $ownBook['deadline_cover']],
 
-            default => [null, null]
+            default => [null, null, null]
         };
     }
 
@@ -108,14 +119,16 @@ class InnerTasksService
     {
         return match ($ownBook['status_inside']) {
             OwnBookInsideStatusEnums::DEVELOPMENT =>
-            ["Нужно сделать ВБ: {$ownBook['author']}",
+            ["Создать ВБ",
+            "Сделать ВБ: {$ownBook['author']}",
                 $ownBook['deadline_inside']],
 
             OwnBookInsideStatusEnums::CORRECTIONS =>
-            ["Нужно исправить ВБ: {$ownBook['author']}",
+            ["Исправить ВБ",
+            "Исправить ВБ: {$ownBook['author']}",
                 $ownBook['deadline_inside']],
 
-            default => [null, null]
+            default => [null, null, null]
         };
     }
 
@@ -129,19 +142,19 @@ class InnerTasksService
                     OwnBookStatusEnums::PRINTING,
                 ]
             )
-            ->where('id', 316)
             ->get();
         foreach ($ownBooks as $ownBook) {
-            dd($ownBook['paid_at_print_only']->addDays(3));
-            [$title, $deadline] = $this->handleGeneralStatus($ownBook);
-            $this->createOwnBookTask($ownBook, $title, $deadline, InnerTaskTypeEnums::OWN_BOOK_GENERAL);
-            if ($ownBook['status_general'] == OwnBookStatusEnums::WORK_IN_PROGRESS) {
-                [$title, $deadline] = $this->handleCoverStatus($ownBook);
-                $this->createOwnBookTask($ownBook, $title, $deadline, InnerTaskTypeEnums::OWN_BOOK_COVER);
+            [$title, $description, $deadline] = $this->handleGeneralStatus($ownBook);
+            $this->createOwnBookTask($ownBook, $title, $description, $deadline, InnerTaskTypeEnums::OWN_BOOK_GENERAL);
 
-                [$title, $deadline] = $this->handleInsideStatus($ownBook);
-                $this->createOwnBookTask($ownBook, $title, $deadline, InnerTaskTypeEnums::OWN_BOOK_INSIDE);
+            if ($ownBook['status_general'] == OwnBookStatusEnums::WORK_IN_PROGRESS) {
+                [$title, $description, $deadline] = $this->handleCoverStatus($ownBook);
+                $this->createOwnBookTask($ownBook, $title, $description, $deadline, InnerTaskTypeEnums::OWN_BOOK_COVER);
+
+                [$title, $description, $deadline] = $this->handleInsideStatus($ownBook);
+                $this->createOwnBookTask($ownBook, $title, $description, $deadline, InnerTaskTypeEnums::OWN_BOOK_INSIDE);
             }
+
         }
     }
 

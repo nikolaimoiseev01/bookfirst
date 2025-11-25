@@ -15,6 +15,22 @@
     <script src="/plugins/swal/sweetalert2.all.min.js"></script>
     <link href="/plugins/swal/sweetalert2.min.css" rel="stylesheet">
 
+    <script>
+        (function () {
+            const params = new URLSearchParams(window.location.search);
+
+            const utmSource = params.get('utm_source');
+            const utmMedium = params.get('utm_medium');
+
+            if (utmSource) {
+                localStorage.setItem('utm_source', utmSource);
+            }
+            if (utmMedium) {
+                localStorage.setItem('utm_medium', utmMedium);
+            }
+        })();
+    </script>
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="antialiased flex flex-col min-h-screen" x-data  x-init="

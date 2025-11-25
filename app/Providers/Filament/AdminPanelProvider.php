@@ -45,7 +45,6 @@ class AdminPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Amber,
             ])
-//            ->topNavigation()
             ->navigation(function (NavigationBuilder $builder): NavigationBuilder {
                 return $builder->items([
                     ...Dashboard::getNavigationItems(),
@@ -74,15 +73,11 @@ class AdminPanelProvider extends PanelProvider
             })
             ->maxContentWidth('full')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
-            ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
+            ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
+            ->pages([\App\Filament\Pages\Dashboard::class])
             ->viteTheme('resources/css/filament/admin/theme.css')
-            ->pages([
-                Dashboard::class,
-            ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->widgets([
-                AccountWidget::class,
-                FilamentInfoWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,

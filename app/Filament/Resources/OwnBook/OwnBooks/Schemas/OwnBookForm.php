@@ -175,7 +175,7 @@ class OwnBookForm
                         ])->columns(2)->hiddenLabel()
                     ]),
                     Tab::make('Чат')->schema([
-                        Livewire::make('components.account.chat', ['chat' => $schema->getRecord()->chat])
+                        Livewire::make('components.account.chat', ['chat' => $schema->getRecord()->chat])->extraAttributes(['class'=>'h-[500px]'])
                     ])
                 ])->columnSpanFull(),
 

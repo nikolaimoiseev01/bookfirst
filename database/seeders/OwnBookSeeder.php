@@ -141,10 +141,12 @@ class OwnBookSeeder extends Seeder
         echo "Own Books START ($now_time)\n";
         $this->make_own_book_works($test);
         $this->make_own_books($test);
-        (new CopyTableService())->copy(
-            sourceTable: 'own_book_reviews'
-            , targetTable: 'own_book_reviews'
-        );
+        if (!$test) {
+            (new CopyTableService())->copy(
+                sourceTable: 'own_book_reviews'
+                , targetTable: 'own_book_reviews'
+            );
+        }
         $now_time = Carbon::now()->format('H:i:s');
         echo "Own Books END ($now_time)\n";
     }

@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class OwnBook extends Model implements HasMedia
 {
@@ -94,4 +95,12 @@ class OwnBook extends Model implements HasMedia
         'paid_at_without_print' => 'date',
         'paid_at_print_only' => 'date'
     ];
+
+    public function registerMediaConversions(Media $media = null): void
+    {
+        $this->addMediaConversion('thumb')
+            ->nonOptimized()
+            ->sharpen(10)
+            ->height(1400);
+    }
 }

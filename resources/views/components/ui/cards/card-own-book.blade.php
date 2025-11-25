@@ -6,7 +6,7 @@
 
         <div class="w-full relative">
             @if($cover3d)
-            <x-book3d :cover="$ownBook->getFirstMediaUrl('cover_front')"/>
+            <x-book3d :cover="$ownBook->getFirstMediaUrl('cover_front', 'thumb')"/>
                 @else
                 <img src="{{$ownBook->getFirstMediaUrl('cover_front')}}" class="w-56 rounded-lg" alt="">
             @endif

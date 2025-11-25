@@ -20,6 +20,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements FilamentUser, HasMedia, MustVerifyEmail
@@ -107,5 +108,13 @@ class User extends Authenticatable implements FilamentUser, HasMedia, MustVerify
             'user_id',       // кто подписан
             'subscribed_to_user_id'     // на кого подписан
         );
+    }
+
+    public function registerMediaConversions(Media $media = null): void
+    {
+        $this->addMediaConversion('thumb')
+            ->nonOptimized()
+            ->sharpen(10)
+            ->height(1000);
     }
 }

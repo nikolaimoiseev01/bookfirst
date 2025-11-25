@@ -1008,7 +1008,6 @@ class DatabaseSeeder extends Seeder
         $this->make_transactions();
         $this->make_work_likes();
 
-
         $now_time = Carbon::now()->format('H:i:s');
         echo "Collections START ($now_time)\n";
         $this->make_collections($test);

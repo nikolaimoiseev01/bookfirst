@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Work extends Model implements HasMedia
 {
@@ -31,5 +32,12 @@ class Work extends Model implements HasMedia
 
     public function workTopic(): belongsTo {
         return $this->belongsTo(WorkTopic::class);
+    }
+
+    public function registerMediaConversions(Media $media = null): void
+    {
+        $this->addMediaConversion('thumb')
+            ->nonOptimized()
+            ->sharpen(10);
     }
 }
