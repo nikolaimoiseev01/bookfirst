@@ -35,7 +35,7 @@
         <div class="pt-4 flex flex-col gap-4">
             <div class="flex flex-col relative">
                 <input type="text" x-model="citySearch" @input="showCitySearch = true"
-                       wire:model.live.debounce.1500ms="citySearch" placeholder="Поиск города">
+                       wire:model.live.debounce.1000ms="citySearch" placeholder="Поиск города">
                 <div x-show="showCitySearch"
                      class="z-40 flex items-center justify-center bg-white border border-dark-300 rounded rounded-t-none border-b-none  absolute top-full left-0 p-2">
                     <div wire:loading.remove

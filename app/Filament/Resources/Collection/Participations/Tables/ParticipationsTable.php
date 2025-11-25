@@ -62,7 +62,7 @@ class ParticipationsTable
                     ->numeric()
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
-                TextColumn::make('price_print')
+                TextColumn::make('printOrder.price_print')
                     ->label('Цена печати')
                     ->numeric()
                     ->toggleable(isToggledHiddenByDefault: true)
@@ -77,8 +77,9 @@ class ParticipationsTable
                     ->numeric()
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
-                TextColumn::make('price_total')
+                TextColumn::make('priceTotal')
                     ->label('Цена общая')
+                    ->getStateUsing(fn($record) => $record->priceTotal())
                     ->formatStateUsing(fn (string $state): string => makeMoney($state, 0, true))
                     ->sortable(),
                 TextColumn::make('created_at')

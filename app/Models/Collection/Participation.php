@@ -74,4 +74,9 @@ class Participation extends Model
     {
         return route('account.participation.index', $this->id);
     }
+
+    public function priceTotal(): int
+    {
+        return $this->price_total + ($this->printOrder->price_print ?? 0);
+    }
 }
