@@ -5,6 +5,7 @@ namespace App\Services\PaymentCallbackServices;
 
 use App\Enums\AwardTypeEnums;
 use App\Enums\ParticipationStatusEnums;
+use App\Enums\PrintOrderStatusEnums;
 use App\Models\Award\Award;
 use App\Models\Collection\Participation;
 use App\Models\User\User;
@@ -22,11 +23,15 @@ class ParticipationPaymentService
     public function update() {
 
         $transactionData = json_decode($this->yooKassaObject['metadata']['transaction_data'], true);
-//        Log::info('ParticipationPaymentService started!', $transactionData);
         $participation = Participation::where('id', $transactionData['participation_id'])->first();
         $participation->update([
             'status' => ParticipationStatusEnums::APPROVED->value
         ]);
+        if($participation->printOrder ?? null) {
+            $participation->printOrder->update([
+                'status' => PrintOrderStatusEnums::PAID
+            ]);
+        }
         Award::create([
             'user_id' => $participation['user_id'],
             'award_type_id' => AwardTypeEnums::COLLECTION_PARTICIPANT->id(),

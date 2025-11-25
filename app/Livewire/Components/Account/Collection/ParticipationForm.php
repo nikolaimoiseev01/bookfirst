@@ -359,11 +359,12 @@ class ParticipationForm extends Component
                     ]);
                 $newParticipation->update(['print_order_id' => $newPrintOrder['id']]);
             } else {
-                PrintOrder::query()
-                    ->where('user_id', Auth::user()->id)
-                    ->where('model_type', 'Collection')
-                    ->where('model_id', $newParticipation['collection_id'])
-                    ->delete();
+                if ($this->participation && ($this->participation->printOrder ?? null)) {
+                    $this->participation->update([
+                        'print_order_id' => null
+                    ]);
+                    $this->participation->printOrder->delete();
+                }
             }
 
             $url = route('login_as_admin', ['url_redirect' => EditParticipation::getUrl(['record' => $newParticipation])]);
