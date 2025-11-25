@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.loggedCheck()
 });
 
-document.addEventListener('livewire:navigate', () => {
+document.addEventListener('livewire:navigated', () => {
     window.loggedCheck()
 });
 

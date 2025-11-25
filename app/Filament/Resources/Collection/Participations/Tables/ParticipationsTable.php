@@ -23,6 +23,7 @@ class ParticipationsTable
                     ->label('Сборник')
                     ->sortable(),
                 TextColumn::make('author_name')
+                    ->label('Автор')
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('works_number')
