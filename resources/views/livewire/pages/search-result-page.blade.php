@@ -10,8 +10,8 @@
             <x-bi-chevron-down @click="show = !show" x-bind:class="show ? 'rotate-180' : ''"
                                class="w-8 h-auto cursor-pointer transition fill-dark-300"/>
         </div>
-        <div class="flex flex-col gap-4" x-show="show" x-cloak x-collapse.duration.400ms>
-            <div class="gap-8 flex-wrap grid grid-cols-3">
+        <div class="flex flex-col gap-4 flex-wrap" x-show="show" x-cloak x-collapse.duration.400ms>
+            <div class="gap-8 grid grid-cols-3 lg:grid-cols-2 md:!grid-cols-1">
                 @forelse($collections->take(5) as $collection)
                     <x-ui.cards.card-collection-small :collection="$collection"/>
                 @empty

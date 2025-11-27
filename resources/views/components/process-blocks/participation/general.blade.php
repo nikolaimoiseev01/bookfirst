@@ -1,7 +1,7 @@
 <x-process-blocks.template status="green" title="Моя заявка">
     <div class="flex flex-col p-4 gap-4" x-data="{showWorks: false}">
-        <div class="flex justify-between gap-4">
-            <div class="flex flex-col w-1/2">
+        <div class="flex justify-between gap-4 md:flex-col">
+            <div class="flex flex-col w-1/2 md:w-full">
                 <p><b>Имя в сборнике: </b>{{$participation['author_name']}}</p>
                 <p><b>Проверка: </b>{{$participation['price_check'] > 0 ? 'требуется' : 'не требуется'}}</p>
                 <div class="flex gap-4 items-center">
@@ -11,7 +11,7 @@
                 </div>
                 <p>Строчек: {{$participation['rows']}}, Сраниц: {{$participation['pages']}}</p>
             </div>
-            <div class="flex flex-col w-1/2">
+            <div class="flex flex-col w-1/2 md:w-full">
                 @if($participation->printOrder ?? null)
                     <p class="font-semibold text-2xl">Печатные экземпляры</p>
                     <p><b>Количество: </b>{{$participation->printOrder['books_cnt']}} экз.</p>

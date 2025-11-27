@@ -1,6 +1,6 @@
 <x-process-blocks.template status="{{$blockColor}}" title="Отслеживание">
     <div class="p-4">
-        @if ($ownBook->firstPrintOrder() ?? null)
+        @if ($ownBook->initialPrintOrder ?? null)
             <p class="">Статус издания: <b>{{$ownBook['status_general']}}</b></p>
             <x-ui.link-simple :isLivewire="false" href="#Моя заявка">Подробности заказа</x-ui.link-simple>
             @if($ownBook['status_general']->order() < \App\Enums\OwnBookStatusEnums::PRINT_PAYMENT_REQUIRED->order())
@@ -9,7 +9,7 @@
             @endif
             @if($ownBook['status_general'] == \App\Enums\OwnBookStatusEnums::PRINT_PAYMENT_REQUIRED)
                 <p class="mb-4">Макеты успешно утверждены! Мы готовы приступить к печати. Для этого необходимо оплатить заказ</p>
-                <x-ui.button wire:click="createPayment({{$ownBook->firstPrintOrder()['price_print']}}, 'printOnly')" class="w-full" color="yellow">Оплатить {{$ownBook->firstPrintOrder()['price_print']}} руб.</x-ui.button>
+                <x-ui.button wire:click="createPayment({{$ownBook->initialPrintOrder['price_print']}}, 'printOnly')" class="w-full" color="yellow">Оплатить {{$ownBook->initialPrintOrder['price_print']}} руб.</x-ui.button>
             @endif
             @if($ownBook['status_general'] == \App\Enums\OwnBookStatusEnums::PRINT_WAITING)
                 <p class="mb-4">

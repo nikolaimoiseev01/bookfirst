@@ -59,7 +59,7 @@ class OwnBookPaymentService
             'paid_at_print_only' => Carbon::now(),
             'deadline_print' => Carbon::now()->addDays(14),
         ]);
-        $ownBook->firstPrintOrder()->update([
+        $ownBook->initialPrintOrder->update([
             'status' => PrintOrderStatusEnums::PAID->value,
         ]);
         $user = User::where('id', $ownBook['user_id'])->first();

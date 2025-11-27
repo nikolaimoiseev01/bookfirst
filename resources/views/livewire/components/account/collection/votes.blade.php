@@ -1,13 +1,13 @@
-<div class="flex gap-2 flex-1">
+<div class="flex gap-2 flex-1 md:flex-col">
     @if($collection['status']->order() == 2)
         @if (!$currentVote)
-            <p class="w-1/2">В рамках конкурса в данном сборнике сейчас идет голосование за лучшего
+            <p class="w-1/2 md:w-full">В рамках конкурса в данном сборнике сейчас идет голосование за лучшего
                 автора.
                 Вы можете ознакомиться со всеми авторами в предварительном варианте и проголосовать
                 за лучшего на ваш взгляд.
                 <b>Автор не может проголосовать сам за себя, поэтому Вы не видите себя в списке.</b>
             </p>
-            <div class="flex flex-col gap-2 w-1/2">
+            <div class="flex flex-col gap-2 w-1/2 md:w-full">
                 <div class="flex flex-col gap-4 max-h-96 overflow-auto">
                     @foreach($participations as $participation)
                         @if ($participation['id'] != $participationId)

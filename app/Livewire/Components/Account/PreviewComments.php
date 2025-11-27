@@ -121,8 +121,8 @@ class PreviewComments extends Component
                 "status_{$this->commentType}" => $this->commentType == 'inside' ? OwnBookInsideStatusEnums::READY_FOR_PUBLICATION : OwnBookCoverStatusEnums::READY_FOR_PUBLICATION
             ]);
             if ($this->ownBook['status_cover'] == OwnBookCoverStatusEnums::READY_FOR_PUBLICATION && $this->ownBook['status_inside'] == OwnBookInsideStatusEnums::READY_FOR_PUBLICATION) {
-                $text = 'Поздравляем! Внутренний блок и обложка были утверждены! ' . ($this->ownBook->firstPrintOrder() ? 'Далее, чтобы продолжить, в блоке "Печать" необходимо оплатить финальную стоимость печати.' : 'Так как печать не требуется, мы поздравляем Вас с окончанием процесса издания!');
-                $this->ownBook->update(['status_general' => $this->ownBook->firstPrintOrder() ? OwnBookStatusEnums::PRINT_PAYMENT_REQUIRED : OwnBookStatusEnums::DONE]);
+                $text = 'Поздравляем! Внутренний блок и обложка были утверждены! ' . ($this->ownBook->initialPrintOrder ? 'Далее, чтобы продолжить, в блоке "Печать" необходимо оплатить финальную стоимость печати.' : 'Так как печать не требуется, мы поздравляем Вас с окончанием процесса издания!');
+                $this->ownBook->update(['status_general' => $this->ownBook->initialPrintOrder ? OwnBookStatusEnums::PRINT_PAYMENT_REQUIRED : OwnBookStatusEnums::DONE]);
             } else {
                 $text = 'Отлично!' . $this->commentType == 'inside' ? 'Внутренний блок утвержден.' : 'Обложка утверждена.' . ' Как только будут утверждены и ВБ и обложка, можно будет приступить к печати.';
             }

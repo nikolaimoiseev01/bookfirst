@@ -120,7 +120,7 @@
     </div>
 
     <!-- Правая колонка -->
-    <div class="flex flex-wrap gap-4 items-start flex-1">
+    <div class="flex flex-wrap gap-4 items-start flex-1 md:flex-col">
         <template x-for="(work, index) in selectedWorks" :key="work.id">
             <div
                 class="cursor-grab touch-none active:cursor-grabbing transition relative w-[150px] min-h-[42px] max-h-[42px] h-[42px]"

@@ -38,12 +38,9 @@ class OwnBook extends Model implements HasMedia
         return $this->hasMany(OwnBookWork::class);
     }
 
-    public function firstPrintOrder()
+    public function initialPrintOrder(): BelongsTo
     {
-        $firstOrder = $this->printOrders()
-            ->orderBy('created_at', 'asc')
-            ->first();
-         return $firstOrder;
+         return $this->belongsTo(PrintOrder::class, 'print_order_id');
     }
 
 //    public function previewComments(): MorphMany

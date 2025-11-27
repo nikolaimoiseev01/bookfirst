@@ -6,7 +6,7 @@
         <livewire:components.account.collection.survey-participation :participation="$participation"/>
     </div>
     <x-ui.link-simple href="{{route('portal.help.collection')}}" class="mb-4">Инструкция по этой странице</x-ui.link-simple>
-    <div class="mb-8 px-4 py-2 flex justify-between items-center gap-4 border rounded-2xl border-green-500">
+    <div class="mb-8 px-4 py-2 flex justify-between items-center gap-4 border rounded-2xl border-green-500 lg:flex-col">
         <div class="flex flex-col gap-1">
             <p>Мой статус участия: <span class="font-normal">{{$participation['status']}}</span></p>
             <p>Статус издания сборника: <span
@@ -33,7 +33,7 @@
             </div>
         </div>
     </div>
-    <div class="flex flex-col pl-4">
+    <div class="flex flex-col pl-4 md:pl-0 md:gap-8">
         @if($participation['status']->order() < 9)
             <x-process-blocks.participation.general :part="$participation"/>
             <x-process-blocks.participation.payment :part="$participation"/>

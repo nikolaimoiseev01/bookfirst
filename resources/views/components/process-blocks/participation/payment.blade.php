@@ -1,6 +1,6 @@
 <x-process-blocks.template status="{{$blockColor}}" title="Оплата участия">
     <div class="flex flex-col py-8 px-4 gap-4">
-        <div class="flex gap-8 items-center justify-center">
+        <div class="flex gap-8 items-center justify-center flex-wrap">
             <x-price-element color="{{$blockColor}}" price="{{$participation['price_part']}}" label="Участие"/>
             @if ($participation->printOrder ?? null)
                 <x-price-element color="{{$blockColor}}" :plus="true"

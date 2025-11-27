@@ -2,10 +2,10 @@
     <div class="flex flex-col py-8 px-4 gap-4">
         <div class="flex gap-8 items-center justify-center flex-wrap">
             <x-price-element color="{{$blockColor}}" price="{{$ownBook['price_inside']}}" label="Работа с блоком"/>
-            @if ($ownBook->firstPrintOrder() ?? null)
+            @if ($ownBook->initialPrintOrder ?? null)
                 <x-price-element color="bright" :plus="true"
-                                 price="{{$ownBook->firstPrintOrder()['price_print']}}"
-                                 label="Печать ({{$ownBook->firstPrintOrder()['books_cnt']}} экз.)*"/>
+                                 price="{{$ownBook->initialPrintOrder['price_print']}}"
+                                 label="Печать ({{$ownBook->initialPrintOrder['books_cnt']}} экз.)*"/>
             @else
                 <x-price-element color="bright" :plus="true" price="0"
                                  label="Печать (0 экз.)"/>

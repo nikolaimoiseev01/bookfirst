@@ -19,7 +19,7 @@
             <div class="flex gap-4 flex-wrap">
                 <div class="flex gap-2 items-center flex-wrap md:justify-center md:text-center">
                     <label for="needPrint">Необходимы печатные экземпляры</label>
-                    <x-ui.question-mark>Электронный вариант доступен каждому участнику
+                    <x-ui.question-mark class="md:hidden">Электронный вариант доступен каждому участнику
                     </x-ui.question-mark>
                     <x-ui.input.checkbox wire:model.live="needPrint" id="needPrint" label=""/>
                 </div>
@@ -39,7 +39,7 @@
                         <p>Количество экземпляров</p>
                         <x-ui.input.range model="booksCnt"/>
                     </div>
-                    <div class="flex gap-4">
+                    <div class="flex gap-4 md:flex-col">
                         <x-ui.input.text name="Имя" label="Фио получателя*"
                                          wire:model="receiverName"/>
                         <x-ui.input.text name="surname" label="Телефон получателя*"

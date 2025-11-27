@@ -93,14 +93,14 @@ class OwnBooksTable
                                     ->tooltip('Выручка'),
                                 TextColumn::make('books_cnt')
                                     ->getStateUsing(function (OwnBook $record) {
-                                        $books_cnt = optional($record->firstPrintOrder())->books_cnt;
+                                        $books_cnt = optional($record->initialPrintOrder)->books_cnt;
                                         return $books_cnt;
                                     })
                                     ->extraAttributes(['class' => 'flex gap-2 text-nowrap items-center'])
                                     ->icon('heroicon-o-book-open')
                                     ->tooltip(function(Model $record) {
-                                        $cover = optional($record->firstPrintOrder())->cover_type;
-                                        $inside = optional($record->firstPrintOrder())->inside_color;
+                                        $cover = optional($record->initialPrintOrder)->cover_type;
+                                        $inside = optional($record->initialPrintOrder)->inside_color;
                                         return "Обложка: {$cover}, ВБ: {$inside}";
                                     })
                                     ->size(TextSize::Large)

@@ -69,16 +69,24 @@
                         class="rotate-[-30deg] w-5 h-5 cursor-pointer fill-{{$color}} hover:scale-110 transition"
                     />
                 </x-ui.tooltip-wrap>
+                <x-clarity-attachment-line
+                    @click="browseFileTrigger()"
+                    class="rotate-[-30deg] w-5 h-5 cursor-pointer hidden md:block fill-{{$color}} hover:scale-110 transition"
+                />
             @endif
 
             @if($sendable)
                 <a x-show="!isSending" id="send-button" class="mt-auto flex" wire:ignore>
-                    <x-ui.tooltip-wrap text="Отправить">
+                    <x-ui.tooltip-wrap class="md:hidden" text="Отправить">
                         <x-bi-send
                             @click="sendMessage"
                             class="mt-auto w-5 h-5 cursor-pointer fill-{{$color}} transition hover:scale-110"
                         />
                     </x-ui.tooltip-wrap>
+                    <x-bi-send
+                        @click="sendMessage"
+                        class="mt-auto w-5 h-5 cursor-pointer hidden md:block fill-{{$color}} transition hover:scale-110"
+                    />
                 </a>
 
                 <div x-show="isSending" id="send-button__spinner" class="mt-auto" wire:ignore>

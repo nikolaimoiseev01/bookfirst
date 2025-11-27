@@ -33,7 +33,7 @@
 <x-header-portal/>
 <main class="flex flex-1 gap-4 !py-0">
     <x-account-menu/>
-    <section class="p-4 max-w-8xl flex-1">
+    <section class="p-4 max-w-8xl flex-1 pl-[19rem] md:pl-28 sm:!pl-4">
         <h1 class="text-dark-500 text-4xl font-semibold mb-6 w-fit mx-0 sm:mx-auto">@yield('title')</h1>
         {{ $slot }}
     </section>

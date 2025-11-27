@@ -58,12 +58,18 @@ class OwnBookSeeder extends Seeder
                 ->where('id', $oldOwnBook->own_book_inside_status_id)
                 ->first())->status_title ?? OwnBookInsideStatusEnums::READY_FOR_PUBLICATION->value;
 
+            $printOrderId  = optional(DB::connection('old_mysql')
+                ->table('printorders')
+                ->where('own_book_id',$oldOwnBook->id)
+                ->first())->id ?? null;
+
             $own_book = OwnBook::create([
                 'id' => $oldOwnBook->id,
                 'user_id' => $oldOwnBook->user_id,
                 'author' => $oldOwnBook->author,
                 'title' => $oldOwnBook->title,
                 'slug' => Str::slug($oldOwnBook->title),
+                'print_order_id' => $printOrderId,
                 'status_general' => $this->FC($status_general),
                 'status_cover' => $this->FC($status_cover),
                 'status_inside' => $this->FC($status_inside),
