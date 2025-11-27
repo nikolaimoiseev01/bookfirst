@@ -1,4 +1,4 @@
-<footer class="{{$bg}} py-4 w-full sm:pb-20">
+<footer class="{{$bg}} py-4 w-full sm:pb-20 relative z-40">
     <div class=" content flex gap-8 items-center justify-evenly  text-xl text-white flex-wrap">
         <div class="text-center leading-tight">
             Независимое издательство<br>

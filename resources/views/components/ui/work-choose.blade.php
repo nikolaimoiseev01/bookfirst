@@ -4,7 +4,7 @@
         search: '',
         showWorks: false,
         userWorks: @js($userWorks),
-        selectedWorks: $wire.entangle('selectedWorks'),
+        selectedWorks: $wire.entangle('selectedWorks').live,
         dragIndex: null,
         dragOverIndex: null,
         disabled: @js($disabled),
