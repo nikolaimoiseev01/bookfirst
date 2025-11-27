@@ -60,7 +60,7 @@
 
             <div wire:ignore id="cdek-map" class="w-full min-h-[400px] h-[400px] hidden"></div>
 
-            <p x-show="addressType == 'СДЭК' && addressJson?.parsed_data" class="flex gap-2">
+            <p x-show="addressType == 'СДЭК' && addressJson?.parsed_data" class="flex gap-2 md:flex-col">
                 <span class="font-medium text-nowrap">Выбранный адресс: </span>
                 <span x-text="addressJson?.string"></span>
             </p>
