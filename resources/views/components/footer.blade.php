@@ -25,7 +25,7 @@
         </div>
 
         <div class="flex flex-col gap-2 text-center">
-            Остались вопросы?<br> Инструция использования сайта
+            Остались вопросы?<br> Инструкция использования сайта
             <x-ui.link href="{{route('portal.help.account')}}" color="white" class="!text-lg !py-0 !px-4">Помощь</x-ui.link>
         </div>
     </div>
