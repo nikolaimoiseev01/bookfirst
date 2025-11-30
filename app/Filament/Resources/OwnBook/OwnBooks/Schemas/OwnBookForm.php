@@ -66,7 +66,7 @@ class OwnBookForm
                                             ->mapWithKeys(fn($case) => [$case->value => $case->value])
                                             ->toArray()
                                     ),
-                                Textarea::make('comment')->hiddenLabel()->placeholder('Комметарий')->columnSpanFull(),
+                                Textarea::make('comment')->hiddenLabel()->placeholder('Комментарий')->columnSpanFull(),
                             ])->columns(3)->columnSpan(6),
                         ])->columnSpanFull()->columns(7),
 //                            TextInput::make('pages')

@@ -39,9 +39,9 @@ class PrintOrderForm
                             ->numeric(),
                         TextInput::make('track_number'),
                         Select::make('print_company_id')
-                            ->relationship(name: 'printingCompany', titleAttribute: 'name')->disabled(),
+                            ->relationship(name: 'printingCompany', titleAttribute: 'name'),
                         Select::make('logistic_company_id')
-                            ->relationship(name: 'logisticCompany', titleAttribute: 'name')->disabled(),
+                            ->relationship(name: 'logisticCompany', titleAttribute: 'name'),
                         Select::make('inside_color')
                             ->options([
                                 'Цветной' => 'Цветной',
