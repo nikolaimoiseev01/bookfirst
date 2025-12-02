@@ -100,7 +100,7 @@ class Chat extends Component
                     'Collection', 'OwnBook', 'Participation' =>  $this->chat->model->adminEditPage(),
                     default => ViewChat::getUrl(['record' => $this->chat])
                 };
-                $url = route('login_as_admin', ['url_redirect' => $preUrl]);
+                $url = route('login_as_secondary_admin', ['url_redirect' => $preUrl]);
             }
             $userName = Auth::user()->getUserFullName();
             $notificationText = "💬 {$userName}: {$this->text}";

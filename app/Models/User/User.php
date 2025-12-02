@@ -65,7 +65,7 @@ class User extends Authenticatable implements FilamentUser, HasMedia, MustVerify
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return $this->hasRole('admin');
+        return $this->hasAnyRole('admin|secondary_admin');
     }
 
     public function participations(): HasMany

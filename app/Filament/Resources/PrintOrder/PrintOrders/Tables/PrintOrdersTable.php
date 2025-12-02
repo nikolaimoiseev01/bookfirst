@@ -10,6 +10,7 @@ use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\TextInputColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 
@@ -87,7 +88,16 @@ class PrintOrdersTable
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                SelectFilter::make('status')
+                    ->label('Статус')
+                    ->multiple()
+                    ->default([PrintOrderStatusEnums::CREATED->value, PrintOrderStatusEnums::PAID->value, PrintOrderStatusEnums::PRINTING->value])
+                    ->options([
+                        collect(PrintOrderStatusEnums::cases())
+                            ->mapWithKeys(fn($case) => [$case->value => $case->value])
+                            ->toArray()
+                    ])
+                    ->multiple()
             ])
             ->defaultSort('id', 'desc')
             ->recordActions([

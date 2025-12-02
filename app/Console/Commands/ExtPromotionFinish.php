@@ -46,7 +46,7 @@ class ExtPromotionFinish extends Command
         }
         if ($updatedCnt > 0) {
             $subject = "📊 Закончили продвижение для авторов: {$updatedCnt}";
-            $url = route('login_as_admin', ['url_redirect' => ListExtPromotions::getUrl()]);
+            $url = route('login_as_secondary_admin', ['url_redirect' => ListExtPromotions::getUrl()]);
             Notification::route('telegram', getTelegramChatId('extPromotion'))
                 ->notify(new TelegramDefaultNotification($subject, '', $url, 'extPromotion'));
         }

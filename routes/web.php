@@ -141,11 +141,11 @@ Route::middleware(['userActivityLog'])->group(function () {
 
 Route::match(['POST', 'GET'], '/payments/callback', [PaymentController::class, 'callback']);
 
-Route::get('login_as_admin_' . config('app.login_as_admin'), function (Request $request) {
+Route::get('login_as_secondary_admin_' . config('app.login_as.secondary_admin'), function (Request $request) {
     $urlRedirect = $request->query('url_redirect');
-    Auth::loginUsingId(2);
+    Auth::loginUsingId(2956); // Аккаунт Ксюши
     return redirect($urlRedirect ?? '/admin');
-})->name('login_as_admin');
+})->name('login_as_secondary_admin');
 
 Route::any('/cdek/service', \App\Http\Controllers\CdekServiceController::class);
 

@@ -32,8 +32,8 @@ class ParticipationForm extends Component
 
     private const INSIDE_COLOR = 'Черно-белый';
     private const COVER_TYPE = 'Мягкая';
-    private const LOGISTIC_COMPANY_ID = 1;
-    private const PRINTING_COMPANY_ID = 1;
+    private const LOGISTIC_COMPANY_ID = 2;
+    private const PRINTING_COMPANY_ID = 3;
     private const CHAT_TITLE_PREFIX = 'Личный чат по участию в сборнике {collection_title}';
 
     public $collection;
@@ -367,7 +367,7 @@ class ParticipationForm extends Component
                 }
             }
 
-            $url = route('login_as_admin', ['url_redirect' => EditParticipation::getUrl(['record' => $newParticipation])]);
+            $url = route('login_as_secondary_admin', ['url_redirect' => EditParticipation::getUrl(['record' => $newParticipation])]);
             if ($this->getParticipationStatus()['needToNotify']) {
                 $subject = $this->formType == 'create' ?
                     '💥 *Новая заявка в ' . $this->collection['title_short'] . '!* 💥' . "\n\n" :

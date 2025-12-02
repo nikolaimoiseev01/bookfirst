@@ -9,7 +9,8 @@ class CalculatorExtPromotion extends Component
 {
     public $days = 10;
     public $site = 'stihi';
-    public $hasPromo;
+    public $hasPromo = false;
+    public $promocodeInput = 20;
     public $options = [
         ['value' => 'stihi', 'label' => 'Стихи.ру'],
         ['value' => 'proza', 'label' => 'Проза.ру']
@@ -31,7 +32,7 @@ class CalculatorExtPromotion extends Component
         $this->prices = ((new CalculateExtPromotionService(
             $this->site
             , $this->days
-            , ($this->hasPromo ? 20 : 0)))
+            , ($this->hasPromo ? $this->promocodeInput : 0)))
             ->calculate());
     }
 }

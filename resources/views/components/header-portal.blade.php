@@ -7,18 +7,29 @@
             <x-ui.application-logo class="w-12 h-12 mr-2"></x-ui.application-logo>
             <span class="italic text-3xl font-light sm:hidden">Первая Книга</span>
         </a>
-        <div class="w-px h-7 bg-gray-300 xl:hidden"></div>
+        <div class="lg:!hidden">
+            <button @click="mobileMenuOpen = !mobileMenuOpen" :class="mobileMenuOpen ? 'active' : ''"
+                    class="hamburger hamburger--converge !hidden header-1444:!block" type="button">
+                <div class="inner">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </button>
+        </div>
+
+        <div class="w-px h-7 bg-gray-300 header-1444:hidden"></div>
         <a wire:navigate
            :class="$store.global.social ? 'text-dark-400 hover:text-green-500' : 'text-green-500'"
-           class="font-light cursor-pointer italic text-xl xl:hidden"
+           class="font-light cursor-pointer italic text-xl header-1444:hidden"
            href="{{route('portal.index')}}">
             Независимое издательство
         </a>
-        <div class="w-px h-7 bg-gray-300 xl:hidden"></div>
+        <div class="w-px h-7 bg-gray-300 header-1444:hidden"></div>
 
         <a wire:navigate
            :class="$store.global.social ? 'text-blue-500' : 'text-dark-400 hover:text-blue-500'"
-           class="font-light cursor-pointer italic text-xl xl:hidden"
+           class="font-light cursor-pointer italic text-xl header-1444:hidden"
            href="{{route('social.index')}}">
             Социальная сеть
         </a>
@@ -107,7 +118,7 @@
          x-transition:leave="transition ease-in duration-300"
          x-transition:leave-start="opacity-100"
          x-transition:leave-end="opacity-0"
-         class="flex-col gap-4 hidden lg:flex fixed h-[calc(100vh-58px)] w-full max-w-3xl top-[58px] bg-white left-0 p-8">
+         class="flex-col gap-4 hidden header-1444:flex fixed h-[calc(100vh-58px)] header-1444:w-fit md:!w-full max-w-3xl top-[58px] bg-white left-0 p-8">
         <div class="flex w-ful gap-2 border-b border-gray-200 pb-2 justify-between">
             <a class="text-2xl font-medium" :class="$store.global.social ? 'text-blue-500' : 'text-dark-200 order-2'" href="{{route('social.index')}}">Социальная сеть</a>
             <a class="text-2xl font-medium" :class="!$store.global.social ? 'text-green-500 order-1' : 'text-dark-200'" href="{{route('portal.index')}}">Издательство</a>

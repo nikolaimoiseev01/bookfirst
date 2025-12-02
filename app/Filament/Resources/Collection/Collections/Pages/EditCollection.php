@@ -10,6 +10,7 @@ use App\Jobs\EmailNotificationJob;
 use App\Jobs\PdfCutJob;
 use App\Notifications\Collection\CollectionStatusUpdate;
 use App\Notifications\Collection\CollectionWinnerNotification;
+use App\Services\InnerTasksService;
 use App\Services\PdfService;
 use Filament\Resources\Pages\EditRecord;
 
@@ -65,6 +66,8 @@ class EditCollection extends EditRecord
                 EmailNotificationJob::dispatch($winnerParticipation['user_id'], $notification);
             }
         }
+
+        (new InnerTasksService())->update();
     }
 
     public

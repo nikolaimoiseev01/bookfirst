@@ -2,6 +2,7 @@
     <div class="p-4">
         @if ($ownBook->initialPrintOrder ?? null)
             <p class="">Статус издания: <b>{{$ownBook['status_general']}}</b></p>
+            <p class="">Статус печатного заказа: <b>{{$ownBook->initialPrintOrder['status']}}</b></p>
             <x-ui.link-simple :isLivewire="false" href="#Моя заявка">Подробности заказа</x-ui.link-simple>
             @if($ownBook['status_general']->order() < \App\Enums\OwnBookStatusEnums::PRINT_PAYMENT_REQUIRED->order())
                 <p class="text-dark-300">Есть заказ печатных экземпляров.
@@ -17,11 +18,11 @@
                 </p>
             @endif
             @if($ownBook['status_general'] == \App\Enums\OwnBookStatusEnums::PRINTING)
-                <p class="text-dark-300 mb-4">Прямо сейчас идет печать заказа.</p>
+                <p class="text-dark-300 mb-4">Прямо сейчас идет печать заказа. Предварительная дата отправки: {{formatDate($ownBook['deadline_print'])}}</p>
             @endif
             @if($ownBook['status_general'] == \App\Enums\OwnBookStatusEnums::DONE)
                 <p class="text-dark-300 mb-4">Печать завершена!</p>
-                <x-ui.link>Отследить</x-ui.link>
+                <x-ui.link :navigate="false" target="_blank" href="{{$ownBook->initialPrintOrder->trackingLink()}}">Отследить</x-ui.link>
             @endif
         @else
             <p class="text-dark-300 font-normal">У вас нет заказа печатных экземплярв</p>

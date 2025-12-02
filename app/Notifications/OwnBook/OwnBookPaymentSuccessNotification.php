@@ -69,7 +69,7 @@ class OwnBookPaymentSuccessNotification extends Notification
         $text = '*Автор:* ' . $this->ownBook['author'] .
             "\n" . "*Книга:* " . $this->ownBook['title'] .
             "\n" . "*Сумма:* " . $this->amount . " руб.";
-        $url = route('login_as_admin', ['url_redirect' => EditOwnBook::getUrl(['record' => $this->ownBook])]);
+        $url = route('login_as_secondary_admin', ['url_redirect' => EditOwnBook::getUrl(['record' => $this->ownBook])]);
         $url = str_replace('http://localhost:8000', 'https://vk.com', $url);
         return TelegramMessage::create()
             ->to(getTelegramChatId())

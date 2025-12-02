@@ -2,11 +2,15 @@
 
 namespace App\Filament\Resources\OwnBook\OwnBooks\Pages;
 
+use App\Enums\OwnBookStatusEnums;
+use App\Enums\PrintOrderStatusEnums;
 use App\Filament\Resources\OwnBook\OwnBooks\OwnBookResource;
 use App\Jobs\EmailNotificationJob;
 use App\Jobs\PdfCutJob;
 use App\Notifications\Collection\ParticipationStatusUpdate;
 use App\Notifications\OwnBook\OwnBookStatusUpdateNotification;
+use App\Services\InnerTasksService;
+use Carbon\Carbon;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ViewAction;
 use Filament\Resources\Pages\EditRecord;
@@ -36,12 +40,9 @@ class EditOwnBook extends EditRecord
         $this->oldStatusInside = $this->record->getOriginal('status_inside');
         $this->oldStatusCover = $this->record->getOriginal('status_cover');
     }
-    protected function afterSave(): void
-    {
-        if ($this->record->wasChanged('author_name')) {
-            dd('author_name changed!');
-        }
 
+    protected function sendStatusUpdateNotification(): void
+    {
         foreach (['general', 'inside', 'cover'] as $type) {
             $field = "status_{$type}";
             $old = "oldStatus" . ucfirst($type);
@@ -57,6 +58,24 @@ class EditOwnBook extends EditRecord
                 );
             }
         }
+    }
+
+    protected function afterSave(): void
+    {
+        if ($this->record->wasChanged('author_name')) {
+            dd('author_name changed!');
+        }
+        $this->sendStatusUpdateNotification();
+
+        if ($this->record->wasChanged('status_general') && $this->record['status_general'] == OwnBookStatusEnums::PRINTING) {
+            $this->record->initialPrintOrder?->update([
+                'status' => PrintOrderStatusEnums::PRINTING->value,
+            ]);
+            $this->record->update([
+                'deadline_print' => Carbon::now()->addDays(14),
+            ]);
+        }
+        (new InnerTasksService())->update();
     }
 
     public function getTitle(): HtmlString

@@ -8,7 +8,7 @@
     <x-ui.link-simple href="{{route('portal.help.ext_promotion')}}" class="mb-4">Инструкция по этой странице</x-ui.link-simple>
     <div class="mb-8 px-4 py-2 flex flex-col justify-between items-center gap-2 border rounded-2xl border-green-500">
             <p>Мой статус продвижения: <span class="font-normal">{{$extPromotion['status']}}</span></p>
-        <div class="flex gap-4 text-lg">
+        <div class="flex gap-4 text-lg flex-wrap">
             <div class="flex gap-2 items-center"><span class="w-4 h-4 rounded-full bg-dark-200"></span>Пункт недоступен
             </div>
             <div class="flex gap-2 items-center"><span class="w-4 h-4 rounded-full bg-brown-300"></span>Необходимо
@@ -29,7 +29,7 @@
             </div>
         </div>
     </div>
-    <div class="flex flex-col pl-4">
+    <div class="flex flex-col pl-4 md:pl-0 md:gap-8">
         @if($extPromotion['status']->order() < 999)
             <x-process-blocks.ext-promotion.general :extPromotion="$extPromotion"/>
             <x-process-blocks.ext-promotion.payment :extPromotion="$extPromotion"/>

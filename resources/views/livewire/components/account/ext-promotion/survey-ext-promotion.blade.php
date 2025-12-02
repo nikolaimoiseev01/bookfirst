@@ -2,7 +2,7 @@
     @if(!$checkNeedForSurvey)
         <div class="w-full border border-green-500 rounded-2xl p-4">
             @if($step == 0)
-                <div class="flex gap-4">
+                <div class="flex gap-4 md:flex-col">
                     <p class="font-normal text-green-500">Пожалуйста, оцените процесс создания заявки</p>
                     <x-ui.input.stars/>
                     <x-ui.button class="flex-1" wire:click="sendSurvey()">Отправить</x-ui.button>

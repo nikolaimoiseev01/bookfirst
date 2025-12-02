@@ -5,6 +5,7 @@ namespace App\Filament\Resources\OwnBook\OwnBooks\Schemas;
 use App\Enums\OwnBookCoverStatusEnums;
 use App\Enums\OwnBookInsideStatusEnums;
 use App\Enums\OwnBookStatusEnums;
+use App\Enums\PrintOrderStatusEnums;
 use App\Forms\Components\CustomMediaUpload;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\DatePicker;
@@ -17,6 +18,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Schemas\Components\Fieldset;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Livewire;
 use Filament\Schemas\Components\Section;
@@ -33,53 +35,56 @@ class OwnBookForm
     {
         return $schema
             ->components([
+                Grid::make()->schema([
+                    ImageEntry::make('cover')
+                        ->imageWidth('auto')
+                        ->imageHeight('196px')
+                        ->extraAttributes(['class' => 'rounded overflow-hidden'])
+                        ->hiddenLabel()
+                        ->getStateUsing(function (Model $record) {
+                            $cover = $record->getFirstMediaUrl('cover_front') ?: config('app.url') . '/fixed/cover_wip.png';
+                            return $cover;
+                        })->columnSpan(1),
+                    Section::make()->schema([
+                        Select::make('status_general')
+                            ->label('Общий статус')
+                            ->options(
+                                collect(OwnBookStatusEnums::cases())
+                                    ->mapWithKeys(fn($case) => [$case->value => $case->value])
+                                    ->toArray()
+                            )->columnSpan(3),
+                        Select::make('status_inside')
+                            ->label('Статус ВБ')
+                            ->options(
+                                collect(OwnBookInsideStatusEnums::cases())
+                                    ->mapWithKeys(fn($case) => [$case->value => $case->value])
+                                    ->toArray()
+                            )->columnSpan(3),
+                        Select::make('status_cover')
+                            ->label('Статус обложки')
+                            ->options(
+                                collect(OwnBookCoverStatusEnums::cases())
+                                    ->mapWithKeys(fn($case) => [$case->value => $case->value])
+                                    ->toArray()
+                            )->columnSpan(3),
+                        TextInput::make('pages')
+                            ->label('Страниц')
+                            ->required()
+                            ->columnSpan(1)
+                            ->numeric(),
+                        Textarea::make('comment')->hiddenLabel()->placeholder('Комментарий')->columnSpanFull(),
+                    ])->columns(10)->columnSpan(8),
+                ])->columnSpanFull()->columns(9),
                 Tabs::make('Tabs')->tabs([
                     Tabs\Tab::make('Общее')->schema([
-                        Grid::make()->schema([
-                            ImageEntry::make('cover')
-                                ->imageWidth('100%')
-                                ->imageHeight('auto')
-                                ->hiddenLabel()
-                                ->getStateUsing(function (Model $record) {
-                                    $cover = $record->getFirstMediaUrl('cover_front') ?: ENV('APP_URL') . '/fixed/cover_wip.png';
-                                    return $cover;
-                                })->columnSpan(1),
-                            Grid::make()->schema([
-                                Select::make('status_general')
-                                    ->label('Общий статус')
-                                    ->options(
-                                        collect(OwnBookStatusEnums::cases())
-                                            ->mapWithKeys(fn($case) => [$case->value => $case->value])
-                                            ->toArray()
-                                    ),
-                                Select::make('status_inside')
-                                    ->label('Статус ВБ')
-                                    ->options(
-                                        collect(OwnBookInsideStatusEnums::cases())
-                                            ->mapWithKeys(fn($case) => [$case->value => $case->value])
-                                            ->toArray()
-                                    ),
-                                Select::make('status_cover')
-                                    ->label('Статус обложки')
-                                    ->options(
-                                        collect(OwnBookCoverStatusEnums::cases())
-                                            ->mapWithKeys(fn($case) => [$case->value => $case->value])
-                                            ->toArray()
-                                    ),
-                                Textarea::make('comment')->hiddenLabel()->placeholder('Комментарий')->columnSpanFull(),
-                            ])->columns(3)->columnSpan(6),
-                        ])->columnSpanFull()->columns(7),
-//                            TextInput::make('pages')
-//                                ->required()
-//                                ->numeric(),
-//                            DatePicker::make('deadline_inside'),
-//                            DatePicker::make('deadline_cover'),
-//                            TextInput::make('internal_promo_type')
-//                                ->numeric(),
-//                            Textarea::make('annotation')
-//                                ->columnSpanFull(),
+                        TextInput::make('internal_promo_type')
+                            ->disabled()
+                            ->numeric(),
+                        Textarea::make('annotation')
+                            ->columnSpanFull(),
                     ])->columns(3),
                     Tabs\Tab::make('Внутренний блок')->schema([
+                        DatePicker::make('deadline_inside'),
                         Section::make('Информация от автора')->schema([
                             TextEntry::make('comment_author_inside')
                                 ->label('Пожелания')
@@ -118,6 +123,7 @@ class OwnBookForm
                         ])->collapsed()
                     ]),
                     Tabs\Tab::make('Обложка')->schema([
+                        DatePicker::make('deadline_cover'),
                         Section::make('Информация от автора')->schema([
                             TextEntry::make('comment_author_cover')
                                 ->label('Пожелания')
@@ -174,8 +180,65 @@ class OwnBookForm
                             TextInput::make('link')
                         ])->columns(2)->hiddenLabel()
                     ]),
+                    Tabs\Tab::make('Печать')->schema([
+                        Grid::make()->schema([
+                            TextEntry::make('initialPrintOrder.status')
+                                ->label('Статус')
+                                ->badge()
+                                ->color(fn($state): string => match ($state) {
+                                    PrintOrderStatusEnums::CREATED => 'primary',
+                                    PrintOrderStatusEnums::PAID, PrintOrderStatusEnums::PRINTING => 'warning',
+                                    PrintOrderStatusEnums::SEND_NEED => 'danger',
+                                    PrintOrderStatusEnums::SENT => 'success',
+                                }),
+                            TextEntry::make('initialPrintOrder.price_print')
+                                ->label('Цена печати')
+                                ->numeric(),
+                            TextEntry::make('initialPrintOrder.price_send')
+                                ->label('Цена отправки')
+                                ->numeric(),
+                            TextEntry::make('initialPrintOrder.books_cnt')
+                                ->label('Экземпляров')
+                                ->numeric(),
+                            TextEntry::make('initialPrintOrder.address_json')
+                                ->state(fn($record) => $record->initialPrintOrder?->address_json['string'] ?? '—'
+                                )
+                                ->label('Адрес'),
+                            TextEntry::make('initialPrintOrder.receiver_name')
+                                ->label('ФИО')
+                                ->numeric(),
+                            TextEntry::make('initialPrintOrder.receiver_telephone')
+                                ->label('Телефон')
+                                ->numeric(),
+                            Fieldset::make('initialPrintOrder')
+                                ->label('Настройки заказа печати')
+                                ->relationship('initialPrintOrder')
+                                ->schema([
+                                    TextInput::make('track_number'),
+                                    Select::make('printing_company_id')
+                                        ->relationship(name: 'printingCompany', titleAttribute: 'name'),
+                                    Select::make('logistic_company_id')
+                                        ->relationship(name: 'logisticCompany', titleAttribute: 'name'),
+                                    Select::make('inside_color')
+                                        ->options([
+                                            'Цветной' => 'Цветной',
+                                            'Черно-белый' => 'Черно-белый'
+                                        ]),
+                                ])->columns(4)->columnSpanFull()
+//                            TextInput::make('track_number')->relationship('initialPrintOrder'),
+//                            Select::make('print_company_id')
+//                                ->relationship(name: 'initialPrintOrder.printingCompany', titleAttribute: 'name'),
+//                            Select::make('initialPrintOrder.logistic_company_id')
+//                                ->relationship(name: 'initialPrintOrder.logisticCompany', titleAttribute: 'name'),
+//                            Select::make('initialPrintOrder.inside_color')
+//                                ->options([
+//                                    'Цветной' => 'Цветной',
+//                                    'Черно-белый' => 'Черно-белый'
+//                                ]),
+                        ])->columnSpanFull()->columns(7)
+                    ])->columnSpanFull(),
                     Tab::make('Чат')->schema([
-                        Livewire::make('components.account.chat', ['chat' => $schema->getRecord()->chat])->extraAttributes(['class'=>'h-[500px]'])
+                        Livewire::make('components.account.chat', ['chat' => $schema->getRecord()->chat])->extraAttributes(['class' => 'h-[500px]'])
                     ])
                 ])->columnSpanFull(),
 

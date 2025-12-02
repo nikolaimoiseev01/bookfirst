@@ -18,6 +18,7 @@ use App\Notifications\Collection\PaymentParticipationSuccessNotification;
 use App\Notifications\OwnBook\OwnBookPaymentSuccessNotification;
 use App\Notifications\OwnBook\OwnBookStatusUpdateNotification;
 use App\Notifications\TelegramDefaultNotification;
+use App\Services\InnerTasksService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 
@@ -47,8 +48,10 @@ class OwnBookPaymentService
             'model_type' => 'OwnBook',
             'model_id' => $ownBook['id'],
         ]);
+        (new InnerTasksService())->update();
         $user = User::where('id', $ownBook['user_id'])->first();
         $user->notify(new OwnBookPaymentSuccessNotification($ownBook, $this->yooKassaObject['amount']['value'], TransactionTypeEnums::OWN_BOOK_WO_PRINT));
+
     }
     public function firstAuthorPrintPayment() {
         $transactionData = json_decode($this->yooKassaObject['metadata']['transaction_data'], true);
@@ -56,14 +59,14 @@ class OwnBookPaymentService
         $ownBook = OwnBook::where('id', $transactionData['own_book_id'])->first();
         $ownBook->update([
             'status_general' => OwnBookStatusEnums::PRINT_WAITING->value,
-            'paid_at_print_only' => Carbon::now(),
-            'deadline_print' => Carbon::now()->addDays(14),
+            'paid_at_print_only' => Carbon::now()
         ]);
         $ownBook->initialPrintOrder->update([
             'status' => PrintOrderStatusEnums::PAID->value,
         ]);
         $user = User::where('id', $ownBook['user_id'])->first();
         $user->notify(new OwnBookPaymentSuccessNotification($ownBook, $this->yooKassaObject['amount']['value'], TransactionTypeEnums::OWN_BOOK_PRINT));
+        (new InnerTasksService())->update();
     }
 
     public function ebookPuchase() {

@@ -11,13 +11,28 @@
             <p>Количество дней продвижения</p>
             <x-ui.input.range model="days"/>
         </div>
-        <div class="flex gap-4 items-center">
-            <label for="hasPromo">У меня есть скидка в 20%</label>
+        <div class="flex gap-3 items-center">
+            <label for="hasPromo">У меня есть скидка в </label>
+            <div class="flex gap-1">
+                <input
+                    wire:model.live="promocodeInput"
+                    type="number"
+                    class="!w-12"
+                    x-on:input="
+                        if ($el.value !== '') {
+                            if ($el.value < 1) $el.value = 1;
+                            if ($el.value > 99) $el.value = 99;
+                        }
+                    "
+                    min="1"
+                    max="99"
+                >
+                <label for="hasPromo">%</label>
+            </div>
             <x-ui.input.checkbox wire:model.live="hasPromo" id="hasPromo" label=""/>
         </div>
     </div>
     <div class="flex flex-col items-center justify-center gap-4 w-1/2 lg:w-full mt-8 pl-4 mb-4 lg:pl-0 lg:my-4">
-            <x-price-element direction="row" :bigElement="true" color="green" price="{{$prices['priceTotal']}}" label="Итого"/>
-            <p class="text-gray-300">За такое кол-во дней есть скидка: {{$prices['extDiscount']}}%</p>
+            <x-price-element oldPrice="{{$hasPromo ? $prices['priceTotal'] / (100 - $promocodeInput) * 100 : null}}" direction="row" :bigElement="true" color="green" price="{{$prices['priceTotal']}}" label="Итого"/>
     </div>
 </div>

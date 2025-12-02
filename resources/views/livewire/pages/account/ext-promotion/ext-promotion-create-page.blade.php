@@ -8,7 +8,7 @@
     @section('title')
         Новая заявка на продвижение
     @endsection
-    <div class="flex container p-8 mb-8"
+    <div class="flex container p-8 mb-8 md:flex-col"
     >
 
         <div class="flex flex-col flex-1 pr-8">
@@ -24,7 +24,7 @@
                 <x-ui.input.checkbox wire:model="rulesAgreed"/>
             </div>
             <div x-show="rulesAgreed"  x-cloak x-collapse.duration.400ms>
-                <div  class="flex gap-4 mb-4">
+                <div  class="flex gap-4 mb-4 md:flex-col">
                     <x-ui.input.text name="login" class="" label="Логин от сайта {{$site}}*" wire:model="login"/>
                     <x-ui.input.text name="password" class="" label="Пароль  от сайта {{$site}}*" wire:model="password"/>
                 </div>
@@ -37,7 +37,7 @@
         </div>
 
         <div
-            class="min-w-[20%] max-w-[25%] flex border-l border-dark-100 pl-8">
+            class="min-w-[20%] max-w-[25%] flex border-l md:border-l-0 md:max-w-full md:justify-center md:pt-8 border-dark-100 pl-8">
             <div class="flex flex-col items-center justify-center my-auto">
                 <x-price-element
                     price="{{$prices['priceTotal']}}"

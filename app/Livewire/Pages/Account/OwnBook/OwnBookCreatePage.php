@@ -121,7 +121,7 @@ class OwnBookCreatePage extends Component
         ];
 
         if ($this->needPrint && $this->insideColor == 'Цветной') {
-            $rules['pagesColor'] = 'required|integer|min:1';
+            $rules['pagesColor'] = 'required|integer|min:1|lte:pages';
         }
 
         return $rules;
@@ -140,6 +140,7 @@ class OwnBookCreatePage extends Component
             'author.required' => 'Имя автора обязательно для заполнения',
             'title.required' => 'Название книги обязательно для заполнения',
             'pages.required' => 'Количество страниц книги обязательно для заполнения',
+            'pagesColor.lte' => 'Цветных страниц не может быть больше, чем всего страниц.',
             'pages.min' => 'Минимальное количество страниц: :min',
             'insideFiles.required' => 'Обязательно нужно прикрепить файл внутреннего блогка (иконка скрепки)',
             'selectedWorks.required' => "Нужно добавить произведения к заявке 'Внутренний блок' (кнопка с большим плюсом)",
@@ -332,10 +333,9 @@ class OwnBookCreatePage extends Component
                 $newOwnBook->update(['print_order_id' => $newPrintOrder['id']]);
             }
 
-            $adminRedirect = route('login_as_admin', ['url_redirect' => EditOwnBook::getUrl(['record' => $newOwnBook])]);
-            $url = route('login_as_admin', ['redirect' => $adminRedirect]);
+            $adminRedirect = route('login_as_secondary_admin', ['url_redirect' => EditOwnBook::getUrl(['record' => $newOwnBook])]);
             $subject = '💥 Новая книга от ' . Auth::user()->name . ' ' . Auth::user()->surname . "!💥" . "\n\n";
-            $notification = new OwnBookCreatedNotification($subject, $this->getNotifyText(), $url);
+            $notification = new OwnBookCreatedNotification($subject, $this->getNotifyText(), $adminRedirect);
             TelegramNotificationJob::dispatch($notification);
 
             $alert_text = 'Заявка на издание книги создана! На этой странице вы можете следить за всей информацией. Чат с личным менеджером тоже здесь.';

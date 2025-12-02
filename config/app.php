@@ -123,6 +123,9 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
-    'login_as_admin' => env('LOGIN_AS_ADMIN'),
+    'login_as' => [
+        'admin' => env('LOGIN_AS_ADMIN'),
+        'secondary_admin' => env('LOGIN_AS_SECONDARY_ADMIN')
+    ],
 
 ];

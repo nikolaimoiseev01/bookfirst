@@ -81,7 +81,7 @@ class InnerTasksNotification extends Command
             $output .= "\n"; // отступ между секциями
         }
 
-        $notification = new TelegramDefaultNotification("🗓 НАШИ ДЕДЛАЙНЫ 🗓", $output, route('login_as_admin'));
+        $notification = new TelegramDefaultNotification("🗓 НАШИ ДЕДЛАЙНЫ 🗓", $output, route('login_as_secondary_admin'));
         TelegramNotificationJob::dispatch($notification);
 
     }

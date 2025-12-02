@@ -38,7 +38,7 @@ class PrintOrderForm
                             ->disabled()
                             ->numeric(),
                         TextInput::make('track_number'),
-                        Select::make('print_company_id')
+                        Select::make('printing_company_id')
                             ->relationship(name: 'printingCompany', titleAttribute: 'name'),
                         Select::make('logistic_company_id')
                             ->relationship(name: 'logisticCompany', titleAttribute: 'name'),

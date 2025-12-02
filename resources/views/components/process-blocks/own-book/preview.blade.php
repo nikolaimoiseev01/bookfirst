@@ -34,7 +34,8 @@
                                 дальнейшее редактирование.
                                 <b>Только тогда мы начнем работу над исправлениями.</b> Для этого
                                 нажмите "Отправить на исправление".</p>
-                            <x-ui.link color="yellow" class="flex-1" download
+                            <x-ui.link download="ВБ {{$ownBook['title']}}" :navigate="false"
+                                       color="yellow" class="flex-1"
                                        href="{{$ownBook->getFirstMediaUrl('inside_file')}}">
                                 Скачать внутренний блок
                             </x-ui.link>
@@ -48,7 +49,8 @@
                                 до {{formatDate($ownBook['deadline_inside'], 'j F')}}. Как только
                                 они будут учтены, вы получите оповещение об этом на почте и внутри
                                 нашей системы.</p>
-                            <x-ui.link color="yellow" class="flex-1" download
+                            <x-ui.link :navigate="false" download="ВБ {{$ownBook['title']}}"
+                                       color="yellow" class="flex-1"
                                        href="{{$ownBook->getFirstMediaUrl('inside_file')}}">
                                 Скачать внутренний блок
                             </x-ui.link>
@@ -79,12 +81,15 @@
                                 <b>Только тогда мы начнем работу над исправлениями.</b> Для этого
                                 нажмите "Отправить на исправление".</p>
                             <div class="flex gap-4 flex-wrap md:flex-col">
-                                <x-ui.link color="yellow" class="flex-1" download
+                                <x-ui.link download="Обложка {{$ownBook['title']}}"
+                                           :navigate="false" color="yellow" class="flex-1"
                                            href="{{$ownBook->getFirstMediaUrl('cover_front')}}">
                                     Скачать переднюю сторону обложки
                                 </x-ui.link>
                                 @if($ownBook->getFirstMediaUrl('cover_full'))
-                                    <x-ui.link color="yellow" class="flex-1" download
+                                    <x-ui.link download="Обложка разворот {{$ownBook['title']}}"
+                                               :navigate="false" color="yellow" class="flex-1"
+                                               download
                                                href="{{$ownBook->getFirstMediaUrl('cover_full')}}">
                                         Скачать разворот обложки
                                     </x-ui.link>
@@ -114,15 +119,18 @@
         @if ($ownBook['status_general']->order() > 3)
             <p class="text-dark-300 font-normal">Работа с макетами завершена</p>
             <div class="flex flex-wrap gap-4">
-                <x-ui.link class="flex-1" download
+                <x-ui.link download="Обложка {{$ownBook['title']}}" :navigate="false" class="flex-1"
                            href="{{$ownBook->getFirstMediaUrl('cover_front')}}">
                     Скачать переднюю сторону обложки
                 </x-ui.link>
-                <x-ui.link class="flex-1" download
-                           href="{{$ownBook->getFirstMediaUrl('cover_full')}}">
-                    Скачать разворот обложки
-                </x-ui.link>
-                <x-ui.link class="flex-1" download
+                @if($ownBook->getFirstMediaUrl('cover_full'))
+                    <x-ui.link download="Обложка полная {{$ownBook['title']}}" :navigate="false"
+                               class="flex-1"
+                               href="{{$ownBook->getFirstMediaUrl('cover_full')}}">
+                        Скачать разворот обложки
+                    </x-ui.link>
+                @endif
+                <x-ui.link download="ВБ {{$ownBook['title']}}" :navigate="false" class="flex-1"
                            href="{{$ownBook->getFirstMediaUrl('inside_file')}}">
                     Скачать внутренний блок
                 </x-ui.link>
