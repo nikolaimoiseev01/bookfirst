@@ -75,7 +75,7 @@
             <div class="container flex gap-10 relative p-4 lg:flex-col lg:items-center md:pt-24 w-full max-w-full">
                 <div
                     class="min-w-[180px] max-w-[180px]  md:min-w-[140px]  md:max-w-[140px] relative">
-                    <x-book3d :cover="'/fixed/own-book-example.jpg'" class=" left-0 bottom-0"/>
+                    <x-book3d :cover="'/fixed/own-book-example.png'" class=" left-0 bottom-0"/>
                 </div>
                 <div class="flex flex-col gap-4 lg:items-center lg:text-center">
                     <h3>Ваша собственная книга</h3>

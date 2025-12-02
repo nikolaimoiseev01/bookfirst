@@ -6,6 +6,7 @@ use App\Enums\InnerTaskTypeEnums;
 use App\Filament\Resources\Collection\Collections\Pages\EditCollection;
 use App\Filament\Resources\OwnBook\OwnBooks\Pages\EditOwnBook;
 use App\Models\InnerTask;
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Carbon\Carbon;
 use Filament\Actions\BulkActionGroup;
 use Filament\Tables\Columns\TextColumn;
@@ -17,6 +18,8 @@ use Illuminate\Database\Eloquent\Builder;
 
 class InnerTasksWidget extends TableWidget
 {
+    use HasWidgetShield;
+
     protected static ?string $heading = '';
 
     public function table(Table $table): Table

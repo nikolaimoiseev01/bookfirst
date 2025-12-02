@@ -6,11 +6,14 @@ use App\Enums\InnerTaskTypeEnums;
 use App\Models\InnerTask;
 use App\Models\User\User;
 use App\Models\Work\Work;
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Widgets\StatsOverviewWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 
 class StatWidget extends StatsOverviewWidget
 {
+
+    use HasWidgetShield;
     protected function getStats(): array
     {
         $users = User::count();

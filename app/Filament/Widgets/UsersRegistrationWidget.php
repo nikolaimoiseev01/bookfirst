@@ -3,12 +3,15 @@
 namespace App\Filament\Widgets;
 
 use App\Models\User\User;
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Widgets\ChartWidget;
 use Flowframe\Trend\Trend;
 use Flowframe\Trend\TrendValue;
 
 class UsersRegistrationWidget extends ChartWidget
 {
+
+    use HasWidgetShield;
     protected ?string $heading = 'Пользователи по дате создания';
 
     protected function getData(): array

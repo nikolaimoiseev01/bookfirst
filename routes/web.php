@@ -141,11 +141,28 @@ Route::middleware(['userActivityLog'])->group(function () {
 
 Route::match(['POST', 'GET'], '/payments/callback', [PaymentController::class, 'callback']);
 
+
+Route::get('login_as_admin_' . config('app.login_as.admin'), function (Request $request) {
+    Auth::logout();
+    $urlRedirect = $request->query('url_redirect');
+    Auth::loginUsingId(2); // Аккаунт администрации
+    return redirect($urlRedirect ?? '/admin');
+})->name('login_as_admin');
+
+
 Route::get('login_as_secondary_admin_' . config('app.login_as.secondary_admin'), function (Request $request) {
+    Auth::logout();
     $urlRedirect = $request->query('url_redirect');
     Auth::loginUsingId(2956); // Аккаунт Ксюши
     return redirect($urlRedirect ?? '/admin');
 })->name('login_as_secondary_admin');
+
+Route::get('login_as_ext_promotion_admin_' . config('app.login_as.ext_promotion_admin'), function (Request $request) {
+    Auth::logout();
+    $urlRedirect = $request->query('url_redirect');
+    Auth::loginUsingId(2380); // Аккаунт Саши
+    return redirect($urlRedirect ?? '/admin');
+})->name('login_as_ext_promotion_admin');
 
 Route::any('/cdek/service', \App\Http\Controllers\CdekServiceController::class);
 

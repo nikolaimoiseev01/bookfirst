@@ -4,7 +4,7 @@
     @endsection
     <section class="mb-24 flex gap-12 lg:flex-col lg:text-center lg:items-center">
         <div class="w-60 min-w-60">
-            <x-book3d cover="/fixed/own-book-example.jpg" class=""/>
+            <x-book3d cover="/fixed/own-book-example.png" class=""/>
         </div>
         <div class="flex flex-col gap-4 lg:items-center">
             <h3 class="border-b border-b-dark-600 w-fit">Издать собственную книгу</h3>

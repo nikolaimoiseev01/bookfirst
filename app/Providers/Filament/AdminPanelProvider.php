@@ -3,6 +3,8 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Resources\Chats\ChatResource;
+use App\Filament\Resources\Roles\RoleResource;
+use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use App\Filament\Resources\Collection\Collections\CollectionResource;
 use App\Filament\Resources\ExtPromotions\ExtPromotionResource;
 use App\Filament\Resources\InnerTasks\InnerTaskResource;
@@ -23,6 +25,7 @@ use Filament\Navigation\NavigationItem;
 use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
+use Filament\Resources\Resource;
 use Filament\Support\Colors\Color;
 use Filament\Widgets\AccountWidget;
 use Filament\Widgets\FilamentInfoWidget;
@@ -35,6 +38,16 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 class AdminPanelProvider extends PanelProvider
 {
+
+    private static function shielded(Resource|string $resourceClass): array
+    {
+        return collect($resourceClass::getNavigationItems())
+            ->map(fn($item) =>
+            $item->visible(fn() => $resourceClass::canViewAny())
+            )
+            ->all();
+    }
+
     public function panel(Panel $panel): Panel
     {
         return $panel
@@ -49,28 +62,33 @@ class AdminPanelProvider extends PanelProvider
             ->navigation(function (NavigationBuilder $builder): NavigationBuilder {
                 return $builder->items([
                     ...Dashboard::getNavigationItems(),
-                    ...CollectionResource::getNavigationItems(),
-                    ...OwnBookResource::getNavigationItems(),
-                    ...ExtPromotionResource::getNavigationItems(),
-                    ...ChatResource::getNavigationItems(),
-                    ...PrintOrderResource::getNavigationItems(),
-                    ...UserResource::getNavigationItems(),
-                    ...SurveyCompletedResource::getNavigationItems(),
-                    ...PromocodeResource::getNavigationItems(),
-                    ...InnerTaskResource::getNavigationItems(),
+
+                    ...self::shielded(CollectionResource::class),
+                    ...self::shielded(OwnBookResource::class),
+                    ...self::shielded(ExtPromotionResource::class),
+                    ...self::shielded(ChatResource::class),
+                    ...self::shielded(PrintOrderResource::class),
+                    ...self::shielded(UserResource::class),
+                    ...self::shielded(SurveyCompletedResource::class),
+                    ...self::shielded(PromocodeResource::class),
+                    ...self::shielded(InnerTaskResource::class),
+                    ...self::shielded(RoleResource::class),
+
                     NavigationItem::make('Log Viewer')
-                        ->url('/log-viewer')     // << внешний/внутренний URL
+                        ->url('/log-viewer')
                         ->icon('heroicon-o-code-bracket')
-                        ->group('Настройки')     // если нужно отправить в группу
-                        ->sort(999),
-                ])->groups([
-                    NavigationGroup::make('Настройки')
-                        ->collapsed()
-                        ->items([
-                            ...LogisticCompanyResource::getNavigationItems(),
-                            ...PrintingCompanyResource::getNavigationItems(),
-                        ])
-                ]);
+                        ->group('Настройки')
+                        ->sort(999)
+                        ->visible(fn() => auth()->user()->can('view_log_viewer')),
+                ])
+                    ->groups([
+                        NavigationGroup::make('Настройки')
+                            ->collapsed()
+                            ->items([
+                                ...self::shielded(LogisticCompanyResource::class),
+                                ...self::shielded(PrintingCompanyResource::class),
+                            ])
+                    ]);
             })
             ->maxContentWidth('full')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
@@ -90,6 +108,9 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+            ])
+            ->plugins([
+                FilamentShieldPlugin::make(),
             ])
             ->authMiddleware([
                 Authenticate::class,

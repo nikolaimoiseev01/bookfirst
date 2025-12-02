@@ -110,6 +110,13 @@ class Chat extends Component
             $userIdToNotify = $this->chat['user_created'] == 2 ? $this->chat['user_to'] : $this->chat['user_created'];
             $notification = new ChatMessageEmailNotification($this->chat);
             EmailNotificationJob::dispatch($userIdToNotify, $notification);
+            if ($this->chat['model_type'] == 'ExtPromotion') {
+                $userName = Auth::user()->getUserFullName();
+                $chatUserName = $this->chat->userCreated->getUserFullName();
+                $notificationText = "💬 *$userName автору {$chatUserName}*:\n {$this->text}";
+                $notification = new TelegramDefaultNotification(null, $notificationText, null, 'extPromotion');
+                TelegramNotificationJob::dispatch($notification);
+            }
         }
     }
 

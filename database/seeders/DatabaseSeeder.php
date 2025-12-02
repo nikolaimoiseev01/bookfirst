@@ -994,30 +994,30 @@ class DatabaseSeeder extends Seeder
         );
 
         $this->same_tables(test: $test);
-
-        $this->make_ext_promotions();
-        $this->make_survey_completeds();
-        $this->make_chats($test);
-        $this->make_messages($test);
-        $this->make_awards();
-        $this->make_actions();
-        $this->make_digital_sales();
-        $this->make_message_templates();
-        $this->make_preview_comments();
-        $this->make_print_orders();
-        $this->make_transactions();
-        $this->make_work_likes();
-
-        $now_time = Carbon::now()->format('H:i:s');
-        echo "Collections START ($now_time)\n";
-        $this->make_collections($test);
-        $this->make_participations($test);
-        $this->make_news_letters($test);
-        $this->make_collection_votes($test);
-        $this->make_participation_works($test);
-        $now_time = Carbon::now()->format('H:i:s');
-        echo "Collections END ($now_time)\n";
-
-        (new OwnBookSeeder())->run(test: $test);
+//
+//        $this->make_ext_promotions();
+//        $this->make_survey_completeds();
+//        $this->make_chats($test);
+//        $this->make_messages($test);
+//        $this->make_awards();
+//        $this->make_actions();
+//        $this->make_digital_sales();
+//        $this->make_message_templates();
+//        $this->make_preview_comments();
+//        $this->make_print_orders();
+//        $this->make_transactions();
+//        $this->make_work_likes();
+//
+//        $now_time = Carbon::now()->format('H:i:s');
+//        echo "Collections START ($now_time)\n";
+//        $this->make_collections($test);
+//        $this->make_participations($test);
+//        $this->make_news_letters($test);
+//        $this->make_collection_votes($test);
+//        $this->make_participation_works($test);
+//        $now_time = Carbon::now()->format('H:i:s');
+//        echo "Collections END ($now_time)\n";
+//
+//        (new OwnBookSeeder())->run(test: $test);
     }
 }

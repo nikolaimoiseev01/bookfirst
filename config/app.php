@@ -125,7 +125,8 @@ return [
 
     'login_as' => [
         'admin' => env('LOGIN_AS_ADMIN'),
-        'secondary_admin' => env('LOGIN_AS_SECONDARY_ADMIN')
+        'secondary_admin' => env('LOGIN_AS_SECONDARY_ADMIN'),
+        'ext_promotion_admin' => env('LOGIN_AS_EXT_PROMOTION_ADMIN')
     ],
 
 ];

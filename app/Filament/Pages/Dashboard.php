@@ -11,13 +11,16 @@ use Filament\Widgets\FilamentInfoWidget;
 
 class Dashboard extends BaseDashboard
 {
+
     public function getWidgets(): array
     {
-        return [
+        return collect([
             StatWidget::class,
             InnerTasksWidget::class,
             UsersRegistrationWidget::class,
-        ];
+        ])
+            ->filter(fn ($widget) => $widget::canView())
+            ->all();
     }
 
     public function getColumns(): int|array

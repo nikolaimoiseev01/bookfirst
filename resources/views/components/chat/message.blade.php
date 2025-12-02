@@ -7,7 +7,7 @@
                 {{$role['public_name']}}
             @endif
         </span>
-{{--        @hasanyrole('admin|secondary_admin')--}}
+        @hasanyrole('admin|secondary_admin')
         <div class="group-hover:opacity-100 opacity-0 transition">
             <div x-show="!showEdit" x-on:click="showEdit = true" wire:click="editMessage({{$message['id']}})">
                 <x-lucide-edit class="w-5 h-5 text-green-400 cursor-pointer"/>
@@ -17,7 +17,7 @@
             </div>
         </div>
 
-{{--        @endhasanyrole--}}
+        @endhasanyrole
     </div>
 
     <div class="rounded-xl
