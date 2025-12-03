@@ -39,7 +39,7 @@
                     </x-ui.link-simple>
                 </div>
             </div>
-            <img src="/fixed/woman_welcome.svg" class="max-w-3xl  xl:max-w-1/2 md:!max-w-[90%] md:w-full" alt="">
+            <img src="/fixed/woman_welcome.svg" class="max-w-3xl xl:max-w-[30%] md:!max-w-[90%] md:w-full" alt="">
         </div>
     </section>
 

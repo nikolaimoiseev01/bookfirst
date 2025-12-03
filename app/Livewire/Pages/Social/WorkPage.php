@@ -56,8 +56,10 @@ class WorkPage extends Component
             ])
             ->withCount('likes')
             ->first();
-        $this->workLikesCount = $this->work['likes_count'];
-        $this->userHasLike = auth()->id() ? $this->work->likes()->where('user_id', auth()->user()->id)->exists() : false;
+        if ($this->work) {
+            $this->workLikesCount = $this->work['likes_count'];
+            $this->userHasLike = auth()->id() ? $this->work->likes()->where('user_id', auth()->user()->id)->exists() : false;
+        }
     }
 
     public function addRemoveLike()
