@@ -1,7 +1,8 @@
 <div class="flex gap-4">
     <div class="flex flex-col gap-4 w-full max-w-xl">
         <x-ui.input.text required wire:model="title" label="Название"/>
-        <x-ui.input.text-area wire:key="textarea-{{ $deleteImageFlg ? 'with-flag' : 'no-flag' }}" required description="Текст произведения" class="min-h-48" model="text" :attachable="$deleteImageFlg"
+        <x-ui.input.text-area attach-text="Добавить обложку произведения" wire:key="textarea-{{ $deleteImageFlg ? 'with-flag' : 'no-flag' }}"
+                              required description="Текст произведения" class="min-h-48" model="text" :attachable="$deleteImageFlg"
                               :sendable="false" :multiple="false"/>
         <div class="flex gap-4">
             <x-ui.dropdown

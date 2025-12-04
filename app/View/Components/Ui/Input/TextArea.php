@@ -17,11 +17,12 @@ class TextArea extends Component
     public $multiple;
     public $color;
     public $isLivewire = true;
+    public $attachText;
 
     /**
      * Create a new component instance.
      */
-    public function __construct($textModel='text', $filesModel='files', $description=null, $sendable=true, $attachable=false, $multiple=true, $fileTypes=[], $color='green-500')
+    public function __construct($textModel='text', $filesModel='files', $description=null, $sendable=true, $attachable=false, $multiple=true, $fileTypes=[], $color='green-500', $attachText=null)
     {
 
         $this->textModel = $textModel;
@@ -31,6 +32,7 @@ class TextArea extends Component
         $this->sendable = $sendable;
         $this->multiple = $multiple;
         $this->color = $color;
+        $this->attachText = $attachText ?? "Прикрепить файлы <br>(или перенесите файлы в поле текста)";
     }
 
     /**
