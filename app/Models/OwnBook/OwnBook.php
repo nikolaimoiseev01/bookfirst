@@ -24,6 +24,10 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 class OwnBook extends Model implements HasMedia
 {
     use InteractsWithMedia;
+
+    public const INSIDE_WORK_DAYS = 7;
+    public const COVER_WORK_DAYS = 7;
+    public const PRINT_DAYS = 20;
     public function user()
     {
         return $this->belongsTo(User::class);

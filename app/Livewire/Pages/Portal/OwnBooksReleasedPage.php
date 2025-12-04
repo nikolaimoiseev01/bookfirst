@@ -39,6 +39,7 @@ class OwnBooksReleasedPage extends Component
                 $query->where('title', 'like', "%{$this->searchText}%")
                     ->orWhere('author', 'like', "%{$this->searchText}%");
             })
+            ->orderBy('created_at', 'desc')
             ->take($this->take)
             ->with('user')
             ->with(['media', 'user.media'])

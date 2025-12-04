@@ -35,12 +35,11 @@ class OwnBookPaymentService
         $transactionData = json_decode($this->yooKassaObject['metadata']['transaction_data'], true);
         Log::info('OwnBookPaymentService started!', $transactionData);
         $ownBook = OwnBook::where('id', $transactionData['own_book_id'])->first();
-        $deadline = $date = Carbon::now()->addDays(10);
         $ownBook->update([
             'status_general' => OwnBookStatusEnums::WORK_IN_PROGRESS->value,
             'paid_at_without_print' => Carbon::now(),
-            'deadline_inside' => $deadline,
-            'deadline_cover' => $deadline
+            'deadline_inside' => Carbon::now()->addDays(OwnBook::INSIDE_WORK_DAYS),
+            'deadline_cover' => Carbon::now()->addDays(OwnBook::COVER_WORK_DAYS)
         ]);
         Award::create([
             'user_id' => $ownBook['user_id'],
