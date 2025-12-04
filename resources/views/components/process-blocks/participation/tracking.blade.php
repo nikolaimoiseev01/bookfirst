@@ -20,7 +20,7 @@
                 <p class="text-dark-300 mb-4">
                     Сборник успешно был разослан всем авторам!
                 </p>
-                <x-ui.link target="_blank" :navigate="false" href="{{$participation->printOrder->trackingLink()}}">Отседить свою посылку</x-ui.link>
+                <x-ui.link target="_blank" :navigate="false" href="{{$participation->printOrder->trackingLink()}}">Отследить свою посылку</x-ui.link>
             @endif
         @else
             <p class="text-green-500 font-normal">У вас нет заказа печатных экземплярв</p>

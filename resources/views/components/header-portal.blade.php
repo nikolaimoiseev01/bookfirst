@@ -1,5 +1,5 @@
 <header x-data="{mobileMenuOpen: false}"
-        class="fixed w-full shadow-[0_1px_4px_#00000026] top-0 px-5 py-2 md:py-4 flex justify-between items-center z-[999] bg-white dark:bg-dark_bg">
+        class="fixed w-full shadow-[0_1px_4px_#00000026] top-0 px-5 py-2 md:py-4 flex justify-between items-center z-[999] bg-white dark:bg-dark_bg h-16">
     <x-search-modal/>
     <div class="flex gap-2 items-center">
         <a wire:navigate href="{{route('portal.index')}}"
