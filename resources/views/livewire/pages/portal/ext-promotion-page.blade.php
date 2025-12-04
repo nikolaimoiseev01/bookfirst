@@ -41,7 +41,7 @@
                         "
                 >{{$value}}</button>
             @endforeach
-            <a href="" class="text-dark-100  pb-4 hover:text-green-500 ml-auto md:mx-auto">Инструкция</a>
+            <a wire:navigate href="{{route('portal.help.ext_promotion')}}" class="text-dark-100  pb-4 hover:text-green-500 transition ml-auto md:mx-auto">Инструкция</a>
         </nav>
         <section
             x-show="tab === 'process'"

@@ -35,6 +35,7 @@ class OwnBooksIndexSlider extends Component
         $mainOwnBook = OwnBook::query()
             ->with(['media', 'user'])
             ->where('internal_promo_type', 2)
+            ->where('status_general', OwnBookStatusEnums::DONE)
             ->inRandomOrder()
             ->first();
         return view('components.portal.own-books-index-slider', [
