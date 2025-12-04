@@ -981,7 +981,7 @@ class DatabaseSeeder extends Seeder
 
     public function run(): void
     {
-        $test = True;
+        $test = False;
 
         $file = new Filesystem;
         $file->cleanDirectory(storage_path('app/public/media'));
