@@ -48,7 +48,6 @@ class WorkPage extends Component
 
     public function mount($id)
     {
-        $this->user = User::where('id', $this->work['user_id'])->withCount('works', 'awards', 'subscribers', 'subscribedToUsers')->first();
         $this->work = Work::where('id', $id)
             ->with([
                 'user',
@@ -60,6 +59,7 @@ class WorkPage extends Component
             $this->workLikesCount = $this->work['likes_count'];
             $this->userHasLike = auth()->id() ? $this->work->likes()->where('user_id', auth()->user()->id)->exists() : false;
         }
+        $this->user = User::where('id', $this->work['user_id'])->withCount('works', 'awards', 'subscribers', 'subscribedToUsers')->first();
     }
 
     public function addRemoveLike()

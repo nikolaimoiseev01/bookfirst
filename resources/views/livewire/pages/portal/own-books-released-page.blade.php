@@ -17,8 +17,16 @@
         @forelse($ownBooks as $ownBook)
             <x-ui.cards.card-own-book :ownbook="$ownBook"/>
         @empty
-            <h3 class="text-6xl font-bold text-dark-100 mx-auto text-nowrap text-center col-span-3">Ничего не найдено</h3>
+            <h3 class="text-6xl font-bold text-dark-100 mx-auto text-nowrap text-center col-span-3">
+                Ничего не найдено</h3>
         @endforelse
     </div>
+
+    <div class="mx-auto text-center mt-8">
+        @if($take < $totalCnt)
+            <x-ui.load-more-button/>
+        @endif
+    </div>
+
 
 </main>

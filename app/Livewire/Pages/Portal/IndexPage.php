@@ -15,9 +15,6 @@ class IndexPage extends Component
     {
         $this->collections_actual = Collection::where('status', CollectionStatusEnums::APPS_IN_PROGRESS)->with('media')->get();
 
-        $ownBookApp = collect([
-            ''
-        ]);
         return view('livewire.pages.portal.index-page');
     }
 }

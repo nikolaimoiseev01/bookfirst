@@ -26,11 +26,20 @@ class OwnBooksIndexSlider extends Component
         $ownBooks = OwnBook::query()
             ->inRandomOrder(10)
             ->with('media')
+            ->where('internal_promo_type', 1)
             ->where('status_general', OwnBookStatusEnums::DONE)
+            ->orderBy('created_at', 'desc')
+            ->whereNot('internal_promo_type', 2)
             ->limit(10)
             ->get();
+        $mainOwnBook = OwnBook::query()
+            ->with(['media', 'user'])
+            ->where('internal_promo_type', 2)
+            ->inRandomOrder()
+            ->first();
         return view('components.portal.own-books-index-slider', [
-            'ownBooks' => $ownBooks
+            'ownBooks' => $ownBooks,
+            'mainOwnBook' => $mainOwnBook
         ]);
     }
 }

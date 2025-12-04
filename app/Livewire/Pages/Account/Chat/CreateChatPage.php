@@ -23,6 +23,7 @@ class CreateChatPage extends Component
     use WithFilePond;
     use WithCustomValidation;
 
+    #[Url]
     public $title;
     public $text;
     public $files = [];

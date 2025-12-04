@@ -123,8 +123,9 @@
         </div>
     </div>
 
-    <div class="flex">
+    <div class="flex justify-between gap-4 flex-wrap">
         <x-ui.button>Отправить заявку</x-ui.button>
+        <x-ui.link-simple class="italic text-xl" href="{{route('account.chat_create',['title' => 'Вопрос по заявке в сборник'])}}">Получить помощь по заявке</x-ui.link-simple>
     </div>
 
 </form>

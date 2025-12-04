@@ -11,7 +11,7 @@ function makeMoney($int, $decimals = 0, $rub_sign = false)
 
 function getUserAvatar($user)
 {
-    $avatar = $user->getFirstMediaUrl('avatar');
+    $avatar = $user->getFirstMediaUrl('avatar', 'thumb');
     if ($avatar == null || $avatar == '') {
         return ENV('APP_URL') . '/fixed/default_avatar.svg';
     } else {

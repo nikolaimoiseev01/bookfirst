@@ -36,8 +36,17 @@ class Work extends Model implements HasMedia
 
     public function registerMediaConversions(Media $media = null): void
     {
-        $this->addMediaConversion('thumb')
+        $conversion = $this->addMediaConversion('thumb')
             ->nonOptimized()
             ->sharpen(10);
+
+        if ($media) {
+            // Вытащим расширение файла (png, jpg, webp и т.д.)
+            $extension = $media->extension ?? null;
+
+            if ($extension) {
+                $conversion->format($extension);
+            }
+        }
     }
 }

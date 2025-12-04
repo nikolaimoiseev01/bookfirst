@@ -183,12 +183,14 @@
                                    name="internalPromoType"
                                    id="internal_promo_type_1" value="1">
                             <label for="internal_promo_type_1">Вариант 1</label>
+                            <x-ui.question-mark>Книга окажется в слайдере на главной странице портала</x-ui.question-mark>
                         </div>
                         <div class="flex gap-2 items-center">
                             <input type="radio" wire:model.live="internalPromoType"
                                    name="internalPromoType"
                                    id="internal_promo_type_2" value="2">
                             <label for="internal_promo_type_2">Вариант 2</label>
+                            <x-ui.question-mark>Книга окажется на самом видном месте в большом индивидуальном блоке на главной странице сайта. Так же в нашей группе ВК будет опубликован отдельный пост о вашем издании.</x-ui.question-mark>
                         </div>
                     </div>
                 </div>
@@ -238,8 +240,9 @@
         </div>
     </div>
 
-    <div class="flex">
-        <x-ui.button>Отправить заявку</x-ui.button>
-    </div>
+        <div class="flex justify-between gap-4 flex-wrap">
+            <x-ui.button>Отправить заявку</x-ui.button>
+            <x-ui.link-simple class="italic text-xl" href="{{route('account.chat_create',['title' => 'Вопрос по заявке на издание книги'])}}">Получить помощь по заявке</x-ui.link-simple>
+        </div>
 
 </form>

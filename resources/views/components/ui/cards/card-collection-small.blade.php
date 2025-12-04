@@ -4,7 +4,7 @@
 ])
 <div class="flex gap-4 container flex-1 p-4 md:flex-col md:justify-center md:text-center">
     <div class="min-w-[140px] max-w-[140px]  md:min-w-[140px]  md:max-w-[140px] relative md:mx-auto">
-        <x-book3d :cover="$collection->getFirstMediaUrl('cover_front')" class=" left-0 bottom-0"/>
+        <x-book3d :cover="$collection->getFirstMediaUrl('cover_front', 'thumb')" class=" left-0 bottom-0"/>
     </div>
     <div class="flex flex-col gap-2">
         <p class="font-normal text-3xl">{{$collection['title']}}</p>
