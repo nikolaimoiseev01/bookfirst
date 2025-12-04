@@ -19,20 +19,22 @@
         <div class="flex flex-col gap-4 lg:items-center">
             <h3 class="border-b border-b-dark-600 w-fit">{{$collection['title']}}</h3>
             <p>{{$collection['description']}}</p>
-            <h4>Приобрести книгу:</h4>
-            <div class="flex flex-wrap gap-8 md:gap-4 md:flex-col md:justify-center">
-                @foreach($collection['selling_links'] ?? [] as $name => $link)
-                    <a href="{{$link}}" target="_blank"
+            @if($collection['status'] == \App\Enums\CollectionStatusEnums::DONE)
+                <h4>Приобрести книгу:</h4>
+                <div class="flex flex-wrap gap-8 md:gap-4 md:flex-col md:justify-center">
+                    @foreach($collection['selling_links'] ?? [] as $name => $link)
+                        <a href="{{$link}}" target="_blank"
+                           class="flex gap-4 border text-xl border-dark-100 rounded px-4 py-2 hover:bg-green-500 hover:text-white transition">
+                            <img src="/fixed/logo-{{$name}}.png" class="w-16" alt="">
+                            {{$name}}
+                        </a>
+                    @endforeach
+                    <a wire:click="createPayment(100)" data-check-logged target="_blank"
                        class="flex gap-4 border text-xl border-dark-100 rounded px-4 py-2 hover:bg-green-500 hover:text-white transition">
-                        <img src="/fixed/logo-{{$name}}.png" class="w-16" alt="">
-                        {{$name}}
+                        Электронная версия (100 руб.)
                     </a>
-                @endforeach
-                <a wire:click="createPayment(100)" data-check-logged target="_blank"
-                   class="flex gap-4 border text-xl border-dark-100 rounded px-4 py-2 hover:bg-green-500 hover:text-white transition">
-                    Электронная версия (100 руб.)
-                </a>
-            </div>
+                </div>
+            @endif
         </div>
         <div class="container flex flex-col w-fit px-4 h-fit">
             @foreach($info as $key => $value)

@@ -28,7 +28,6 @@ class WorkPage extends Component
 
     public function render()
     {
-        $this->user = User::where('id', $this->work['user_id'])->withCount('works', 'awards', 'subscribers', 'subscribedToUsers')->first();
         $this->workComments = WorkComment::where('work_id', $this->work['id'])->orderBy('created_at', 'desc')->get();
         return view('livewire.pages.social.work-page');
     }
@@ -49,6 +48,7 @@ class WorkPage extends Component
 
     public function mount($id)
     {
+        $this->user = User::where('id', $this->work['user_id'])->withCount('works', 'awards', 'subscribers', 'subscribedToUsers')->first();
         $this->work = Work::where('id', $id)
             ->with([
                 'user',
