@@ -26,6 +26,6 @@ $app = Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-//        Integration::handles($exceptions);
+        \App\Exceptions\ExceptionConfigurator::register($exceptions);
     })->create();
 return $app;

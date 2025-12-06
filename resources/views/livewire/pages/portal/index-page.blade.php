@@ -39,14 +39,14 @@
                     </x-ui.link-simple>
                 </div>
             </div>
-            <img src="/fixed/woman_welcome.svg" class="max-w-3xl xl:max-w-[30%] md:!max-w-[90%] md:w-full" alt="">
+            <img src="/fixed/mascots/woman_welcome.svg" class="max-w-3xl xl:max-w-[30%] md:!max-w-[90%] md:w-full" alt="">
         </div>
     </section>
 
     <x-portal.collection-examples/>
 
     <section class="flex w-full">
-        <img src="/fixed/woman_sitting.svg" class="w-96 lg:hidden 2xl:w-80" alt="">
+        <img src="/fixed/mascots/woman_sitting.svg" class="w-96 lg:hidden 2xl:w-80" alt="">
         <div class="flex flex-col mb-4 w-full ml-32 xl:ml-6 lg:w-[90%] lg:!mx-auto lg:!ml-auto">
             <h2 class="mb-8 lg:text-center">За <span class="  text-green-500">{{ date('Y') - 2015 }} лет</span>
                 работы у нас:</h2>

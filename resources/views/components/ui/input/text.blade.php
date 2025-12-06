@@ -31,7 +31,7 @@
         'border-green-500' => $color === 'green',
         'border-brown-400' => $color === 'yellow',
         ])
-        class="placeholder:text-dark-200 border rounded-md px-3 py-2 w-full focus:outline-none  {{($errors->has($attributes->get('wire:model')) ? 'border-red-500' : 'border-gray-300')}}"
+        class="placeholder:text-dark-200 border rounded-md px-3 py-2 w-full focus:outline-none"
     />
 
 {{--    @error($attributes->get('wire:model'))--}}

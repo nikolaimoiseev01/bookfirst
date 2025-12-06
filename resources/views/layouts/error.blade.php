@@ -31,7 +31,7 @@
         })();
     </script>
 
-    @vite(['resources/css/app.css'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="antialiased flex flex-col min-h-screen" x-data  x-init="
         document.documentElement.style.setProperty(
@@ -39,12 +39,9 @@
             $store.global.social ? '#66a2e5' : '#47af98' // blue-500 / green-500
         )
     ">
-{{--<x-header-portal/>--}}
+<x-header-portal/>
 @yield('content')
-@stack('scripts')
+@livewireScripts
 <x-footer/>
-@if(session('swal'))
-    showSwal(@json(session('swal')))
-@endif
 </body>
 </html>

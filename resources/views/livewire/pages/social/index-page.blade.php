@@ -20,7 +20,7 @@
         <div
             class="max-w-(--breakpoint-3xl) mx-auto w-[90%] flex lg:flex-col gap-16 justify-between items-center relative lg:pt-16">
             <div class="w-1/2 lg:w-full lg:order-2">
-                <img src="/fixed/woman_social_welcome.svg" class="max-w-3xl lg:mx-auto" alt="">
+                <img src="/fixed/mascots/woman_social_welcome.svg" class="max-w-3xl lg:mx-auto" alt="">
             </div>
 
             <div class="flex flex-col gap-16 max-w-1/2 pl-32 lg:w-full lg:pl-0 lg:max-w-full lg:justify-center lg:text-center">
