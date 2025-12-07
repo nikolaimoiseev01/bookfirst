@@ -12,7 +12,11 @@ use App\Notifications\Collection\CollectionStatusUpdate;
 use App\Notifications\Collection\CollectionWinnerNotification;
 use App\Services\InnerTasksService;
 use App\Services\PdfService;
+use App\Services\WordService;
+use Filament\Actions\Action;
 use Filament\Resources\Pages\EditRecord;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class EditCollection extends EditRecord
 {
@@ -21,7 +25,12 @@ class EditCollection extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-//            DeleteAction::make(),
+            Action::make('makeWord')
+                ->label('Скачать верстку')
+                ->url(function (Model $record) {
+                    return (new WordService())->makeCollection($record);
+                }
+                )
         ];
     }
 
@@ -38,7 +47,7 @@ class EditCollection extends EditRecord
             }
             if ($this->record['status'] == CollectionStatusEnums::PRINTING) {
                 foreach ($participations as $participation) {
-                    if($participation->printOrder ?? null) {
+                    if ($participation->printOrder ?? null) {
                         $participation->printOrder->update([
                             'status' => PrintOrderStatusEnums::PRINTING
                         ]);
@@ -60,7 +69,7 @@ class EditCollection extends EditRecord
         }
 
         if ($this->record->wasChanged('winner_participations')) {
-             foreach ($this->record->winnerParticipations()->get() as $key => $winnerParticipation) {
+            foreach ($this->record->winnerParticipations()->get() as $key => $winnerParticipation) {
                 $notification = new CollectionWinnerNotification($this->record, $key + 1, $winnerParticipation['id']);
                 EmailNotificationJob::dispatch($winnerParticipation['user_id'], $notification);
             }

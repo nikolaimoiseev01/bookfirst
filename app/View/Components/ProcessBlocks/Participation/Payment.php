@@ -2,6 +2,7 @@
 
 namespace App\View\Components\ProcessBlocks\Participation;
 
+use App\Enums\CollectionStatusEnums;
 use App\Enums\ParticipationStatusEnums;
 use App\Enums\TransactionStatusEnums;
 use Closure;
@@ -12,6 +13,7 @@ class Payment extends Component
 {
     public $participation;
     public $printOrder;
+    public $collection;
     public $blockColor;
 
     /**
@@ -21,11 +23,16 @@ class Payment extends Component
     {
         $this->participation = $part;
         $this->printOrder = $part->printOrder;
+        $this->collection = $this->participation->collection;
         match ($this->participation['status']) {
             ParticipationStatusEnums::APPROVE_NEEDED, ParticipationStatusEnums::NOT_ACTUAL => $this->blockColor = 'gray',
             ParticipationStatusEnums::PAYMENT_REQUIRED => $this->blockColor = 'yellow',
             ParticipationStatusEnums::APPROVED => $this->blockColor = 'green'
         };
+        if ($this->collection['status'] <> CollectionStatusEnums::APPS_IN_PROGRESS
+            && $this->participation['status'] <> ParticipationStatusEnums::APPROVED) {
+            $this->blockColor = 'gray';
+        }
     }
 
     /**

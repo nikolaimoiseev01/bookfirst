@@ -22,7 +22,7 @@ class ParticipationPage extends Component
     public function mount($participation_id)
     {
         $this->participation = Participation::where('id', $participation_id)
-            ->with(['collection', 'chat', 'participationWorks', 'participationWorks.work', 'previewComments'])
+            ->with(['collection', 'user', 'chat', 'participationWorks', 'participationWorks.work', 'previewComments'])
             ->first();
     }
 

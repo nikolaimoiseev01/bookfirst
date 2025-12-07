@@ -19,8 +19,11 @@
             <x-price-element price="{{$participation['price_total'] + ($printOrder ? $printOrder['price_print'] : 0)}}"
                              label="Итого" :bigElement="true" color="{{$blockColor}}"/>
         </div>
-        @if ($participation['status'] == \App\Enums\ParticipationStatusEnums::APPROVE_NEEDED)
-            <span class="text-dark-300 italic text-2xl text-center">Сейчас ваша заявка проверяется. Как только проверка будет завершена, вы получите оповещение по почте, а в этом блоке появится возможность оплаты.</span>
+        @if ($collection['status'] <> \App\Enums\CollectionStatusEnums::APPS_IN_PROGRESS
+            && $participation['status'] <> \App\Enums\ParticipationStatusEnums ::APPROVED)
+        <span class="text-dark-300 italic text-2xl text-center">На данный момент сборник находится на этапе предварительной проверки. Вы не произвели оплату, поэтому не видите макет. Если хотите участвовать в сборнике и оплатить, пожалуйста, напишите нам в чате. Иначе заявка перейдет в статус "неактуальна" при следующем изменении статуса сборника.</span>
+        @elseif($participation['status'] == \App\Enums\ParticipationStatusEnums::APPROVE_NEEDED)
+        <span class="text-dark-300 italic text-2xl text-center">Сейчас ваша заявка проверяется. Как только проверка будет завершена, вы получите оповещение по почте, а в этом блоке появится возможность оплаты.</span>
         @elseif ($participation['status'] == \App\Enums\ParticipationStatusEnums::PAYMENT_REQUIRED)
             <div class="flex gap-4">
                 @if($paidAmount > 0)
@@ -35,7 +38,6 @@
                     {{$amountToPay}} руб.
                 </x-ui.button>
             </div>
-
         @endif
     </div>
 </x-process-blocks.template>

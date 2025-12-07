@@ -68,7 +68,7 @@ class CollectionForm
                             ->simple(
                                 Select::make('participation_id')
                                     ->label('Пользователь')
-                                    ->options(fn(Collection $collection) => $collection->participations()->pluck('author_name', 'id')->toArray())
+                                    ->options(fn(Collection $collection) => $collection->approvedParticipations()->pluck('author_name', 'id')->toArray())
                                     ->required(),
                             )
                             ->columnSpan(1),

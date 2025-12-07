@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Components\Account\Collection;
 
+use App\Enums\ParticipationStatusEnums;
 use App\Models\Collection\CollectionVote;
 use App\Traits\WithCustomValidation;
 use Illuminate\Support\Facades\DB;
@@ -20,6 +21,7 @@ class Votes extends Component
     public $currentVote;
     public $authorChosen;
     public $userVotes;
+    public $userWinnerPlace;
 
     protected $listeners = ['deleteVote' => 'deleteVote'];
 
@@ -49,8 +51,11 @@ class Votes extends Component
 
     public function mount($collection, $participationId)
     {
-        $this->participations = $collection->participations;
+        $this->participations = $collection->participations->where('status', ParticipationStatusEnums::APPROVED);
         $this->participationId = $participationId;
+
+        $position = array_search($participationId, $collection['winner_participations']);
+        $this->userWinnerPlace = $position === false ? null : $position + 1;
     }
 
     public function save()
