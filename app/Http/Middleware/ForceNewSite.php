@@ -10,8 +10,10 @@ class ForceNewSite
 {
     public function handle(Request $request, Closure $next): Response
     {
-        // ✅ Если запрашивается реальный файл из public — пропускаем
-        if (file_exists(public_path($request->path()))) {
+        $path = trim($request->path(), '/');
+
+        // ✅ Пропускаем только если это РЕАЛЬНЫЙ ФАЙЛ, а не папка
+        if ($path !== '' && file_exists(public_path($path))) {
             return $next($request);
         }
 
