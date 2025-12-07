@@ -283,7 +283,7 @@ Route::middleware(['role:ext_promotion_admin|admin|secondary_admin'])->prefix('a
 
 Route::get('/new-site', function () {
     return view('portal.new-site');
-})->name('new-site');
+})->name('new-site')->withoutMiddleware(\App\Http\Middleware\ForceNewSite::class);;
 
 
 Route::fallback(function () {
