@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\TransactionStatusEnums;
 use App\Models\Transaction;
+use App\Services\InnerTasksService;
 use App\Services\PaymentService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -26,5 +27,6 @@ class PaymentController
                 'payment_method' => $yooKassaObject['payment_method']['type'],
             ]);
         }
+        (new InnerTasksService())->update();
     }
 }

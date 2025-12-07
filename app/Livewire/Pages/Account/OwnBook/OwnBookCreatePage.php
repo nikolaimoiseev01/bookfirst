@@ -345,7 +345,6 @@ class OwnBookCreatePage extends Component
                 'type' => 'success',
                 'text' => $alert_text
             ]);
-            (new InnerTasksService())->update();
             $this->redirect(route('account.own_book.index', $newOwnBook['id']), navigate: true);
         });
     }

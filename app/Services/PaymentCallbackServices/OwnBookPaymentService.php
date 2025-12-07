@@ -47,7 +47,6 @@ class OwnBookPaymentService
             'model_type' => 'OwnBook',
             'model_id' => $ownBook['id'],
         ]);
-        (new InnerTasksService())->update();
         $user = User::where('id', $ownBook['user_id'])->first();
         $user->notify(new OwnBookPaymentSuccessNotification($ownBook, $this->yooKassaObject['amount']['value'], TransactionTypeEnums::OWN_BOOK_WO_PRINT));
 
@@ -65,7 +64,6 @@ class OwnBookPaymentService
         ]);
         $user = User::where('id', $ownBook['user_id'])->first();
         $user->notify(new OwnBookPaymentSuccessNotification($ownBook, $this->yooKassaObject['amount']['value'], TransactionTypeEnums::OWN_BOOK_PRINT));
-        (new InnerTasksService())->update();
     }
 
     public function ebookPuchase() {

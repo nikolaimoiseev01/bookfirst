@@ -42,7 +42,7 @@
         @else
             <div class="flex flex-col py-8 px-4 gap-4">
                 <span
-                    class="text-dark-300 italic text-2xl text-center">Заявка на участие в статусе "Неактуальна".</span>
+                    class="text-dark-300 italic text-2xl text-center">Заявка на издание в статусе "Неактуальна".</span>
             </div>
         @endif
     </div>

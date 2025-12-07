@@ -1,4 +1,4 @@
-<x-process-blocks.template status="{{$blockColor}}" title="Оплата участия">
+<x-process-blocks.template status="{{$blockColor}}" title="Оплата издания">
     <div class="flex flex-col py-8 px-4 gap-4">
         <div class="flex gap-8 items-center justify-center flex-wrap">
             <x-price-element color="{{$blockColor}}" price="{{$ownBook['price_inside']}}" label="Работа с блоком"/>
