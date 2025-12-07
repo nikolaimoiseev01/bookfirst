@@ -1,7 +1,7 @@
 @extends('layouts.error')
 
 @section('content')
-    <main class="flex flex-1 flex-col gap-8 content">
+    <main class="flex flex-1 flex-col gap-8 content mb-8">
         <div class="flex gap-8 md:flex-col">
             <div class="w-1/2 md:w-full flex flex-col gap-8">
                 <h1 class="text-3xl font-medium text-center">На нашей стороне произошла ошибка,
