@@ -280,4 +280,15 @@ Route::middleware(['role:ext_promotion_admin|admin|secondary_admin'])->prefix('a
     Route::post('/change_chat_status/{chat_id}', [\App\Http\Controllers\ChatController::class, 'change_chat_status'])->name('change_chat_status');
 
 });
+
+Route::get('/new-site', function () {
+    return view('portal.new-site');
+})->name('new-site');
+
+
+Route::fallback(function () {
+    return redirect()->route('new-site');
+});
+
+
 // ----------------------------------------------
