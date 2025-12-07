@@ -89,7 +89,6 @@
                                 @if($ownBook->getFirstMediaUrl('cover_full'))
                                     <x-ui.link download="Обложка разворот {{$ownBook['title']}}"
                                                :navigate="false" color="yellow" class="flex-1"
-                                               download
                                                href="{{$ownBook->getFirstMediaUrl('cover_full')}}">
                                         Скачать разворот обложки
                                     </x-ui.link>

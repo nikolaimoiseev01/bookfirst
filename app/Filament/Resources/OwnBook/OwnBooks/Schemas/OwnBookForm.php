@@ -200,6 +200,10 @@ class OwnBookForm
                             TextEntry::make('initialPrintOrder.books_cnt')
                                 ->label('Экземпляров')
                                 ->numeric(),
+                            TextEntry::make('initialPrintOrder.cover_type')
+                                ->label('Тип обложки'),
+                            TextEntry::make('initialPrintOrder.inside_color')
+                                ->label('Цветность ВБ'),
                             TextEntry::make('initialPrintOrder.address_json')
                                 ->state(fn($record) => $record->initialPrintOrder?->address_json['string'] ?? '—'
                                 )
@@ -208,8 +212,7 @@ class OwnBookForm
                                 ->label('ФИО')
                                 ->numeric(),
                             TextEntry::make('initialPrintOrder.receiver_telephone')
-                                ->label('Телефон')
-                                ->numeric(),
+                                ->label('Телефон'),
                             Fieldset::make('initialPrintOrder')
                                 ->label('Настройки заказа печати')
                                 ->relationship('initialPrintOrder')
@@ -219,23 +222,13 @@ class OwnBookForm
                                         ->relationship(name: 'printingCompany', titleAttribute: 'name'),
                                     Select::make('logistic_company_id')
                                         ->relationship(name: 'logisticCompany', titleAttribute: 'name'),
-                                    Select::make('inside_color')
-                                        ->options([
-                                            'Цветной' => 'Цветной',
-                                            'Черно-белый' => 'Черно-белый'
-                                        ]),
+//                                    Select::make('inside_color')
+//                                        ->options([
+//                                            'Цветной' => 'Цветной',
+//                                            'Черно-белый' => 'Черно-белый'
+//                                        ]),
                                 ])->columns(4)->columnSpanFull()
-//                            TextInput::make('track_number')->relationship('initialPrintOrder'),
-//                            Select::make('print_company_id')
-//                                ->relationship(name: 'initialPrintOrder.printingCompany', titleAttribute: 'name'),
-//                            Select::make('initialPrintOrder.logistic_company_id')
-//                                ->relationship(name: 'initialPrintOrder.logisticCompany', titleAttribute: 'name'),
-//                            Select::make('initialPrintOrder.inside_color')
-//                                ->options([
-//                                    'Цветной' => 'Цветной',
-//                                    'Черно-белый' => 'Черно-белый'
-//                                ]),
-                        ])->columnSpanFull()->columns(7)
+                        ])->columnSpanFull()->columns(8)
                     ])->columnSpanFull(),
                     Tab::make('Чат')->schema([
                         Livewire::make('components.account.chat', ['chat' => $schema->getRecord()->chat])->extraAttributes(['class' => 'h-[500px]'])
