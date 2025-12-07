@@ -26,6 +26,10 @@ $app = Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
+        // ОТКЛЮЧАЕМ стандартное логирование Laravel
+        $exceptions->reportable(function (\Throwable $e) {
+            return false;
+        });
         \App\Exceptions\ExceptionConfigurator::register($exceptions);
     })->create();
 return $app;

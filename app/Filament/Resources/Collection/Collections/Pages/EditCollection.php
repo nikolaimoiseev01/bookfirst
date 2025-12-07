@@ -29,7 +29,7 @@ class EditCollection extends EditRecord
     protected function afterSave(): void
     {
         if ($this->record->wasChanged('status')) {
-            $participations = $this->record->participations()->get();
+            $participations = $this->record->approvedParticipations()->get();
 
             if ($this->record['status'] == CollectionStatusEnums::PRINT_PREPARE) {
                 $this->record->participations()->where('status', '<>', ParticipationStatusEnums::APPROVED)->update([
@@ -37,7 +37,6 @@ class EditCollection extends EditRecord
                 ]);
             }
             if ($this->record['status'] == CollectionStatusEnums::PRINTING) {
-                $participations = $this->record->approvedParticipations()->get();
                 foreach ($participations as $participation) {
                     if($participation->printOrder ?? null) {
                         $participation->printOrder->update([
