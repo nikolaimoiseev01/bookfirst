@@ -227,8 +227,8 @@ class OwnBookForm
 //                                            'Цветной' => 'Цветной',
 //                                            'Черно-белый' => 'Черно-белый'
 //                                        ]),
-                                ])->columns(4)->columnSpanFull()
-                        ])->columnSpanFull()->columns(8)
+                                ])->columns(3)->columnSpanFull()
+                        ])->columnSpanFull()->columns(5)
                     ])->columnSpanFull(),
                     Tab::make('Чат')->schema([
                         Livewire::make('components.account.chat', ['chat' => $schema->getRecord()->chat])->extraAttributes(['class' => 'h-[500px]'])
