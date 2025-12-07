@@ -17,6 +17,7 @@ use App\Models\PrintOrder\AddressType;
 use App\Models\PrintOrder\PrintOrder;
 use App\Models\Work\Work;
 use App\Notifications\OwnBook\OwnBookCreatedNotification;
+use App\Services\InnerTasksService;
 use App\Services\PriceCalculation\CalculateOwnBookService;
 use App\Traits\WithCustomValidation;
 use Illuminate\Support\Facades\Auth;
@@ -344,7 +345,7 @@ class OwnBookCreatePage extends Component
                 'type' => 'success',
                 'text' => $alert_text
             ]);
-
+            (new InnerTasksService())->update();
             $this->redirect(route('account.own_book.index', $newOwnBook['id']), navigate: true);
         });
     }
