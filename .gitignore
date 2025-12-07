@@ -1,6 +1,7 @@
 /node_modules
 /public/ngrok.exe
 /public/hot
+.idea/
 /public/admin_files
 /public/app/public/filepond_temp
 /public/filepond_temp
@@ -17,10 +18,9 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
-.htaccess                                                                                                                                                          
-cron.sh                                                                                                                                                            
-error_log                                                                                                                                                          
-                                                                                                                                        
-                                                                                                                                  
-                                                                                                  
- 
+.htaccess
+cron.sh
+error_log
+
+
+
