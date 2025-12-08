@@ -40,7 +40,8 @@ class ChatsTable
                     ->getStateUsing(function ($record) {
                         $model = $record->model;
                         return match ($record['model_type']) {
-                            'Collection', 'OwnBook' => $model['title'],
+                            'OwnBook' => "Книга: {$model['title']}",
+                            'Collection' => "Сборник: {$model['title_short']}",
                             'ExtPromotion' => 'Чат по продвижению',
                             default => $record['title']
                         };
@@ -66,7 +67,7 @@ class ChatsTable
                 Action::make('Подробнее')
                     ->url(function ($record) {
                         return match ($record['model_type']) {
-                            'Collection', 'OwnBook', 'ExtPromotion' => $record->model->adminEditPage(),
+                            'Collection', 'OwnBook', 'ExtPromotion' => $record->model->adminEditPageWithoutLogin(),
                             default => ViewChat::getUrl(['record' => $record])
                         };
                     })
@@ -80,6 +81,12 @@ class ChatsTable
                         END ASC
                     ")
                     ->orderBy('created_at', 'desc');
+            })
+            ->recordUrl(function ($record) {
+                return match ($record['model_type']) {
+                    'Collection', 'OwnBook', 'ExtPromotion' => $record->model->adminEditPageWithoutLogin(),
+                    default => ViewChat::getUrl(['record' => $record])
+                };
             })
             ->toolbarActions([
                 BulkActionGroup::make([

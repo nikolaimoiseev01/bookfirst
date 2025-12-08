@@ -51,4 +51,9 @@ class ExtPromotion extends Model
         return route('login_as_secondary_admin', ['url_redirect', EditExtPromotion::getUrl(['record' => $this])]);
     }
 
+    public function adminEditPageWithoutLogin(): string
+    {
+        return EditExtPromotion::getUrl(['record' => $this]);
+    }
+
 }

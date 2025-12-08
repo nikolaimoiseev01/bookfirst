@@ -58,7 +58,6 @@ class AppServiceProvider extends ServiceProvider
         FilamentAsset::register([
             Js::make('custom-script', 'https://code.jquery.com/jquery-3.7.1.min.js'),
             Js::make('script', url('/vendor/livewire-filepond/filepond.js?v=1.5.0'))->module(),
-            Css::make('custom-stylesheet', ENV('APP_URL') . '/fixed/filament-custom.css'),
         ]);
 
         Relation::morphMap([

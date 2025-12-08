@@ -93,6 +93,11 @@ class Collection extends Model implements HasMedia
     {
         return route('login_as_secondary_admin', ['url_redirect', EditCollection::getUrl(['record' => $this])]);
     }
+
+    public function adminEditPageWithoutLogin(): string
+    {
+        return EditCollection::getUrl(['record' => $this]);
+    }
 //    public function digital_sale() {
 //        return $this->belongsTo(digital_sale::class, 'id', 'bought_collection_id');
 //    }

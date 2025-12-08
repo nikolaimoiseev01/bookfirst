@@ -63,6 +63,11 @@ class OwnBook extends Model implements HasMedia
         return route('login_as_secondary_admin', ['url_redirect', EditOwnBook::getUrl(['record' => $this])]);
     }
 
+    public function adminEditPageWithoutLogin(): string
+    {
+        return EditOwnBook::getUrl(['record' => $this]);
+    }
+
     public function accountIndexPage(): string
     {
         return route('account.own_book.index', $this->id);

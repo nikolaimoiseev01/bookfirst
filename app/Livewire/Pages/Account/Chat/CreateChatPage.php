@@ -89,7 +89,6 @@ class CreateChatPage extends Component
                     $subject = '📌Открыт новый чат!📌';
                     $userFromName = Auth::user()->getUserFullName();
                     $text = "Автор: {$userFromName} \n $this->text";
-                    $url = EditChat::getUrl(['record' => $chat]);
                     $notification = new TelegramDefaultNotification($subject, $text, $url);
                     TelegramNotificationJob::dispatch($notification);
                 }
