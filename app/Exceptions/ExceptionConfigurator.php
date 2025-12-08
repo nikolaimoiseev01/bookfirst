@@ -16,12 +16,26 @@ class ExceptionConfigurator
 
     public static function register($exceptions): void
     {
+
         /*
         |--------------------------------------------------------------------------
         | 404 — Страница не найдена
         |--------------------------------------------------------------------------
         */
         $exceptions->render(function (NotFoundHttpException $e, Request $request) {
+
+            // ✅ Не логируем статику
+            if ($request->is('*.png') ||
+                $request->is('*.jpg') ||
+                $request->is('*.jpeg') ||
+                $request->is('*.svg') ||
+                $request->is('*.ico') ||
+                $request->is('*.webp') ||
+                $request->is('fonts/*') ||
+                $request->is('fixed/*')
+            ) {
+                return null;
+            }
 
             // ✅ В DEBUG показываем стандартную Laravel 404
             if (config('app.debug')) {
