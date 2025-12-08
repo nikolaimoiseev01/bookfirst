@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Chats\Tables;
 use App\Enums\ChatStatusEnums;
 use App\Filament\Resources\Chats\Pages\EditChat;
 use App\Filament\Resources\Chats\Pages\ViewChat;
+use App\Models\Chat\Message;
 use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
@@ -27,7 +28,7 @@ class ChatsTable
                     ->badge()
                     ->searchable()
                     ->label('Статус')
-                    ->color(function($state) {
+                    ->color(function ($state) {
                         $status = match ($state) {
                             ChatStatusEnums::EMPTY, ChatStatusEnums::PERSONAL_CHAT => 'primary',
                             ChatStatusEnums::WAIT_FOR_USER => 'warning',
@@ -58,7 +59,18 @@ class ChatsTable
                     })
                     ->limit(40)
                     ->label('Последнее сообщение'),
-                TextColumn::make('created_at')->label('Создан')->dateTime()->searchable(),
+                TextColumn::make('messages.0.created_at')
+                    ->searchable()
+                    ->getStateUsing(function ($record) {
+                        return $record->messages
+                            ->sortByDesc('created_at')
+                            ->first()
+                            ?->created_at;
+                    })
+                    ->dateTime('j M H:i')
+                    ->tooltip('Время последнего сообщения')
+                    ->label('Время'),
+                TextColumn::make('created_at')->label('Создан')->tooltip('Время создания чата')->dateTime('j M H:i')->searchable(),
             ])
             ->filters([
                 //
@@ -80,7 +92,12 @@ class ChatsTable
                             ELSE 99
                         END ASC
                     ")
-                    ->orderBy('created_at', 'desc');
+                    ->orderByDesc(
+                        Message::select('created_at')
+                            ->whereColumn('chat_id', 'chats.id')
+                            ->latest()
+                            ->limit(1)
+                    );
             })
             ->recordUrl(function ($record) {
                 return match ($record['model_type']) {

@@ -25,6 +25,7 @@ class ExceptionConfigurator
 
             // ✅ В DEBUG показываем стандартную Laravel 404
             if (config('app.debug')) {
+                dd(123);
                 return null;
             }
 
@@ -38,7 +39,6 @@ class ExceptionConfigurator
                 )
             );
 
-            return response()->view('errors.404', 404);
         });
 
         $exceptions->render(function (AuthenticationException $e, Request $request) {
@@ -84,46 +84,25 @@ class ExceptionConfigurator
         */
         $exceptions->render(function (\Throwable $e, Request $request) {
 
-            $errorId = Str::uuid()->toString();
-
-            // HTTP статус
-            $statusCode = $e instanceof HttpExceptionInterface
-                ? $e->getStatusCode()
-                : 500;
-
-            // Уровень логирования
-            $logLevel = match (true) {
-                $statusCode >= 500 => 'error',
-                $statusCode >= 400 => 'warning',
-                default => 'info',
-            };
-
-            Log::$logLevel(
-                "🔴 Exception {$statusCode} | {$e->getMessage()}",
-                array_merge(
-                    self::context($e, $request, $statusCode, $errorId),
-                    ['exception' => $e]
-                )
-            );
-
-            // ✅ В DEBUG — стандартный Laravel Ignition / Symfony
-            if (config('app.debug')) {
+            // ✅ Если это HTTP-исключение — НЕ ТРОГАЕМ
+            if ($e instanceof HttpExceptionInterface) {
                 return null;
             }
 
-            // ✅ В PRODUCTION — кастомные страницы
-            if ($statusCode === 403) {
-                return response()->view('errors.403', [
-                    'message'  => 'Доступ запрещён',
-                    'error_id' => $errorId,
-                ], 403);
-            }
+            $errorId = Str::uuid()->toString();
 
-            if ($statusCode === 401) {
-                return response()->view('errors.401', [
-                    'message'  => 'Требуется авторизация',
-                    'error_id' => $errorId,
-                ], 401);
+            $statusCode = 500;
+
+            Log::error(
+                "🔴 Exception 500 | {$e->getMessage()}",
+                [
+                    ...self::context($e, $request, 500, $errorId),
+                    'exception' => $e,
+                ]
+            );
+
+            if (config('app.debug')) {
+                return null;
             }
 
             return response()->view('errors.500', [
