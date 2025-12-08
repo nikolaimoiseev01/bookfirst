@@ -4,6 +4,7 @@ namespace App\Livewire\Pages\Account\Chat;
 
 use App\Enums\ChatStatusEnums;
 use App\Filament\Resources\Chats\Pages\EditChat;
+use App\Filament\Resources\Chats\Pages\ViewChat;
 use App\Jobs\TelegramNotificationJob;
 use App\Models\Chat\Chat;
 use App\Models\Chat\Message;
@@ -89,6 +90,11 @@ class CreateChatPage extends Component
                     $subject = '📌Открыт новый чат!📌';
                     $userFromName = Auth::user()->getUserFullName();
                     $text = "Автор: {$userFromName} \n $this->text";
+                    $chatUrl = match ($chat['model_type']) {
+                        'Collection', 'OwnBook', 'ExtPromotion' => $chat->model->adminEditPageWithoutLogin(),
+                        default => ViewChat::getUrl(['record' => $chat])
+                    };
+                    $url = route('login_as_secondary_admin', ['url_redirect' => $chatUrl]);
                     $notification = new TelegramDefaultNotification($subject, $text, $url);
                     TelegramNotificationJob::dispatch($notification);
                 }
