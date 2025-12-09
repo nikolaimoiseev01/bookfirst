@@ -23,18 +23,20 @@ class OwnBookPage extends Component
     public function mount($slug)
     {
         $this->ownBook = OwnBook::where('slug', $slug)->with('user')->with(['media', 'user.media'])->with('printOrders')->first();
-        $this->info = [
-            'Кол-во страниц' => $this->ownBook['pages'],
-            'Первоначальный тираж' => ($this->ownBook->printOrders[0]['books_cnt'] ?? 0) + 16,
-            'Обложка' => $this->ownBook->printOrders[0]['cover_type'] ?? 'Твердая',
-            'Внутренний блок' => $this->ownBook->printOrders[0]['inside_type'] ?? 'Черно-белый',
-        ];
-        $this->tabs = [
-            'default' => 'read_part',
-            'tabs' => [
-                'read_part' => 'Читать фрагмент'
-            ]
-        ];
+        if ($this->ownBook) {
+            $this->info = [
+                'Кол-во страниц' => $this->ownBook['pages'],
+                'Первоначальный тираж' => ($this->ownBook->printOrders[0]['books_cnt'] ?? 0) + 16,
+                'Обложка' => $this->ownBook->printOrders[0]['cover_type'] ?? 'Твердая',
+                'Внутренний блок' => $this->ownBook->printOrders[0]['inside_type'] ?? 'Черно-белый',
+            ];
+            $this->tabs = [
+                'default' => 'read_part',
+                'tabs' => [
+                    'read_part' => 'Читать фрагмент'
+                ]
+            ];
+        }
     }
 
     public function createPayment($amount)

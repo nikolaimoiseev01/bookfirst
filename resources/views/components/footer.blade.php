@@ -1,4 +1,5 @@
 <footer class="{{$bg}} py-4 w-full sm:pb-20 relative z-40">
+    <img src="{{$manSitting}}" class="absolute w-20 bottom-0 right-[2rem] bottom-[95px] w-[250px] lg:bottom-[86px] md:hidden" alt="">
     <div class=" content flex gap-8 items-center justify-evenly  text-xl text-white flex-wrap">
         <div class="text-center leading-tight">
             Независимое издательство<br>

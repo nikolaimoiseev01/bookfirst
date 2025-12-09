@@ -9,6 +9,7 @@ import {Navigation, Pagination} from "swiper/modules";
 import collapse from '@alpinejs/collapse'
 import "delicious-hamburgers/scss/_base.scss"
 import "delicious-hamburgers/scss/animations/_converge.scss";
+import Snowflakes from "magic-snowflakes"
 
 
 Swiper.use([Navigation, Pagination]);
@@ -107,15 +108,6 @@ window.loggedCheck = function () {
 
 
 
-document.addEventListener('DOMContentLoaded', () => {
-    window.loggedCheck()
-});
-
-document.addEventListener('livewire:navigated', () => {
-    window.loggedCheck()
-});
-
-
 const params = new URLSearchParams(window.location.search);
 const confirmPayment = params.get('confirm_payment');
 
@@ -157,3 +149,37 @@ if (confirmPayment) {
         showConfirmButton: false
     });
 }
+
+
+//region -- Новогодние снежинки
+function makeSnowFlakes() {
+    var count_snows = 20
+    if(window.innerWidth > 768) {
+        count_snows = 20
+    } else {
+        count_snows = 10
+    }
+    new Snowflakes({
+        color: '#5ECDEF', // Default: "#5ECDEF"
+        container: document.body, // Default: document.body
+        count: count_snows, // 100 snowflakes. Default: 50
+        minOpacity: 0.4, // From 0 to 1. Default: 0.6
+        maxOpacity: 0.8, // From 0 to 1. Default: 1
+        minSize: 10, // Default: 10
+        maxSize: 20, // Default: 25
+        rotation: true, // Default: true
+        speed: 1, // The property affects the speed of falling. Default: 1
+        wind: true, // Without wind. Default: true
+        zIndex: 9997 // Default: 9999
+    });
+}
+//endregion
+
+document.addEventListener('DOMContentLoaded', () => {
+    window.loggedCheck()
+});
+
+document.addEventListener('livewire:navigated', () => {
+    window.loggedCheck()
+    makeSnowFlakes()
+});

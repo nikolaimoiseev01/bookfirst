@@ -27,6 +27,7 @@ class Footer extends Component
         } else {
             $bg = 'bg-green-500';
         }
-        return view('components.footer', ['bg' => $bg]);
+        $manSitting = '/fixed/mascots/' . (config('app.winter_mode') ? 'man_sitting_winter.svg' : 'man_sitting.svg');
+        return view('components.footer', ['bg' => $bg, 'manSitting' => $manSitting]);
     }
 }

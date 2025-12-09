@@ -129,4 +129,6 @@ return [
         'ext_promotion_admin' => env('LOGIN_AS_EXT_PROMOTION_ADMIN')
     ],
 
+    'winter_mode' => env('WINTER_MODE', false)
+
 ];
