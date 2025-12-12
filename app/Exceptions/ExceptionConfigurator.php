@@ -70,7 +70,7 @@ class ExceptionConfigurator
             $statusCode = 500;
 
             Log::error(
-                "🔴 Exception 500 | {$e->getMessage()}",
+                "🔴 Exception 500 | {$e->getMessage()} | {$request->fullUrl()}",
                 [
                     ...self::context($e, $request, 500, $errorId),
                     'exception' => $e,

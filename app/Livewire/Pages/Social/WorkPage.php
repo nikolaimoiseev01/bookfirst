@@ -28,7 +28,9 @@ class WorkPage extends Component
 
     public function render()
     {
-        $this->workComments = WorkComment::where('work_id', $this->work['id'])->orderBy('created_at', 'desc')->get();
+        if ($this->work) {
+            $this->workComments = WorkComment::where('work_id', $this->work['id'])->orderBy('created_at', 'desc')->get();
+        }
         return view('livewire.pages.social.work-page');
     }
 
@@ -58,8 +60,8 @@ class WorkPage extends Component
         if ($this->work) {
             $this->workLikesCount = $this->work['likes_count'];
             $this->userHasLike = auth()->id() ? $this->work->likes()->where('user_id', auth()->user()->id)->exists() : false;
+            $this->user = User::where('id', $this->work['user_id'])->withCount('works', 'awards', 'subscribers', 'subscribedToUsers')->first();
         }
-        $this->user = User::where('id', $this->work['user_id'])->withCount('works', 'awards', 'subscribers', 'subscribedToUsers')->first();
     }
 
     public function addRemoveLike()

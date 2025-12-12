@@ -33,7 +33,6 @@ class OwnBookPaymentService
     public function firstPayment() {
 
         $transactionData = json_decode($this->yooKassaObject['metadata']['transaction_data'], true);
-        Log::info('OwnBookPaymentService started!', $transactionData);
         $ownBook = OwnBook::where('id', $transactionData['own_book_id'])->first();
         $ownBook->update([
             'status_general' => OwnBookStatusEnums::WORK_IN_PROGRESS->value,
@@ -53,7 +52,6 @@ class OwnBookPaymentService
     }
     public function firstAuthorPrintPayment() {
         $transactionData = json_decode($this->yooKassaObject['metadata']['transaction_data'], true);
-        Log::info('OwnBookPaymentService started!', $transactionData);
         $ownBook = OwnBook::where('id', $transactionData['own_book_id'])->first();
         $ownBook->update([
             'status_general' => OwnBookStatusEnums::PRINT_WAITING->value,

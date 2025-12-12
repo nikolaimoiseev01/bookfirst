@@ -67,6 +67,11 @@ class Participation extends Model
 
     public function adminEditPage(): string
     {
+        return route('login_as_secondary_admin', ['url_redirect', EditParticipation::getUrl(['record' => $this])]);
+    }
+
+    public function adminEditPageWithoutLogin(): string
+    {
         return EditParticipation::getUrl(['record' => $this]);
     }
 
