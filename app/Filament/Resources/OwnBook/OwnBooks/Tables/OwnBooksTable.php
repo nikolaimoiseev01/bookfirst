@@ -5,9 +5,11 @@ namespace App\Filament\Resources\OwnBook\OwnBooks\Tables;
 use App\Enums\OwnBookCoverStatusEnums;
 use App\Enums\OwnBookInsideStatusEnums;
 use App\Enums\OwnBookStatusEnums;
+use App\Filament\Resources\OwnBook\OwnBooks\OwnBookResource;
 use App\Models\Collection\Collection;
 use App\Models\OwnBook\OwnBook;
 use App\Models\Work\Work;
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -110,6 +112,9 @@ class OwnBooksTable
                     ])
                 ])
             ])
+//            ->recordUrl(function() {
+//                return '123';
+//            })
             ->contentGrid([
                 'xl' => 2,
                 '2xl' => 3
@@ -125,8 +130,8 @@ class OwnBooksTable
                     ->multiple()
             ])
             ->defaultSort('created_at', 'desc')
-            ->recordActions([
-//                EditAction::make()
+            ->actions([
+                Action::make('edit')->url(fn (Model $record): string => OwnBookResource::getUrl('edit', ['record' => $record]))
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
