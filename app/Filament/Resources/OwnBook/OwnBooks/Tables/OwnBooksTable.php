@@ -131,7 +131,9 @@ class OwnBooksTable
             ])
             ->defaultSort('created_at', 'desc')
             ->actions([
-                Action::make('edit')->url(fn (Model $record): string => OwnBookResource::getUrl('edit', ['record' => $record]))
+                Action::make('edit')
+                    ->hiddenLabel()
+                    ->url(fn (Model $record): string => OwnBookResource::getUrl('edit', ['record' => $record]))
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
