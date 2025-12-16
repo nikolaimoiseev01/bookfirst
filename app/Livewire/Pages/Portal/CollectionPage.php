@@ -31,18 +31,18 @@ class CollectionPage extends Component
         $this->info = [
             'Статус сборника' => 'Идет прием заявок',
             'Тираж сборника' => '~ 100 экземпляров',
-//            'Формат' => $this->collection->workType['name'] ?? '',
             'Обложка' => 'Мягкая, цветная'
         ];
 
         if ($this->collection['status'] == CollectionStatusEnums::APPS_IN_PROGRESS) {
+            $this->info['Фонд конкурса*'] = '5000 руб.!';
             $this->tabs = [
                 'default' => 'process',
                 'tabs' => [
                     'process' => 'Порядок участия',
                     'calculator' => 'Калькулятор',
                     'dates' => 'Даты издания',
-                    'free_participation' => 'Бесплатное участие'
+                    'free_participation' => 'Бесплатное участие*'
                 ]
             ];
         } else {

@@ -195,7 +195,7 @@
                     <p class="text-3xl font-normal">Призы:</p>
                     <p><span class="text-green text-green-500 font-medium">1 место:</span>
                         Бесплатное участие, печатный
-                        экземпляр сборника и пересылка</p>
+                        экземпляр сборника и пересылка <span class="text-red-300 font-bold">+ 5000 руб.!</span></p>
                     <p><span class="text-green text-green-500 font-medium">2 место:</span> Половина
                         стоимости участия и
                         50% промокод для участия в следующем сборнике</p>
