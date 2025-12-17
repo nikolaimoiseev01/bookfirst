@@ -23,7 +23,7 @@
     <div class="rounded-xl
     @if($role['name'] == 'user') bg-brown-300 @else bg-green-500 @endif
     px-4 py-2 w-fit max-w-fit flex flex-col">
-        <p x-show="!showEdit" class="text-lg text-white">{{$message['text']}}</p>
+        <p x-show="!showEdit" class="text-lg text-white">{!! nl2br(e($message['text'])) !!}</p>
         <x-ui.input.text-area x-show="showEdit" model="text" :attachable="false" :sendable="false" text-model="editedText"/>
         @if(count($message->getMedia('files')) > 0)
             <div class="h-px bg-dark-100 w-full my-2"></div>
