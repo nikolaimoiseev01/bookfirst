@@ -22,7 +22,7 @@
             x-bind:class="expanded ? 'line-clamp-none' : 'line-clamp-10'"
             class="transition-all duration-500 ease-in-out text-dark-600"
         >
-            {!! $work['text'] !!}
+        {!! nl2br(e($work['text'])) !!}
         </p>
 
         <div class="mt-2">

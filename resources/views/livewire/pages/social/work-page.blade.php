@@ -7,7 +7,7 @@
         <livewire:components.social.user-header class="mb-8" :user="$user"/>
         <section class="flex flex-col max-w-5xl gap-4 mb-10">
             <h2 class="text-4xl">{{$work->title}}</h2>
-            <p>{!! $work['text'] !!}</p>
+            <p>{!! nl2br(e($work['text'])) !!}</p>
             <div class="flex flex-col gap-2">
                 <p><span class="font-medium">Рубрика:</span> {{ $work->workType['name'] }}
                     / {{ $work->workTopic['name'] }}

@@ -83,7 +83,8 @@ class ParticipationForm
                                 ->label('')
                                 ->schema([
                                     TextEntry::make('work.title'),
-                                    TextEntry::make('work.text'),
+                                    TextEntry::make('work.text')->formatStateUsing(fn (?string $state) => nl2br(e($state)))
+                                        ->html(),
                                 ])
                                 ->grid(2)
                         ])->collapsed(),
