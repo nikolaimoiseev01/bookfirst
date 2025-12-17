@@ -7,9 +7,10 @@
                     @if ($comment['page'])
                         Стр.: {{$comment['page']}}.
                     @endif
-                    {{$comment['text']}}
+                    {!! nl2br(e($comment['text'])) !!}
                 </p>
-                <p class="text-dark-350 italic text-lg">Статус: {{$comment['flg_done'] ? 'учтено' : 'в работе'}}</p>
+                <p class="text-dark-350 italic text-lg">
+                    Статус: {{$comment['flg_done'] ? 'учтено' : 'в работе'}}</p>
             </div>
 
         @endforeach
@@ -21,13 +22,16 @@
                     <x-ui.input.text color="yellow" type="number" wire:model="page" class="!w-max"
                                      placeholder="Страница"/>
                 @endif
-                <x-ui.input.text-area description="Опишите исправление и отправьте с помощью иконки самолетика" color="brown-400"/>
+                <x-ui.input.text-area
+                    description="Опишите исправление и отправьте с помощью иконки самолетика"
+                    color="brown-400"/>
             </div>
         </div>
     @endif
     @if($modelType == 'OwnBook' && !$disabled)
         <div class="flex flex-col gap-4">
-            <x-ui.button color="yellow" wire:click="sendToCorrect">Отравить на исправление</x-ui.button>
+            <x-ui.button color="yellow" wire:click="sendToCorrect">Отравить на исправление
+            </x-ui.button>
             <x-ui.button wire:click="approve">Утвердить макет</x-ui.button>
         </div>
     @endif
