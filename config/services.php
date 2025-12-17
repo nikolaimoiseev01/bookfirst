@@ -72,7 +72,11 @@ return [
         'redirect' => env('YANDEX_REDIRECT_URI')
     ],
 
-    'yandex-maps-key' =>  env('YANDEX_MAPS_API_KEY')
+    'yandex-maps-key' =>  env('YANDEX_MAPS_API_KEY'),
+
+    'shortener' => [
+        'api_key' => env('SHORTENER_API_KEY'),
+    ],
 
 
 ];

@@ -45,6 +45,7 @@ use App\Livewire\Pages\Portal\OwnBooksReleasedPage;
 use App\Livewire\Pages\Social\UserPage;
 use App\Livewire\Pages\Social\WorkPage;
 use App\Livewire\Pages\Social\WorksFeedPage;
+use App\Models\ShortLink;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -166,3 +167,9 @@ Route::get('login_as_ext_promotion_admin_' . config('app.login_as.ext_promotion_
 
 Route::any('/cdek/service', \App\Http\Controllers\CdekServiceController::class);
 
+
+Route::get('/{code}', function ($code) {
+    $link = ShortLink::where('code', $code)->firstOrFail();
+    $link->increment('clicks');
+    return redirect()->away($link->original_url);
+});
