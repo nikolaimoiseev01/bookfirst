@@ -40,7 +40,7 @@ function formatDate($date, $format='j F', $addDays=0):string {
 }
 
 function getTelegramChatId($chat = null) {
-    if (ENV('APP_ENV') == 'local') {
+    if (config('app.env') == 'local') {
         $chatId = config('services.telegram-chats.test');
     } else {
         if ($chat == 'extPromotion') {

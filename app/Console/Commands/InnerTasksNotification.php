@@ -36,7 +36,7 @@ class InnerTasksNotification extends Command
         return match ($type) {
             InnerTaskTypeEnums::OWN_BOOK_GENERAL->value => 'Книги',
             InnerTaskTypeEnums::OWN_BOOK_INSIDE->value => 'Макеты',
-            InnerTaskTypeEnums::OWN_BOOK_COVER->value => 'Обложки',
+            InnerTaskTypeEnums::OWN_BOOK_COVER->value => 'Обложки @Kris_Moi',
             InnerTaskTypeEnums::COLLECTION->value => 'Сборники',
             default => ucfirst($type),
         };
