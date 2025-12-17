@@ -18,12 +18,12 @@ class RegisterPage extends Component
         return view('livewire.pages.auth.register-page');
     }
 
-    public string $name = '';
-    public string $surname = '';
-    public string $nickname = '';
-    public string $email = '';
-    public string $password = '';
-    public string $password_confirmation = '';
+    public string $name;
+    public string $surname;
+    public string $nickname;
+    public string $email;
+    public string $password;
+    public string $password_confirmation;
 
     /**
      * Handle an incoming registration request.
@@ -46,9 +46,9 @@ class RegisterPage extends Component
     {
         try {
             $validated = $this->validate([
-                'name' => ['required', 'string', 'max:255'],
-                'surname' => ['required', 'string', 'max:255'],
-                'nickname' => ['string', 'max:255'],
+                'name' => ['required', 'max:255'],
+                'surname' => ['required', 'max:255'],
+                'nickname' => ['nullable', 'max:255'],
                 'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
                 'password' => ['required', 'string', 'confirmed', Password::defaults()],
             ]);
