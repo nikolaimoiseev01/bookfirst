@@ -183,3 +183,73 @@ document.addEventListener('livewire:navigated', () => {
     window.loggedCheck()
     makeSnowFlakes()
 });
+
+window.Cookie = {
+    /**
+     * Установить cookie
+     */
+    set: function (name, value, days = 30, path = '/') {
+        let expires = '';
+        if (days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = '; expires=' + date.toUTCString();
+        }
+        document.cookie = name + '=' + encodeURIComponent(value) + expires + '; path=' + path;
+    },
+
+    /**
+     * Получить cookie
+     */
+    get: function (name) {
+        const nameEQ = name + '=';
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i].trim();
+            if (c.indexOf(nameEQ) === 0) {
+                return decodeURIComponent(c.substring(nameEQ.length));
+            }
+        }
+        return null;
+    },
+
+    /**
+     * Удалить cookie
+     */
+    delete: function (name, path = '/') {
+        document.cookie = name + '=; Max-Age=-1; path=' + path;
+    }
+};
+
+
+$(document).ready(function () {
+
+    function getQueryParam(name) {
+        const params = new URLSearchParams(window.location.search);
+        return params.get(name);
+    }
+
+    const utmSource = getQueryParam('utm_source');
+    const utmMedium = getQueryParam('utm_medium');
+    const utmCampaign = getQueryParam('utm_campaign');
+    const utmContent = getQueryParam('utm_content');
+
+    // сохраняем только если они есть в URL
+    if (utmSource) {
+        Cookie.set('utm_source', utmSource, 30);
+    }
+
+    if (utmMedium) {
+        Cookie.set('utm_medium', utmMedium, 30);
+    }
+
+    if (utmCampaign) {
+        console.log(5)
+        Cookie.set('utm_campaign', utmCampaign, 30);
+    }
+
+    if (utmContent) {
+        Cookie.set('utm_content', utmContent, 30);
+    }
+
+});

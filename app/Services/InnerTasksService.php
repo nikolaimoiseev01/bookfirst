@@ -90,7 +90,7 @@ class InnerTasksService
                 $ownBook['paid_at_print_only']->addDays(3)],
 
             OwnBookStatusEnums::PRINTING =>
-            ["Птправить заказ автору",
+            ["Отправить заказ автору",
             "Отправить книгу автору: {$ownBook['title']}",
                 $ownBook['deadline_print']],
 

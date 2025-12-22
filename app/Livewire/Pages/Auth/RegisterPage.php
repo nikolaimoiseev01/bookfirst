@@ -55,7 +55,15 @@ class RegisterPage extends Component
 
             $validated['password'] = Hash::make($validated['password']);
 
-            event(new Registered($user = User::create($validated)));
+
+            event(new Registered(    $user = User::create([
+                ...$validated,
+                'reg_utm_source' => $_COOKIE['utm_source'] ?? null,
+                'reg_utm_medium' => $_COOKIE['utm_medium'] ?? null,
+                'reg_utm_campaign' => $_COOKIE['utm_campaign'] ?? null,
+                'reg_utm_content' => $_COOKIE['utm_content'] ?? null,
+                'reg_type' => 'self'
+            ])));
 
             $user->assignRole('User');
             Auth::login($user);
