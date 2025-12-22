@@ -165,7 +165,7 @@ class InnerTaskResource extends Resource
             ->filters([
                 //
             ])
-            ->defaultSort('deadline', 'desc')
+            ->defaultSort('deadline', 'asc')
             ->recordActions([
                 ViewAction::make(),
             ])
