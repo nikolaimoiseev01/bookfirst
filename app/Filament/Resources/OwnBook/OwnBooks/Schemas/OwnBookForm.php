@@ -165,6 +165,8 @@ class OwnBookForm
                             ->numeric(),
                         TextInput::make('price_text_check')
                             ->numeric(),
+                        TextInput::make('price_inside')
+                            ->numeric(),
                         TextInput::make('price_cover')
                             ->numeric(),
                         TextInput::make('price_promo')
