@@ -196,7 +196,7 @@ class OwnBookForm
                             TextEntry::make('initialPrintOrder.price_print')
                                 ->label('Цена печати')
                                 ->numeric(),
-                            DatePicker::make('initialPrintOrder.deadline_print'),
+                            DatePicker::make('deadline_print'),
                             TextEntry::make('initialPrintOrder.price_send')
                                 ->label('Цена отправки')
                                 ->numeric(),
