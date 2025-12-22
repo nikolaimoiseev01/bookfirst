@@ -50,7 +50,6 @@ class ChatsTable
                     ->label('Тема')
                     ->searchable(),
                 TextColumn::make('messages.0.text')
-                    ->searchable()
                     ->getStateUsing(function ($record) {
                         return $record->messages
                             ->sortByDesc('created_at')
@@ -60,7 +59,6 @@ class ChatsTable
                     ->limit(40)
                     ->label('Последнее сообщение'),
                 TextColumn::make('messages.0.created_at')
-                    ->searchable()
                     ->getStateUsing(function ($record) {
                         return $record->messages
                             ->sortByDesc('created_at')
