@@ -63,7 +63,6 @@ class AdminPanelProvider extends PanelProvider
             ->navigation(function (NavigationBuilder $builder): NavigationBuilder {
                 return $builder->items([
                     ...Dashboard::getNavigationItems(),
-                    ...StatDashboard::getNavigationItems(),
 
                     ...self::shielded(CollectionResource::class),
                     ...self::shielded(OwnBookResource::class),
