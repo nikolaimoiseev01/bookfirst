@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\StatDashboard;
 use App\Filament\Resources\Chats\ChatResource;
 use App\Filament\Resources\Roles\RoleResource;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
@@ -62,6 +63,7 @@ class AdminPanelProvider extends PanelProvider
             ->navigation(function (NavigationBuilder $builder): NavigationBuilder {
                 return $builder->items([
                     ...Dashboard::getNavigationItems(),
+                    ...StatDashboard::getNavigationItems(),
 
                     ...self::shielded(CollectionResource::class),
                     ...self::shielded(OwnBookResource::class),
