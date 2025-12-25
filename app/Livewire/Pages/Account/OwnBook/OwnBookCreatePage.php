@@ -200,18 +200,18 @@ class OwnBookCreatePage extends Component
 
     public function getConfirmText() {
         $uploadedText = ($this->insideType == 'Файлом') ? 'файлов: ' . count($this->insideFiles) : 'работ: ' . count($this->selectedWorks);
-        $designText = ($this->needTextDesign ? 'необходим дизайн (' . $this->prices['priceTextDesign'] . ' руб.); ' : '');
-        $checkText = ($this->needTextCheck ? 'необходима проверка (' . $this->prices['priceTextCheck'] . ' руб.); ' : '');
-        $insideText = $uploadedText . $designText . $checkText;
-        $coverText = $this->coverReady ? 'необходимо создание (1500 руб.).' : 'полностью готова.';
+        $designText = ($this->needTextDesign ? 'необходим дизайн (' . $this->prices['priceTextDesign'] . ' р.); ' : '');
+        $checkText = ($this->needTextCheck ? 'необходима проверка (' . $this->prices['priceTextCheck'] . ' р.); ' : '');
+        $insideText = (($designText == '' && $checkText == '') ? 'дизайн и проверка не нужны. '  : $designText . $checkText) . 'Стоимость подготовки: '  . $this->prices['priceInside'] . ' р.';
+        $coverText = $this->coverReady ? 'полностью готова.' : 'необходимо создание (1500 р.).';
         $printText = ($this->needPrint) ?
             'экземпляров: ' . $this->booksCnt
-            . '. Стоимость: ' . $this->prices['pricePrint'] . ' руб'
             . '. Обложка: ' . $this->coverType
-            . '. Внутренний блок: ' . $this->insideColor . ($this->pagesColor > 0 ? $this->pagesColor . ' цветных страниц).' : '')
+            . '. Внутренний блок: ' . $this->insideColor . ($this->pagesColor > 0 ? ' (цв. стр.: ' . $this->pagesColor . ')' : '')
+            . '. Стоимость: ' . $this->prices['pricePrint'] . ' р.'
             . "<br><b>Адрес:</b> " . $this->addressJson['string']
             : 'не нужна. ';
-        $promoText = $this->needPromo ? 'нужен ' . $this->internalPromoType . ' вариант. (' . $this->prices['pricePromo'] . ' руб.)' : 'не нужно.';
+        $promoText = $this->needPromo ? 'нужен ' . $this->internalPromoType . ' вариант. (' . $this->prices['pricePromo'] . ' р.)' : 'не нужно.';
         $fullTotalPrice = $this->prices['priceTotal'] + $this->prices['pricePrint'] ?? 0;
         return "<p><b>Книга:</b> {$this->author}: '{$this->title}'</p>
                 <p><b>Загружено {$uploadedText}. </b>(страниц: {$this->pages})</p>

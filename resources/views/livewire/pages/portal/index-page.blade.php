@@ -4,14 +4,14 @@
     @endsection
     <x-video-modal/>
     <section class="h-screen lg:h-auto lg:mb-32 w-full flex items-center">
-        <svg class="absolute lg:hidden left-0 top-0 h-full" id="Слой_1" data-name="Слой 1"
+        <svg class="absolute xl:hidden left-0 top-0 h-full" id="Слой_1" data-name="Слой 1"
              xmlns="http://www.w3.org/2000/svg"
              viewBox="0 0 531.37 733.2">
             <path
                 d="M0,0V733.2c160.82-13.53,151.4-116.91,245-168.7C561,453.3,564.65,307.64,494.5,213,454.77,159.4,298.39,0,270.8,0Z"
                 class="fill-[#fffbef] dark:fill-[#292929]"/>
         </svg>
-        <svg class="absolute lg:hidden right-0 max-h-[70vh] top-1/2 -translate-y-1/2" id="Слой_1"
+        <svg class="absolute xl:hidden right-0 max-h-[70vh] top-1/2 -translate-y-1/2" id="Слой_1"
              data-name="Слой 1"
              xmlns="http://www.w3.org/2000/svg" viewBox="0 0 681 673">
             <path
@@ -20,7 +20,7 @@
         </svg>
         <div
             class="max-w-(--breakpoint-3xl) mx-auto w-[90%] gap-16 flex lg:flex-col lg:content justify-between items-center relative">
-            <div class="flex flex-col gap-4 lg:max-w-auto lg:w-full lg:text-center max-w-[600px]">
+            <div class="flex flex-col gap-4 lg:max-w-auto lg:w-full lg:text-center w-1/2 min-w-1/2">
                 <p class="hidden md:block">Независимое издательство<br>Первая Книга</p>
                 <h2 class="text-7xl font-medium text-black-500 dark:text-white text-nowrap md:text-5xl">Ваш шаг в мир<br>литературы
                 </h2>
@@ -39,7 +39,10 @@
                     </x-ui.link-simple>
                 </div>
             </div>
-            <img src="{{$women['welcome']}}" class="max-w-3xl xl:max-w-[30%] md:!max-w-[90%] md:w-full" alt="">
+            <div class="flex-1 xl:w-full xl:!max-w-[90%]">
+                <img src="{{$women['welcome']}}" class="max-w-3xl ml-auto w-full lg:!max-w-[80%] lg:!mx-auto" alt="">
+            </div>
+
         </div>
     </section>
 

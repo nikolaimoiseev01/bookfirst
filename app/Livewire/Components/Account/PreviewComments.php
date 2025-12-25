@@ -6,6 +6,7 @@ use App\Enums\OwnBookCoverStatusEnums;
 use App\Enums\OwnBookInsideStatusEnums;
 use App\Enums\OwnBookStatusEnums;
 use App\Filament\Resources\OwnBook\OwnBooks\Pages\EditOwnBook;
+use App\Jobs\InnerTaskUpdateJob;
 use App\Jobs\PdfCutJob;
 use App\Jobs\TelegramNotificationJob;
 use App\Models\OwnBook\OwnBook;
@@ -109,6 +110,7 @@ class PreviewComments extends Component
             "status_{$this->commentType}" => $this->commentType == 'inside' ? OwnBookInsideStatusEnums::CORRECTIONS : OwnBookCoverStatusEnums::CORRECTIONS,
             "deadline_{$this->commentType}" => $correctDeadline
         ]);
+        InnerTaskUpdateJob::dispatch();
         $this->sendCorrectionNotification($correctDeadline);
         $this->dispatch('updateOwnBookPage');
         $this->dispatch('swal', type: 'success', text: "Исправления приняты! В течение 4 дней здесь появится обновленная версия.");
@@ -136,6 +138,7 @@ class PreviewComments extends Component
             $this->sendApproverdNotification();
             $this->dispatch('updateOwnBookPage');
             $this->dispatch('swal', type: 'success', text: $text);
+            InnerTaskUpdateJob::dispatch();
         });
 
     }

@@ -7,6 +7,7 @@ use App\Filament\Resources\Chats\Pages\ViewChat;
 use App\Jobs\EmailNotificationJob;
 use App\Jobs\TelegramNotificationJob;
 use App\Models\Chat\Message;
+use App\Models\Chat\MessageTemplate;
 use App\Notifications\ChatMessageEmailNotification;
 use App\Notifications\OwnBook\OwnBookCreatedNotification;
 use App\Notifications\TelegramDefaultNotification;
@@ -34,6 +35,7 @@ class Chat extends Component
     public $files = [];
 
     public $isSending = false;
+    public $messageTemplates;
 
 
     protected $listeners = ['refreshChat' => '$refresh'];
@@ -70,6 +72,10 @@ class Chat extends Component
                 $this->chat->userTo->getUserFullName() :
                 $this->chat->userCreated->getUserFullName();
             $this->text = "Здравствуйте, {$author}!";
+            $this->messageTemplates = MessageTemplate::query()
+                ->get()
+                ->groupBy('type')
+                ->toArray();
         }
     }
 

@@ -6,6 +6,7 @@ use App\Enums\OwnBookStatusEnums;
 use App\Enums\PrintOrderStatusEnums;
 use App\Filament\Resources\OwnBook\OwnBooks\OwnBookResource;
 use App\Jobs\EmailNotificationJob;
+use App\Jobs\InnerTaskUpdateJob;
 use App\Jobs\PdfCutJob;
 use App\Notifications\Collection\ParticipationStatusUpdate;
 use App\Notifications\OwnBook\OwnBookStatusUpdateNotification;
@@ -75,7 +76,7 @@ class EditOwnBook extends EditRecord
                 'deadline_print' => Carbon::now()->addDays(14),
             ]);
         }
-        (new InnerTasksService())->update();
+        InnerTaskUpdateJob::dispatch();
     }
 
     public function getTitle(): HtmlString

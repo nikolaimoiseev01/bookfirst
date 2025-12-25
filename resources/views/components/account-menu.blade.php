@@ -12,4 +12,12 @@
                class="text-dark-100 font-semibold text-xl  transition text-nowrap md:hidden">{{ $link['name'] }}</span>
         </a>
     @endforeach
+    @hasrole('admin')
+        <a href="/admin"
+           class="flex gap-2 group px-4 py-1 rounded-lg items-center cursor-pointer w-full sm:min-w-10 sm:min-h-10 sm:h-10 sm:w-10 sm:!px-1 sm:justify-center">
+            <x-dynamic-component :component="$link['icon']" class="group-hover:text-green-500 w-6 h-6 text-dark-100 transition"/>
+            <span
+                class="group-hover:text-green-500 text-dark-100 font-semibold text-xl  transition text-nowrap md:hidden">Админка</span>
+        </a>
+    @endhasrole
 </nav>

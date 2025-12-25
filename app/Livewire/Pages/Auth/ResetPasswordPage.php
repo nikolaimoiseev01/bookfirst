@@ -81,7 +81,7 @@ class ResetPasswordPage extends Component
             // If the password was successfully reset, we will redirect the user back to
             // the application's home authenticated view. If there is an error we can
             // redirect them back to where they came from with their error message.
-            if ($status != Password::RESET_LINK_SENT) {
+            if ($status != Password::PASSWORD_RESET) {
                 throw ValidationException::withMessages([
                     'email' => [__($status)],
                 ]);
@@ -93,7 +93,7 @@ class ResetPasswordPage extends Component
                 'text' => 'Пароль изменен! Теперь вы можете войти в систему с новыми данными'
             ]);
 
-            $this->redirectRoute('auth.login', navigate: true);
+            $this->redirect(route('login'), navigate: true);
         } catch (ValidationException $e) {
             // Собираем все ошибки в одну строку или массив
             $messages = collect($e->validator->errors()->all())->implode("<br>");

@@ -35,6 +35,13 @@
     </noscript>
     <!-- /Yandex.Metrika counter -->
 
+    <link rel="icon" type="image/png" href="/fixed/favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/fixed/favicon/favicon.svg" />
+    <link rel="shortcut icon" href="/fixed/favicon/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/fixed/favicon/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="MyWebSite" />
+    <link rel="manifest" href="/fixed/favicon/site.webmanifest" />
+
     <script src="/plugins/swal/sweetalert2.all.min.js"></script>
     <link href="/plugins/swal/sweetalert2.min.css" rel="stylesheet">
     <script src="https://api-maps.yandex.ru/v3/?apikey=ad88f427-6fde-4dbd-984f-d65b8e659fd3&lang=ru_RU"></script>
@@ -54,7 +61,9 @@
     <x-account-menu/>
     <section class="p-4 max-w-8xl flex-1 pl-[19rem] md:pl-28 sm:!pl-4">
         <h1 class="text-dark-500 text-4xl font-semibold mb-6 w-fit mx-0 sm:mx-auto">@yield('title')</h1>
-        {{ $slot }}
+        <div class="relative z-[99]">
+            {{ $slot }}
+        </div>
     </section>
 </main>
 @stack('scripts')

@@ -70,11 +70,16 @@
         )
     ">
 <x-header-portal/>
-{{ $slot }}
+<div class="z-[99] flex-1">
+    {{ $slot }}
+</div>
 @stack('scripts')
 <x-footer/>
 @if(session('swal'))
-    showSwal(@json(session('swal')))
+    <script type="module">
+        let params = @json(session('swal') ?? []);
+        showSwal(params.type, params.title, params.text)
+    </script>
 @endif
 </body>
 </html>

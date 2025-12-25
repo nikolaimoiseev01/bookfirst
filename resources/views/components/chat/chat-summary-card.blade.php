@@ -2,7 +2,7 @@
 @if($chosen) bg-dark-100 bg-opacity-50 @endif"
 wire:click="changeChat({{$chat['id']}})"
 >
-    <img src="{{$user_avatar}}" class="w-10 h-10 rounded-full" alt="">
+    <img src="{{$user_avatar}}" class="bg-white w-10 h-10 rounded-full" alt="">
     <span class="flex flex-col">
             <span class="text-lg font-normal">
         {{Str::limit($chat['title'], 20, '...')}}

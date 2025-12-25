@@ -2,6 +2,7 @@
 
 namespace App\Filament\Widgets;
 
+use App\Enums\ParticipationStatusEnums;
 use App\Models\Collection\Participation;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Forms\Components\DatePicker;
@@ -55,6 +56,7 @@ class ParticipationChart extends ChartWidget
         $this->end   = Carbon::parse($this->filters['endDate'])->endOfDay();
 
         $baseQuery = Participation::query()
+            ->where('participations.status', ParticipationStatusEnums::APPROVED)
             ->join('collections', 'collections.id', '=', 'participations.collection_id')
             ->whereBetween('participations.created_at', [$this->start, $this->end]);
 

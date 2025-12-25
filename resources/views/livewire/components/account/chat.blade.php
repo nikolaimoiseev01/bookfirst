@@ -17,6 +17,11 @@
 
         <!-- форма -->
         <x-ui.input.text-area model="text" attachable="true"></x-ui.input.text-area>
+
+        @hasanyrole(['admin', 'secondary_admin'])
+        <x-chat.message-templates :templates="$messageTemplates" />
+        @endhasanyrole
+
         @push('scripts')
             <script>
                 function scroll() {
