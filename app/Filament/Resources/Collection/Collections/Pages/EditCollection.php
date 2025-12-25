@@ -27,10 +27,11 @@ class EditCollection extends EditRecord
         return [
             Action::make('makeWord')
                 ->label('Скачать верстку')
-                ->url(function (Model $record) {
-                    return (new WordService())->makeCollection($record);
-                }
-                )
+                ->action(function () {
+                    return response()->download(
+                        (new WordService())->makeCollection($this->record)
+                    );
+                })
         ];
     }
 
