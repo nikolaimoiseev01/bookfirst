@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Filament\Resources\Chats\Tables;
+namespace App\Filament\Resources\Chat\Chats\Tables;
 
 use App\Enums\ChatStatusEnums;
-use App\Filament\Resources\Chats\Pages\EditChat;
-use App\Filament\Resources\Chats\Pages\ViewChat;
+use App\Filament\Resources\Chat\Chats\Pages\EditChat;
+use App\Filament\Resources\Chat\Chats\Pages\ViewChat;
 use App\Models\Chat\Message;
 use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;

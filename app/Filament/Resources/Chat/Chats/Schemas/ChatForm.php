@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\Chats\Schemas;
+namespace App\Filament\Resources\Chat\Chats\Schemas;
 
 use Filament\Schemas\Schema;
 

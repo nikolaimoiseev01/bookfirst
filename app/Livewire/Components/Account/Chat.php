@@ -35,10 +35,9 @@ class Chat extends Component
     public $files = [];
 
     public $isSending = false;
-    public $messageTemplates;
 
 
-    protected $listeners = ['refreshChat' => '$refresh'];
+    protected $listeners = ['refreshChat' => '$refresh', 'selectMessageTemplate'];
 
     public function render()
     {
@@ -72,10 +71,6 @@ class Chat extends Component
                 $this->chat->userTo->getUserFullName() :
                 $this->chat->userCreated->getUserFullName();
             $this->text = "Здравствуйте, {$author}!";
-            $this->messageTemplates = MessageTemplate::query()
-                ->get()
-                ->groupBy('type')
-                ->toArray();
         }
     }
 
@@ -103,7 +98,7 @@ class Chat extends Component
             } else {
                 $chatToSend = 'main';
                 $preUrl = match ($this->chat['model_type']) {
-                    'Collection', 'OwnBook', 'Participation' =>  $this->chat->model->adminEditPageWithoutLogin(),
+                    'Collection', 'OwnBook', 'Participation' => $this->chat->model->adminEditPageWithoutLogin(),
                     default => ViewChat::getUrl(['record' => $this->chat])
                 };
                 $url = route('login_as_secondary_admin', ['url_redirect' => $preUrl]);
@@ -126,8 +121,9 @@ class Chat extends Component
         }
     }
 
-    public function notifyNewMessageEmail() {
-
+    public function selectMessageTemplate($text)
+    {
+        $this->text .= "\n$text";
     }
 
     public function updateChatStatus()

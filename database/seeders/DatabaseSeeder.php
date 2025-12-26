@@ -11,7 +11,6 @@ use App\Models\Chat\Chat;
 use App\Models\Chat\ChatStatus;
 use App\Models\Chat\Message;
 use App\Models\Chat\MessageTemplate;
-use App\Models\Chat\MessageTemplateType;
 use App\Models\Collection\Collection;
 use App\Models\Collection\CollectionNewsLetter;
 use App\Models\Collection\CollectionVote;

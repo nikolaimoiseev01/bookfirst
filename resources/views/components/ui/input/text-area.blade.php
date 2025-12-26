@@ -5,7 +5,7 @@
         isFocused: false,
         isDropping: false,
         isLivewire: @js($isLivewire),
-      leaveTimeout: null,
+        leaveTimeout: null,
         browseFileTrigger() {
              $el.closest('[x-data]').querySelector('.filepond--drop-label')?.click()
         },
@@ -73,6 +73,12 @@
                     @click="browseFileTrigger()"
                     class="rotate-[-30deg] w-5 h-5 cursor-pointer hidden md:block fill-{{$color}} hover:scale-110 transition"
                 />
+            @endif
+
+            @if($messageTemplatesShow)
+                @hasanyrole(['admin', 'secondary_admin'])
+                <x-chat.message-templates :templates="$messageTemplates"/>
+                @endhasanyrole
             @endif
 
             @if($sendable)

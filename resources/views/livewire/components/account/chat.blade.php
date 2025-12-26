@@ -1,8 +1,8 @@
 <div style="height: 100%" class="w-full h-[100%] chat-wrap">
-    <div class="bg-white dark:bg-dark_bg dark:border dark:border-gray-300 h-full flex flex-col">
+    <div class="bg-white dark:bg-dark_bg dark:border dark:border-gray-300 h-full flex flex-col dark:!border-none">
         <!-- список сообщений -->
         <div id="chatMessagesWrap"
-             class="flex flex-col gap-4 px-4 py-2 flex-[1_1_0] overflow-y-auto min-h-80 transition">
+             class="flex relative flex-col gap-4 px-4 py-2 flex-[1_1_0] overflow-y-auto min-h-80 transition">
             @if(count($chat['messages']) > 0 )
                 @foreach($chat['messages'] as $message)
                     <x-chat.message :message="$message"/>
@@ -16,11 +16,7 @@
         </div>
 
         <!-- форма -->
-        <x-ui.input.text-area model="text" attachable="true"></x-ui.input.text-area>
-
-        @hasanyrole(['admin', 'secondary_admin'])
-        <x-chat.message-templates :templates="$messageTemplates" />
-        @endhasanyrole
+        <x-ui.input.text-area :messageTemplatesShow="true" model="text" attachable="true"></x-ui.input.text-area>
 
         @push('scripts')
             <script>

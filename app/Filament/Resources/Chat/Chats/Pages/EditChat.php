@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filament\Resources\Chats\Pages;
+namespace App\Filament\Resources\Chat\Chats\Pages;
 
-use App\Filament\Resources\Chats\ChatResource;
+use App\Filament\Resources\Chat\Chats\ChatResource;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ViewAction;
 use Filament\Resources\Pages\EditRecord;

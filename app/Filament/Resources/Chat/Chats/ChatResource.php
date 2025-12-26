@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Filament\Resources\Chats;
+namespace App\Filament\Resources\Chat\Chats;
 
 use App\Enums\ChatStatusEnums;
-use App\Filament\Resources\Chats\Pages\CreateChat;
-use App\Filament\Resources\Chats\Pages\EditChat;
-use App\Filament\Resources\Chats\Pages\ListChats;
-use App\Filament\Resources\Chats\Pages\ViewChat;
-use App\Filament\Resources\Chats\Schemas\ChatForm;
-use App\Filament\Resources\Chats\Schemas\ChatInfolist;
-use App\Filament\Resources\Chats\Tables\ChatsTable;
+use App\Filament\Resources\Chat\Chats\Pages\CreateChat;
+use App\Filament\Resources\Chat\Chats\Pages\EditChat;
+use App\Filament\Resources\Chat\Chats\Pages\ListChats;
+use App\Filament\Resources\Chat\Chats\Pages\ViewChat;
+use App\Filament\Resources\Chat\Chats\Schemas\ChatForm;
+use App\Filament\Resources\Chat\Chats\Schemas\ChatInfolist;
+use App\Filament\Resources\Chat\Chats\Tables\ChatsTable;
 use App\Models\Chat\Chat;
 use BackedEnum;
 use Filament\Resources\Resource;
