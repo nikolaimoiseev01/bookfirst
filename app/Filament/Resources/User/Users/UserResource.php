@@ -7,6 +7,8 @@ use App\Filament\Resources\OwnBook\OwnBooks\OwnBookResource;
 use App\Filament\Resources\User\Users\Pages\CreateUser;
 use App\Filament\Resources\User\Users\Pages\EditUser;
 use App\Filament\Resources\User\Users\Pages\ListUsers;
+use App\Filament\Resources\User\Users\RelationManagers\ChatsAllRelationManager;
+use App\Filament\Resources\User\Users\RelationManagers\ExtPromotionsRelationManager;
 use App\Filament\Resources\User\Users\RelationManagers\OwnBooksRelationManager;
 use App\Filament\Resources\User\Users\RelationManagers\ParticipationsRelationManager;
 use App\Filament\Resources\User\Users\Schemas\UserForm;
@@ -47,6 +49,8 @@ class UserResource extends Resource
         return [
             ParticipationsRelationManager::class,
             OwnBooksRelationManager::class,
+            ExtPromotionsRelationManager::class,
+            ChatsAllRelationManager::class
         ];
     }
 

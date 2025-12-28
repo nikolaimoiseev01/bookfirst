@@ -49,6 +49,7 @@ class ExtPromotion extends Model
     public function adminEditPage(): string
     {
         return route('login_as_secondary_admin', ['url_redirect', EditExtPromotion::getUrl(['record' => $this])]);
+
     }
 
     public function adminEditPageWithoutLogin(): string

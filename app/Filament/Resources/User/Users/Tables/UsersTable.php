@@ -39,11 +39,11 @@ class UsersTable
                     ->searchable(),
                 TextColumn::make('created_at')
                     ->label('Дата регистрации')
-                    ->dateTime()
+                    ->dateTime('M d H:i')
                     ->sortable(),
                 TextColumn::make('last_seen')
                     ->label('Последний онлайн')
-                    ->dateTime()
+                    ->dateTime('M d H:i')
                     ->sortable(),
                 TextColumn::make('participations_count')
                     ->counts('participations')
@@ -53,6 +53,14 @@ class UsersTable
                     ->counts('ownBooks')
                     ->sortable()
                     ->label('Книг'),
+                TextColumn::make('ext_promotions_count')
+                    ->counts('extPromotions')
+                    ->sortable()
+                    ->label('Продвижений'),
+                TextColumn::make('chats_created_count')
+                    ->counts('chatsCreated')
+                    ->sortable()
+                    ->label('Чатов'),
                 TextColumn::make('works_count')
                     ->counts('works')
                     ->sortable()

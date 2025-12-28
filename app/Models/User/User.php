@@ -4,7 +4,9 @@ namespace App\Models\User;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Award\Award;
+use App\Models\Chat\Chat;
 use App\Models\Collection\Participation;
+use App\Models\ExtPromotion\ExtPromotion;
 use App\Models\OwnBook\OwnBook;
 use App\Models\Work\Work;
 use Database\Factories\UserFactory;
@@ -71,6 +73,19 @@ class User extends Authenticatable implements FilamentUser, HasMedia, MustVerify
     public function participations(): HasMany
     {
         return $this->HasMany(Participation::class);
+    }
+    public function extPromotions(): HasMany
+    {
+        return $this->HasMany(ExtPromotion::class);
+    }
+    public function chatsCreated(): HasMany
+    {
+        return $this->hasMany(Chat::class, 'user_created');
+    }
+    public function chatsAll()
+    {
+        return $this->hasMany(Chat::class, 'user_created')
+            ->orWhere('user_to', $this->id);
     }
     public function works(): HasMany
     {

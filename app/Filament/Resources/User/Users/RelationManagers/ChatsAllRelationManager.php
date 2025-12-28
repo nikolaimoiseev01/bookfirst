@@ -1,28 +1,52 @@
 <?php
 
-namespace App\Filament\Resources\Chat\Chats\Tables;
+namespace App\Filament\Resources\User\Users\RelationManagers;
 
 use App\Enums\ChatStatusEnums;
-use App\Filament\Resources\Chat\Chats\Pages\EditChat;
 use App\Filament\Resources\Chat\Chats\Pages\ViewChat;
-use App\Filament\Resources\Collection\Collections\Pages\EditCollection;
-use App\Filament\Resources\OwnBook\OwnBooks\Pages\EditOwnBook;
 use App\Filament\Resources\User\Users\Pages\EditUser;
 use App\Models\Chat\Message;
-use Filament\Actions\Action;
+use Filament\Actions\AssociateAction;
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\CreateAction;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\DissociateAction;
+use Filament\Actions\DissociateBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Actions\ViewAction;
+use Filament\Forms\Components\TextInput;
+use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
-class ChatsTable
+class ChatsAllRelationManager extends RelationManager
 {
-    public static function configure(Table $table): Table
+    protected static string $relationship = 'chatsAll';
+
+    public function form(Schema $schema): Schema
+    {
+        return $schema
+            ->components([
+                TextInput::make('title')
+                    ->required()
+                    ->maxLength(255),
+            ]);
+    }
+
+    public static function getTabComponent(Model $ownerRecord, string $pageClass): Tab
+    {
+        return Tab::make('Чаты')
+            ->badge($ownerRecord->chatsAll->count());
+    }
+
+    public function table(Table $table): Table
     {
         return $table
+            ->recordTitleAttribute('title')
             ->columns([
                 TextColumn::make('id')->searchable(),
                 TextColumn::make('userCreated.name')
@@ -51,13 +75,17 @@ class ChatsTable
                     }),
                 TextColumn::make('title')->limit(30)
                     ->getStateUsing(function ($record) {
-                        $model = $record->model;
-                        return match ($record['model_type']) {
-                            'OwnBook' => "Книга: {$model['title']}",
-                            'Participation' => "Сборник: {$model->collection['title_short']}",
-                            'ExtPromotion' => 'Чат по продвижению',
-                            default => $record['title']
-                        };
+                        $model = $record->model ?? null;
+                        if ($model) {
+                            return match ($record['model_type']) {
+                                'OwnBook' => "Книга: " . $model['title'] ?? 'Нет такой книги',
+                                'Participation' => "Сборник: {$model->collection['title_short']}",
+                                'ExtPromotion' => 'Чат по продвижению',
+                                default => $record['title']
+                            };
+                        } else {
+                            return 'Не определили заголовок';
+                        }
                     })
                     ->label('Тема')
                     ->searchable(),
@@ -82,17 +110,17 @@ class ChatsTable
                     ->label('Время'),
                 TextColumn::make('created_at')->label('Создан')->tooltip('Время создания чата')->dateTime('j M H:i')->searchable(),
             ])
+            ->recordUrl(function ($record) {
+                return match ($record['model_type']) {
+                    'Participation', 'OwnBook', 'ExtPromotion'
+                    => $record->model?->adminEditPageWithoutLogin()
+                        ?? ViewChat::getUrl(['record' => $record]),
+
+                    default => ViewChat::getUrl(['record' => $record]),
+                };
+            })
             ->filters([
                 //
-            ])
-            ->recordActions([
-                Action::make('Подробнее')
-                    ->url(function ($record) {
-                        return match ($record['model_type']) {
-                            'Participation', 'OwnBook', 'ExtPromotion' => $record->model->adminEditPageWithoutLogin(),
-                            default => ViewChat::getUrl(['record' => $record])
-                        };
-                    })
             ])
             ->defaultSort(function (Builder $query): Builder {
                 return $query
@@ -109,16 +137,11 @@ class ChatsTable
                             ->limit(1)
                     );
             })
-            ->recordUrl(function ($record) {
-                return match ($record['model_type']) {
-                    'Participation', 'OwnBook', 'ExtPromotion' => $record->model->adminEditPageWithoutLogin(),
-                    default => ViewChat::getUrl(['record' => $record])
-                };
-            })
+            ->headerActions([
+            ])
+            ->recordActions([
+            ])
             ->toolbarActions([
-                BulkActionGroup::make([
-//                    DeleteBulkAction::make(),
-                ]),
             ]);
     }
 }
