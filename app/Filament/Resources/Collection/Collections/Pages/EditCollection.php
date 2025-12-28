@@ -29,7 +29,8 @@ class EditCollection extends EditRecord
                 ->label('Скачать верстку')
                 ->action(function () {
                     return response()->download(
-                        (new WordService())->makeCollection($this->record)
+                        (new WordService())->makeCollection($this->record),
+                        $this->record['title'] . '.docx'
                     );
                 })
         ];

@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Collection\Collection;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Support\Str;
 use PhpOffice\PhpWord\PhpWord;
 use setasign\Fpdi\Fpdi;
 
@@ -141,7 +142,9 @@ class WordService
         \PhpOffice\PhpWord\Settings::setOutputEscapingEnabled(false);
         // Saving the document as HTML file...
         $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
-        $filePath = storage_path("temp/{$collection['title']}.docx");
+        $safeTitle = Str::slug($collection['title'], '_');
+        $tempDir = storage_path('temp');
+        $filePath = $tempDir . DIRECTORY_SEPARATOR . $safeTitle . '.docx';
         $objWriter->save($filePath);
         return $filePath;
     }
