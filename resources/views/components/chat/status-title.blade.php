@@ -14,7 +14,8 @@
             this.editing = false
         }
     }"
-    class="flex items-center gap-2 mb-4"
+    style="margin-bottom: 16px;"
+    class="flex items-center gap-2"
 >
 
     <!-- VIEW -->
