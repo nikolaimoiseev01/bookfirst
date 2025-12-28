@@ -1,36 +1,11 @@
 <div
-    x-data="{
-        open: false,
-        selectedType: null,
-        templates: @js($templates),
-
-        tooltip: {
-            visible: false,
-            text: '',
-            x: 0,
-            y: 0,
-            timer: null,
-        },
-
-        showTooltip(e, text) {
-            clearTimeout(this.tooltip.timer)
-
-            this.tooltip.timer = setTimeout(() => {
-                this.tooltip.text = text
-                this.tooltip.x = e.clientX
-                this.tooltip.y = e.clientY
-                this.tooltip.visible = true
-            }, 500)
-        },
-
-        hideTooltip() {
-            clearTimeout(this.tooltip.timer)
-            this.tooltip.visible = false
-        },
-    }"
+    x-data="messageTemplatesDropdown()"
     class="relative w-fit mt-auto"
     wire:ignore
 >
+    <script type="application/json" x-ref="templates">
+        @json($templates, JSON_UNESCAPED_UNICODE)
+    </script>
     <!-- Кнопка -->
     <div @click="open = !open">
         <x-bi-question-circle class="text-green-500 w-5 h-auto cursor-pointer"/>
@@ -122,3 +97,51 @@
 
     </div>
 </div>
+
+
+<script>
+    function messageTemplatesDropdown() {
+        return {
+            open: false,
+            selectedType: null,
+
+            templates: null,
+            types: [],
+
+            tooltip: {
+                visible: false,
+                text: '',
+                x: 0,
+                y: 0,
+                timer: null,
+            },
+
+            init() {
+                // ⚠️ читаем JSON как обычные данные
+                this.templates = JSON.parse(
+                    this.$refs.templates.textContent
+                )
+
+                this.types = Object.keys(this.templates)
+            },
+
+            showTooltip(e, text) {
+                if (this.tooltip.timer || this.tooltip.visible) return
+
+                this.tooltip.timer = setTimeout(() => {
+                    this.tooltip.text = text
+                    this.tooltip.x = e.clientX
+                    this.tooltip.y = e.clientY
+                    this.tooltip.visible = true
+                    this.tooltip.timer = null
+                }, 500)
+            },
+
+            hideTooltip() {
+                clearTimeout(this.tooltip.timer)
+                this.tooltip.timer = null
+                this.tooltip.visible = false
+            },
+        }
+    }
+</script>

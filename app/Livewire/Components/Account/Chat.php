@@ -14,6 +14,7 @@ use App\Notifications\TelegramDefaultNotification;
 use App\Traits\WithCustomValidation;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Rule;
@@ -172,5 +173,15 @@ class Chat extends Component
         }
 
         $this->isSending = false;
+    }
+
+    public function changeStatus($status) {
+        $this->chat->status = ChatStatusEnums::from($status);
+        $this->chat->save();
+
+        Notification::make()
+            ->title('Статус чата обновлён')
+            ->success()
+            ->send();
     }
 }

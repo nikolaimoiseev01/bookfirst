@@ -72,17 +72,18 @@ class OwnBookForm
                             ->required()
                             ->columnSpan(1)
                             ->numeric(),
-                        Textarea::make('comment')->hiddenLabel()->placeholder('Комментарий')->columnSpanFull(),
-                    ])->columns(10)->columnSpan(8),
-                ])->columnSpanFull()->columns(9),
-                Tabs::make('Tabs')->tabs([
-                    Tabs\Tab::make('Общее')->schema([
                         TextInput::make('internal_promo_type')
                             ->disabled()
+                            ->label('Продвижение')
+                            ->columnSpan(1)
                             ->numeric(),
+                        Textarea::make('comment')->hiddenLabel()->placeholder('Комментарий')->columnSpan(6),
                         Textarea::make('annotation')
-                            ->columnSpanFull(),
-                    ])->columns(3),
+                            ->hiddenLabel()->placeholder('Аннотация')
+                            ->columnSpan(5),
+                    ])->columns(11)->columnSpan(8),
+                ])->columnSpanFull()->columns(9),
+                Tabs::make('Tabs')->tabs([
                     Tabs\Tab::make('Внутренний блок')->schema([
                         DatePicker::make('deadline_inside'),
                         Section::make('Информация от автора')->schema([

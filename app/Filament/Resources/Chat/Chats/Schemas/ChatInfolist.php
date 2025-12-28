@@ -13,7 +13,7 @@ class ChatInfolist
         return $schema
             ->components([
                 Section::make()->schema([
-                    Livewire::make('components.account.chat', ['chat' => $schema->getRecord()])
+                    Livewire::make('components.account.chat', ['chat' => $schema->getRecord()])->extraAttributes(['class'=>'h-auto'])
                 ])->columnSpanFull()
             ]);
     }

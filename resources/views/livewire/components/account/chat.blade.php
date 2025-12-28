@@ -1,4 +1,7 @@
 <div style="height: 100%" class="w-full h-[100%] chat-wrap">
+    @hasanyrole(['admin', 'secondary_admin'])
+    <x-chat.status-title :chat="$chat"/>
+    @endhasanyrole
     <div class="bg-white dark:bg-dark_bg dark:border dark:border-gray-300 h-full flex flex-col dark:!border-none">
         <!-- список сообщений -->
         <div id="chatMessagesWrap"
