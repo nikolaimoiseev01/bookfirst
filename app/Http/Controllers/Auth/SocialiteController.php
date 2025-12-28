@@ -20,18 +20,18 @@ class SocialiteController extends Controller
     {
         return DB::transaction(function () use ($provider) {
 
-            [$name, $surname] = match ($provider) {
-                'vkontakte' => ['first_name', 'last_name'],
-                'google' => ['given_name', 'family_name'],
-                'yandex' => ['first_name', 'last_name'],
+            [$name, $surname, $email] = match ($provider) {
+                'vkontakte' => ['first_name', 'last_name', 'email'],
+                'google' => ['given_name', 'family_name', 'email'],
+                'yandex' => ['first_name', 'last_name', 'default_email'],
                 default => [null, null],
             };
 
             $socialUser = Socialite::driver($provider)->stateless()->user();
             $user = User::firstOrCreate([
-                'email' => $socialUser->user['email'],
+                'email' => $socialUser->user[$email],
             ], [
-                'email' => $socialUser->user['email'],
+                'email' => $socialUser->user[$email],
                 'name' => $socialUser->user[$name],
                 'surname' => $socialUser->user[$surname],
                 'reg_type' => $provider,

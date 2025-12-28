@@ -141,8 +141,7 @@ class WordService
         \PhpOffice\PhpWord\Settings::setOutputEscapingEnabled(false);
         // Saving the document as HTML file...
         $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
-        $filePath = storage_path('temp\\' . $collection['title'] . '.docx');
-
+        $filePath = storage_path("temp/{$collection['title']}.docx");
         $objWriter->save($filePath);
         return $filePath;
     }
