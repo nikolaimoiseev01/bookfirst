@@ -66,7 +66,7 @@ class Chat extends Component
 
     public function mount($chat)
     {
-        $this->chat = $chat->load(['messages.user', 'chatStatus']);
+        $this->chat = $chat?->load(['messages.user', 'chatStatus']);
         if (Auth::user()->hasRole(['admin', 'ext_promotion_admin', 'secondary_admin'])) {
             $author = $this->chat['user_created'] == 2 ?
                 $this->chat->userTo->getUserFullName() :
