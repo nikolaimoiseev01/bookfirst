@@ -113,24 +113,24 @@ class ParticipationForm
                         ])->collapsed()
                     ]),
                     Tab::make('Печать')->schema([
-                        Grid::make()->schema([
-                            TextInput::make('printOrder.price_print')
+                        Section::make()->statePath('printOrder')->schema([
+                            TextInput::make('price_print')
                                 ->label('Цена печати')
                                 ->numeric(),
-                            TextInput::make('printOrder.price_send')
+                            TextInput::make('price_send')
                                 ->label('Цена отправки')
                                 ->numeric(),
-                            TextInput::make('printOrder.books_cnt')
+                            TextInput::make('books_cnt')
                                 ->label('Экземпляров')
                                 ->numeric(),
-                            TextEntry::make('printOrder.address_json')
+                            TextEntry::make('address_json')
                                 ->state(fn(\App\Models\Collection\Participation $record) => $record->printOrder?->address_json['string'] ?? '—'
                                 )
                                 ->label('Адрес'),
-                            TextEntry::make('printOrder.receiver_name')
+                            TextEntry::make('receiver_name')
                                 ->label('ФИО')
                                 ->numeric(),
-                            TextEntry::make('printOrder.receiver_telephone')
+                            TextEntry::make('receiver_telephone')
                                 ->label('Телефон')
                                 ->numeric(),
                         ])
