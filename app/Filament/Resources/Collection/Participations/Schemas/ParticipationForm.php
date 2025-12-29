@@ -125,7 +125,7 @@ class ParticipationForm
                                 ->label('Экземпляров')
                                 ->numeric(),
                             TextEntry::make('address_json')
-                                ->state(fn(\App\Models\Collection\Participation $record) => $record->printOrder?->address_json['string'] ?? '—'
+                                ->state(fn($record) => $record?->address_json['string'] ?? '—'
                                 )
                                 ->label('Адрес'),
                             TextEntry::make('receiver_name')
