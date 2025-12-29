@@ -114,13 +114,13 @@ class ParticipationForm
                     ]),
                     Tab::make('Печать')->schema([
                         Grid::make()->schema([
-                            TextEntry::make('printOrder.price_print')
+                            TextInput::make('printOrder.price_print')
                                 ->label('Цена печати')
                                 ->numeric(),
-                            TextEntry::make('printOrder.price_send')
+                            TextInput::make('printOrder.price_send')
                                 ->label('Цена отправки')
                                 ->numeric(),
-                            TextEntry::make('printOrder.books_cnt')
+                            TextInput::make('printOrder.books_cnt')
                                 ->label('Экземпляров')
                                 ->numeric(),
                             TextEntry::make('printOrder.address_json')
