@@ -134,7 +134,7 @@ class WordService
 
         foreach ($participations as $participation) {
             $table->addRow();
-            $table->addCell(1750)->addText($participation['nickname']);
+            $table->addCell(1750)->addText($participation['author_name']);
             $table->addCell(1750)->addText($participation->user['email']);
         }
 
