@@ -15,6 +15,7 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -83,7 +84,15 @@ class ChatsTable
                 TextColumn::make('created_at')->label('Создан')->tooltip('Время создания чата')->dateTime('j M H:i')->searchable(),
             ])
             ->filters([
-                //
+                SelectFilter::make('status')
+                    ->label('Статус')
+                    ->options([
+                        collect(ChatStatusEnums::cases())
+                            ->mapWithKeys(fn($case) => [$case->value => $case->value])
+                            ->toArray()
+                    ])
+                    ->multiple()
+                    ->default([ChatStatusEnums::WAIT_FOR_ADMIN->value])
             ])
             ->recordActions([
                 Action::make('Подробнее')
@@ -115,6 +124,7 @@ class ChatsTable
                     default => ViewChat::getUrl(['record' => $record])
                 };
             })
+            ->paginated([50, 100])
             ->toolbarActions([
                 BulkActionGroup::make([
 //                    DeleteBulkAction::make(),
