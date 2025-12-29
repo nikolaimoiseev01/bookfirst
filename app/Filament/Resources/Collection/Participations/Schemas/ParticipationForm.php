@@ -10,6 +10,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\RepeatableEntry;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Schemas\Components\Fieldset;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Livewire;
 use Filament\Schemas\Components\Section;
@@ -113,7 +114,7 @@ class ParticipationForm
                         ])->collapsed()
                     ]),
                     Tab::make('Печать')->schema([
-                        Section::make()->statePath('printOrder')->schema([
+                        Fieldset::make('printOrder')->relationship('printOrder')->schema([
                             TextInput::make('price_print')
                                 ->label('Цена печати')
                                 ->numeric(),
