@@ -15,7 +15,7 @@
                     книги</h3>
             </div>
             <div x-show="tab == 'works'">
-                @if($user['works_cnt'] > 0)
+                @if($user['works_count'] > 0)
                     <livewire:components.social.work-feed :user-id="$user['id']"/>
                 @else
                     <p class="italic text-dark-350">Автор еще не публиковал у нас произведения, но все еще впереди 🙂</p>
