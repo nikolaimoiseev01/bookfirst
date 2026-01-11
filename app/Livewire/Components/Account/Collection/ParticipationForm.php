@@ -275,6 +275,8 @@ class ParticipationForm extends Component
             $currentPriceWithPrint = $this->prices['priceTotal'] + $this->prices['pricePrint'];
             if ($paidAmount == $currentPriceWithPrint || $paidAmount == 0) {
                 $isSameAmount = true;
+            } else {
+                $isSameAmount = false;
             }
         } else {
             $isSameAmount = false;
