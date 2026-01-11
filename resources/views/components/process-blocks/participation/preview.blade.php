@@ -37,9 +37,7 @@
         @endif
 
         @if ($collection['status'] == \App\Enums\CollectionStatusEnums::PRINT_PREPARE)
-            <p class="">На данный момент мы вносим указанные изменения. Срок: до {{formatDate($collection['date_preview_end'], 'j F')}}. Как только
-                они будут учтены, вы
-                получите оповещение об этом на почте и внутри нашей системы. Далее материалы направятся в печать.</p>
+            <p class="">На данный момент мы внесли указанные исправления. Сейчас идет предпечатная подготовка. Печать начнется {{formatDate($collection['date_print_start'], 'j F')}}.</p>
         @endif
 
         @if (($collection['status'] == \App\Enums\CollectionStatusEnums::PREVIEW || $collection['status'] == \App\Enums\CollectionStatusEnums::PRINT_PREPARE) && $participation['status'] != \App\Enums\ParticipationStatusEnums::APPROVED)
