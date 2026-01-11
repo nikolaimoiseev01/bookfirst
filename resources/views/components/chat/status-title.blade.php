@@ -49,16 +49,10 @@
                 tooltip="Назад"
                 @click="editing = false"
             />
-            <select
-                x-model="status"
-                class="border rounded px-2 py-1 text-sm"
-            >
-                @foreach ($statuses as $status)
-                    <option value="{{ $status->value }}">
-                        {{ $status->value }}
-                    </option>
-                @endforeach
-            </select>
+            <select x-model="status"
+                    class="border rounded px-2 py-1 text-sm"> @foreach ($statuses as $status)
+                    <option value="{{ $status->value }}"> {{ $status->value }} </option>
+                @endforeach </select>
 
         </div>
     </template>

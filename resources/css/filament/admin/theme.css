@@ -11,7 +11,6 @@
     }
 
     /*! tailwindcss v4.1.16 | MIT License | https://tailwindcss.com */
-    /*! tailwindcss v4.1.16 | MIT License | https://tailwindcss.com */
     @layer properties {
         @supports (((-webkit-hyphens:none)) and (not (margin-trim:inline))) or ((-moz-orient:inline) and (not (color:rgb(from red r g b)))) {
             *, :before, :after, ::backdrop {
@@ -2402,6 +2401,10 @@
             border-radius: 3px
         }
 
+        .rounded-\[10px\] {
+            border-radius: 10px
+        }
+
         .rounded-full {
             border-radius: 3.40282e38px
         }
@@ -2969,6 +2972,10 @@
             padding-inline: calc(var(--spacing) * 8)
         }
 
+        .px-9 {
+            padding-inline: calc(var(--spacing) * 9)
+        }
+
         .px-10 {
             padding-inline: calc(var(--spacing) * 10)
         }
@@ -3155,6 +3162,10 @@
 
         .align-middle {
             vertical-align: middle
+        }
+
+        .font-futura {
+            font-family: Futura PT, ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji
         }
 
         .font-mono {
@@ -3456,6 +3467,10 @@
 
         .text-gray-900 {
             color: var(--color-gray-900)
+        }
+
+        .text-green-50 {
+            color: var(--color-green-50)
         }
 
         .text-green-400 {

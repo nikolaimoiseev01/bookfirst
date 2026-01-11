@@ -69,8 +69,8 @@ class Chat extends Component
         $this->chat = $chat?->load(['messages.user', 'chatStatus']);
         if (Auth::user()->hasRole(['admin', 'ext_promotion_admin', 'secondary_admin'])) {
             $author = $this->chat['user_created'] == 2 ?
-                $this->chat->userTo->getUserFullName() :
-                $this->chat->userCreated->getUserFullName();
+                $this->chat->userTo->name :
+                $this->chat->userCreated->name;
             $this->text = "Здравствуйте, {$author}!";
         }
     }
