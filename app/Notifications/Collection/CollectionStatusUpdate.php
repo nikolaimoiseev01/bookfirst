@@ -42,7 +42,6 @@ class CollectionStatusUpdate extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
-        Log::info(json_encode([$this->newStatus, CollectionStatusEnums::PREVIEW->value]));
         $subject = 'Статус сборника сменился!';
         $text =  "Спешим вам сообщить, что произошла смена этапа издания сборника: '" . $this->collection['title'] .
             "'! Сборник сменил свой статус на \"{$this->newStatus}\"";
