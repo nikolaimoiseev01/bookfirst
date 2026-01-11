@@ -15,6 +15,7 @@ class Payment extends Component
     public $printOrder;
     public $collection;
     public $blockColor;
+    public $paidAmount;
 
     /**
      * Create a new component instance.
@@ -24,6 +25,7 @@ class Payment extends Component
         $this->participation = $part;
         $this->printOrder = $part->printOrder;
         $this->collection = $this->participation->collection;
+        $this->paidAmount = $this->participation->transactions?->where('status', TransactionStatusEnums::CONFIRMED)->sum('amount');
         match ($this->participation['status']) {
             ParticipationStatusEnums::APPROVE_NEEDED, ParticipationStatusEnums::NOT_ACTUAL => $this->blockColor = 'gray',
             ParticipationStatusEnums::PAYMENT_REQUIRED => $this->blockColor = 'yellow',
@@ -32,6 +34,9 @@ class Payment extends Component
         if ($this->collection['status'] <> CollectionStatusEnums::APPS_IN_PROGRESS
             && $this->participation['status'] <> ParticipationStatusEnums::APPROVED) {
             $this->blockColor = 'gray';
+        }
+        if ($this->participation['status'] == ParticipationStatusEnums::PAYMENT_REQUIRED && $this->paidAmount > 0) {
+            $this->blockColor = 'yellow';
         }
     }
 

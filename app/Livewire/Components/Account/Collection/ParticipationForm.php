@@ -327,7 +327,7 @@ class ParticipationForm extends Component
                     'work_id' => $work['id']
                 ]);
             }
-            Chat::updateOrCreate([
+            Chat::firstOrCreate([
                 'user_created' => Auth::user()->id,
                 'model_type' => 'Participation',
                 'model_id' => $newParticipation['id'],
