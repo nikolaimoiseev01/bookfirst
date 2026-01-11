@@ -116,6 +116,8 @@ class ParticipationForm
                     Tab::make('Печать')
                         ->schema([
                             Fieldset::make('printOrder')
+                                ->label('Заказ печатных экземпляров')
+                                ->columns(3)
                                 ->relationship('printOrder')
                                 ->visible(fn($record) => filled($record?->printOrder))
                                 ->schema([
@@ -132,7 +134,7 @@ class ParticipationForm
                                         ->numeric(),
 
                                     TextEntry::make('address_json')
-                                        ->state(fn($record) => $record?->printOrder?->address_json['string'] ?? '—')
+                                        ->state(fn($record) => $record?->address_json['string'] ?? '—')
                                         ->label('Адрес'),
 
                                     TextEntry::make('receiver_name')
@@ -140,6 +142,30 @@ class ParticipationForm
 
                                     TextEntry::make('receiver_telephone')
                                         ->label('Телефон'),
+                                    TextEntry::make('printingCompany')
+                                        ->state(fn($record) => $record?->printingCompany['name'] ?? '—')
+                                        ->label('Компания печати'),
+                                    TextEntry::make('logisticCompany')
+                                        ->state(fn($record) => $record?->logisticCompany['name'] ?? '—')
+                                        ->label('Компания отправки'),
+                                    TextEntry::make('trackingLink')
+                                        ->label('Ссылка отслеживания')
+                                        ->html()
+                                        ->state(function ($record) {
+                                            $url = $record?->trackingLink();
+
+                                            if (! $url) {
+                                                return '—';
+                                            }
+
+                                            $safeUrl = e($url);
+
+                                            return <<<HTML
+                                            <a href="{$safeUrl}" target="_blank" rel="noopener noreferrer" class="text-primary-600 underline">
+                                                {$safeUrl}
+                                            </a>
+                                            HTML;
+                                        }),
                                 ]),
                             Placeholder::make('no_print')
                                 ->label('Печати нет')
