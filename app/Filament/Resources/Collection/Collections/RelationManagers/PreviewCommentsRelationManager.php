@@ -41,8 +41,8 @@ class PreviewCommentsRelationManager extends RelationManager
     {
         return $schema
             ->components([
-                TextEntry::make('page'),
-                TextEntry::make('text'),
+                TextEntry::make('page')->columnSpanFull(),
+                TextEntry::make('text')->columnSpanFull(),
             ]);
     }
 
