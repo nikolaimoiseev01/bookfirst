@@ -14,8 +14,8 @@
             this.editing = false
         }
     }"
-    style="margin-bottom: 16px;"
-    class="flex items-center gap-2"
+    style="padding-bottom: 16px;"
+    class="bg-white dark:bg-dark_bg flex items-center gap-2"
 >
 
     <!-- VIEW -->
@@ -70,4 +70,23 @@
         wire:click="changeStatus('{{\App\Enums\ChatStatusEnums::CLOSED}}')"
         label="Ответ получен"
     />
+    <div style="margin-left: auto">
+        <x-filament::icon-button
+            icon="iconpark-expandtextinput-o"
+            tooltip="На весь экран"
+            x-show="!fullPage"
+            @click="fullPage = true"
+            label="На весь экран"
+        />
+        <x-filament::icon-button
+            icon="iconpark-collapsetextinput-o"
+            tooltip="Свернуть"
+            x-show="fullPage"
+            @click="fullPage = false"
+            label="Свернуть"
+        />
+
+    </div>
+
+
 </div>
