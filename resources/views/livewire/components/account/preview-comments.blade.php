@@ -12,7 +12,6 @@
                 <p class="text-dark-350 italic text-lg">
                     Статус: {{$comment['flg_done'] ? 'учтено' : 'в работе'}}</p>
             </div>
-
         @endforeach
     </div>
     @if(!$disabled)
