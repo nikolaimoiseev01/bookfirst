@@ -84,7 +84,7 @@ class ParticipationForm
                                 ->label('')
                                 ->schema([
                                     TextEntry::make('work.title'),
-                                    TextEntry::make('work.text')->formatStateUsing(fn (?string $state) => nl2br(e($state)))
+                                    TextEntry::make('work.text')->formatStateUsing(fn(?string $state) => nl2br(e($state)))
                                         ->html(),
                                 ])
                                 ->grid(2)
@@ -113,29 +113,38 @@ class ParticipationForm
                                 ])
                         ])->collapsed()
                     ]),
-                    Tab::make('Печать')->schema([
-                        Fieldset::make('printOrder')->relationship('printOrder')->schema([
-                            TextInput::make('price_print')
-                                ->label('Цена печати')
-                                ->numeric(),
-                            TextInput::make('price_send')
-                                ->label('Цена отправки')
-                                ->numeric(),
-                            TextInput::make('books_cnt')
-                                ->label('Экземпляров')
-                                ->numeric(),
-                            TextEntry::make('address_json')
-                                ->state(fn($record) => $record?->address_json['string'] ?? '—'
-                                )
-                                ->label('Адрес'),
-                            TextEntry::make('receiver_name')
-                                ->label('ФИО')
-                                ->numeric(),
-                            TextEntry::make('receiver_telephone')
-                                ->label('Телефон')
-                                ->numeric(),
-                        ])
-                    ]),
+                    Tab::make('Печать')
+                        ->schema([
+                            Fieldset::make('printOrder')
+                                ->relationship('printOrder')
+                                ->visible(fn($record) => filled($record?->printOrder))
+                                ->schema([
+                                    TextInput::make('price_print')
+                                        ->label('Цена печати')
+                                        ->numeric(),
+
+                                    TextInput::make('price_send')
+                                        ->label('Цена отправки')
+                                        ->numeric(),
+
+                                    TextInput::make('books_cnt')
+                                        ->label('Экземпляров')
+                                        ->numeric(),
+
+                                    TextEntry::make('address_json')
+                                        ->state(fn($record) => $record?->printOrder?->address_json['string'] ?? '—')
+                                        ->label('Адрес'),
+
+                                    TextEntry::make('receiver_name')
+                                        ->label('ФИО'),
+
+                                    TextEntry::make('receiver_telephone')
+                                        ->label('Телефон'),
+                                ]),
+                            Placeholder::make('no_print')
+                                ->label('Печати нет')
+                                ->visible(fn ($record) => blank($record?->printOrder)),
+                        ]),
                     Tab::make('Чат')->schema([
                         Livewire::make('components.account.chat', ['chat' => $schema->getRecord()->chat])
                     ])
