@@ -81,6 +81,7 @@ class ParticipationForm extends Component
             $this->rows = $this->participation['rows'];
             $this->needCheck = $participation['price_check'] > 0;
             $this->needPrint = $this->participation->printOrder ? true : false;
+            $this->promocode = $this->participation->promocode ?? null;
             $this->prices = [
                 'pricePart' => $this->participation['price_part'],
                 'priceCheck' => $this->participation['price_check'],
