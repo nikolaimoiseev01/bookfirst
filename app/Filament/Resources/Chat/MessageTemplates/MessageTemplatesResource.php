@@ -37,7 +37,8 @@ class MessageTemplatesResource extends Resource
                     ->maxLength(255),
                 Textarea::make('text')
                     ->required()
-                    ->maxLength(255),
+                    ->rows(4)
+                    ->columnSpanFull(),
             ]);
     }
 
