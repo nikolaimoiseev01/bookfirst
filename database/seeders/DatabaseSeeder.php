@@ -2,13 +2,13 @@
 
 namespace Database\Seeders;
 
+use App\Enums\CollectionStatusEnums;
 use App\Enums\PrintOrderStatusEnums;
 use App\Enums\PrintOrderTypeEnums;
 use App\Enums\TransactionTypeEnums;
-use App\Models\AlmostCompleteAction\AlmostCompleteAction;
+use App\Models\AlmostCompleteAction;
 use App\Models\Award\Award;
 use App\Models\Chat\Chat;
-use App\Models\Chat\ChatStatus;
 use App\Models\Chat\Message;
 use App\Models\Chat\MessageTemplate;
 use App\Models\Collection\Collection;
@@ -26,7 +26,6 @@ use App\Models\PreviewComment;
 use App\Models\PrintOrder\LogisticCompany;
 use App\Models\PrintOrder\PrintingCompany;
 use App\Models\PrintOrder\PrintOrder;
-use App\Models\PrintOrder\PrintOrderStatus;
 use App\Models\Promocode;
 use App\Models\Survey\SurveyCompleted;
 use App\Models\Transaction;
@@ -880,20 +879,12 @@ class DatabaseSeeder extends Seeder
                 'model_type' => 'User',
                 'model_id' => $user_id
             ]);
-            $titles = [
-                'Идет приём заявок',
-                'Предварительная проверка'
-            ];
-            foreach ($titles as $title) {
-                CollectionStatus::create([
-                    'name' => $title,
-                ]);
-            }
+
             Collection::create([
                 'title' => 'Современный Дух Поэзии. Выпуск 60',
                 'title_short' => 'ДУХ 60',
                 'slug' => 'duh-60',
-                'collection_status_id' => 1
+                'status' => CollectionStatusEnums::APPS_IN_PROGRESS
             ]);
 
             Promocode::create([
@@ -922,57 +913,6 @@ class DatabaseSeeder extends Seeder
                 ]);
             }
 
-            $chatStatuses = [
-                'Создан,пустой',
-                'Ожидает ответа'
-            ];
-            foreach ($chatStatuses as $chatStatus) {
-                ChatStatus::create([
-                    'name' => $chatStatus,
-                ]);
-            }
-
-            $statuses = [
-                'Создана, ожидается подтверждение',
-                'Ожидается оплата'
-            ];
-            foreach ($statuses as $status) {
-                OwnBookStatus::create([
-                    'name' => $status,
-                ]);
-            }
-
-            $statuses = [
-                'Обложка Создана, ожидается подтверждение',
-                'Обложка Ожидается оплата'
-            ];
-            foreach ($statuses as $status) {
-                OwnBookCoverStatus::create([
-                    'name' => $status,
-                ]);
-            }
-
-            $statuses = [
-                'ВБ Создана, ожидается подтверждение',
-                'ВБ Ожидается оплата'
-            ];
-            foreach ($statuses as $status) {
-                OwnBookInsideStatus::create([
-                    'name' => $status,
-                ]);
-            }
-
-            $statuses = [
-                'Заказ создан',
-                'Заказ оплачен',
-                'Заказ отправлен в печать'
-            ];
-            foreach ($statuses as $status) {
-                PrintOrderStatus::create([
-                    'name' => $status,
-                ]);
-            }
-
         });
 
     }
@@ -985,38 +925,39 @@ class DatabaseSeeder extends Seeder
         $file = new Filesystem;
         $file->cleanDirectory(storage_path('app/public/media'));
 
-        (new CopyTableService())->copy(
-            sourceTable: 'users'
-            , modelClass: 'App\Models\User\User'
-            , columnsToExclude: ['two_factor_secret', 'two_factor_recovery_codes', 'avatar_cropped', 'avatar']
-            , columnsMedia: $test ? [] : ['avatar' => 'avatar']
-        );
-
-        $this->same_tables(test: $test);
-
-        $this->make_ext_promotions();
-        $this->make_survey_completeds();
-        $this->make_chats($test);
-        $this->make_messages($test);
-        $this->make_awards();
-        $this->make_actions();
-        $this->make_digital_sales();
-        $this->make_message_templates();
-        $this->make_preview_comments();
-        $this->make_print_orders();
-        $this->make_transactions();
-        $this->make_work_likes();
-
-        $now_time = Carbon::now()->format('H:i:s');
-        echo "Collections START ($now_time)\n";
-        $this->make_collections($test);
-        $this->make_participations($test);
-        $this->make_news_letters($test);
-        $this->make_collection_votes($test);
-        $this->make_participation_works($test);
-        $now_time = Carbon::now()->format('H:i:s');
-        echo "Collections END ($now_time)\n";
-
-        (new OwnBookSeeder())->run(test: $test);
+        $this->testNewData();
+//        (new CopyTableService())->copy(
+//            sourceTable: 'users'
+//            , modelClass: 'App\Models\User\User'
+//            , columnsToExclude: ['two_factor_secret', 'two_factor_recovery_codes', 'avatar_cropped', 'avatar']
+//            , columnsMedia: $test ? [] : ['avatar' => 'avatar']
+//        );
+//
+//        $this->same_tables(test: $test);
+//
+//        $this->make_ext_promotions();
+//        $this->make_survey_completeds();
+//        $this->make_chats($test);
+//        $this->make_messages($test);
+//        $this->make_awards();
+//        $this->make_actions();
+//        $this->make_digital_sales();
+//        $this->make_message_templates();
+//        $this->make_preview_comments();
+//        $this->make_print_orders();
+//        $this->make_transactions();
+//        $this->make_work_likes();
+//
+//        $now_time = Carbon::now()->format('H:i:s');
+//        echo "Collections START ($now_time)\n";
+//        $this->make_collections($test);
+//        $this->make_participations($test);
+//        $this->make_news_letters($test);
+//        $this->make_collection_votes($test);
+//        $this->make_participation_works($test);
+//        $now_time = Carbon::now()->format('H:i:s');
+//        echo "Collections END ($now_time)\n";
+//
+//        (new OwnBookSeeder())->run(test: $test);
     }
 }

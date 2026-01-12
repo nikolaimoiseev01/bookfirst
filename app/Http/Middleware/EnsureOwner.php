@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\AlmostCompleteAction;
 use App\Models\Collection\Participation;
 use App\Models\ExtPromotion\ExtPromotion;
 use App\Models\OwnBook\OwnBook;
@@ -15,7 +16,7 @@ class EnsureOwner
     /**
      * Handle an incoming request.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @param \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response) $next
      */
     public function handle(Request $request, Closure $next): Response
     {
@@ -23,10 +24,11 @@ class EnsureOwner
 
         // Карта параметров роута -> модели
         $map = [
-            'participation_id'   => Participation::class,
-            'own_book_id'        => OwnBook::class,
-            'ext_promotion_id'   => ExtPromotion::class,
-            'work_id'            => Work::class,
+            'participation_id' => Participation::class,
+            'own_book_id' => OwnBook::class,
+            'ext_promotion_id' => ExtPromotion::class,
+            'work_id' => Work::class,
+            'aca_id' => AlmostCompleteAction::class,
         ];
 
         foreach ($map as $param => $modelClass) {
@@ -34,7 +36,7 @@ class EnsureOwner
                 $record = $modelClass::find($id);
 
                 // если модель не найдена — 404
-                if (! $record) {
+                if (!$record) {
                     abort(404);
                 }
 

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Components\Account\Collection;
 
+use App\Enums\AlmostCompleteActionTypeEnums;
 use App\Enums\ChatStatusEnums;
 use App\Enums\ParticipationStatusEnums;
 use App\Enums\PrintOrderStatusEnums;
@@ -9,6 +10,7 @@ use App\Enums\PrintOrderTypeEnums;
 use App\Enums\TransactionStatusEnums;
 use App\Filament\Resources\Collection\Participations\Pages\EditParticipation;
 use App\Jobs\TelegramNotificationJob;
+use App\Models\AlmostCompleteAction;
 use App\Models\Chat\Chat;
 use App\Models\Collection\Participation;
 use App\Models\Collection\ParticipationWork;
@@ -231,7 +233,7 @@ class ParticipationForm extends Component
             "\n*Промокод:* " . str_replace('_', '', $promocode) .
             "\n*Печать:* " . $print .
             "\n*Проверка:* " . $check .
-            "\n\n*ИТОГО:* " . ($this->prices['priceTotal'] + $this->prices['pricePrint'])  . " руб.";
+            "\n\n*ИТОГО:* " . ($this->prices['priceTotal'] + $this->prices['pricePrint']) . " руб.";
 
         return $text;
     }
@@ -367,6 +369,16 @@ class ParticipationForm extends Component
                 }
             }
 
+            $action = AlmostCompleteAction::query()
+                ->where('user_id', Auth::id())
+                ->where('type', AlmostCompleteActionTypeEnums::PARTICIPATION)
+                ->whereJsonContains('data->collection_id', $this->collection['id'])
+                ->first();
+
+            if ($action) {
+                $action->delete();
+            }
+
             $url = route('login_as_secondary_admin', ['url_redirect' => EditParticipation::getUrl(['record' => $newParticipation])]);
             if ($this->getParticipationStatus()['needToNotify']) {
                 $subject = $this->formType == 'create' ?
@@ -391,6 +403,25 @@ class ParticipationForm extends Component
 
             $this->redirect(route('account.participation.index', $newParticipation['id']), navigate: true);
         });
+    }
 
+    public function createAlmostCompleteAction()
+    {
+        $action = AlmostCompleteAction::query()
+            ->where('user_id', Auth::id())
+            ->where('type', AlmostCompleteActionTypeEnums::PARTICIPATION)
+            ->whereJsonContains('data->collection_id', $this->collection['id'])
+            ->first();
+
+        if (! $action) {
+            AlmostCompleteAction::create([
+                'user_id' => Auth::id(),
+                'type' => AlmostCompleteActionTypeEnums::PARTICIPATION,
+                'cnt_email_sent' => 0,
+                'data' => [
+                    'collection_id' => $this->collection['id'],
+                ],
+            ]);
+        }
     }
 }

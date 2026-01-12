@@ -4,6 +4,11 @@
             hasPromo: $wire.entangle('hasPromo'),
             showChosenAddress: @js($showChosenAddress)
         }"
+      x-init="
+            setTimeout(() => {
+                $wire.createAlmostCompleteAction()
+            }, 1000)
+        "
       wire:submit="checkAndConfirm()" class="mb-16 max-w-6xl">
 
     <div class="flex container p-8 mb-8 lg:flex-col lg:gap-4">

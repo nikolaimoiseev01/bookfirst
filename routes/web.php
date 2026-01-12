@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\SocialiteController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\PaymentController;
+use App\Livewire\Pages\Account\ACAUnsubscribedPage;
 use App\Livewire\Pages\Account\Chat\ChatsPage;
 use App\Livewire\Pages\Account\Chat\CreateChatPage;
 use App\Livewire\Pages\Account\Collection\ParticipationCreatePage;
@@ -137,6 +138,8 @@ Route::middleware(['userActivityLog'])->group(function () {
         Route::get('subscriptions', SubscribtionsPage::class)->name('account.subscriptions');
         Route::get('purchases', PurchasesPage::class)->name('account.purchases');
         Route::get('settings', SettingsPage::class)->name('account.settings');
+
+        Route::get('aca-unsubscribe/{aca_id}', ACAUnsubscribedPage::class)->name('account.aca-unsubscribe');
     });
 });
 

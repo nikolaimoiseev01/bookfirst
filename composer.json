@@ -15,6 +15,7 @@
         "codeat3/blade-codicons": "^1.34",
         "codeat3/blade-unicons": "^1.9",
         "davidhsianturi/blade-bootstrap-icons": "^2.1",
+        "doctrine/dbal": "^4.4",
         "filament/filament": "^4.0",
         "filament/spatie-laravel-media-library-plugin": "^4.0",
         "flowframe/laravel-trend": "^0.4.0",
