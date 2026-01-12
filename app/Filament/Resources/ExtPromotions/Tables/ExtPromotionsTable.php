@@ -23,7 +23,7 @@ class ExtPromotionsTable
                 TextColumn::make('status')
                     ->badge()
                     ->color(fn($state): string => match ($state) {
-                        ExtPromotionStatusEnums::PAYMENT_REQUIRED, ExtPromotionStatusEnums::IN_PROGRESS, ExtPromotionStatusEnums::WAITING_FOR_AUTHOR_IN_CHAT => 'primary',
+                        ExtPromotionStatusEnums::PAYMENT_REQUIRED, ExtPromotionStatusEnums::IN_PROGRESS, ExtPromotionStatusEnums::WAITING_FOR_AUTHOR_IN_CHAT, ExtPromotionStatusEnums::NOT_ACTUAL => 'primary',
                         ExtPromotionStatusEnums::REVIEW => 'warning',
                         ExtPromotionStatusEnums::START_REQUIRED => 'danger',
                         ExtPromotionStatusEnums::DONE => 'success',
