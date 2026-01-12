@@ -1,9 +1,16 @@
-<div style="height: 100%">
+<div
+    x-data="{ fullPage: false }"
+    :style="fullPage
+        ? 'position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 999; padding: 50px 20px; background: #000000ad;'
+        : ''
+    "
+    style="height: 100%;"
+>
     @hasanyrole(['admin', 'secondary_admin'])
     <x-chat.status-title :chat="$chat"/>
     @endhasanyrole
 
-    <div  class="w-full h-[100%] chat-wrap">
+    <div :style="fullPage ? 'height: 100%' : ''" class="w-full h-[100%] chat-wrap">
         <div
             class="bg-white dark:bg-dark_bg dark:border dark:border-gray-300 h-full flex flex-col dark:!border-none">
             <!-- список сообщений -->

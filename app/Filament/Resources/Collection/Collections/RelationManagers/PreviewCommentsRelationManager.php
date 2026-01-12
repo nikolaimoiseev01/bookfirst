@@ -41,15 +41,18 @@ class PreviewCommentsRelationManager extends RelationManager
     {
         return $schema
             ->components([
-                TextEntry::make('page'),
-                TextEntry::make('text'),
+                TextEntry::make('page')->columnSpanFull(),
+                TextEntry::make('text')
+                    ->html()
+                    ->state(fn ($record) => nl2br(e($record->text)))
+                    ->columnSpanFull(),
             ]);
     }
 
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('text')
+
             ->columns([
                 TextColumn::make('model.author_name')
                     ->searchable(),
@@ -65,7 +68,10 @@ class PreviewCommentsRelationManager extends RelationManager
             ->headerActions([
             ])
             ->recordActions([
-                ViewAction::make(),
+                ViewAction::make()
+                    ->modalHeading(fn (Model $record) =>
+                    "Исправление автора {$record->model?->author_name}"
+                    ),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

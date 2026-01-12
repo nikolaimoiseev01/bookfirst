@@ -84,6 +84,21 @@ class Collection extends Model implements HasMedia
         return $this->belongsToJson(Participation::class, 'winner_participations', 'id');
     }
 
+    public function getWinnerParticipationsOrderedAttribute()
+    {
+        $order = $this->winner_participations ?? [];
+
+        if (empty($order)) {
+            return collect();
+        }
+
+        $orderMap = array_flip($order);
+
+        return $this->winnerParticipations
+            ->sortBy(fn ($item) => $orderMap[$item->id] ?? PHP_INT_MAX)
+            ->values();
+    }
+
     public function printOrders(): morphMany
     {
         return $this->morphMany(PrintOrder::class, 'model');

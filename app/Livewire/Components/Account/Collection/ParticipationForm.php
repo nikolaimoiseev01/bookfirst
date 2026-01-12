@@ -83,6 +83,7 @@ class ParticipationForm extends Component
             $this->rows = $this->participation['rows'];
             $this->needCheck = $participation['price_check'] > 0;
             $this->needPrint = $this->participation->printOrder ? true : false;
+            $this->promocode = $this->participation->promocode ?? null;
             $this->prices = [
                 'pricePart' => $this->participation['price_part'],
                 'priceCheck' => $this->participation['price_check'],
@@ -277,6 +278,8 @@ class ParticipationForm extends Component
             $currentPriceWithPrint = $this->prices['priceTotal'] + $this->prices['pricePrint'];
             if ($paidAmount == $currentPriceWithPrint || $paidAmount == 0) {
                 $isSameAmount = true;
+            } else {
+                $isSameAmount = false;
             }
         } else {
             $isSameAmount = false;
@@ -327,7 +330,7 @@ class ParticipationForm extends Component
                     'work_id' => $work['id']
                 ]);
             }
-            Chat::updateOrCreate([
+            Chat::firstOrCreate([
                 'user_created' => Auth::user()->id,
                 'model_type' => 'Participation',
                 'model_id' => $newParticipation['id'],

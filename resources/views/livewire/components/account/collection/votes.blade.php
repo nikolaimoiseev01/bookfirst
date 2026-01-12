@@ -45,7 +45,7 @@
                 Основываясь только на голосах от самих авторов, мы рады представить 3-х призёров
                 сборника:</p>
             <div class="flex flex-col">
-                @foreach($collection->winnerParticipations as $key => $winner)
+                @foreach($collection->winner_participations_ordered as $key => $winner)
                     <p>{{$key+1}} Место: {{$winner['author_name']}}</p>
                 @endforeach
             </div>
