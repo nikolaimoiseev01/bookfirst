@@ -174,6 +174,11 @@ class OwnBookForm
                             ->numeric(),
                         TextInput::make('price_total')
                             ->numeric(),
+                        Checkbox::make('need_text_design')
+                            ->hintIconTooltip('Test')
+                            ->label('Нужен дизайн текста'),
+                        Checkbox::make('need_text_check')->label('Нужна проверка текста'),
+                        Checkbox::make('cover_ready')->label('Обложка готова от автора'),
                         DateTimePicker::make('paid_at_without_print'),
                         DateTimePicker::make('paid_at_print_only'),
                     ])->columns(3),
