@@ -208,7 +208,7 @@
                     <span x-show="needTextDesign" x-collapse.duration.400ms
                           class="text-dark-200 italic text-xl font-light">Включая дизайн текста: {{$prices['priceTextDesign']}}</span>
                     <span x-show="needTextCheck" x-collapse.duration.400ms
-                          class="text-dark-200 italic text-xl font-light">Включай проверку правописания: {{$prices['priceTextCheck']}}</span>
+                          class="text-dark-200 italic text-xl font-light">Включая проверку правописания: {{$prices['priceTextCheck']}}</span>
                 </div>
 
                 <div x-show="needPrint" class="flex items-center gap-4" x-collapse.duration.400ms>

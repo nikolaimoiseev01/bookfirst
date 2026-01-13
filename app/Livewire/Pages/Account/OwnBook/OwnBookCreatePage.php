@@ -40,8 +40,8 @@ class OwnBookCreatePage extends Component
     public $insideType = 'Файлом';
     public $commentAuthorInside;
     public $insideFiles = [];
-    public $needTextCheck;
-    public $needTextDesign;
+    public $needTextCheck = false;
+    public $needTextDesign = true;
     public $coverReady = false;
     public $commentAuthorCover;
     public $coverFiles = [];
