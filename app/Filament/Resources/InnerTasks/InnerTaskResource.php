@@ -8,6 +8,7 @@ use App\Filament\Resources\InnerTasks\Pages\ManageInnerTasks;
 use App\Filament\Resources\OwnBook\OwnBooks\Pages\EditOwnBook;
 use App\Models\InnerTask;
 use BackedEnum;
+use Carbon\Carbon;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -39,13 +40,40 @@ class InnerTaskResource extends Resource
     {
         return $schema
             ->components([
-                TextInput::make('type'),
-                TextInput::make('model_type'),
-                TextInput::make('model_id')
-                    ->numeric(),
+                TextEntry::make('model.title')
+                    ->limit(20)
+                    ->label('Издание')
+                    ->html()
+                    ->state(function ($record) {
+                        $url =  match ($record['model_type']) {
+                            'Collection' => EditCollection::getUrl(['record' => $record->model]),
+                            'OwnBook' => EditOwnBook::getUrl(['record' => $record->model]),
+                            default => null,
+                        };
+                        $name = match ($record['model_type']) {
+                            'Collection' => $record->model['title_short'],
+                            'OwnBook' => $record->model['title'],
+                            default => null,
+                        };
+
+                        if (! $url) {
+                            return '—';
+                        }
+
+                        $safeUrl = e($url);
+
+                        return <<<HTML
+                                            <a href="{$safeUrl}" target="_blank" rel="noopener noreferrer" class="text-primary-600 underline">
+                                                {$name}
+                                            </a>
+                                            HTML;
+                    }),
                 TextInput::make('responsible'),
-                TextInput::make('title'),
+                TextEntry::make('type'),
+                TextEntry::make('title'),
                 Textarea::make('description')
+                    ->columnSpanFull(),
+                Textarea::make('comment')
                     ->columnSpanFull(),
                 DateTimePicker::make('deadline'),
                 DateTimePicker::make('deadline_inner'),
@@ -114,7 +142,7 @@ class InnerTaskResource extends Resource
                     ->limit(20)
                     ->label('Издание')
                     ->extraAttributes(['class' => 'fi-color fi-color-primary fi-text-color-700'])
-                    ->getStateUsing(function($record) {
+                    ->getStateUsing(function ($record) {
                         return match ($record['model_type']) {
                             'Collection' => $record->model['title_short'],
                             'OwnBook' => $record->model['title'],
@@ -136,13 +164,28 @@ class InnerTaskResource extends Resource
                     ->searchable(),
                 TextColumn::make('deadline')
                     ->label('Срок')
-                    ->date()
+                    ->formatStateUsing(function ($state, InnerTask $record) {
+                        $date = Carbon::parse($state);
+                        $days = now()->diffInDays($date, false);
+
+                        // Выбираем иконку
+                        $icon = match (true) {
+                            $days < 0 => '🔥',
+                            $days <= 3 => '⚠️',
+                            default => '',
+                        };
+                        $formattedDate = $date->locale('ru')->translatedFormat('j F');
+                        return "$icon $formattedDate";
+                    })
                     ->sortable(),
                 TextColumn::make('deadline_inner')
                     ->label('Срок внутренний')
                     ->dateTime()
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
+                TextColumn::make('comment')
+                    ->label('Комментарий')
+                    ->toggleable(),
                 IconColumn::make('flg_custom_task')
                     ->label('Кастомная задача')
                     ->toggleable(isToggledHiddenByDefault: true)
@@ -167,12 +210,13 @@ class InnerTaskResource extends Resource
             ])
             ->defaultSort('deadline', 'asc')
             ->recordActions([
-                ViewAction::make(),
+                EditAction::make()->iconButton(''),
             ])
+            ->recordAction('edit')
             ->paginated([20, 50, 'all'])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
+//                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
