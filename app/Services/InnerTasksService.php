@@ -32,7 +32,7 @@ class InnerTasksService
                     $collection['date_preview_end']
                 ],
                 CollectionStatusEnums::PRINT_PREPARE => [
-                    "Отрпавить в печать",
+                    "Отправить в печать",
                     "Отправить сборник {$collection['title_short']} в печать",
                     $collection['date_print_start']
                 ],
