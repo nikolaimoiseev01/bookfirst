@@ -136,10 +136,12 @@ class InnerTaskResource extends Resource
                         };
                         return "$icon $state->value";
                     })
+                    ->sortable()
                     ->label('Тип')
                     ->searchable(),
                 TextColumn::make('model.title')
                     ->limit(20)
+                    ->sortable()
                     ->label('Издание')
                     ->extraAttributes(['class' => 'fi-color fi-color-primary fi-text-color-700'])
                     ->getStateUsing(function ($record) {
@@ -158,9 +160,11 @@ class InnerTaskResource extends Resource
                 TextColumn::make('responsible')
                     ->label('Ответственный')
                     ->toggleable(isToggledHiddenByDefault: true)
+                    ->sortable()
                     ->searchable(),
                 TextColumn::make('title')
                     ->label('Название')
+                    ->sortable()
                     ->searchable(),
                 TextColumn::make('deadline')
                     ->label('Срок')
@@ -185,6 +189,7 @@ class InnerTaskResource extends Resource
                     ->sortable(),
                 TextColumn::make('comment')
                     ->label('Комментарий')
+                    ->sortable()
                     ->toggleable(),
                 IconColumn::make('flg_custom_task')
                     ->label('Кастомная задача')
