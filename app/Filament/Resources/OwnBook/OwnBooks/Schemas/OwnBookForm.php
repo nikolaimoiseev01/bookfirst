@@ -224,12 +224,6 @@ class OwnBookForm
                         ])->columns(5)->columnSpanFull()
 
                     ])->columns(3),
-                    Tabs\Tab::make('Ссылки')->schema([
-                        Repeater::make('selling_links')->schema([
-                            TextInput::make('platform'),
-                            TextInput::make('link')
-                        ])->columns(2)->hiddenLabel()
-                    ]),
                     Tabs\Tab::make('Печать')->schema([
                         Grid::make()->schema([
                             TextEntry::make('initialPrintOrder.status')
@@ -281,6 +275,12 @@ class OwnBookForm
                                 ])->columns(3)->columnSpanFull()
                         ])->columnSpanFull()->columns(5)
                     ])->columnSpanFull(),
+                    Tabs\Tab::make('Ссылки')->schema([
+                        Repeater::make('selling_links')->schema([
+                            TextInput::make('platform'),
+                            TextInput::make('link')
+                        ])->columns(2)->hiddenLabel()
+                    ]),
                     Tab::make('Чат')->schema([
                         Livewire::make('components.account.chat', ['chat' => $schema->getRecord()->chat])->extraAttributes(['class' => 'h-[500px]'])
                     ])
