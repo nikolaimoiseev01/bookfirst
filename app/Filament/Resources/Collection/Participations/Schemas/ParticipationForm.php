@@ -34,7 +34,11 @@ class ParticipationForm
                                 ->maxLength(255),
                             Select::make('collection_id')
                                 ->label('Сборник')
-                                ->relationship(name: 'collection', titleAttribute: 'title'),
+                                ->relationship(
+                                    name: 'collection',
+                                    titleAttribute: 'title',
+                                    modifyQueryUsing: fn ($query) => $query->orderBy('created_at', 'desc')
+                                ),
                             Select::make('status')
                                 ->label('Статус')
                                 ->options(
