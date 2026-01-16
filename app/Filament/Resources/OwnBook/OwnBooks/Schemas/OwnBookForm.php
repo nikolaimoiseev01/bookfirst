@@ -181,6 +181,7 @@ class OwnBookForm
                                 ->label('Текст. Всего')
                                 ->numeric()
                                 ->disabled() // чтобы руками не правили
+                                ->dehydrated()
                                 ->hintIcon('heroicon-o-question-mark-circle')
                                 ->hintIconTooltip('Дизайн + Проверка + 800 руб.'),
                             TextInput::make('price_cover')
@@ -200,6 +201,7 @@ class OwnBookForm
                             TextInput::make('price_total')
                                 ->label('Тотал')
                                 ->disabled() // чтобы руками не правили
+                                ->dehydrated()
                                 ->hintIcon('heroicon-o-question-mark-circle')
                                 ->hintIconTooltip('Печать здесь не учитывается')
                                 ->numeric(),
