@@ -9,8 +9,6 @@ use App\Enums\PrintOrderStatusEnums;
 use App\Forms\Components\CustomMediaUpload;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\DateTimePicker;
-use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
@@ -27,7 +25,7 @@ use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 use Illuminate\Database\Eloquent\Model;
-use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use Illuminate\Support\HtmlString;
 
 class OwnBookForm
 {
@@ -162,25 +160,43 @@ class OwnBookForm
                         ])->collapsed()
                     ]),
                     Tabs\Tab::make('Финансы')->schema([
-                        TextInput::make('price_text_design')
-                            ->numeric(),
-                        TextInput::make('price_text_check')
-                            ->numeric(),
-                        TextInput::make('price_inside')
-                            ->numeric(),
-                        TextInput::make('price_cover')
-                            ->numeric(),
-                        TextInput::make('price_promo')
-                            ->numeric(),
-                        TextInput::make('price_total')
-                            ->numeric(),
-                        Checkbox::make('need_text_design')
-                            ->hintIconTooltip('Test')
-                            ->label('Нужен дизайн текста'),
-                        Checkbox::make('need_text_check')->label('Нужна проверка текста'),
-                        Checkbox::make('cover_ready')->label('Обложка готова от автора'),
-                        DateTimePicker::make('paid_at_without_print'),
-                        DateTimePicker::make('paid_at_print_only'),
+                        Fieldset::make()->schema([
+                            TextInput::make('price_text_design')
+                                ->label('Текст. Дизайн')
+                                ->numeric(),
+                            TextInput::make('price_text_check')
+                                ->label('Текст. Проверка')
+                                ->numeric(),
+                            TextInput::make('price_inside')
+                                ->label('Текст. Всего')
+                                ->numeric(),
+                            TextInput::make('price_cover')
+                                ->label('Обложка')
+                                ->numeric(),
+                            TextInput::make('price_promo')
+                                ->label('Продвижение')
+                                ->numeric(),
+                            TextInput::make('price_total')
+                                ->label('Тотал')
+                                ->numeric(),
+                        ])    ->label(new HtmlString(
+                            'Цены&nbsp;
+        <a target="_blank"
+           href="' . e(route('portal.own_book.application')) . '"
+           class="inline-flex items-center gap-1 text-primary-600 hover:underline text-sm">
+            Калькулятор
+        </a>'
+                        ))->columns(6)->columnSpanFull(),
+                        Grid::make()->schema([
+                            Checkbox::make('need_text_design')
+                                ->hintIconTooltip('Test')
+                                ->label('Нужен дизайн текста'),
+                            Checkbox::make('need_text_check')->label('Нужна проверка текста'),
+                            Checkbox::make('cover_ready')->label('Обложка готова от автора'),
+                            TextEntry::make('paid_at_without_print')->label('Оплата (без бечати)'),
+                            TextEntry::make('paid_at_print_only')->label('Оплата печати'),
+                        ])->columns(5)->columnSpanFull()
+
                     ])->columns(3),
                     Tabs\Tab::make('Ссылки')->schema([
                         Repeater::make('selling_links')->schema([
