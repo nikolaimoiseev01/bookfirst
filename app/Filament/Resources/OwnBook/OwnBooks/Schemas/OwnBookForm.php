@@ -163,23 +163,43 @@ class OwnBookForm
                         Fieldset::make()->schema([
                             TextInput::make('price_text_design')
                                 ->label('Текст. Дизайн')
-                                ->numeric(),
+                                ->numeric()
+                                ->reactive()
+                                ->afterStateUpdated(function ($state, callable $set, Get $get) {
+                                    static::recalculateInsidePrice($set, $get);
+                                }),
+
                             TextInput::make('price_text_check')
                                 ->label('Текст. Проверка')
-                                ->numeric(),
+                                ->numeric()
+                                ->reactive()
+                                ->afterStateUpdated(function ($state, callable $set, Get $get) {
+                                    static::recalculateInsidePrice($set, $get);
+                                }),
+
                             TextInput::make('price_inside')
                                 ->label('Текст. Всего')
+                                ->numeric()
+                                ->disabled() // чтобы руками не правили
                                 ->hintIcon('heroicon-o-question-mark-circle')
-                                ->hintIconTooltip('Дизайн + Проверка + 800руб.')
-                                ->numeric(),
+                                ->hintIconTooltip('Дизайн + Проверка + 800 руб.'),
                             TextInput::make('price_cover')
                                 ->label('Обложка')
+                                ->reactive()
+                                ->afterStateUpdated(function ($state, callable $set, Get $get) {
+                                    static::recalculateInsidePrice($set, $get);
+                                })
                                 ->numeric(),
                             TextInput::make('price_promo')
                                 ->label('Продвижение')
+                                ->reactive()
+                                ->afterStateUpdated(function ($state, callable $set, Get $get) {
+                                    static::recalculateInsidePrice($set, $get);
+                                })
                                 ->numeric(),
                             TextInput::make('price_total')
                                 ->label('Тотал')
+                                ->disabled() // чтобы руками не правили
                                 ->hintIcon('heroicon-o-question-mark-circle')
                                 ->hintIconTooltip('Печать здесь не учитывается')
                                 ->numeric(),
@@ -265,5 +285,22 @@ class OwnBookForm
                 ])->columnSpanFull(),
 
             ]);
+    }
+
+
+    protected static function recalculateInsidePrice(callable $set, Get $get): void
+    {
+        $design = (int) $get('price_text_design');
+        $check  = (int) $get('price_text_check');
+
+        $cover  = (int) $get('price_cover');
+
+        $promo  = (int) $get('price_promo');
+
+        $priceInside = $design + $check + 800;
+
+        $set('price_inside', $priceInside);
+
+        $set('price_total', $priceInside + $cover + $promo);
     }
 }
