@@ -169,6 +169,8 @@ class OwnBookForm
                                 ->numeric(),
                             TextInput::make('price_inside')
                                 ->label('Текст. Всего')
+                                ->hintIcon('heroicon-o-question-mark-circle')
+                                ->hintIconTooltip('Дизайн + Проверка + 800руб.')
                                 ->numeric(),
                             TextInput::make('price_cover')
                                 ->label('Обложка')
@@ -178,6 +180,8 @@ class OwnBookForm
                                 ->numeric(),
                             TextInput::make('price_total')
                                 ->label('Тотал')
+                                ->hintIcon('heroicon-o-question-mark-circle')
+                                ->hintIconTooltip('Печать здесь не учитывается')
                                 ->numeric(),
                         ])    ->label(new HtmlString(
                             'Цены&nbsp;
