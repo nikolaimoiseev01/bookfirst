@@ -2,12 +2,15 @@
 
 namespace App\Filament\Resources\ExtPromotions;
 
+use App\Enums\ExtPromotionStatusEnums;
+use App\Enums\OwnBookStatusEnums;
 use App\Filament\Resources\ExtPromotions\Pages\CreateExtPromotion;
 use App\Filament\Resources\ExtPromotions\Pages\EditExtPromotion;
 use App\Filament\Resources\ExtPromotions\Pages\ListExtPromotions;
 use App\Filament\Resources\ExtPromotions\Schemas\ExtPromotionForm;
 use App\Filament\Resources\ExtPromotions\Tables\ExtPromotionsTable;
 use App\Models\ExtPromotion\ExtPromotion;
+use App\Models\OwnBook\OwnBook;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -49,5 +52,10 @@ class ExtPromotionResource extends Resource
             'create' => CreateExtPromotion::route('/create'),
             'edit' => EditExtPromotion::route('/{record}/edit'),
         ];
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return ExtPromotion::where('status', ExtPromotionStatusEnums::REVIEW)->count();
     }
 }
