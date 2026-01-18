@@ -3,6 +3,7 @@
 namespace App\Filament\Widgets;
 
 use App\Models\OwnBook\OwnBook;
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Widgets\ChartWidget;
 use Illuminate\Support\Facades\DB;
 
@@ -10,6 +11,8 @@ class OwnBookChart extends ChartWidget
 {
     protected ?string $heading = 'Книги по источнику (UTM)';
     protected ?string $maxHeight = '400px';
+
+    use HasWidgetShield;
 
     protected function getData(): array
     {
