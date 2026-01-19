@@ -38,12 +38,12 @@ class ExtPromotionsTable
                 TextColumn::make('price_executor')
                     ->label('Исполнитель')
                     ->numeric(),
-                TextColumn::make('price_out')
-                    ->label('Издательство')
-                    ->numeric(),
-                TextColumn::make('price_total')
-                    ->label('Общая сумма')
-                    ->numeric(),
+//                TextColumn::make('price_out')
+//                    ->label('Издательство')
+//                    ->numeric(),
+//                TextColumn::make('price_total')
+//                    ->label('Общая сумма')
+//                    ->numeric(),
                 IconColumn::make('executor_got_payment')
                     ->label('Оплачен исполнителю')
                     ->icon(fn (int $state): Heroicon => match ($state) {

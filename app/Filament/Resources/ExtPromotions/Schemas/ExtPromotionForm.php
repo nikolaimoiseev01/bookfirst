@@ -31,10 +31,10 @@ class ExtPromotionForm
                         TextEntry::make('login'),
                         TextEntry::make('password'),
                         TextEntry::make('promocode.name')->label('Промокод'),
-                        TextEntry::make('price_executor'),
-                        TextEntry::make('price_our'),
-                        TextEntry::make('price_total')
-                    ]),
+                        TextEntry::make('price_executor')->label('Исполнитель'),
+//                        TextEntry::make('price_our'),
+//                        TextEntry::make('price_total')
+                    ])->columns(7),
                     Tab::make('Чат')->schema([
                         Livewire::make('components.account.chat', ['chat' => $schema->getRecord()->chat])->columnSpanFull()
                     ])
