@@ -77,7 +77,17 @@ class OwnBooksTable
                                     }),
                                 TextColumn::make('status_cover')
                                     ->badge()
-                                    ->formatStateUsing(fn(OwnBookCoverStatusEnums $state): HtmlString => new HtmlString("<h1 class='text-sm'>Обложка: {$state->value}</h1>"))
+                                    ->formatStateUsing(function(OwnBookCoverStatusEnums $state, $record) {
+                                        $coverDeadline = '';
+                                        if ($record->status_general == OwnBookStatusEnums::WORK_IN_PROGRESS
+                                            && ($state == OwnBookCoverStatusEnums::DEVELOPMENT)
+                                        ) {
+                                            $date = formatDate($record->deadline_cover);
+                                            $coverDeadline = "<br>(Срок: {$date})" ;
+                                        }
+                                        $text = new HtmlString("<h1 class='text-sm'>Обложка: {$state->value} $coverDeadline</h1>");
+                                        return $text;
+                                    })
                                     ->color(fn(OwnBookCoverStatusEnums $state): string => match ($state) {
                                         OwnBookCoverStatusEnums::PREVIEW, OwnBookCoverStatusEnums::READY_FROM_AUTHOR, OwnBookCoverStatusEnums::WAITING_FOR_AUTHOR_IN_CHAT => 'gray',
                                         OwnBookCoverStatusEnums::DEVELOPMENT, OwnBookCoverStatusEnums::CORRECTIONS => 'danger',
