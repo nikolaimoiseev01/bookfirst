@@ -47,7 +47,7 @@ class OwnBooksTable
                         Stack::make([
                             Stack::make([
                                 TextColumn::make('title')
-                                    ->formatStateUsing(fn(string $state): HtmlString =>  new HtmlString("<h1 class='text-2xl'>" . e(Str::limit($state, 15)) . "</h1>"))
+                                    ->formatStateUsing(fn(string $state): HtmlString => new HtmlString("<h1 class='text-2xl'>" . e(Str::limit($state, 15)) . "</h1>"))
                                     ->searchable(),
                                 TextColumn::make('author')
                                     ->formatStateUsing(fn(string $state): HtmlString => new HtmlString("<h1 class='text-base'>{$state}</h1>"))
@@ -56,7 +56,7 @@ class OwnBooksTable
                             Stack::make([
                                 TextColumn::make('status_general')
                                     ->badge()
-                                    ->formatStateUsing(function(OwnBookStatusEnums $state): HtmlString {
+                                    ->formatStateUsing(function (OwnBookStatusEnums $state): HtmlString {
                                         return new HtmlString("<h1 class='text-sm'>Статус: {$state->value}</h1>");
                                     })
                                     ->color(fn($state): string => match ($state) {
@@ -77,13 +77,13 @@ class OwnBooksTable
                                     }),
                                 TextColumn::make('status_cover')
                                     ->badge()
-                                    ->formatStateUsing(function(OwnBookCoverStatusEnums $state, $record) {
+                                    ->formatStateUsing(function (OwnBookCoverStatusEnums $state, $record) {
                                         $coverDeadline = '';
                                         if ($record->status_general == OwnBookStatusEnums::WORK_IN_PROGRESS
                                             && ($state == OwnBookCoverStatusEnums::DEVELOPMENT)
                                         ) {
                                             $date = formatDate($record->deadline_cover);
-                                            $coverDeadline = "<br>(Срок: {$date})" ;
+                                            $coverDeadline = "<br>(Срок: {$date})";
                                         }
                                         $text = new HtmlString("<h1 class='text-sm'>Обложка: {$state->value} $coverDeadline</h1>");
                                         return $text;
@@ -110,7 +110,7 @@ class OwnBooksTable
                                     })
                                     ->extraAttributes(['class' => 'flex gap-2 text-nowrap items-center'])
                                     ->icon('heroicon-o-book-open')
-                                    ->tooltip(function(Model $record) {
+                                    ->tooltip(function (Model $record) {
                                         $cover = optional($record->initialPrintOrder)->cover_type;
                                         $inside = optional($record->initialPrintOrder)->inside_color;
                                         return "Обложка: {$cover}, ВБ: {$inside}";
@@ -137,13 +137,29 @@ class OwnBooksTable
                             ->mapWithKeys(fn($case) => [$case->value => $case->value])
                             ->toArray()
                     ])
+                    ->multiple(),
+                SelectFilter::make('status_inside')
+                    ->label('Статус ВБ')
+                    ->options([
+                        collect(OwnBookInsideStatusEnums::cases())
+                            ->mapWithKeys(fn($case) => [$case->value => $case->value])
+                            ->toArray()
+                    ])
+                    ->multiple(),
+                SelectFilter::make('status_cover')
+                    ->label('Статус обложки')
+                    ->options([
+                        collect(OwnBookCoverStatusEnums::cases())
+                            ->mapWithKeys(fn($case) => [$case->value => $case->value])
+                            ->toArray()
+                    ])
                     ->multiple()
             ])
             ->defaultSort('created_at', 'desc')
             ->actions([
                 Action::make('edit')
                     ->hiddenLabel()
-                    ->url(fn (Model $record): string => OwnBookResource::getUrl('edit', ['record' => $record]))
+                    ->url(fn(Model $record): string => OwnBookResource::getUrl('edit', ['record' => $record]))
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
