@@ -6,6 +6,7 @@ use App\Enums\CollectionStatusEnums;
 use App\Enums\ParticipationStatusEnums;
 use App\Models\Collection\Collection;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
@@ -32,10 +33,12 @@ class CollectionForm
                         \Filament\Schemas\Components\Grid::make()->schema([
                             TextInput::make('title')
                                 ->label('Название')
+                                ->columnSpan(3)
                                 ->required()
                                 ->maxLength(255),
                             Select::make('status')
                                 ->label('Статус')
+                                ->columnSpan(3)
                                 ->visibleOn('edit')
                                 ->options(
                                     collect(CollectionStatusEnums::cases())
@@ -47,10 +50,21 @@ class CollectionForm
                                 ->visibleOn('edit')
                                 ->columnSpan(1)
                                 ->numeric(),
+                            Placeholder::make('prints')
+                                ->label('Экземпляров')
+                                ->content(function (?Collection $record) {
+                                    $totalPrints = $record->approvedParticipations()
+                                        ->withSum('printOrder', 'books_cnt')
+                                        ->get()
+                                        ->sum('print_order_sum_books_cnt');
+                                    return $totalPrints ?? '—';
+                                })
+                                ->visibleOn('edit')
+                                ->columnSpan(1),
                             Textarea::make('description')
                                 ->label('Описание')
                                 ->columnSpanFull(),
-                        ])->columns(3)->columnSpan(2),
+                        ])->columns(8)->columnSpan(2),
                         \Filament\Schemas\Components\Grid::make()->schema([
                             DatePicker::make('date_apps_end')->label('Конец приема заявок'),
                             DatePicker::make('date_preview_start')->label('Начало проверки'),

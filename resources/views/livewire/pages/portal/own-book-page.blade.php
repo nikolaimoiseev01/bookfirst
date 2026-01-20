@@ -49,7 +49,7 @@
                 @endforeach
             </div>
         </section>
-        <section x-data="{ tab: '{{$tabs['default']}}' }"
+        <section x-data="{ tab: '{{ $tabs['default'] ?? 'read_part' }}' }"
                  class="container p-4 transition-all min-w-full">
             <nav class="flex flex-wrap md:justify-center md:flex-col gap-8 md:gap-4 text-4xl relative z-[1]
                                 after:absolute after:left-0 after:right-0 after:bottom-0 after:block
@@ -60,7 +60,7 @@
                     <button @click="tab = '{{$key}}'"
                             :class="tab === '{{$key}}' ? 'text-green-500 after:w-full' : 'text-dark-100'"
                             class="cursor-pointer transition
-                                relative  pb-4
+                                relative pb-4
                                 after:absolute after:left-0 after:right-0 after:bottom-0 after:block
                                 after:w-0 after:h-[2px] after:z-20 after:bg-green-500 after:rounded
                                 after:m-auto after:content-['']
