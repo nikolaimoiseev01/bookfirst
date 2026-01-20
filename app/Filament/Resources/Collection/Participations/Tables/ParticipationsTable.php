@@ -102,7 +102,7 @@ class ParticipationsTable
             ->defaultSort(function (Builder $query): Builder {
                 return $query
                     ->orderByRaw("
-                        CASE status
+                        CASE participations.status
                             WHEN 'Ожидается подтверждение заявки' THEN 1
                             WHEN 'Заявка подтверждена, ожидается оплата' THEN 2
                             WHEN 'Участие подтверждено' THEN 3
