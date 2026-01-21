@@ -38,7 +38,7 @@ class ExtPromotionStatUpdate extends Command
         $count = count($extPromotions);
         $subject = "📊 Сохранили статистику по продвижениям!";
         $text = "Обработали человек: {$count}";
-        $url = route('login_as_secondary_admin', ['url_redirect' => ListExtPromotions::getUrl()]);
+        $url = null;
         Notification::route('telegram', getTelegramChatId('extPromotion'))
             ->notify(new TelegramDefaultNotification($subject, $text, $url, 'extPromotion'));
     }
