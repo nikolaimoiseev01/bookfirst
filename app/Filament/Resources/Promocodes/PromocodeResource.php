@@ -36,6 +36,8 @@ class PromocodeResource extends Resource
                 TextInput::make('discount')
                     ->required()
                     ->numeric(),
+                TextInput::make('group')
+                    ->required(),
             ]);
     }
 
