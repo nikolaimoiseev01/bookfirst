@@ -47,6 +47,8 @@ class PromocodeResource extends Resource
             ->columns([
                 TextColumn::make('name')
                     ->searchable(),
+                TextColumn::make('group')
+                    ->sortable(),
                 TextColumn::make('discount')
                     ->numeric()
                     ->sortable(),
