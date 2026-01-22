@@ -239,7 +239,7 @@ class OwnBookForm
                                     PrintOrderStatusEnums::SEND_NEED => 'danger',
                                     PrintOrderStatusEnums::SENT => 'success',
                                 }),
-                            DatePicker::make('deadline_print'),
+                            DatePicker::make('deadline_print')->label('Срок печати'),
                             TextEntry::make('initialPrintOrder.books_cnt')
                                 ->label('Экземпляров')
                                 ->numeric(),
