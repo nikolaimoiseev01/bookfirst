@@ -75,10 +75,13 @@ class OwnBookForm
                             ->label('Продвижение')
                             ->columnSpan(1)
                             ->numeric(),
-                        Textarea::make('comment')->hiddenLabel()->placeholder('Комментарий')->columnSpan(6),
+                        Textarea::make('comment')->hiddenLabel()->placeholder('Комментарий')->columnSpan(5),
                         Textarea::make('annotation')
                             ->hiddenLabel()->placeholder('Аннотация')
                             ->columnSpan(5),
+                        TextEntry::make('created_at')
+                            ->label('Создана')
+                            ->date('d F')
                     ])->columns(11)->columnSpan(8),
                 ])->columnSpanFull()->columns(9),
                 Tabs::make('Tabs')->tabs([
