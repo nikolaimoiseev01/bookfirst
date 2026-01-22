@@ -239,13 +239,7 @@ class OwnBookForm
                                     PrintOrderStatusEnums::SEND_NEED => 'danger',
                                     PrintOrderStatusEnums::SENT => 'success',
                                 }),
-                            TextEntry::make('initialPrintOrder.price_print')
-                                ->label('Цена печати')
-                                ->numeric(),
                             DatePicker::make('deadline_print'),
-                            TextEntry::make('initialPrintOrder.price_send')
-                                ->label('Цена отправки')
-                                ->numeric(),
                             TextEntry::make('initialPrintOrder.books_cnt')
                                 ->label('Экземпляров')
                                 ->numeric(),
@@ -266,6 +260,8 @@ class OwnBookForm
                                 ->label('Настройки заказа печати')
                                 ->relationship('initialPrintOrder')
                                 ->schema([
+                                    TextInput::make('price_print')->label('Цена печати'),
+                                    TextInput::make('price_send')->label('Цена отправки'),
                                     TextInput::make('track_number'),
                                     Select::make('printing_company_id')
                                         ->relationship(name: 'printingCompany', titleAttribute: 'name'),
@@ -276,7 +272,7 @@ class OwnBookForm
 //                                            'Цветной' => 'Цветной',
 //                                            'Черно-белый' => 'Черно-белый'
 //                                        ]),
-                                ])->columns(3)->columnSpanFull()
+                                ])->columns(5)->columnSpanFull()
                         ])->columnSpanFull()->columns(5)
                     ])->columnSpanFull(),
                     Tabs\Tab::make('Ссылки')->schema([
