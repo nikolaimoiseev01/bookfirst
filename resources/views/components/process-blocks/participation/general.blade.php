@@ -9,7 +9,7 @@
                     <span class="text-green-400 text-xl cursor-pointer" x-text="showWorks ? 'Свернуть' : 'Показать'"
                           @click="showWorks = !showWorks"></span>
                 </div>
-                <p>Строчек: {{$participation['rows']}}, Сраниц: {{$participation['pages']}}</p>
+                <p>Строчек: {{$participation['rows']}}, Страниц: {{$participation['pages']}}</p>
             </div>
             <div class="flex flex-col w-1/2 md:w-full">
                 @if($participation->printOrder ?? null)

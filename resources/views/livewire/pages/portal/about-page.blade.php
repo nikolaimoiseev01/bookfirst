@@ -17,8 +17,8 @@
         <div class="flex gap-8 flex-wrap">
             <div class="flex flex-col">
                 <h4>Правовая информация:</h4>
-                <a class="text-2xl text-green-500 font-light" download href="/fixed/Договор публичной оферты на оказание услуг по публикации.pdf">Договор публикации</a>
-                <a class="text-2xl text-green-500 font-light" download href="/fixed/Договор на издание книги.pdf">Договор на издание книги</a>
+                <a class="text-2xl text-green-500 font-light" download="Договор публичной оферты на оказание услуг по публикации.pdf" href="/fixed/public_documents/participation_agreement.pdf">Договор публикации</a>
+                <a class="text-2xl text-green-500 font-light" download="Договор на издание книги.pdf" href="/fixed/public_documents/own_book_agreement.pdf">Договор на издание книги</a>
             </div>
             <div class="flex flex-col">
                 <h4> Юридическое лицо:</h4>
