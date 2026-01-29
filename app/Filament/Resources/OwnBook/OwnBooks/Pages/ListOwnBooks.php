@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\OwnBook\OwnBooks\Pages;
 
+use App\Enums\OwnBookCoverStatusEnums;
+use App\Enums\OwnBookInsideStatusEnums;
 use App\Enums\OwnBookStatusEnums;
 use App\Filament\Resources\OwnBook\OwnBooks\OwnBookResource;
 use App\Models\OwnBook\OwnBook;
@@ -36,8 +38,18 @@ class ListOwnBooks extends ListRecords
         $tabs = [
             'В работе' => Tab::make()
                 ->badge($this->ownBookStatuses[OwnBookStatusEnums::WORK_IN_PROGRESS->value] ?? 0)
-                ->modifyQueryUsing(fn(Builder $query) => $query->where('status_general'
-                    , OwnBookStatusEnums::WORK_IN_PROGRESS)),
+                ->modifyQueryUsing(fn(Builder $query) =>
+                $query
+                    ->where('status_general', OwnBookStatusEnums::WORK_IN_PROGRESS)
+                    ->where(function ($q) {
+                        $q->where('status_inside', OwnBookInsideStatusEnums::DEVELOPMENT)
+                            ->orWhere('status_inside', OwnBookInsideStatusEnums::CORRECTIONS)
+                            ->orWhere('status_cover', OwnBookCoverStatusEnums::DEVELOPMENT)
+                            ->orWhere('status_cover', OwnBookCoverStatusEnums::CORRECTIONS)
+
+                        ;
+                    })
+                ),
             'На отправку' => Tab::make()
                 ->badge($this->ownBookStatuses[OwnBookStatusEnums::PRINT_WAITING->value] ?? 0)
                 ->badgeColor($this->ownBookStatuses[OwnBookStatusEnums::PRINT_WAITING->value] ?? 0 > 0 ? 'danger' : 'primary')
