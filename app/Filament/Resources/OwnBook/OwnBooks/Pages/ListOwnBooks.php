@@ -33,22 +33,33 @@ class ListOwnBooks extends ListRecords
         ];
     }
 
+    protected function workInProgressQuery(Builder $query): Builder
+    {
+        return $query
+            ->where('status_general', OwnBookStatusEnums::WORK_IN_PROGRESS)
+            ->where(function ($q) {
+                $q->whereIn('status_inside', [
+                    OwnBookInsideStatusEnums::DEVELOPMENT,
+                    OwnBookInsideStatusEnums::CORRECTIONS,
+                ])
+                    ->orWhereIn('status_cover', [
+                        OwnBookCoverStatusEnums::DEVELOPMENT,
+                        OwnBookCoverStatusEnums::CORRECTIONS,
+                    ]);
+            });
+    }
+
     public function getTabs(): array
     {
         $tabs = [
             'В работе' => Tab::make()
-                ->badge($this->ownBookStatuses[OwnBookStatusEnums::WORK_IN_PROGRESS->value] ?? 0)
-                ->modifyQueryUsing(fn(Builder $query) =>
-                $query
-                    ->where('status_general', OwnBookStatusEnums::WORK_IN_PROGRESS)
-                    ->where(function ($q) {
-                        $q->where('status_inside', OwnBookInsideStatusEnums::DEVELOPMENT)
-                            ->orWhere('status_inside', OwnBookInsideStatusEnums::CORRECTIONS)
-                            ->orWhere('status_cover', OwnBookCoverStatusEnums::DEVELOPMENT)
-                            ->orWhere('status_cover', OwnBookCoverStatusEnums::CORRECTIONS)
-
-                        ;
-                    })
+                ->badge(fn () =>
+                $this->workInProgressQuery(
+                    OwnBook::query()
+                )->count()
+                )
+                ->modifyQueryUsing(fn (Builder $query) =>
+                $this->workInProgressQuery($query)
                 ),
             'На отправку' => Tab::make()
                 ->badge($this->ownBookStatuses[OwnBookStatusEnums::PRINT_WAITING->value] ?? 0)
