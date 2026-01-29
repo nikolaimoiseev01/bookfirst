@@ -96,7 +96,7 @@ class CollectionForm
                             ->viewData(function (Collection $collection) {
                                 $collection = $collection->load('collectionVotes');
                                 $candidates = DB::table('collection_votes')
-                                    ->select(DB::raw('count(*) as votes_count, participations.author_name'))
+                                    ->select(DB::raw('count(*) as votes_count, participations.author_name, participations.id'))
                                     ->join('participations', 'participations.id', '=', 'collection_votes.participation_id_to')
                                     ->where('collection_votes.collection_id', $collection->id)
                                     ->groupBy('participations.author_name')
