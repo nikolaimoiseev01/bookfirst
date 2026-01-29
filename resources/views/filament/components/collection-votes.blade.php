@@ -3,7 +3,9 @@
     <div class="flex-1">
         <h1 class="text-xl">Места</h1>
         @foreach($candidates as $key=>$candidate)
-            {{$key + 1}}. {{$candidate->author_name}} ({{$candidate->votes_count}})<br>
+            <a href="/admin/collection/participations/{{$candidate->id}}/edit">
+            {{$key + 1}}. {{$candidate->author_name}} ({{$candidate->votes_count}})
+            </a><br>
         @endforeach
     </div>
 
