@@ -99,7 +99,7 @@ class CollectionForm
                                     ->select(DB::raw('count(*) as votes_count, participations.author_name, participations.id'))
                                     ->join('participations', 'participations.id', '=', 'collection_votes.participation_id_to')
                                     ->where('collection_votes.collection_id', $collection->id)
-                                    ->groupBy('participations.author_name, participations.id')
+                                    ->groupBy(DB::raw('participations.author_name, participations.id'))
                                     ->orderBy('votes_count', 'desc')
                                     ->get();
                                 return [
