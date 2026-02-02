@@ -181,7 +181,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 document.addEventListener('livewire:navigated', () => {
     window.loggedCheck()
-    makeSnowFlakes()
+    // makeSnowFlakes()
 });
 
 window.Cookie = {

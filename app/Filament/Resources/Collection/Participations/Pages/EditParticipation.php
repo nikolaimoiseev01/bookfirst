@@ -63,8 +63,13 @@ class EditParticipation extends EditRecord
     }
     protected function afterSave(): void
     {
-        if ($this->record->wasChanged('author_name')) {
-            dd('author_name changed!');
+        if ($this->record->wasChanged('collection_id')) {
+            $this->record->chat->update([
+                'title' => 'Личный чат по участию в сборнике ' . $this->record->collection->title
+            ]);
+            $this->record->printOrder?->update([
+                'model_id' => $this->record->collection->id
+            ]);
         }
 
         if ($this->record->wasChanged('status')) {

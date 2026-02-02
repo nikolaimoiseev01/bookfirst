@@ -71,7 +71,7 @@ class EditCollection extends EditRecord
         }
 
         if ($this->record->wasChanged('winner_participations')) {
-            foreach ($this->record->getWinnerParticipationsOrderedAttribute()->get() as $key => $winnerParticipation) {
+            foreach ($this->record->winner_participations_ordered as $key => $winnerParticipation) {
                 $notification = new CollectionWinnerNotification($this->record, $key + 1, $winnerParticipation['id']);
                 EmailNotificationJob::dispatch($winnerParticipation['user_id'], $notification);
             }

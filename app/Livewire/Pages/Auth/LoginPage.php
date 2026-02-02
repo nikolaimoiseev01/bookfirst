@@ -109,8 +109,6 @@ class LoginPage extends Component
                 title: 'Ошибка',
                 text: $messages,
             );
-
-            throw $e; // чтобы стандартный Livewire тоже знал про ошибки
         }
     }
 }
