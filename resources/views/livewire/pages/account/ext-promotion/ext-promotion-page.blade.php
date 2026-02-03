@@ -42,8 +42,4 @@
         @endif
     </div>
 
-{{--    @script--}}
-
-{{--    @endscript--}}
-
 </div>
