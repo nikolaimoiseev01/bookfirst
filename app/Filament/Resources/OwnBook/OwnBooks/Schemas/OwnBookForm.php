@@ -132,17 +132,21 @@ class OwnBookForm
                                         );
                                     }),
                                 RepeatableEntry::make('works')
-                                    ->label('')
+                                    ->hiddenLabel()
                                     ->schema([
-                                        TextEntry::make('work.title')
-                                            ->label('Название'),
-
-                                        TextEntry::make('work.text')
-                                            ->label('Текст')
-                                            ->limit(null)        // 🔑 убираем лимит
-                                            ->wrap()             // 🔑 разрешаем перенос строк
-                                            ->formatStateUsing(fn(?string $state) => nl2br(e($state)))
-                                            ->html(),
+                                        Section::make()
+                                            ->heading(function($record) {
+                                                return $record->work['title'];
+                                            })
+                                            ->hiddenLabel()
+                                            ->schema([
+                                            TextEntry::make('work.text')
+                                                ->hiddenLabel()
+                                                ->limit(null)        // 🔑 убираем лимит
+                                                ->wrap()             // 🔑 разрешаем перенос строк
+                                                ->formatStateUsing(fn(?string $state) => nl2br(e($state)))
+                                                ->html(),
+                                        ])->collapsed()
                                     ])
                                     ->columnSpanFull()
                                     ->grid(2)
