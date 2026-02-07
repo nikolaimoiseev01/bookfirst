@@ -7,6 +7,8 @@ use App\Enums\OwnBookInsideStatusEnums;
 use App\Enums\OwnBookStatusEnums;
 use App\Enums\PrintOrderStatusEnums;
 use App\Forms\Components\CustomMediaUpload;
+use App\Services\WordService;
+use Filament\Actions\Action;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Repeater;
@@ -15,6 +17,7 @@ use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Infolists\Components\ImageEntry;
+use Filament\Infolists\Components\RepeatableEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Fieldset;
 use Filament\Schemas\Components\Grid;
@@ -91,16 +94,58 @@ class OwnBookForm
                             TextEntry::make('comment_author_inside')
                                 ->label('Пожелания')
                                 ->columnSpanFull(),
+                            TextEntry::make('inside_type')
+                                ->disabled()
+                                ->label('Как загружены произведения'),
                             CustomMediaUpload::make('from_author_inside')
                                 ->label('Присланные файлы')
                                 ->mediaName(fn(Get $get) => $get('file_name'))
                                 ->multiple()
+                                ->visible(fn(Get $get) => in_array($get('inside_type'), ['Файлом', 'by_file']))
                                 ->disabled()
                                 ->downloadable()
                                 ->collection('from_author_inside'),
-                            TextInput::make('inside_type')
-                                ->disabled()
-                                ->required(),
+                            Section::make('Произведения в заявке')->schema([
+                                Select::make('export_type')
+                                    ->label('Формат')
+                                    ->options([
+                                        'Поэзия' => 'Поэзия',
+                                        'Проза' => 'Проза',
+                                    ])
+                                    ->default('full')
+                                    ->reactive(),
+                                Action::make('downloadWord')
+                                    ->label('Скачать Word')
+                                    ->icon('heroicon-o-arrow-down-tray')
+                                    ->action(function (array $arguments, Get $get, $record) {
+
+                                        $exportType = $get('export_type');
+
+                                        return response()->download(
+                                            (new WordService())->makeOwnBook(
+                                                ownBook: $record,
+                                                workType: $exportType
+                                            ),
+                                            $record->title . '.docx'
+                                        );
+                                    }),
+                                RepeatableEntry::make('works')
+                                    ->label('')
+                                    ->schema([
+                                        TextEntry::make('work.title')
+                                            ->label('Название'),
+
+                                        TextEntry::make('work.text')
+                                            ->label('Текст')
+                                            ->limit(null)        // 🔑 убираем лимит
+                                            ->wrap()             // 🔑 разрешаем перенос строк
+                                            ->formatStateUsing(fn(?string $state) => nl2br(e($state)))
+                                            ->html(),
+                                    ])
+                                    ->columnSpanFull()
+                                    ->grid(2)
+                            ])->columns(2)
+                                ->collapsed()->visible(fn(Get $get) => in_array($get('inside_type'), ['Из системы', 'by_system']))
                         ])->columnSpanFull()->collapsed(),
                         SpatieMediaLibraryFileUpload::make('inside_file')
                             ->label('Внутренний блок')
@@ -209,7 +254,7 @@ class OwnBookForm
                                 ->hintIcon('heroicon-o-question-mark-circle')
                                 ->hintIconTooltip('Печать здесь не учитывается')
                                 ->numeric(),
-                        ])    ->label(new HtmlString(
+                        ])->label(new HtmlString(
                             'Цены&nbsp;
         <a target="_blank"
            href="' . e(route('portal.own_book.application')) . '"
@@ -292,12 +337,12 @@ class OwnBookForm
 
     protected static function recalculateInsidePrice(callable $set, Get $get): void
     {
-        $design = (int) $get('price_text_design');
-        $check  = (int) $get('price_text_check');
+        $design = (int)$get('price_text_design');
+        $check = (int)$get('price_text_check');
 
-        $cover  = (int) $get('price_cover');
+        $cover = (int)$get('price_cover');
 
-        $promo  = (int) $get('price_promo');
+        $promo = (int)$get('price_promo');
 
         $priceInside = $design + $check + 800;
 
