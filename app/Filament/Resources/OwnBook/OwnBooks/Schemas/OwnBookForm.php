@@ -11,6 +11,7 @@ use App\Services\WordService;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
@@ -108,6 +109,7 @@ class OwnBookForm
                             Section::make('Произведения в заявке')->schema([
                                 Select::make('export_type')
                                     ->label('Формат')
+                                    ->dehydrated(false)
                                     ->options([
                                         'Поэзия' => 'Поэзия',
                                         'Проза' => 'Проза',
@@ -286,22 +288,32 @@ class OwnBookForm
                                 }),
                             DatePicker::make('deadline_print')->label('Срок печати'),
                             TextEntry::make('initialPrintOrder.books_cnt')
+                                ->visible(fn($record) => filled($record?->initialPrintOrder))
                                 ->label('Экземпляров')
                                 ->numeric(),
                             TextEntry::make('initialPrintOrder.cover_type')
+                                ->visible(fn($record) => filled($record?->initialPrintOrder))
                                 ->label('Тип обложки'),
                             TextEntry::make('initialPrintOrder.inside_color')
+                                ->visible(fn($record) => filled($record?->initialPrintOrder))
                                 ->label('Цветность ВБ'),
                             TextEntry::make('initialPrintOrder.address_json')
+                                ->visible(fn($record) => filled($record?->initialPrintOrder))
                                 ->state(fn($record) => $record->initialPrintOrder?->address_json['string'] ?? '—'
                                 )
                                 ->label('Адрес'),
                             TextEntry::make('initialPrintOrder.receiver_name')
+                                ->visible(fn($record) => filled($record?->initialPrintOrder))
                                 ->label('ФИО')
                                 ->numeric(),
                             TextEntry::make('initialPrintOrder.receiver_telephone')
+                                ->visible(fn($record) => filled($record?->initialPrintOrder))
                                 ->label('Телефон'),
+                            Placeholder::make('no_print')
+                                ->label('Печати нет')
+                                ->visible(fn ($record) => blank($record?->initialPrintOrder)),
                             Fieldset::make('initialPrintOrder')
+                                ->visible(fn($record) => filled($record?->initialPrintOrder))
                                 ->label('Настройки заказа печати')
                                 ->relationship('initialPrintOrder')
                                 ->schema([
