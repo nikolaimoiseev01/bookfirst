@@ -330,7 +330,7 @@ class OwnBookForm
 //                                            'Цветной' => 'Цветной',
 //                                            'Черно-белый' => 'Черно-белый'
 //                                        ]),
-                                ])->columns(5)->columnSpanFull()
+                                ])->columns(6)->columnSpanFull()
                         ])->columnSpanFull()->columns(5)
                     ])->columnSpanFull(),
                     Tabs\Tab::make('Ссылки')->schema([
