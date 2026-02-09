@@ -291,10 +291,6 @@ class OwnBookForm
                                     PrintOrderStatusEnums::SENT => 'success',
                                 }),
                             DatePicker::make('deadline_print')->label('Срок печати'),
-                            TextEntry::make('initialPrintOrder.books_cnt')
-                                ->visible(fn($record) => filled($record?->initialPrintOrder))
-                                ->label('Экземпляров')
-                                ->numeric(),
                             TextEntry::make('initialPrintOrder.cover_type')
                                 ->visible(fn($record) => filled($record?->initialPrintOrder))
                                 ->label('Тип обложки'),
@@ -321,6 +317,7 @@ class OwnBookForm
                                 ->label('Настройки заказа печати')
                                 ->relationship('initialPrintOrder')
                                 ->schema([
+                                    TextInput::make('books_cnt')->label('Экземпляров'),
                                     TextInput::make('price_print')->label('Цена печати'),
                                     TextInput::make('price_send')->label('Цена отправки'),
                                     TextInput::make('track_number'),
