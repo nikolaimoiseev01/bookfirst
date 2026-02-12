@@ -78,11 +78,6 @@ class InnerTasksService
 
     private function handleGeneralStatus($ownBook)
     {
-        if($ownBook['paid_at_print_only'] == null &&
-            ($ownBook['status_general'] == OwnBookStatusEnums::PRINT_WAITING )
-        ) {
-            dd($ownBook);
-        }
         return match ($ownBook['status_general']) {
             OwnBookStatusEnums::REVIEW =>
             ["Принять заявку",
