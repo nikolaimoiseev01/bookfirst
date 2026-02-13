@@ -3,7 +3,7 @@
     // ключ в sessionStorage
     'storageKey' => 'referral_toast_closed_v1',
     // задержка перед показом (мс)
-    'delay' => 3000,
+    'delay' => 2000,
     'buttonText' => 'Подробнее'
 ])
 
