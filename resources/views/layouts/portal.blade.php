@@ -73,6 +73,7 @@
 <div class="z-[99] flex-1">
     {{ $slot }}
 </div>
+<x-toast-referral/>
 @stack('scripts')
 <x-footer/>
 @if(session('swal'))

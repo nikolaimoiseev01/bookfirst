@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Pages\Account\Work;
 
+use App\Enums\CollectionStatusEnums;
 use App\Enums\ParticipationStatusEnums;
 use App\Models\Collection\ParticipationWork;
 use App\Models\Work\Work;
@@ -44,6 +45,11 @@ class WorksPage extends Component
 
     public function deleteConfirm($id)
     {
+        $participationWork = ParticipationWork::where('work_id', $id)->with('participation.collection')->first();
+        if ($participationWork) {
+            $this->dispatch('swal', type: 'error', title: 'Ошибка!', text: 'Нельзя удалить произведение, участвующеее в сборнике');
+            return;
+        }
         $this->dispatch('swal',
             title: 'Вы уверены?',
             text: 'Вы уверены, что хотите удалить это произведение?',

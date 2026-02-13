@@ -13,6 +13,7 @@ use App\Livewire\Pages\Account\Collection\ParticipationsPage;
 use App\Livewire\Pages\Account\ExtPromotion\ExtPromotionPage as AccountExtPromotionPage;
 use App\Livewire\Pages\Account\ExtPromotion\ExtPromotionCreatePage as AccountExtPromotionCreatePage;
 use App\Livewire\Pages\Account\ExtPromotion\ExtPromotionsPage as AccountExtPromotionsPage;
+use App\Livewire\Pages\Account\FriendInvitePage;
 use App\Livewire\Pages\Account\OwnBook\OwnBookCreatePage;
 use App\Livewire\Pages\Account\OwnBook\OwnBooksPage;
 use App\Livewire\Pages\Account\PurchasesPage;
@@ -138,6 +139,8 @@ Route::middleware(['userActivityLog'])->group(function () {
         Route::get('subscriptions', SubscribtionsPage::class)->name('account.subscriptions');
         Route::get('purchases', PurchasesPage::class)->name('account.purchases');
         Route::get('settings', SettingsPage::class)->name('account.settings');
+
+        Route::get('friend-invite', FriendInvitePage::class)->name('account.friend-invite');
 
         Route::get('aca-unsubscribe/{aca_id}', ACAUnsubscribedPage::class)->name('account.aca-unsubscribe');
     });

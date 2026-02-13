@@ -25,19 +25,24 @@
                 <h2 class="text-7xl font-medium text-black-500 dark:text-white text-nowrap md:text-5xl">Ваш шаг в мир<br>литературы
                 </h2>
                 <x-portal.welcome-running-line/>
-                <div class="flex gap-8 items-center lg:mx-auto lg:flex-wrap lg:justify-center">
-                    <a href="#actual-collections"
-                       class="text-3xl px-10 py-1 text-green-500 rounded-xl
+                <div class="flex flex-col gap-4">
+                    <div class="flex gap-8 items-center lg:mx-auto lg:flex-wrap lg:justify-center">
+                        <a href="#actual-collections"
+                           class="text-3xl px-10 py-1 text-green-500 rounded-xl
                               border border-green-500 no-underline
                               relative overflow-hidden
                               transition-all duration-300
                               hover:shadow-[5px_5px_2px_#499b897a] hover:scale-[1.03]">
-                        Опубликовать
-                    </a>
-                    <x-ui.link-simple @click="$dispatch('open-modal', 'videoModal')"
-                                      class="text-3xl font-normal  text-nowrap">Как это работает
+                            Опубликовать
+                        </a>
+                        <x-ui.link-simple @click="$dispatch('open-modal', 'videoModal')"
+                                          class="text-3xl font-normal  text-nowrap">Как это работает
+                        </x-ui.link-simple>
+                    </div>
+                    <x-ui.link-simple :isLivewire="false" href="{{route('social.index')}}" class="text-3xl !text-blue-500 !hover:text-blue-600 font-normal  text-nowrap">Перейти в социальную сеть
                     </x-ui.link-simple>
                 </div>
+
             </div>
             <div class="flex-1 xl:w-full xl:!max-w-[90%]">
                 <img src="{{$women['welcome']}}" class="max-w-3xl ml-auto w-full lg:!max-w-[80%] lg:!mx-auto" alt="">

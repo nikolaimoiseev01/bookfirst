@@ -8,6 +8,7 @@ use App\Models\Chat\Chat;
 use App\Models\Collection\Participation;
 use App\Models\ExtPromotion\ExtPromotion;
 use App\Models\OwnBook\OwnBook;
+use App\Models\Promocode;
 use App\Models\Work\Work;
 use Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
@@ -16,6 +17,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
@@ -102,6 +104,11 @@ class User extends Authenticatable implements FilamentUser, HasMedia, MustVerify
     public function subscribers(): HasMany
     {
         return $this->HasMany(UserXUserSubscription::class, 'subscribed_to_user_id', 'id');
+    }
+
+    public function promocode(): HasOne
+    {
+        return $this->HasOne(Promocode::class);
     }
 
     function getUserFullName(): string

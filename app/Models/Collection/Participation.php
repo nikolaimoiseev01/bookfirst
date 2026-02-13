@@ -8,6 +8,7 @@ use App\Models\Chat\Chat;
 use App\Models\PreviewComment;
 use App\Models\PrintOrder\PrintOrder;
 use App\Models\Promocode;
+use App\Models\PromocodeStat;
 use App\Models\Survey\SurveyCompleted;
 use App\Models\Transaction;
 use App\Models\User\User;
@@ -63,6 +64,11 @@ class Participation extends Model
     public function transactions(): morphMany
     {
         return $this->morphMany(Transaction::class,'model');
+    }
+
+    public function promocodeStat(): MorphOne
+    {
+        return $this->morphOne(PromocodeStat::class, 'model');
     }
 
     public function adminEditPage(): string

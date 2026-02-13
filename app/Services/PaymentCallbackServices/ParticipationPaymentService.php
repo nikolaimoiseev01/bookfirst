@@ -38,6 +38,9 @@ class ParticipationPaymentService
             'model_type' => 'Collection',
             'model_id' => $participation['collection_id'],
         ]);
+        $participation->promocodeStat?->update([
+            'is_paid' => true
+        ]);
         $user = User::where('id', $participation['user_id'])->first();
         $user->notify(new PaymentParticipationSuccessNotification($participation, $participation->collection, $this->yooKassaObject['amount']['value']));
     }

@@ -4,7 +4,7 @@
 ])
 
 @php
-    $classes = 'text-2xl font-light cursor-pointer ' . (($color == 'yellow')
+    $classes = 'flex items-center text-2xl font-light cursor-pointer ' . (($color == 'yellow')
                 ? 'text-brown-400 hover:text-brown-500'
                 : 'text-green-500 0 hover:text-green-600');
 @endphp

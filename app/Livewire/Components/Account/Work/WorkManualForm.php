@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Components\Account\Work;
 
+use App\Enums\CollectionStatusEnums;
+use App\Models\Collection\ParticipationWork;
 use App\Models\Work\Work;
 use App\Models\Work\WorkTopic;
 use App\Models\Work\WorkType;
@@ -99,7 +101,7 @@ class WorkManualForm extends Component
         $this->workStatResponse = $workStat->calculate($this->text);
     }
 
-    public function createWork()
+    public function createWork($urlBack)
     {
         $newWork = Work::create([
             'user_id' => Auth::user()->id,
@@ -120,10 +122,17 @@ class WorkManualForm extends Component
                     ->toMediaCollection('cover');   // твоя коллекция
             }
         }
+        $this->redirect($urlBack, navigate: true);
     }
 
-    public function updateWork()
+    public function updateWork($urlBack)
     {
+        $participationWork = ParticipationWork::where('work_id', $this->work->id)->with(['participation', 'participation.collection'])->first();
+        if ($participationWork && $participationWork->participation->collection->status != CollectionStatusEnums::DONE) {
+            $this->dispatch('swal', type: 'error', title: 'Ошибка!', text: 'Нельзя редактировать произведение, участвующеее в сборнике, который в процессе издания');
+            return;
+        }
+
         $this->work->update([
             'title' => $this->title,
             'work_type_id' => $this->workType,
@@ -146,6 +155,7 @@ class WorkManualForm extends Component
                     ->toMediaCollection('cover');   // твоя коллекция
             }
         }
+        $this->redirect($urlBack, navigate: true);
 
     }
 
@@ -153,16 +163,15 @@ class WorkManualForm extends Component
     public function saveWork(WorkStatService $workStat, $urlBack)
     {
         if ($this->customValidate()) {
-            DB::transaction(function () use ($workStat) {
+            DB::transaction(function () use ($workStat, $urlBack) {
                 $this->makeWorkStat($workStat);
                 if ($this->formType == 'create') {
-                    $this->createWork();
+                    $this->createWork($urlBack);
                 } else {
-                    $this->updateWork();
+                    $this->updateWork($urlBack);
                 }
             });
 
-            $this->redirect($urlBack, navigate: true);
         }
 
     }

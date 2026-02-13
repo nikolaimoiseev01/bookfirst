@@ -33,15 +33,18 @@
                     <h3 class="text-3xl "># Общайся</h3>
                 </div>
 
-                <div class="flex gap-8 mt-auto lg:mx-auto">
+                <div class="flex gap-8 mt-auto lg:mx-auto flex-wrap">
                     <a data-check-logged href="{{route('account.works')}}"
                        class="text-3xl px-10 py-1 text-blue-500
+                       rounded-lg
                               border border-blue-500 no-underline
                               relative overflow-hidden rounded-[10px]f
                               transition-all duration-300
                               hover:shadow-[5px_5px_2px_#4a96d77a] hover:scale-[1.03]">
                         Опубликовать
                     </a>
+                    <x-ui.link-simple :isLivewire="false" href="{{route('portal.index')}}" class="text-3xl !text-green-500 0 hover:!text-green-600 font-normal  text-nowrap">Перейти в издательство
+                    </x-ui.link-simple>
                 </div>
             </div>
         </div>

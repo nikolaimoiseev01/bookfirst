@@ -16,6 +16,7 @@ use App\Models\Collection\Participation;
 use App\Models\Collection\ParticipationWork;
 use App\Models\PrintOrder\PrintOrder;
 use App\Models\Promocode;
+use App\Models\PromocodeStat;
 use App\Models\Work\Work;
 use App\Notifications\Collection\ParticipationCreatedNotification;
 use App\Rules\ParticipationLessPrice;
@@ -189,20 +190,26 @@ class ParticipationForm extends Component
 
     public function checkPromo()
     {
-        if (mb_strlen($this->promocodeInput) > 0) {
-            $promocode = Promocode::where('name', 'like', "%{$this->promocodeInput}%")->first();
-            if ($promocode) {
-                $this->promocode = $promocode;
-                $this->hasPromo = false;
-                $discount = $promocode['discount'];
-                $this->updatePrices();
-                $this->dispatch('swal', type: 'success', text: "Промокод применен! Теперь в цене учитывается скидка в {$discount}%.");
-            } else {
-                $this->dispatch('swal', type: 'error', title: 'Ошибка', text: "Промокод {$this->promocodeInput} не найден в системе");
-            }
-        } else {
+        if (!mb_strlen($this->promocodeInput) > 0) {
             $this->dispatch('swal', type: 'error', title: 'Ошибка', text: 'Введите промокод');
+            return;
         }
+        $promocode = Promocode::where('name', 'like', "%{$this->promocodeInput}%")->first();
+        if (!$promocode) {
+            $this->dispatch('swal', type: 'error', title: 'Ошибка', text: "Промокод {$this->promocodeInput} не найден в системе");
+            return;
+        }
+
+        if ($promocode->user_id == Auth::id()) {
+            $this->dispatch('swal', type: 'error', title: 'Ошибка', text: "Нельзя применить собственный промокод на свое участие");
+            return;
+        }
+
+        $this->promocode = $promocode;
+        $this->hasPromo = false;
+        $discount = $promocode['discount'];
+        $this->updatePrices();
+        $this->dispatch('swal', type: 'success', text: "Промокод применен! Теперь в цене учитывается скидка в {$discount}%.");
     }
 
     public function updatedSelectedWorks()
@@ -212,7 +219,8 @@ class ParticipationForm extends Component
         $this->pages = round(ceil($this->rows / 38));
     }
 
-    public function updatePrices()
+    public
+    function updatePrices()
     {
         $this->prices = ((new CalculateParticipationService(
             $this->pages,
@@ -223,7 +231,8 @@ class ParticipationForm extends Component
         )->calculate());
     }
 
-    public function getNotifyText()
+    public
+    function getNotifyText()
     {
         $promocode = ($this->promocode['name'] ?? null) ? $this->promocode['name'] . ' (' . $this->promocode['discount'] . '%)' : 'нет';
         $check = ($this->needCheck ?? null) ? 'нужна (' . $this->prices['priceCheck'] . ' ₽)' : 'нет';
@@ -239,7 +248,8 @@ class ParticipationForm extends Component
         return $text;
     }
 
-    public function getConfirmText()
+    public
+    function getConfirmText()
     {
         $promocode = ($this->promocode['name'] ?? null) ? $this->promocode['name'] . ' (' . $this->promocode['discount'] . '%)' : 'нет';
         $check = ($this->needCheck ?? null) ? 'нужна (' . $this->prices['priceCheck'] . ' ₽)' : 'нет';
@@ -256,7 +266,8 @@ class ParticipationForm extends Component
     }
 
 
-    public function checkAndConfirm()
+    public
+    function checkAndConfirm()
     {
         if ($this->customValidate()) {
             $this->dispatch('swal',
@@ -268,7 +279,8 @@ class ParticipationForm extends Component
         }
     }
 
-    public function getParticipationStatus()
+    public
+    function getParticipationStatus()
     {
         $oldIds = collect($this->oldSelectedWorks)->pluck('id')->sort()->values();
         $newIds = collect($this->selectedWorks)->pluck('id')->sort()->values();
@@ -303,7 +315,8 @@ class ParticipationForm extends Component
     }
 
     /** @noinspection D */
-    public function saveApplication()
+    public
+    function saveApplication()
     {
         if ($this->customValidate()) DB::transaction(function () {
             $newParticipation = Participation::updateOrCreate(
@@ -372,6 +385,17 @@ class ParticipationForm extends Component
                 }
             }
 
+            if ($this->promocode) {
+                PromocodeStat::firstOrCreate([
+                    'promocode_id' => $this->promocode->id,
+                    'user_id' => Auth::id(),
+                    'model_type' => 'Participation',
+                    'model_id' => $newParticipation->id,
+                ],[
+                    'is_paid' => false
+                ]);
+            }
+
             $action = AlmostCompleteAction::query()
                 ->where('user_id', Auth::id())
                 ->where('type', AlmostCompleteActionTypeEnums::PARTICIPATION)
@@ -408,7 +432,8 @@ class ParticipationForm extends Component
         });
     }
 
-    public function createAlmostCompleteAction()
+    public
+    function createAlmostCompleteAction()
     {
         $action = AlmostCompleteAction::query()
             ->where('user_id', Auth::id())
@@ -416,7 +441,7 @@ class ParticipationForm extends Component
             ->whereJsonContains('data->collection_id', $this->collection['id'])
             ->first();
 
-        if (! $action) {
+        if (!$action) {
             AlmostCompleteAction::create([
                 'user_id' => Auth::id(),
                 'type' => AlmostCompleteActionTypeEnums::PARTICIPATION,
