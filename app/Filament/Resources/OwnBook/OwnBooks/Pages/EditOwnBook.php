@@ -73,7 +73,7 @@ class EditOwnBook extends EditRecord
                 'status' => PrintOrderStatusEnums::PRINTING->value,
             ]);
             $this->record->update([
-                'deadline_print' => Carbon::now()->addDays(14),
+                'deadline_print' => Carbon::now()->addDays(18),
             ]);
         }
         InnerTaskUpdateJob::dispatch();
