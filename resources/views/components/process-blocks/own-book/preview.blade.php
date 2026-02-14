@@ -111,12 +111,12 @@
                         <p>Обложка утверждена. Как только будут утверждены и ВБ и обложка, можно
                             будет приступить к печати.</p>
                         <div class="flex flex-wrap gap-4">
-                            <x-ui.link download="Обложка {{$ownBook['title']}}" :navigate="false" class="flex-1"
+                            <x-ui.link color="yellow" download="Обложка {{$ownBook['title']}}" :navigate="false" class="flex-1"
                                        href="{{$ownBook->getFirstMediaUrl('cover_front')}}">
                                 Скачать переднюю сторону обложки
                             </x-ui.link>
                             @if($ownBook->getFirstMediaUrl('cover_full'))
-                                <x-ui.link download="Обложка полная {{$ownBook['title']}}" :navigate="false"
+                                <x-ui.link  color="yellow" download="Обложка полная {{$ownBook['title']}}" :navigate="false"
                                            class="flex-1"
                                            href="{{$ownBook->getFirstMediaUrl('cover_full')}}">
                                     Скачать разворот обложки
