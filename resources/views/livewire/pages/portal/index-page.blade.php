@@ -25,7 +25,7 @@
                 <h2 class="text-7xl font-medium text-black-500 dark:text-white text-nowrap md:text-5xl">Ваш шаг в мир<br>литературы
                 </h2>
                 <x-portal.welcome-running-line/>
-                <div class="flex flex-col gap-4">
+                <div class="flex flex-col gap-4 lg:items-center">
                     <div class="flex gap-8 items-center lg:mx-auto lg:flex-wrap lg:justify-center">
                         <a href="#actual-collections"
                            class="text-3xl px-10 py-1 text-green-500 rounded-xl

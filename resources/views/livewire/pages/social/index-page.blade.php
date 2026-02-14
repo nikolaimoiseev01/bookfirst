@@ -33,7 +33,7 @@
                     <h3 class="text-3xl "># Общайся</h3>
                 </div>
 
-                <div class="flex gap-8 mt-auto lg:mx-auto flex-wrap">
+                <div class="flex gap-8 mt-auto lg:mx-auto flex-wrap lg:justify-center">
                     <a data-check-logged href="{{route('account.works')}}"
                        class="text-3xl px-10 py-1 text-blue-500
                        rounded-lg
