@@ -147,7 +147,7 @@ class InnerTaskResource extends Resource
                     ->getStateUsing(function ($record) {
                         return match ($record['model_type']) {
                             'Collection' => $record->model['title_short'],
-                            'OwnBook' => $record->model['title'],
+                            'OwnBook' => $record->model->user->surname . ': ' . $record->model['title'],
                             default => null,
                         };
                     })->url(function ($record) {
