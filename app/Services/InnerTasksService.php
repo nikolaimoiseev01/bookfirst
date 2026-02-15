@@ -46,8 +46,9 @@ class InnerTasksService
             };
 
             if ($title) {
+                $type = InnerTaskTypeEnums::COLLECTION;
                 InnerTask::create([
-                    'type' => InnerTaskTypeEnums::COLLECTION,
+                    'type' => $type,
                     'model_type' => 'Collection',
                     'model_id' => $collection['id'],
                     'title' => $title,
