@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 class InnerTasksService
 {
 
+    public $existingTasksComments;
     public function createCollectionTasks()
     {
         $collections = Collection::get();
@@ -52,7 +53,8 @@ class InnerTasksService
                     'title' => $title,
                     'description' => $description,
                     'deadline' => $deadline,
-                    'flg_custom_task' => false
+                    'flg_custom_task' => false,
+                    'comment' => $this->existingTasksComments["$type->value-Collection-$collection->id"] ?? null
                 ]);
             }
         }
@@ -72,6 +74,7 @@ class InnerTasksService
             'description' => $description,
             'deadline' => $deadline,
             'flg_custom_task' => false,
+            'comment' => $this->existingTasksComments["$type->value-OwnBook-$ownBook->id"] ?? null
         ]);
     }
 
@@ -160,6 +163,14 @@ class InnerTasksService
 
     public function update()
     {
+        $this->existingTasksComments = InnerTask::query()
+            ->whereNotNull('comment')
+            ->get()
+            ->pluck(
+                'comment',
+                fn($task) => $task->type->value . '-' . $task->model_type . '-' . $task->model_id
+            )->toArray();
+
         InnerTask::truncate();
         $this->createCollectionTasks();
         $this->createOwnBookTasks();
