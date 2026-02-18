@@ -74,12 +74,12 @@ class CdekPrintService
             $parsedAddressData = $printOrder['address_json']['parsed_data'];
 
             $sheet->setCellValue('A' . $key + 2, $cdek_desc); // Номер отправления
-            $sheet->setCellValue('B' . $key + 2, $parsedAddressData['city']); // Город получателя
-            $sheet->setCellValue('C' . $key + 2, $parsedAddressData['postal_code']); // Индекс города получателя
+            $sheet->setCellValue('B' . $key + 2, $parsedAddressData['city'] ?? ''); // Город получателя
+            $sheet->setCellValue('C' . $key + 2, $parsedAddressData['postal_code'] ?? ''); // Индекс города получателя
             $sheet->setCellValue('D' . $key + 2, $printOrder['receiver_name']); // Получатель
             $sheet->setCellValue('E' . $key + 2, $printOrder['receiver_name']); // ФИО Получателя
             $sheet->setCellValue('F' . $key + 2, $printOrder['string']); // Адрес получателя
-            $sheet->setCellValue('G' . $key + 2, $parsedAddressData['code']); // КОД ПВЗ
+            $sheet->setCellValue('G' . $key + 2, $parsedAddressData['code'] ?? ''); // КОД ПВЗ
             $sheet->setCellValue('H' . $key + 2, $printOrder['receiver_telephone']); // Телефон получателя
             $sheet->setCellValue('I' . $key + 2, 1); // Доп сбор за доставку с получателя в т.ч. НДС
             $sheet->setCellValue('J' . $key + 2, 0); // Ставка НДС с доп.сбора за доставку
