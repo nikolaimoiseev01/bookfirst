@@ -3,7 +3,10 @@
 namespace App\Filament\Resources\Collection\Collections\RelationManagers;
 
 use App\Filament\Resources\PrintOrder\PrintOrders\PrintOrderResource;
+use App\Services\CdekPrintService;
+use Filament\Actions\Action;
 use Filament\Actions\CreateAction;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Tables\Table;
@@ -21,7 +24,36 @@ class PrintOrdersRelationManager extends RelationManager
     {
         return $table
             ->headerActions([
-                CreateAction::make(),
+                Action::make('downloadPrint')
+                    ->label('Скачать печать')
+                    ->icon('heroicon-o-arrow-down-tray')
+                    ->color('success')
+                    ->form([
+                        TextInput::make('thickness')
+                            ->label('Толщина')
+                            ->required()
+                            ->numeric(),
+
+                        TextInput::make('weight')
+                            ->label('Вес')
+                            ->required()
+                            ->numeric(),
+                    ])
+                    ->action(function (array $data, $livewire) {
+
+                        /** @var Model $record */
+                        $record = $livewire->ownerRecord;
+                        // ownerRecord — это родительская модель RelationManager
+
+                        return app(CdekPrintService::class)
+                            ->makePrintXlsx(
+                                collection: $record,
+                                book_thickness: $data['thickness'],
+                                book_weight: $data['weight'],
+                            );
+                    })
+                    ->modalHeading('Параметры печати')
+                    ->modalSubmitActionLabel('Скачать'),
             ]);
     }
 

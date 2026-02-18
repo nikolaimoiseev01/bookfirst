@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-class CdekService
+class CdekMapService
 {
     private string $login;
     private string $secret;
