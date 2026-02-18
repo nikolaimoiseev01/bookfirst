@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Enums\PrintOrderStatusEnums;
 use App\Enums\PrintOrderTypeEnums;
 use App\Models\Collection\Collection;
+use App\Models\Collection\Participation;
 use App\Models\PrintOrder\PrintOrder;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -69,7 +70,10 @@ class CdekPrintService
             $sending_weight = ($book_weight * $printOrder['books_cnt'] + 20) / 1000;
             $sending_thickness = $book_thickness * $printOrder['books_cnt'] + 1;
 
-            $cdek_desc = $collection['title_short'] . '. ' . $printOrder['books_cnt'] . ' шт. ' . 'part_id=' . $printOrder->model['id'] . '. ' . 'print_id=' . $printOrder['id'];
+            $participation = Participation::query()
+                ->where('print_order_id', $printOrder['id'])
+                ->first();
+            $cdek_desc = $collection['title_short'] . '. ' . $printOrder['books_cnt'] . ' шт. ' . 'part_id=' . $participation['id'] . '. ' . 'print_id=' . $printOrder['id'];
 
             $parsedAddressData = $printOrder['address_json']['parsed_data'];
 
