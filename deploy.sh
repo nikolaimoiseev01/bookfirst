@@ -24,7 +24,7 @@ php artisan filament:optimize-clear
 php artisan filament:optimize
 
 # Миграции
-php artisan migrate
+php artisan migrate --force
 
 # Перезапуск очереди (supervisor)
 supervisorctl restart laravel-worker:*

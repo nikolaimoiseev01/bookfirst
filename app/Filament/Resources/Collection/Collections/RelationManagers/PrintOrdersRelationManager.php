@@ -32,10 +32,12 @@ class PrintOrdersRelationManager extends RelationManager
                         TextInput::make('thickness')
                             ->label('Толщина')
                             ->required()
+                            ->default(4)
                             ->numeric(),
 
                         TextInput::make('weight')
                             ->label('Вес')
+                            ->default(200)
                             ->required()
                             ->numeric(),
                     ])
