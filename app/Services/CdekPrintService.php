@@ -20,7 +20,7 @@ class CdekPrintService
     {
         $printOrders = PrintOrder::query()
             ->where('type', PrintOrderTypeEnums::COLLECTION_PARTICIPATION)
-            ->where('status', PrintOrderStatusEnums::PAID)
+            ->where('status', PrintOrderStatusEnums::PRINTING)
             ->where('model_id', $collection['id'])
             ->get();
 
