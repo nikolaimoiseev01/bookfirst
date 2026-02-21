@@ -9,6 +9,7 @@ use App\Models\Collection\Participation;
 use App\Models\PrintOrder\PrintOrder;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class CdekPrintService
 {
@@ -184,7 +185,66 @@ class CdekPrintService
         $sheet->setCellValue('AH' . $key + 2, 0); // Сумма НДС за ед.
     }
 
-    public function makePrintXlsx($countryType)
+//    public function makePrintXlsx($countryType)
+//    {
+//        $query = PrintOrder::query()
+//            ->where('type', PrintOrderTypeEnums::COLLECTION_PARTICIPATION)
+//            ->where('status', PrintOrderStatusEnums::PRINTING)
+//            ->where('model_id', $this->collection['id'])
+//            ->orderBy('books_cnt');
+//
+//        $spreadsheet = new Spreadsheet();
+//        $sheet = $spreadsheet->getActiveSheet();
+//
+//        if ($countryType === 'Rus') {
+//            $query->where('country', 'Россия');
+//            $columns = $this->makeColumnsRus();
+//        } else {
+//            $query->where('country', '<>', 'Россия');
+//            $columns = $this->makeColumnsForeign();
+//        }
+//
+//        foreach ($columns as $cell => $value) {
+//            $sheet->setCellValue($cell, $value);
+//        }
+//
+//
+//        $printOrders = $query->get();
+//
+//        $spreadsheet->getActiveSheet()->getStyle("A1:D1")->getFont()->setBold(true);
+//
+//        foreach ($printOrders as $key => $printOrder) {
+//            $participation = Participation::query()
+//                ->where('print_order_id', $printOrder['id'])
+//                ->first();
+//            $cdek_desc = $this->collection['title_short'] . '. ' . $printOrder['books_cnt'] . ' шт. ' . $participation['id'] . ' / ' . $printOrder['id'];
+//            $comment = $this->collection['title_short'] . ', ' . $printOrder['books_cnt'] . ' шт.';
+//            $sending_weight = ($this->book_weight * $printOrder['books_cnt'] + 20) / 1000;
+//            $sending_thickness = $this->book_thickness * $printOrder['books_cnt'] + 1;
+//
+//            if ($countryType === 'Rus') {
+//                $this->fillValuesRus($sheet, $key, $cdek_desc, $printOrder, $comment, $sending_weight, $sending_thickness);
+//            } else {
+//                $this->fillValuesForeign($sheet, $key, $cdek_desc, $printOrder, $comment, $sending_weight, $sending_thickness);
+//            }
+//
+//        }
+//
+//        foreach (range('A', 'D') as $columnID) {
+//            $spreadsheet->getActiveSheet()->getColumnDimension($columnID)
+//                ->setAutoSize(true);
+//        }
+//
+//        $writer = new Xlsx($spreadsheet);
+//        $fileName = 'Печать ' . $this->collection['title_short'] . ($countryType == 'Rus' ? '' : ' (Иностранные)') . '.xlsx';
+//        return response()->streamDownload(function () use ($writer) {
+//            $writer->save('php://output');
+//        }, $fileName, [
+//            'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+//        ]);
+//    }
+
+    public function makePrintXlsx(string $countryType): Spreadsheet
     {
         $query = PrintOrder::query()
             ->where('type', PrintOrderTypeEnums::COLLECTION_PARTICIPATION)
@@ -207,15 +267,11 @@ class CdekPrintService
             $sheet->setCellValue($cell, $value);
         }
 
-
         $printOrders = $query->get();
 
-        $spreadsheet->getActiveSheet()->getStyle("A1:D1")->getFont()->setBold(true);
-
         foreach ($printOrders as $key => $printOrder) {
-            $participation = Participation::query()
-                ->where('print_order_id', $printOrder['id'])
-                ->first();
+            $participation = Participation::where('print_order_id', $printOrder['id'])->first();
+
             $cdek_desc = $this->collection['title_short'] . '. ' . $printOrder['books_cnt'] . ' шт. ' . $participation['id'] . ' / ' . $printOrder['id'];
             $comment = $this->collection['title_short'] . ', ' . $printOrder['books_cnt'] . ' шт.';
             $sending_weight = ($this->book_weight * $printOrder['books_cnt'] + 20) / 1000;
@@ -226,23 +282,34 @@ class CdekPrintService
             } else {
                 $this->fillValuesForeign($sheet, $key, $cdek_desc, $printOrder, $comment, $sending_weight, $sending_thickness);
             }
-
         }
 
-        foreach (range('A', 'D') as $columnID) {
-            $spreadsheet->getActiveSheet()->getColumnDimension($columnID)
-                ->setAutoSize(true);
-        }
+        return $spreadsheet;
+    }
 
-        $writer = new Xlsx($spreadsheet);
-        $fileName = 'Печать ' . $this->collection['title_short'] . ($countryType == 'Rus' ? '(Иностранные)' : '') . '.xlsx';
-        return response()->streamDownload(function () use ($writer) {
-            $writer->save('php://output');
-        }, $fileName, [
-            'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        ]);
+    public function downloadZipWithBoth(): BinaryFileResponse
+    {
+        $zipFileName = 'Печать ' . $this->collection['title_short'] . '.zip';
+        $tempZipPath = storage_path('app/' . uniqid() . '.zip');
 
+        $zip = new \ZipArchive();
+        $zip->open($tempZipPath, \ZipArchive::CREATE);
 
+        // --- Русские ---
+        $rusSpreadsheet = $this->makePrintXlsx('Rus');
+        $rusPath = storage_path('app/rus.xlsx');
+        (new Xlsx($rusSpreadsheet))->save($rusPath);
+        $zip->addFile($rusPath, "Печать {$this->collection['title_short']} Россия.xlsx");
+
+        // --- Иностранные ---
+        $foreignSpreadsheet = $this->makePrintXlsx('Foreign');
+        $foreignPath = storage_path('app/foreign.xlsx');
+        (new Xlsx($foreignSpreadsheet))->save($foreignPath);
+        $zip->addFile($foreignPath, "Печать {$this->collection['title_short']} Иностранные.xlsx");
+
+        $zip->close();
+
+        return response()->download($tempZipPath, $zipFileName)->deleteFileAfterSend(true);
     }
 
 }

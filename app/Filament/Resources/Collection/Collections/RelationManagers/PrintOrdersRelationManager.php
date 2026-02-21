@@ -46,7 +46,7 @@ class PrintOrdersRelationManager extends RelationManager
                             'collection' => $livewire->ownerRecord,
                             'book_thickness' => $data['thickness'],
                             'book_weight' => $data['weight']
-                        ])->makePrintXlsx(countryType: 'Rus');
+                        ])->downloadZipWithBoth();
                     })
                     ->modalHeading('Параметры печати')
                     ->modalSubmitActionLabel('Скачать'),
