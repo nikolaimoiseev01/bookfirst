@@ -157,7 +157,7 @@ class CdekPrintService
         $sheet->setCellValue('F' . $key + 2, ''); // ИИН, ИНН, ПИН
         $sheet->setCellValue('G' . $key + 2, $printOrder['country']); // Страна получателя
         $sheet->setCellValue('H' . $key + 2, $parsedAddressData['city'] ?? ''); // Город получателя
-        $sheet->setCellValue('I' . $key + 2, $parsedAddressData['postal_code'] ?? ''); // Индекс города получателя
+        $sheet->setCellValue('I' . $key + 2, $parsedAddressData['index'] ?? ''); // Индекс города получателя
         $sheet->setCellValue('J' . $key + 2, $printOrder['address_json']['string']); // Адрес получателя
         $sheet->setCellValue('K' . $key + 2, $parsedAddressData['code'] ?? ''); // Код ПВЗ
         $sheet->setCellValue('L' . $key + 2, $printOrder['receiver_telephone']); // Телефон получателя
