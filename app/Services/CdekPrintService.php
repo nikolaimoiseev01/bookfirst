@@ -23,6 +23,7 @@ class CdekPrintService
             ->where('type', PrintOrderTypeEnums::COLLECTION_PARTICIPATION)
             ->where('status', PrintOrderStatusEnums::PRINTING)
             ->where('model_id', $collection['id'])
+            ->orderBy('books_cnt')
             ->get();
 
 
@@ -80,7 +81,7 @@ class CdekPrintService
             $sheet->setCellValue('A' . $key + 2, $cdek_desc); // Номер отправления
             $sheet->setCellValue('B' . $key + 2, $parsedAddressData['city'] ?? ''); // Город получателя
             $sheet->setCellValue('C' . $key + 2, $parsedAddressData['postal_code'] ?? ''); // Индекс города получателя
-            $sheet->setCellValue('D' . $key + 2, $printOrder['receiver_name']); // Получатель
+            $sheet->setCellValue('D' . $key + 2, $printOrder['address_json']['receiver_name']); // Получатель
             $sheet->setCellValue('E' . $key + 2, $printOrder['receiver_name']); // ФИО Получателя
             $sheet->setCellValue('F' . $key + 2, $printOrder['string']); // Адрес получателя
             $sheet->setCellValue('G' . $key + 2, $parsedAddressData['code'] ?? ''); // КОД ПВЗ
