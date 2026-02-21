@@ -110,7 +110,7 @@ class CdekPrintService
             'A1' => 'Номер отправления',
             'B1' => 'Форма собственности получателя',
             'C1' => 'Получатель',
-            'D1' => 'БИН\ИНН\УНП',
+            'D1' => 'Идентификационный номер налогоплательщика',
             'E1' => 'ФИО получателя',
             'F1' => 'ИИН, ИНН, ПИН',
             'G1' => 'Страна получателя',
@@ -123,7 +123,7 @@ class CdekPrintService
             'N1' => 'Ставка НДС с доп.сбора за доставку',
             'O1' => 'Сумма НДС с доп.сбора за доставку',
             'P1' => 'Истинный продавец',
-            'Q1' => 'Адрес истинного продавец',
+            'Q1' => 'Адрес истинного продавца',
             'R1' => 'Грузоотправитель',
             'S1' => 'Адрес грузоотправителя',
             'T1' => 'Номер грузоместа',
@@ -134,11 +134,11 @@ class CdekPrintService
             'Y1' => 'Код маркировки',
             'Z1' => 'Код товара/артикул',
             'AA1' => 'Наименование товара на русском',
-            'AB1' => 'Стоимость единицы товара',
+            'AB1' => 'Стоимость за ед. товара в валюте договора',
             'AC1' => 'Вес ед. товара нетто, кг',
             'AD1' => 'Вес ед. товара брутто(с упаковкой), кг',
             'AE1' => 'Количество единиц товара',
-            'AF1' => 'Оплата с получателя',
+            'AF1' => 'Оплата с получателя за ед товара в т.ч. НДС',
             'AG1' => 'Ставка НДС, %',
             'AH1' => 'Сумма НДС за ед.',
         ];
@@ -152,7 +152,7 @@ class CdekPrintService
         $sheet->setCellValue('A' . $key + 2, $cdek_desc); // Номер отправления
         $sheet->setCellValue('B' . $key + 2, ''); // Форма собственности получателя
         $sheet->setCellValue('C' . $key + 2, $printOrder['receiver_name']); // Получатель
-        $sheet->setCellValue('D' . $key + 2, ''); // БИН\ИНН\УНП
+        $sheet->setCellValue('D' . $key + 2, ''); // Идентификационный номер налогоплательщика
         $sheet->setCellValue('E' . $key + 2, $printOrder['receiver_name']); // ФИО получателя
         $sheet->setCellValue('F' . $key + 2, ''); // ИИН, ИНН, ПИН
         $sheet->setCellValue('G' . $key + 2, $printOrder['country']); // Страна получателя
@@ -165,7 +165,7 @@ class CdekPrintService
         $sheet->setCellValue('N' . $key + 2, 0); // Ставка НДС с доп.сбора за доставку
         $sheet->setCellValue('O' . $key + 2, 0); // Сумма НДС с доп.сбора за доставку
         $sheet->setCellValue('P' . $key + 2, ''); // Истинный продавец
-        $sheet->setCellValue('Q' . $key + 2, ''); // Адрес истинного продавец
+        $sheet->setCellValue('Q' . $key + 2, ''); // Адрес истинного продавца
         $sheet->setCellValue('R' . $key + 2, 'CDEK GLOBAL'); // Грузоотправитель
         $sheet->setCellValue('S' . $key + 2, 'CDEK GLOBAL'); // Адрес грузоотправителя
         $sheet->setCellValue('T' . $key + 2, 1); // Номер грузоместа
@@ -176,11 +176,11 @@ class CdekPrintService
         $sheet->setCellValue('Y' . $key + 2, ''); // Код маркировки
         $sheet->setCellValue('Z' . $key + 2, $cdek_desc); // Код товара/артикул
         $sheet->setCellValue('AA' . $key + 2, 'Книги (сборники современных поэтов)'); // Наименование товара на русском
-        $sheet->setCellValue('AB' . $key + 2, 1); // Стоимость единицы товара
+        $sheet->setCellValue('AB' . $key + 2, 1); // Стоимость за ед. товара в валюте договора
         $sheet->setCellValue('AC' . $key + 2, $sending_weight); // Вес ед. товара нетто, кг
         $sheet->setCellValue('AD' . $key + 2, $sending_weight); // Вес ед. товара брутто(с упаковкой), кг
         $sheet->setCellValue('AE' . $key + 2, 1); // Количество единиц товара
-        $sheet->setCellValue('AF' . $key + 2, 1); // Оплата с получателя
+        $sheet->setCellValue('AF' . $key + 2, 1); // Оплата с получателя за ед товара в т.ч. НДС
         $sheet->setCellValue('AG' . $key + 2, 0); // Ставка НДС, %
         $sheet->setCellValue('AH' . $key + 2, 0); // Сумма НДС за ед.
     }
