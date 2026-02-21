@@ -177,7 +177,7 @@ class CdekPrintService
         $sheet->setCellValue('Z' . $key + 2, $cdek_desc); // Код товара/артикул
         $sheet->setCellValue('AA' . $key + 2, 'Книги (сборники современных поэтов)'); // Наименование товара на русском
         $sheet->setCellValue('AB' . $key + 2, 1); // Стоимость единицы товара
-        $sheet->setCellValue('AC' . $key + 2,$sending_weight); // Вес ед. товара нетто, кг
+        $sheet->setCellValue('AC' . $key + 2, $sending_weight); // Вес ед. товара нетто, кг
         $sheet->setCellValue('AD' . $key + 2, $sending_weight); // Вес ед. товара брутто(с упаковкой), кг
         $sheet->setCellValue('AE' . $key + 2, 1); // Количество единиц товара
         $sheet->setCellValue('AF' . $key + 2, 1); // Оплата с получателя
@@ -269,6 +269,8 @@ class CdekPrintService
 
         $printOrders = $query->get();
 
+        $spreadsheet->getActiveSheet()->getStyle("A1:D1")->getFont()->setBold(true);
+
         foreach ($printOrders as $key => $printOrder) {
             $participation = Participation::where('print_order_id', $printOrder['id'])->first();
 
@@ -282,6 +284,11 @@ class CdekPrintService
             } else {
                 $this->fillValuesForeign($sheet, $key, $cdek_desc, $printOrder, $comment, $sending_weight, $sending_thickness);
             }
+        }
+
+        foreach (range('A', 'D') as $columnID) {
+            $spreadsheet->getActiveSheet()->getColumnDimension($columnID)
+                ->setAutoSize(true);
         }
 
         return $spreadsheet;
