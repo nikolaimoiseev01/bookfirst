@@ -161,7 +161,7 @@ class CdekPrintService
         $sheet->setCellValue('J' . $key + 2, $printOrder['address_json']['string']); // Адрес получателя
         $sheet->setCellValue('K' . $key + 2, $parsedAddressData['code'] ?? ''); // Код ПВЗ
         $sheet->setCellValue('L' . $key + 2, $printOrder['receiver_telephone']); // Телефон получателя
-        $sheet->setCellValue('M' . $key + 2, ''); // Доп сбор за доставку с получателя в т.ч. НДС
+        $sheet->setCellValue('M' . $key + 2, 0); // Доп сбор за доставку с получателя в т.ч. НДС
         $sheet->setCellValue('N' . $key + 2, 0); // Ставка НДС с доп.сбора за доставку
         $sheet->setCellValue('O' . $key + 2, 0); // Сумма НДС с доп.сбора за доставку
         $sheet->setCellValue('P' . $key + 2, ''); // Истинный продавец
@@ -180,7 +180,7 @@ class CdekPrintService
         $sheet->setCellValue('AC' . $key + 2, $sending_weight); // Вес ед. товара нетто, кг
         $sheet->setCellValue('AD' . $key + 2, $sending_weight); // Вес ед. товара брутто(с упаковкой), кг
         $sheet->setCellValue('AE' . $key + 2, 1); // Количество единиц товара
-        $sheet->setCellValue('AF' . $key + 2, ''); // Оплата с получателя за ед товара в т.ч. НДС
+        $sheet->setCellValue('AF' . $key + 2, 0); // Оплата с получателя за ед товара в т.ч. НДС
         $sheet->setCellValue('AG' . $key + 2, 0); // Ставка НДС, %
         $sheet->setCellValue('AH' . $key + 2, 0); // Сумма НДС за ед.
     }
