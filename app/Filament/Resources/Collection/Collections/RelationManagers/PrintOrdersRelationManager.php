@@ -42,17 +42,11 @@ class PrintOrdersRelationManager extends RelationManager
                             ->numeric(),
                     ])
                     ->action(function (array $data, $livewire) {
-
-                        /** @var Model $record */
-                        $record = $livewire->ownerRecord;
-                        // ownerRecord — это родительская модель RelationManager
-
-                        return app(CdekPrintService::class)
-                            ->makePrintXlsx(
-                                collection: $record,
-                                book_thickness: $data['thickness'],
-                                book_weight: $data['weight'],
-                            );
+                        return app(CdekPrintService::class, [
+                            'collection' => $livewire->ownerRecord,
+                            'book_thickness' => $data['thickness'],
+                            'book_weight' => $data['weight']
+                        ])->makePrintXlsx(countryType: 'Rus');
                     })
                     ->modalHeading('Параметры печати')
                     ->modalSubmitActionLabel('Скачать'),
