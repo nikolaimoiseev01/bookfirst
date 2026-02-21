@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\CdekMapService;
+use App\Services\Cdek\CdekMapService;
 use Illuminate\Http\Request;
 
 class CdekServiceController extends Controller

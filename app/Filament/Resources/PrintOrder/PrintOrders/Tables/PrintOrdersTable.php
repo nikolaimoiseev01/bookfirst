@@ -4,10 +4,16 @@ namespace App\Filament\Resources\PrintOrder\PrintOrders\Tables;
 
 use App\Enums\ParticipationStatusEnums;
 use App\Enums\PrintOrderStatusEnums;
+use App\Services\Cdek\CdekPrintService;
+use App\Services\Cdek\CdekTracksUpdateService;
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\TextInputColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -103,6 +109,39 @@ class PrintOrdersTable
             ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),
+            ])
+            ->headerActions([
+                Action::make('importTracks')
+                    ->label('Импорт треков CDEK')
+                    ->icon('heroicon-o-arrow-up-tray')
+                    ->color('success')
+                    ->form([
+                        FileUpload::make('file')
+                            ->label('XLSX файл')
+                            ->disk('local')
+                            ->acceptedFileTypes([
+                                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                            ])
+                            ->required()
+                            ->directory('imports') // storage/app/imports
+                            ->preserveFilenames(),
+                    ])
+                    ->action(function (array $data) {
+
+                            $filePath = storage_path('app/private/' . $data['file']);
+
+                            $updatedRows = app(CdekTracksUpdateService::class)
+                                ->import($filePath);
+
+                            Notification::make()
+                                ->title('Все ок ✅')
+                                ->success()
+                                ->body("Успешно обновили $updatedRows строк")
+                                ->send();
+
+                    })
+                    ->modalHeading('Импорт треков')
+                    ->modalSubmitActionLabel('Импортировать'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

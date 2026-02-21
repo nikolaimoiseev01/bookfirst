@@ -3,10 +3,6 @@
 namespace App\Filament\Resources\Collection\Collections\RelationManagers;
 
 use App\Filament\Resources\Collection\Participations\ParticipationResource;
-use App\Services\CdekPrintService;
-use Filament\Actions\Action;
-use Filament\Actions\CreateAction;
-use Filament\Forms\Components\TextInput;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Tables\Table;
