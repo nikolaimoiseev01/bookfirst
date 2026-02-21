@@ -74,7 +74,7 @@ class CdekPrintService
             $participation = Participation::query()
                 ->where('print_order_id', $printOrder['id'])
                 ->first();
-            $cdek_desc = $collection['title_short'] . '. ' . $printOrder['books_cnt'] . ' шт. ' . $participation['id'] . ' | ' . $printOrder['id'];
+            $cdek_desc = $collection['title_short'] . '. ' . $printOrder['books_cnt'] . ' шт. ' . $participation['id'] . ' / ' . $printOrder['id'];
 
             $parsedAddressData = $printOrder['address_json']['parsed_data'];
 
