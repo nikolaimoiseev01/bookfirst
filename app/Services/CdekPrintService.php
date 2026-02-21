@@ -170,8 +170,8 @@ class CdekPrintService
         $sheet->setCellValue('S' . $key + 2, 'CDEK GLOBAL'); // Адрес грузоотправителя
         $sheet->setCellValue('T' . $key + 2, 1); // Номер грузоместа
         $sheet->setCellValue('U' . $key + 2, $sending_weight); // Вес грузоместа, кг
-        $sheet->setCellValue('V' . $key + 2, '22,9'); // Длина грузоместа, см
-        $sheet->setCellValue('W' . $key + 2, '16,5'); // Ширина грузоместа, см
+        $sheet->setCellValue('V' . $key + 2, '23'); // Длина грузоместа, см
+        $sheet->setCellValue('W' . $key + 2, '17'); // Ширина грузоместа, см
         $sheet->setCellValue('X' . $key + 2, $sending_thickness); // Высота грузоместа, см
         $sheet->setCellValue('Y' . $key + 2, ''); // Код маркировки
         $sheet->setCellValue('Z' . $key + 2, $cdek_desc); // Код товара/артикул
