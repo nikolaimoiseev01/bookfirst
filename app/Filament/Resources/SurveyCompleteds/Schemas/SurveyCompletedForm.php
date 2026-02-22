@@ -20,7 +20,7 @@ class SurveyCompletedForm
                         TextEntry::make('stars'),
                         TextEntry::make('question'),
                         TextEntry::make('text')
-                    ])->columns(4)
+                    ])->columns(4)->columnSpanFull()
             ]);
     }
 }
