@@ -4,7 +4,11 @@ namespace App\Filament\Resources\Collection\Collections\Schemas;
 
 use App\Enums\CollectionStatusEnums;
 use App\Enums\ParticipationStatusEnums;
+use App\Enums\PrintOrderStatusEnums;
+use App\Enums\PrintOrderTypeEnums;
 use App\Models\Collection\Collection;
+use App\Models\Collection\Participation;
+use App\Models\PrintOrder\PrintOrder;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Repeater;
@@ -105,6 +109,24 @@ class CollectionForm
                                 return [
                                     'collection' => $collection,
                                     'candidates' => $candidates
+                                ];
+                            })
+                    ]),
+                    Tab::make('Распределение печати')->schema([
+                        ViewField::make('rating')
+                            ->dehydrated(false)
+                            ->view('filament.components.collection-print-distribution')
+                            ->viewData(function (Collection $collection) {
+                                $distribution = Participation::query()
+                                    ->where('participations.collection_id', $collection['id'])
+                                    ->where('participations.status', ParticipationStatusEnums::APPROVED)
+                                    ->join('print_orders', 'print_orders.id', '=', 'participations.print_order_id')
+                                    ->select('print_orders.books_cnt', DB::raw('COUNT(participations.id) as total'))
+                                    ->groupBy('print_orders.books_cnt')
+                                    ->pluck('total', 'print_orders.books_cnt')
+                                    ->toArray();
+                                return [
+                                    'distribution' => $distribution
                                 ];
                             })
                     ])
