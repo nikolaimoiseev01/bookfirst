@@ -122,6 +122,7 @@ class CollectionForm
                                     ->where('participations.status', ParticipationStatusEnums::APPROVED)
                                     ->join('print_orders', 'print_orders.id', '=', 'participations.print_order_id')
                                     ->select('print_orders.books_cnt', DB::raw('COUNT(participations.id) as total'))
+                                    ->orderBy('print_orders.books_cnt')
                                     ->groupBy('print_orders.books_cnt')
                                     ->pluck('total', 'print_orders.books_cnt')
                                     ->toArray();
