@@ -146,12 +146,10 @@ class ParticipationForm
 
                                     TextEntry::make('receiver_telephone')
                                         ->label('Телефон'),
-                                    TextEntry::make('printingCompany')
-                                        ->state(fn($record) => $record?->printingCompany['name'] ?? '—')
-                                        ->label('Компания печати'),
-                                    TextEntry::make('logisticCompany')
-                                        ->state(fn($record) => $record?->logisticCompany['name'] ?? '—')
-                                        ->label('Компания отправки'),
+                                    Select::make('printing_company_id')
+                                        ->relationship(name: 'printingCompany', titleAttribute: 'name'),
+                                    Select::make('logistic_company_id')
+                                        ->relationship(name: 'logisticCompany', titleAttribute: 'name'),
                                     TextEntry::make('trackingLink')
                                         ->label('Ссылка отслеживания')
                                         ->html()
