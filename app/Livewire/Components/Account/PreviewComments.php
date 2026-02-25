@@ -105,41 +105,65 @@ class PreviewComments extends Component
 
     public function sendToCorrect()
     {
-        $correctDeadline = Carbon::now()->addDays(4);
-        $this->ownBook->update([
-            "status_{$this->commentType}" => $this->commentType == 'inside' ? OwnBookInsideStatusEnums::CORRECTIONS : OwnBookCoverStatusEnums::CORRECTIONS,
-            "deadline_{$this->commentType}" => $correctDeadline
-        ]);
-        InnerTaskUpdateJob::dispatch();
-        $this->sendCorrectionNotification($correctDeadline);
-        $this->dispatch('updateOwnBookPage');
-        $this->dispatch('swal', type: 'success', text: "Исправления приняты! В течение 4 дней здесь появится обновленная версия.");
+        $isCommentsExist = PreviewComment::query()
+            ->where('model_type', 'OwnBook')
+            ->where('model_id', $this->ownBook->id)
+            ->where('comment_type', $this->commentType)
+            ->where('flg_done', false)
+            ->exists();
+        if ($isCommentsExist) {
+            $correctDeadline = Carbon::now()->addDays(4);
+            $this->ownBook->update([
+                "status_{$this->commentType}" => $this->commentType == 'inside' ? OwnBookInsideStatusEnums::CORRECTIONS : OwnBookCoverStatusEnums::CORRECTIONS,
+                "deadline_{$this->commentType}" => $correctDeadline
+            ]);
+            InnerTaskUpdateJob::dispatch();
+            $this->sendCorrectionNotification($correctDeadline);
+            $this->dispatch('updateOwnBookPage');
+            $this->dispatch('swal', type: 'success', text: "Исправления приняты! В течение 4 дней здесь появится обновленная версия.");
+        } else {
+            $this->dispatch('swal', type: 'error', text: "Вы еще не указали ни одного исправления. Чтобы отправить работу на исправление, укажите, что необходимо исправить. Если все в порядке, то утвердить работу можно отдельной кнопкой.");
+        }
+
     }
 
     /** @noinspection D */
     public function approve()
     {
-        DB::transaction(function (): void {
-            $this->ownBook->update([
-                "status_{$this->commentType}" => $this->commentType == 'inside' ? OwnBookInsideStatusEnums::READY_FOR_PUBLICATION : OwnBookCoverStatusEnums::READY_FOR_PUBLICATION
-            ]);
-            if ($this->ownBook['status_cover'] == OwnBookCoverStatusEnums::READY_FOR_PUBLICATION && $this->ownBook['status_inside'] == OwnBookInsideStatusEnums::READY_FOR_PUBLICATION) {
-                $text = 'Поздравляем! Внутренний блок и обложка были утверждены! ' . ($this->ownBook->initialPrintOrder ? 'Далее, чтобы продолжить, в блоке "Печать" необходимо оплатить финальную стоимость печати.' : 'Так как печать не требуется, мы поздравляем Вас с окончанием процесса издания!');
-                $this->ownBook->update(['status_general' => $this->ownBook->initialPrintOrder ? OwnBookStatusEnums::PRINT_PAYMENT_REQUIRED : OwnBookStatusEnums::DONE]);
-            } else {
-                $text = 'Отлично!' . $this->commentType == 'inside' ? 'Внутренний блок утвержден.' : 'Обложка утверждена.' . ' Как только будут утверждены и ВБ и обложка, можно будет приступить к печати.';
-            }
-            PdfCutJob::dispatch(
-                $this->ownBook,
-                $this->ownBook->getFirstMediaPath('inside_file'),
-                10,
-                'inside_file_preview'
-            );
-            $this->sendApproverdNotification();
-            $this->dispatch('updateOwnBookPage');
-            $this->dispatch('swal', type: 'success', text: $text);
-            InnerTaskUpdateJob::dispatch();
-        });
+
+        $isCommentsExist = PreviewComment::query()
+            ->where('model_type', 'OwnBook')
+            ->where('model_id', $this->ownBook->id)
+            ->where('comment_type', $this->commentType)
+            ->where('flg_done', false)
+            ->exists();
+
+        if(!$isCommentsExist) {
+            DB::transaction(function (): void {
+                $this->ownBook->update([
+                    "status_{$this->commentType}" => $this->commentType == 'inside' ? OwnBookInsideStatusEnums::READY_FOR_PUBLICATION : OwnBookCoverStatusEnums::READY_FOR_PUBLICATION
+                ]);
+                if ($this->ownBook['status_cover'] == OwnBookCoverStatusEnums::READY_FOR_PUBLICATION && $this->ownBook['status_inside'] == OwnBookInsideStatusEnums::READY_FOR_PUBLICATION) {
+                    $text = 'Поздравляем! Внутренний блок и обложка были утверждены! ' . ($this->ownBook->initialPrintOrder ? 'Далее, чтобы продолжить, в блоке "Печать" необходимо оплатить финальную стоимость печати.' : 'Так как печать не требуется, мы поздравляем Вас с окончанием процесса издания!');
+                    $this->ownBook->update(['status_general' => $this->ownBook->initialPrintOrder ? OwnBookStatusEnums::PRINT_PAYMENT_REQUIRED : OwnBookStatusEnums::DONE]);
+                } else {
+                    $text = 'Отлично! ' . ($this->commentType == 'inside' ? 'Внутренний блок утвержден.' : 'Обложка утверждена.') . ' Как только будут утверждены и ВБ и обложка, можно будет приступить к печати.';
+                }
+                PdfCutJob::dispatch(
+                    $this->ownBook,
+                    $this->ownBook->getFirstMediaPath('inside_file'),
+                    10,
+                    'inside_file_preview'
+                );
+                $this->sendApproverdNotification();
+                $this->dispatch('updateOwnBookPage');
+                $this->dispatch('swal', type: 'success', text: $text);
+                InnerTaskUpdateJob::dispatch();
+            });
+        } else {
+            $this->dispatch('swal', type: 'error', text: "У вас есть комментарии, которые мы еще не исправили. Пожалуйста, отправьте сначала их на исрпавление (отдельная кнопка). Когда статус всех комментариев будет 'Исправлено', работу можно будет утвердить.");
+        }
+
 
     }
 

@@ -60,12 +60,9 @@ class ExtPromotionPaymentSuccessNotification extends Notification
 
         $text = '*Автор:* ' . $this->extPromotion->user->getUserFullName() .
             "\n" . "*Сумма:* " . $this->amount . " руб.";
-        $url = route('login_as_secondary_admin', ['url_redirect' => EditExtPromotion::getUrl(['record' => $this->extPromotion])]);
-        $url = str_replace('http://localhost:8000', 'https://vk.com', $url);
         return TelegramMessage::create()
-            ->to(getTelegramChatId())
-            ->content($subject . $text)
-            ->button('Подробнее', $url);
+            ->to(getTelegramChatId('extPromotion'))
+            ->content($subject . $text);
     }
 
     /**

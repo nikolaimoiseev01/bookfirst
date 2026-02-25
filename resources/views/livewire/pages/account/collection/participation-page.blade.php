@@ -33,6 +33,18 @@
             </div>
         </div>
     </div>
+        @if($participation->collection['status'] == \App\Enums\CollectionStatusEnums::DONE)
+            <div class="mb-8 border rounded-2xl border-green-500 flex-wrap md:flex-col px-4 py-2">
+                <p class="font-medium">Мы поздравляем вас с окончанием процесса публикации в сборнике современных авторов!
+                    Мы стараемся каждый день, чтобы развивать литературное дело в РФ и СНГ.
+                    Будем признательны, если вы оставите отзыв о процессе издания в
+                    <x-ui.link-simple :isLivewire="false" class="inline-block font-medium"
+                                      target="_blank" href="https://vk.com/topic-122176261_35858257">
+                        нашей группе Вконтакте
+                    </x-ui.link-simple>
+                </p>
+            </div>
+        @endif
     <div class="flex flex-col pl-4 md:pl-0 md:gap-8">
         @if($participation['status']->order() < 9)
             <x-process-blocks.participation.general :part="$participation"/>
