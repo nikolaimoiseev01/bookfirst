@@ -56,7 +56,7 @@ class EditCollection extends EditRecord
                     // Подгружаем участия сразу с медиа, чтобы не ловить N+1
                     $collections = Collection::query()->where('status', CollectionStatusEnums::DONE)
                         ->with('media')
-                        ->where('id', '>', 50)
+                        ->where('id', '<=', 50)
                         ->get();
 
                     $filesAdded = 0;
