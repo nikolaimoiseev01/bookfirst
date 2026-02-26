@@ -3,11 +3,14 @@
 namespace App\Filament\Resources\Collection\Collections\Pages;
 
 use App\Enums\CollectionStatusEnums;
+use App\Enums\OwnBookStatusEnums;
 use App\Enums\ParticipationStatusEnums;
 use App\Enums\PrintOrderStatusEnums;
 use App\Filament\Resources\Collection\Collections\CollectionResource;
 use App\Jobs\EmailNotificationJob;
 use App\Jobs\PdfCutJob;
+use App\Models\Collection\Collection;
+use App\Models\OwnBook\OwnBook;
 use App\Notifications\Collection\CollectionStatusUpdate;
 use App\Notifications\Collection\CollectionWinnerNotification;
 use App\Services\InnerTasksService;
@@ -17,6 +20,7 @@ use Filament\Actions\Action;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use PhpOffice\PhpWord\Shared\ZipArchive;
 
 class EditCollection extends EditRecord
 {
@@ -32,6 +36,86 @@ class EditCollection extends EditRecord
                         (new WordService())->makeCollection($this->record),
                         $this->record['title'] . '.docx'
                     );
+                }),
+            Action::make('makeFiles')
+                ->label('Скачать файлы')
+                ->action(function () {
+                    // Имя zip, которое увидит пользователь
+                    $zipDownloadName = 'Медиа всех сборников.zip';
+
+                    // Временный файл под архив
+                    $tmpFile = tempnam(sys_get_temp_dir(), 'collection_files_');
+                    $zip = new ZipArchive();
+
+                    if ($zip->open($tmpFile, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
+                        $this->notify('danger', 'Не удалось создать архив.');
+                        return null;
+                    }
+
+                    // Подгружаем участия сразу с медиа, чтобы не ловить N+1
+                    $collections = Collection::query()->where('status', CollectionStatusEnums::DONE)
+                        ->with('media')
+                        ->get();
+
+                    $filesAdded = 0;
+
+                    foreach ($collections as $collection) {
+                        // если у Participation есть HasMedia
+                        $media = $collection->getFirstMedia('cover_front');
+
+                        if (! $media) {
+                            continue;
+                        }
+
+                        $filePath = $media->getPath();
+
+                        if (! $filePath || ! file_exists($filePath)) {
+                            continue;
+                        }
+
+                         $fileNameInZip = 'collection-' . $collection->id . '.png';
+
+                        $zip->addFile($filePath, $fileNameInZip);
+                        $filesAdded++;
+                    }
+
+                    // Подгружаем участия сразу с медиа, чтобы не ловить N+1
+                    $ownBooks = OwnBook::query()->where('own_books.status_general', OwnBookStatusEnums::DONE)
+                        ->with('media')
+                        ->get();
+
+                    $filesAdded = 0;
+
+                    foreach ($ownBooks as $ownBook) {
+                        // если у Participation есть HasMedia
+                        $media = $ownBook->getFirstMedia('cover_front');
+
+                        if (! $media) {
+                            continue;
+                        }
+
+                        $filePath = $media->getPath();
+
+                        if (! $filePath || ! file_exists($filePath)) {
+                            continue;
+                        }
+
+                        $fileNameInZip = 'ownbook-' . $ownBook->id . '.png';
+
+                        $zip->addFile($filePath, $fileNameInZip);
+                        $filesAdded++;
+                    }
+
+                    $zip->close();
+
+                    if ($filesAdded === 0) {
+                        @unlink($tmpFile);
+                        $this->notify('warning', 'Подходящих файлов не найдено.');
+                        return null;
+                    }
+
+                    // Отдаём архив и удаляем временный файл после отправки
+                    return response()->download($tmpFile, $zipDownloadName)->deleteFileAfterSend(true);
                 })
         ];
     }
