@@ -20,7 +20,6 @@ use Filament\Actions\Action;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use PhpOffice\PhpWord\Shared\ZipArchive;
 
 class EditCollection extends EditRecord
@@ -41,55 +40,84 @@ class EditCollection extends EditRecord
             Action::make('makeFiles')
                 ->label('Скачать файлы')
                 ->action(function () {
-
-                    ini_set('memory_limit', '256M');
-
+                    // Имя zip, которое увидит пользователь
                     $zipDownloadName = 'Медиа всех сборников.zip';
-                    $zipPath = storage_path('app/' . uniqid('media_') . '.zip');
-                    $listFile = storage_path('app/' . uniqid('filelist_') . '.txt');
 
-                    $handle = fopen($listFile, 'w');
+                    // Временный файл под архив
+                    $tmpFile = tempnam(sys_get_temp_dir(), 'collection_files_');
+                    $zip = new ZipArchive();
 
-                    DB::table('media')
-                        ->where('collection_name', 'cover_front')
-                        ->orderBy('id')
-                        ->chunk(500, function ($medias) use ($handle) {
-
-                            foreach ($medias as $media) {
-
-                                $path = storage_path('app/public/' . $media->id . '/' . $media->file_name);
-
-                                if (file_exists($path)) {
-                                    fwrite($handle, $path . PHP_EOL);
-                                }
-                            }
-                        });
-
-                    fclose($handle);
-
-                    if (filesize($listFile) === 0) {
-                        unlink($listFile);
+                    if ($zip->open($tmpFile, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
+                        $this->notify('danger', 'Не удалось создать архив.');
                         return null;
                     }
 
-                    $command = sprintf(
-                        'zip -j %s -@ < %s',
-                        escapeshellarg($zipPath),
-                        escapeshellarg($listFile)
-                    );
+                    // Подгружаем участия сразу с медиа, чтобы не ловить N+1
+                    $collections = Collection::query()->where('status', CollectionStatusEnums::DONE)
+                        ->with('media')
+                        ->where('id', '>', 50)
+                        ->get();
 
-                    exec($command, $output, $resultCode);
+                    $filesAdded = 0;
 
-                    unlink($listFile);
+                    foreach ($collections as $collection) {
+                        // если у Participation есть HasMedia
+                        $media = $collection->getFirstMedia('cover_front');
 
-                    if ($resultCode !== 0 || ! file_exists($zipPath)) {
-                        $this->notify('danger', 'Ошибка создания архива');
+                        if (! $media) {
+                            continue;
+                        }
+
+                        $filePath = $media->getPath();
+
+                        if (! $filePath || ! file_exists($filePath)) {
+                            continue;
+                        }
+
+                         $fileNameInZip = 'collection-' . $collection->id . '.png';
+
+                        $zip->addFile($filePath, $fileNameInZip);
+                        $filesAdded++;
+                    }
+
+                    // Подгружаем участия сразу с медиа, чтобы не ловить N+1
+                    $ownBooks = OwnBook::query()->where('own_books.status_general', OwnBookStatusEnums::DONE)
+                        ->with('media')
+                        ->where('id', '>', 150)
+                        ->get();
+
+                    $filesAdded = 0;
+
+                    foreach ($ownBooks as $ownBook) {
+                        // если у Participation есть HasMedia
+                        $media = $ownBook->getFirstMedia('cover_front');
+
+                        if (! $media) {
+                            continue;
+                        }
+
+                        $filePath = $media->getPath();
+
+                        if (! $filePath || ! file_exists($filePath)) {
+                            continue;
+                        }
+
+                        $fileNameInZip = 'ownbook-' . $ownBook->id . '.png';
+
+                        $zip->addFile($filePath, $fileNameInZip);
+                        $filesAdded++;
+                    }
+
+                    $zip->close();
+
+                    if ($filesAdded === 0) {
+                        @unlink($tmpFile);
+                        $this->notify('warning', 'Подходящих файлов не найдено.');
                         return null;
                     }
 
-                    return response()
-                        ->download($zipPath, $zipDownloadName)
-                        ->deleteFileAfterSend(true);
+                    // Отдаём архив и удаляем временный файл после отправки
+                    return response()->download($tmpFile, $zipDownloadName)->deleteFileAfterSend(true);
                 })
         ];
     }
