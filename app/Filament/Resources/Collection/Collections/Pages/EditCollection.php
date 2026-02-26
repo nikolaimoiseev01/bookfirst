@@ -42,68 +42,50 @@ class EditCollection extends EditRecord
                 ->label('Скачать файлы')
                 ->action(function () {
 
-                    ini_set('memory_limit', '256M'); // достаточно
+                    ini_set('memory_limit', '256M');
 
                     $zipDownloadName = 'Медиа всех сборников.zip';
                     $zipPath = storage_path('app/' . uniqid('media_') . '.zip');
+                    $listFile = storage_path('app/' . uniqid('filelist_') . '.txt');
 
-                    $filesAdded = 0;
-                    $fileList = [];
-
-                    /*
-                    |--------------------------------------------------------------------------
-                    | Получаем файлы напрямую из таблицы media (БЕЗ Eloquent)
-                    |--------------------------------------------------------------------------
-                    */
+                    $handle = fopen($listFile, 'w');
 
                     DB::table('media')
                         ->where('collection_name', 'cover_front')
-                        ->where(function ($q) {
-                            $q->where('model_type', \App\Models\Collection\Collection::class)
-                                ->whereIn('model_id', function ($sub) {
-                                    $sub->select('id')
-                                        ->from('collections')
-                                        ->where('status', \App\Enums\CollectionStatusEnums::DONE);
-                                });
-                        })
-                        ->orWhere(function ($q) {
-                            $q->where('model_type', \App\Models\OwnBook\OwnBook::class)
-                                ->whereIn('model_id', function ($sub) {
-                                    $sub->select('id')
-                                        ->from('own_books')
-                                        ->where('status_general', \App\Enums\OwnBookStatusEnums::DONE);
-                                });
-                        })
                         ->orderBy('id')
-                        ->chunk(500, function ($medias) use (&$fileList, &$filesAdded) {
+                        ->chunk(500, function ($medias) use ($handle) {
 
                             foreach ($medias as $media) {
 
-                                $fullPath = storage_path('app/public/' . $media->id . '/' . $media->file_name);
+                                $path = storage_path('app/public/' . $media->id . '/' . $media->file_name);
 
-                                if (! file_exists($fullPath)) {
-                                    continue;
+                                if (file_exists($path)) {
+                                    fwrite($handle, $path . PHP_EOL);
                                 }
-
-                                $fileList[] = escapeshellarg($fullPath);
-                                $filesAdded++;
                             }
                         });
 
+                    fclose($handle);
 
-                    /*
-                    |--------------------------------------------------------------------------
-                    | Создание архива через системный zip (НЕ PHP ZipArchive)
-                    |--------------------------------------------------------------------------
-                    */
+                    if (filesize($listFile) === 0) {
+                        unlink($listFile);
+                        return null;
+                    }
 
                     $command = sprintf(
-                        'zip -j %s %s',
+                        'zip -j %s -@ < %s',
                         escapeshellarg($zipPath),
-                        implode(' ', $fileList)
+                        escapeshellarg($listFile)
                     );
 
-                    exec($command);
+                    exec($command, $output, $resultCode);
+
+                    unlink($listFile);
+
+                    if ($resultCode !== 0 || ! file_exists($zipPath)) {
+                        $this->notify('danger', 'Ошибка создания архива');
+                        return null;
+                    }
 
                     return response()
                         ->download($zipPath, $zipDownloadName)
