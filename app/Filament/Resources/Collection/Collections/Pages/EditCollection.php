@@ -80,33 +80,33 @@ class EditCollection extends EditRecord
                         $filesAdded++;
                     }
 
-                    // Подгружаем участия сразу с медиа, чтобы не ловить N+1
-                    $ownBooks = OwnBook::query()->where('own_books.status_general', OwnBookStatusEnums::DONE)
-                        ->with('media')
-                        ->where('id', '>', 300)
-                        ->get();
-
-                    $filesAdded = 0;
-
-                    foreach ($ownBooks as $ownBook) {
-                        // если у Participation есть HasMedia
-                        $media = $ownBook->getFirstMedia('cover_front');
-
-                        if (! $media) {
-                            continue;
-                        }
-
-                        $filePath = $media->getPath();
-
-                        if (! $filePath || ! file_exists($filePath)) {
-                            continue;
-                        }
-
-                        $fileNameInZip = 'ownbook-' . $ownBook->id . '.png';
-
-                        $zip->addFile($filePath, $fileNameInZip);
-                        $filesAdded++;
-                    }
+//                    // Подгружаем участия сразу с медиа, чтобы не ловить N+1
+//                    $ownBooks = OwnBook::query()->where('own_books.status_general', OwnBookStatusEnums::DONE)
+//                        ->with('media')
+//                        ->where('id', '>', 300)
+//                        ->get();
+//
+//                    $filesAdded = 0;
+//
+//                    foreach ($ownBooks as $ownBook) {
+//                        // если у Participation есть HasMedia
+//                        $media = $ownBook->getFirstMedia('cover_front');
+//
+//                        if (! $media) {
+//                            continue;
+//                        }
+//
+//                        $filePath = $media->getPath();
+//
+//                        if (! $filePath || ! file_exists($filePath)) {
+//                            continue;
+//                        }
+//
+//                        $fileNameInZip = 'ownbook-' . $ownBook->id . '.png';
+//
+//                        $zip->addFile($filePath, $fileNameInZip);
+//                        $filesAdded++;
+//                    }
 
                     $zip->close();
 
