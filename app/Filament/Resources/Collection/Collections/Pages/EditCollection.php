@@ -53,45 +53,17 @@ class EditCollection extends EditRecord
                         return null;
                     }
 
-                    // Подгружаем участия сразу с медиа, чтобы не ловить N+1
-                    $collections = Collection::query()->where('status', CollectionStatusEnums::DONE)
-                        ->with('media')
-                        ->where('id', '<=', 50)
-                        ->get();
-
-                    $filesAdded = 0;
-
-                    foreach ($collections as $collection) {
-                        // если у Participation есть HasMedia
-                        $media = $collection->getFirstMedia('cover_front');
-
-                        if (! $media) {
-                            continue;
-                        }
-
-                        $filePath = $media->getPath();
-
-                        if (! $filePath || ! file_exists($filePath)) {
-                            continue;
-                        }
-
-                         $fileNameInZip = 'collection-' . $collection->id . '.png';
-
-                        $zip->addFile($filePath, $fileNameInZip);
-                        $filesAdded++;
-                    }
-
 //                    // Подгружаем участия сразу с медиа, чтобы не ловить N+1
-//                    $ownBooks = OwnBook::query()->where('own_books.status_general', OwnBookStatusEnums::DONE)
+//                    $collections = Collection::query()->where('status', CollectionStatusEnums::DONE)
 //                        ->with('media')
-//                        ->where('id', '>', 300)
+//                        ->where('id', '<=', 50)
 //                        ->get();
 //
 //                    $filesAdded = 0;
 //
-//                    foreach ($ownBooks as $ownBook) {
+//                    foreach ($collections as $collection) {
 //                        // если у Participation есть HasMedia
-//                        $media = $ownBook->getFirstMedia('cover_front');
+//                        $media = $collection->getFirstMedia('cover_front');
 //
 //                        if (! $media) {
 //                            continue;
@@ -103,11 +75,39 @@ class EditCollection extends EditRecord
 //                            continue;
 //                        }
 //
-//                        $fileNameInZip = 'ownbook-' . $ownBook->id . '.png';
+//                         $fileNameInZip = 'collection-' . $collection->id . '.png';
 //
 //                        $zip->addFile($filePath, $fileNameInZip);
 //                        $filesAdded++;
 //                    }
+
+                    // Подгружаем участия сразу с медиа, чтобы не ловить N+1
+                    $ownBooks = OwnBook::query()->where('own_books.status_general', OwnBookStatusEnums::DONE)
+                        ->with('media')
+                        ->where('id', '>', 300)
+                        ->get();
+
+                    $filesAdded = 0;
+
+                    foreach ($ownBooks as $ownBook) {
+                        // если у Participation есть HasMedia
+                        $media = $ownBook->getFirstMedia('cover_front');
+
+                        if (! $media) {
+                            continue;
+                        }
+
+                        $filePath = $media->getPath();
+
+                        if (! $filePath || ! file_exists($filePath)) {
+                            continue;
+                        }
+
+                        $fileNameInZip = 'ownbook-' . $ownBook->id . '.png';
+
+                        $zip->addFile($filePath, $fileNameInZip);
+                        $filesAdded++;
+                    }
 
                     $zip->close();
 
