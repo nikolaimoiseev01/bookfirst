@@ -20,6 +20,7 @@ use Filament\Actions\Action;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use PhpOffice\PhpWord\Shared\ZipArchive;
 
 class EditCollection extends EditRecord
@@ -41,73 +42,71 @@ class EditCollection extends EditRecord
                 ->label('Скачать файлы')
                 ->action(function () {
 
-                    // Никаких -1 !!!
-                    ini_set('memory_limit', '1024M');
+                    ini_set('memory_limit', '256M'); // достаточно
 
                     $zipDownloadName = 'Медиа всех сборников.zip';
-                    $tmpFile = tempnam(sys_get_temp_dir(), 'collection_files_');
-
-                    $zip = new ZipArchive();
-
-                    if ($zip->open($tmpFile, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
-                        $this->notify('danger', 'Не удалось создать архив.');
-                        return null;
-                    }
+                    $zipPath = storage_path('app/' . uniqid('media_') . '.zip');
 
                     $filesAdded = 0;
+                    $fileList = [];
 
-                    // ===== COLLECTIONS =====
-                    Collection::where('status', CollectionStatusEnums::DONE)
-                        ->chunkById(200, function ($collections) use ($zip, &$filesAdded) {
+                    /*
+                    |--------------------------------------------------------------------------
+                    | Получаем файлы напрямую из таблицы media (БЕЗ Eloquent)
+                    |--------------------------------------------------------------------------
+                    */
 
-                            foreach ($collections as $collection) {
+                    DB::table('media')
+                        ->where('collection_name', 'cover_front')
+                        ->where(function ($q) {
+                            $q->where('model_type', \App\Models\Collection\Collection::class)
+                                ->whereIn('model_id', function ($sub) {
+                                    $sub->select('id')
+                                        ->from('collections')
+                                        ->where('status', \App\Enums\CollectionStatusEnums::DONE);
+                                });
+                        })
+                        ->orWhere(function ($q) {
+                            $q->where('model_type', \App\Models\OwnBook\OwnBook::class)
+                                ->whereIn('model_id', function ($sub) {
+                                    $sub->select('id')
+                                        ->from('own_books')
+                                        ->where('status_general', \App\Enums\OwnBookStatusEnums::DONE);
+                                });
+                        })
+                        ->orderBy('id')
+                        ->chunk(500, function ($medias) use (&$fileList, &$filesAdded) {
 
-                                $media = $collection->getFirstMedia('cover_front');
-                                if (! $media) continue;
+                            foreach ($medias as $media) {
 
-                                $filePath = $media->getPath();
-                                if (! $filePath || ! file_exists($filePath)) continue;
+                                $fullPath = storage_path('app/public/' . $media->id . '/' . $media->file_name);
 
-                                $zip->addFile(
-                                    $filePath,
-                                    'collection-' . $collection->id . '.png'
-                                );
+                                if (! file_exists($fullPath)) {
+                                    continue;
+                                }
 
+                                $fileList[] = escapeshellarg($fullPath);
                                 $filesAdded++;
                             }
                         });
 
-                    // ===== OWN BOOKS =====
-                    OwnBook::where('status_general', OwnBookStatusEnums::DONE)
-                        ->chunkById(200, function ($ownBooks) use ($zip, &$filesAdded) {
 
-                            foreach ($ownBooks as $ownBook) {
+                    /*
+                    |--------------------------------------------------------------------------
+                    | Создание архива через системный zip (НЕ PHP ZipArchive)
+                    |--------------------------------------------------------------------------
+                    */
 
-                                $media = $ownBook->getFirstMedia('cover_front');
-                                if (! $media) continue;
+                    $command = sprintf(
+                        'zip -j %s %s',
+                        escapeshellarg($zipPath),
+                        implode(' ', $fileList)
+                    );
 
-                                $filePath = $media->getPath();
-                                if (! $filePath || ! file_exists($filePath)) continue;
-
-                                $zip->addFile(
-                                    $filePath,
-                                    'ownbook-' . $ownBook->id . '.png'
-                                );
-
-                                $filesAdded++;
-                            }
-                        });
-
-                    $zip->close();
-
-                    if ($filesAdded === 0) {
-                        @unlink($tmpFile);
-                        $this->notify('warning', 'Подходящих файлов не найдено.');
-                        return null;
-                    }
+                    exec($command);
 
                     return response()
-                        ->download($tmpFile, $zipDownloadName)
+                        ->download($zipPath, $zipDownloadName)
                         ->deleteFileAfterSend(true);
                 })
         ];
