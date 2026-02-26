@@ -42,7 +42,7 @@ class EditCollection extends EditRecord
                 ->action(function () {
 
                     // Никаких -1 !!!
-                    ini_set('memory_limit', '1024MB');
+                    ini_set('memory_limit', '1024M');
 
                     $zipDownloadName = 'Медиа всех сборников.zip';
                     $tmpFile = tempnam(sys_get_temp_dir(), 'collection_files_');
