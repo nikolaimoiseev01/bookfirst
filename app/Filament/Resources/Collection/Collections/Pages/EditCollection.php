@@ -40,12 +40,10 @@ class EditCollection extends EditRecord
             Action::make('makeFiles')
                 ->label('Скачать файлы')
                 ->action(function () {
-                    ini_set('memory_limit', '-1'); // 1GB
-                    // Имя zip, которое увидит пользователь
-                    $zipDownloadName = 'Медиа всех сборников.zip';
 
-                    // Временный файл под архив
+                    $zipDownloadName = 'Медиа всех сборников.zip';
                     $tmpFile = tempnam(sys_get_temp_dir(), 'collection_files_');
+
                     $zip = new ZipArchive();
 
                     if ($zip->open($tmpFile, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
@@ -53,59 +51,49 @@ class EditCollection extends EditRecord
                         return null;
                     }
 
-                    // Подгружаем участия сразу с медиа, чтобы не ловить N+1
-                    $collections = Collection::query()->where('status', CollectionStatusEnums::DONE)
-                        ->with('media')
-                        ->get();
-
                     $filesAdded = 0;
 
-                    foreach ($collections as $collection) {
-                        // если у Participation есть HasMedia
-                        $media = $collection->getFirstMedia('cover_front');
+                    // ===== COLLECTIONS =====
+                    Collection::where('status', CollectionStatusEnums::DONE)
+                        ->chunkById(200, function ($collections) use ($zip, &$filesAdded) {
 
-                        if (! $media) {
-                            continue;
-                        }
+                            foreach ($collections as $collection) {
 
-                        $filePath = $media->getPath();
+                                $media = $collection->getFirstMedia('cover_front');
+                                if (! $media) continue;
 
-                        if (! $filePath || ! file_exists($filePath)) {
-                            continue;
-                        }
+                                $filePath = $media->getPath();
+                                if (! $filePath || ! file_exists($filePath)) continue;
 
-                         $fileNameInZip = 'collection-' . $collection->id . '.png';
+                                $zip->addFile(
+                                    $filePath,
+                                    'collection-' . $collection->id . '.png'
+                                );
 
-                        $zip->addFile($filePath, $fileNameInZip);
-                        $filesAdded++;
-                    }
+                                $filesAdded++;
+                            }
+                        });
 
-                    // Подгружаем участия сразу с медиа, чтобы не ловить N+1
-                    $ownBooks = OwnBook::query()->where('own_books.status_general', OwnBookStatusEnums::DONE)
-                        ->with('media')
-                        ->get();
+                    // ===== OWN BOOKS =====
+                    OwnBook::where('status_general', OwnBookStatusEnums::DONE)
+                        ->chunkById(200, function ($ownBooks) use ($zip, &$filesAdded) {
 
-                    $filesAdded = 0;
+                            foreach ($ownBooks as $ownBook) {
 
-                    foreach ($ownBooks as $ownBook) {
-                        // если у Participation есть HasMedia
-                        $media = $ownBook->getFirstMedia('cover_front');
+                                $media = $ownBook->getFirstMedia('cover_front');
+                                if (! $media) continue;
 
-                        if (! $media) {
-                            continue;
-                        }
+                                $filePath = $media->getPath();
+                                if (! $filePath || ! file_exists($filePath)) continue;
 
-                        $filePath = $media->getPath();
+                                $zip->addFile(
+                                    $filePath,
+                                    'ownbook-' . $ownBook->id . '.png'
+                                );
 
-                        if (! $filePath || ! file_exists($filePath)) {
-                            continue;
-                        }
-
-                        $fileNameInZip = 'ownbook-' . $ownBook->id . '.png';
-
-                        $zip->addFile($filePath, $fileNameInZip);
-                        $filesAdded++;
-                    }
+                                $filesAdded++;
+                            }
+                        });
 
                     $zip->close();
 
@@ -115,8 +103,9 @@ class EditCollection extends EditRecord
                         return null;
                     }
 
-                    // Отдаём архив и удаляем временный файл после отправки
-                    return response()->download($tmpFile, $zipDownloadName)->deleteFileAfterSend(true);
+                    return response()
+                        ->download($tmpFile, $zipDownloadName)
+                        ->deleteFileAfterSend(true);
                 })
         ];
     }
