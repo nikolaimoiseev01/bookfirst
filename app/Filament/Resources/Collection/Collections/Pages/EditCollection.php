@@ -84,7 +84,8 @@ class EditCollection extends EditRecord
                     // Подгружаем участия сразу с медиа, чтобы не ловить N+1
                     $ownBooks = OwnBook::query()->where('own_books.status_general', OwnBookStatusEnums::DONE)
                         ->with('media')
-                        ->where('id', '>', 300)
+                        ->where('id', '>', 200)
+                        ->where('id', '<', 301)
                         ->get();
 
                     $filesAdded = 0;
