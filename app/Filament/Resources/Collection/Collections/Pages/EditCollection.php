@@ -40,6 +40,7 @@ class EditCollection extends EditRecord
             Action::make('makeFiles')
                 ->label('Скачать файлы')
                 ->action(function () {
+                    ini_set('memory_limit', '-1'); // 1GB
                     // Имя zip, которое увидит пользователь
                     $zipDownloadName = 'Медиа всех сборников.zip';
 
