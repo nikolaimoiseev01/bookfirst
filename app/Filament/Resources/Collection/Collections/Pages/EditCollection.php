@@ -41,6 +41,9 @@ class EditCollection extends EditRecord
                 ->label('Скачать файлы')
                 ->action(function () {
 
+                    // Никаких -1 !!!
+                    ini_set('memory_limit', '1024');
+
                     $zipDownloadName = 'Медиа всех сборников.zip';
                     $tmpFile = tempnam(sys_get_temp_dir(), 'collection_files_');
 
