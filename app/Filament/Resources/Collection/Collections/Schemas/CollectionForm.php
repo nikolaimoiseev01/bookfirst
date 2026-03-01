@@ -130,7 +130,13 @@ class CollectionForm
                                     'distribution' => $distribution
                                 ];
                             })
-                    ])
+                    ]),
+                    Tabs\Tab::make('Ссылки')->schema([
+                        Repeater::make('selling_links')->schema([
+                            TextInput::make('platform'),
+                            TextInput::make('link')
+                        ])->columns(2)->hiddenLabel()
+                    ]),
                 ])->columnSpan(4),
                 Tabs::make()->schema([
                     Tab::make('Обложка')->schema([
