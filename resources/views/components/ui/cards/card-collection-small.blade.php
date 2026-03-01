@@ -20,7 +20,7 @@
                         @foreach($collection['selling_links'] ?? [] as $link)
                             <a href="{{$link['link']}}"
                                class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100">
-                                <img src="/fixed/logo-{{$link['platform']}}.png" class="w-12" alt=""> {{$link['platform']}}
+                                <img src="/fixed/logo-{{$link['platform']}}.png" class="w-12" alt="">
                             </a>
                         @endforeach
                         @if($showEpurchase)
