@@ -17,10 +17,10 @@
                     </button>
                     <div @click.away="open = false" x-show="open" x-transition
                          class="absolute mt-2 rounded-xl shadow-lg bg-white ring-1 ring-black/5 z-50">
-                        @foreach($collection['selling_links'] ?? [] as $name => $link)
-                            <a href="{{$link}}"
+                        @foreach($collection['selling_links'] ?? [] as $link)
+                            <a href="{{$link['link']}}"
                                class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100">
-                                <img src="/fixed/logo-{{$name}}.png" class="w-12" alt=""> {{$name}}
+                                <img src="/fixed/logo-{{$link['platform']}}.png" class="w-12" alt=""> {{$link['platform']}}
                             </a>
                         @endforeach
                         @if($showEpurchase)
