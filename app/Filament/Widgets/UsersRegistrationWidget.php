@@ -51,10 +51,11 @@ class UsersRegistrationWidget extends ChartWidget
 
     protected function getData(): array
     {
-        $dimension = $this->filters['dimension'];
-        $groupBy = $this->filters['grouping'];
-        $startDate = $this->filters['startDate'] ?? null;
-        $endDate = $this->filters['endDate'] ?? null;
+        $dimension = $this->filters['dimension'] ?? 'reg_utm_source';
+        $groupBy = $this->filters['grouping'] ?? 'day';
+        $startDate = $this->filters['startDate'] ?? now()->subDays(7);
+        $endDate = $this->filters['endDate'] ?? now();
+
         $this->start = $startDate
             ? Carbon::parse($startDate)->startOfDay()
             : now()->subDay()->startOfHour();

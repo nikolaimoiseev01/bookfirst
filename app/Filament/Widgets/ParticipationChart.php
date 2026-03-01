@@ -49,11 +49,14 @@ class ParticipationChart extends ChartWidget
 
     protected function getData(): array
     {
-        $dimension = $this->filters['dimension'];
-        $aggregation = $this->filters['aggregation'];
+        $dimension = $this->filters['dimension'] ?? 'COALESCE(promocodes.group, \'Без промокода\')';
+        $aggregation = $this->filters['aggregation'] ?? 'COUNT(*)';
 
-        $this->start = Carbon::parse($this->filters['startDate'])->startOfDay();
-        $this->end   = Carbon::parse($this->filters['endDate'])->endOfDay();
+        $startDate = $this->filters['startDate'] ?? now()->subDays(365);
+        $endDate = $this->filters['endDate'] ?? now();
+
+        $this->start = Carbon::parse($startDate)->startOfDay();
+        $this->end   = Carbon::parse($endDate)->endOfDay();
 
         $baseQuery = Participation::query()
             ->where('participations.status', ParticipationStatusEnums::APPROVED)
