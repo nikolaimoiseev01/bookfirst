@@ -50,19 +50,19 @@ class ParticipationForm
                         Grid::make()->schema([
                             TextInput::make('price_part')
                                 ->label('Цена участия')
-                                ->mask(RawJs::make('$money($input)'))
-                                ->stripCharacters(',')
+//                                ->mask(RawJs::make('$money($input)'))
+//                                ->stripCharacters(',')
                                 ->required()
                                 ->numeric(),
                             TextInput::make('price_check')
                                 ->label('Цена проверки')
-                                ->mask(RawJs::make('$money($input)'))
-                                ->stripCharacters(',')
+//                                ->mask(RawJs::make('$money($input)'))
+//                                ->stripCharacters(',')
                                 ->numeric(),
                             TextInput::make('price_total')
                                 ->label('Итого')
-                                ->mask(RawJs::make('$money($input)'))
-                                ->stripCharacters(',')
+//                                ->mask(RawJs::make('$money($input)'))
+//                                ->stripCharacters(',')
                                 ->required()
                                 ->numeric(),
                         ])->columns(5),
