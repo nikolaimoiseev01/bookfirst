@@ -22,11 +22,10 @@
             @if($collection['status'] == \App\Enums\CollectionStatusEnums::DONE)
                 <h4>Приобрести книгу:</h4>
                 <div class="flex flex-wrap gap-8 md:gap-4 md:flex-col md:justify-center">
-                    @foreach($collection['selling_links'] ?? [] as $name => $link)
-                        <a href="{{$link}}" target="_blank"
+                    @foreach($collection['selling_links'] ?? [] as $link)
+                        <a href="{{$link['link']}}" target="_blank"
                            class="flex gap-4 border text-xl border-dark-100 rounded px-4 py-2 hover:bg-green-500 hover:text-white transition">
-                            <img src="/fixed/logo-{{$name}}.png" class="w-16" alt="">
-                            {{$name}}
+                            <img src="/fixed/logo-{{$link['platform']}}.png" class="w-16" alt="">
                         </a>
                     @endforeach
                     <a wire:click="createPayment(100)" data-check-logged target="_blank"
