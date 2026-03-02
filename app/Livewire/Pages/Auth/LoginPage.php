@@ -19,13 +19,10 @@ class LoginPage extends Component
         return view('livewire.pages.auth.login-page');
     }
 
-    #[Validate('required|string|email')]
     public string $email = '';
 
-    #[Validate('required|string')]
     public string $password = '';
 
-    #[Validate('boolean')]
     public bool $remember = false;
 
     /**
@@ -75,6 +72,15 @@ class LoginPage extends Component
     protected function throttleKey(): string
     {
         return Str::transliterate(Str::lower($this->email) . '|' . request()->ip());
+    }
+
+    protected function rules(): array
+    {
+        return [
+            'email' => 'required|string|email',
+            'password' => 'required|string',
+            'remember' => 'boolean',
+        ];
     }
 
     public function messages(): array
