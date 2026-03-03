@@ -261,7 +261,6 @@ class OwnBookCreatePage extends Component
                 'user_id' => Auth::user()->id,
                 'author' => $this->author,
                 'title' => $this->title,
-                'slug' => Str::slug($this->title),
                 'status_general' => OwnBookStatusEnums::REVIEW,
                 'status_cover' => OwnBookCoverStatusEnums::DEVELOPMENT,
                 'status_inside' => OwnBookInsideStatusEnums::DEVELOPMENT,
@@ -279,6 +278,9 @@ class OwnBookCreatePage extends Component
                 'price_cover' => $this->prices['priceCover'],
                 'price_promo' => $this->prices['pricePromo'],
                 'price_total' => $this->prices['priceTotal'],
+            ]);
+            $newOwnBook->update([
+                'slug' => Str::slug($this->title) . '-' . $newOwnBook->id,
             ]);
             foreach ($this->selectedWorks as $work) {
                 OwnBookWork::create([
