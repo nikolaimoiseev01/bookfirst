@@ -26,15 +26,16 @@ class UploadCollectionCovers extends Command
      */
     public function handle()
     {
-        $collections = Collection::query()->with('media')->orderBy('id', 'desc')->get();
-
+        $collections = Collection::query()->where('id', '<', 78)->with('media')->orderBy('id', 'desc')->get();
+        $counter = 0;
         foreach ($collections as $collection) {
-            if (!$collection->getMedia('cover_front')->isNotEmpty()) {
-                $path = public_path("fixed/temp/collection-{$collection->id}.png");
-                if (file_exists($path)) {
-                    $collection->addMedia($path)->preservingOriginal()->toMediaCollection('cover_front');
-                }
+            $path = public_path("fixed/temp/collection-{$collection->id}.png");
+            if (file_exists($path)) {
+                $path = asset("fixed/temp/collection-{$collection->id}.png");
+                $collection->addMediaFromUrl($path)->toMediaCollection('cover_front');
+                $counter++;
             }
         }
+        dd('EDITED: ' . $counter);
     }
 }
