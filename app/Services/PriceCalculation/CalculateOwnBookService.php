@@ -6,14 +6,6 @@ namespace App\Services\PriceCalculation;
 class CalculateOwnBookService
 {
     public $pages;
-    public $pagesColor;
-    public $needTextDesign;
-    public $needTextCheck;
-    public $coverReady;
-    public $needPrint;
-    public $booksCnt;
-    public $coverType;
-    public $promoType;
 
     private const PRINT_PROFIT_COEF = 2.5;
     private const TEXT_DESIGN_PER_PAGE = 13;
@@ -21,26 +13,50 @@ class CalculateOwnBookService
     private const TEXT_ISBN_PRICE = 300;
     private const TEXT_PRICE_CONST = 500;
 
-    public function __construct($pages, $pagesColor, $needTextDesign, $needTextCheck, $coverReady, $needPrint, $booksCnt, $coverType, $promoType)
+    public function __construct($pages)
     {
         $this->pages = intVal($pages);
-        $this->pagesColor = intVal($pagesColor);
-        $this->needTextDesign = $needTextDesign;
-        $this->needTextCheck = $needTextCheck;
-        $this->coverReady = $coverReady;
-        $this->needPrint = $needPrint;
-        $this->booksCnt = intVal($booksCnt);
-        $this->coverType = $coverType;
-        $this->promoType = $promoType;
     }
 
-    public function calculate()
+    public function calculatePrintPrice($pagesColor, $booksCnt, $coverType) {
+        // Если менее 4-х, то стоимость за 4
+        if ($booksCnt <= 4) {
+            $booksCnt = 4;
+        }
+
+        // Скидка за тираж
+        $booksCntDiscount = match (true) {
+            $booksCnt <= 10 => 1,
+            $booksCnt <= 50 => 0.95,
+            default => 0.90,
+        };
+
+        // Накрутка за маленькое кол-во страниц
+        $pagesCoef = match (true) {
+            $this->pages <= 50 => 2.15,
+            $this->pages <= 75 => 2.1,
+            $this->pages <= 100 => 1.5,
+            default => 1,
+        };
+
+        $coverStyleCoef = match (true) {
+            $coverType == 'Твердая' => 2,
+            default => 1,
+        };
+
+        // Цена одной книги без скидок и накруток
+        $pricePrintPre = ($this->pages - $pagesColor + ($pagesColor * 3)) * 0.7 * $coverStyleCoef * $pagesCoef;
+
+        return ceil($pricePrintPre * $booksCntDiscount * $booksCnt * self::PRINT_PROFIT_COEF);
+    }
+
+    public function calculateAllPrices($needTextDesign, $needTextCheck, $coverReady, $promoType, $needPrint, $pagesColor, $booksCnt, $coverType)
     {
-        $priceTextDesign = ($this->needTextDesign) ? $this->pages * self::TEXT_DESIGN_PER_PAGE : 0;
-        $priceTextCheck = ($this->needTextCheck) ? $this->pages * self::TEXT_CHECK_PER_PAGE : 0;
+        $priceTextDesign = ($needTextDesign) ? $this->pages * self::TEXT_DESIGN_PER_PAGE : 0;
+        $priceTextCheck = ($needTextCheck) ? $this->pages * self::TEXT_CHECK_PER_PAGE : 0;
         $priceInside = self::TEXT_ISBN_PRICE + self::TEXT_PRICE_CONST + $priceTextDesign + $priceTextCheck;
-        $priceCover = ($this->coverReady) ? 0 : 1500;
-        $pricePromo = match ($this->promoType) {
+        $priceCover = ($coverReady) ? 0 : 1500;
+        $pricePromo = match ($promoType) {
             '1' => 500,
             '2' => 2000,
             default => 0,
@@ -48,37 +64,8 @@ class CalculateOwnBookService
 
 
         // Считаем стоимость печати
-        if ($this->needPrint) {
-
-            // Если менее 4-х, то стоимость за 4
-            if ($this->booksCnt <= 4) {
-                $this->booksCnt = 4;
-            }
-
-            // Скидка за тираж
-            $booksCntDiscount = match (true) {
-                $this->booksCnt <= 10 => 1,
-                $this->booksCnt <= 50 => 0.95,
-                default => 0.90,
-            };
-
-            // Накрутка за маленькое кол-во страниц
-            $pagesCoef = match (true) {
-                $this->pages <= 50 => 2.15,
-                $this->pages <= 75 => 2.1,
-                $this->pages <= 100 => 1.5,
-                default => 1,
-            };
-
-            $coverStyleCoef = match (true) {
-                $this->coverType == 'Твердая' => 2,
-                default => 1,
-            };
-
-            // Цена одной книги без скидок и накруток
-            $pricePrintPre = ($this->pages - $this->pagesColor + ($this->pagesColor * 3)) * 0.7 * $coverStyleCoef * $pagesCoef;
-
-            $pricePrint = ceil($pricePrintPre * $booksCntDiscount * $this->booksCnt * self::PRINT_PROFIT_COEF);
+        if ($needPrint) {
+            $pricePrint = $this->calculatePrintPrice($pagesColor, $booksCnt, $coverType);
         } else {
             $pricePrint = 0;
         }

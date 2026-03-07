@@ -12,6 +12,7 @@ use App\Services\PaymentCallbackServices\CollectionPaymentService;
 use App\Services\PaymentCallbackServices\ExtPromotionPaymentService;
 use App\Services\PaymentCallbackServices\OwnBookPaymentService;
 use App\Services\PaymentCallbackServices\ParticipationPaymentService;
+use App\Services\PaymentCallbackServices\PurchasePrintPaymentService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -104,6 +105,12 @@ class PaymentService
         }
         if ($metadata['transaction_type'] == TransactionTypeEnums::OWN_BOOK_EBOOK_PURCHASE->value) {
             (new OwnBookPaymentService($yooKassaObject))->ebookPuchase();
+        }
+        if (in_array($metadata['transaction_type'], [
+            TransactionTypeEnums::OWN_BOOK_ONLY->value,
+            TransactionTypeEnums::COLLECTION_ONLY->value
+        ])) {
+            (new PurchasePrintPaymentService($yooKassaObject))->update();
         }
     }
 }

@@ -73,6 +73,11 @@ class OwnBook extends Model implements HasMedia
         return route('account.own_book.index', $this->id);
     }
 
+    public function portalPage(): string
+    {
+        return route('portal.own_book', $this->slug);
+    }
+
     public function previewCommentsInside(): MorphMany
     {
         return $this->morphMany(PreviewComment::class, 'model')->where('comment_type', 'inside');

@@ -30,9 +30,16 @@
                     @foreach($ownBook['selling_links'] ?? [] as $selling_link)
                         <a href="{{$selling_link['link']}}" target="_blank"
                            class="flex gap-4 border text-xl border-dark-100 rounded px-4 py-2">
-                            <img src="/fixed/logo-{{$selling_link['platform']}}.png" class="w-16" alt="">
+                            <img src="/fixed/logo-{{$selling_link['platform']}}.png" class="w-16"
+                                 alt="">
                         </a>
                     @endforeach
+                    <a wire:navigate
+                       href="{{route('account.purchase-print.create', ['type' => 'own-book', 'id' => $ownBook['id']])}}"
+                       data-check-logged target="_blank"
+                       class="flex gap-4 border text-xl border-dark-100 rounded px-4 py-2 hover:bg-green-500 hover:text-white transition">
+                        Печатная версия (400 руб.)
+                    </a>
                     <a wire:click="createPayment(100)" data-check-logged target="_blank"
                        class="flex gap-4 border text-xl border-dark-100 rounded px-4 py-2 hover:bg-green-500 hover:text-white transition">
                         Электронная версия (100 руб.)

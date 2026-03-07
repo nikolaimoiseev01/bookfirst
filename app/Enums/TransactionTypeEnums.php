@@ -15,4 +15,6 @@ enum TransactionTypeEnums: string
     case COLLECTION_EBOOK_PURCHASE = 'Покупка электронного экземпляра сборника';
     case WALLET_TOP_UP = 'Пополнение кошелька';
     case EXT_PROMOTION_PAYMENT = 'Оплата продвижения';
+    case OWN_BOOK_ONLY = 'Оплата отдельной печати собственной книги';
+    case COLLECTION_ONLY = 'Оплата отдельно печати сборника';
 }

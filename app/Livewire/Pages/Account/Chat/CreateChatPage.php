@@ -3,8 +3,7 @@
 namespace App\Livewire\Pages\Account\Chat;
 
 use App\Enums\ChatStatusEnums;
-use App\Filament\Resources\Chats\Pages\EditChat;
-use App\Filament\Resources\Chats\Pages\ViewChat;
+use App\Filament\Resources\Chat\Chats\Pages\ViewChat;
 use App\Jobs\TelegramNotificationJob;
 use App\Models\Chat\Chat;
 use App\Models\Chat\Message;

@@ -109,6 +109,11 @@ class Collection extends Model implements HasMedia
         return route('login_as_secondary_admin', ['url_redirect', EditCollection::getUrl(['record' => $this])]);
     }
 
+    public function portalPage(): string
+    {
+        return route('portal.collection', $this->slug);
+    }
+
     public function adminEditPageWithoutLogin(): string
     {
         return EditCollection::getUrl(['record' => $this]);

@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\ExtPromotion\ExtPromotion;
+use App\Models\PrintOrder\PrintOrder;
 use App\Models\User\User;
 use App\Models\Collection\Collection;
 use App\Models\Collection\Participation;
@@ -69,6 +70,7 @@ class AppServiceProvider extends ServiceProvider
             'AwardType' => AwardType::class,
             'ExtPromotion' => ExtPromotion::class,
             'Work' => Work::class,
+            'PrintOrder' => PrintOrder::class,
         ]);
 
         Carbon::setLocale(config('app.locale')); // Установим локаль из конфигурации

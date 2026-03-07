@@ -2,6 +2,9 @@
 
 namespace App\Filament\Resources\PrintOrder\PrintOrders;
 
+use App\Enums\OwnBookStatusEnums;
+use App\Enums\PrintOrderStatusEnums;
+use App\Enums\PrintOrderTypeEnums;
 use App\Filament\Resources\PrintOrder\PrintOrders\Pages\CreatePrintOrder;
 use App\Filament\Resources\PrintOrder\PrintOrders\Pages\EditPrintOrder;
 use App\Filament\Resources\PrintOrder\PrintOrders\Pages\ListPrintOrders;
@@ -9,6 +12,7 @@ use App\Filament\Resources\PrintOrder\PrintOrders\Pages\ViewPrintOrder;
 use App\Filament\Resources\PrintOrder\PrintOrders\Schemas\PrintOrderForm;
 use App\Filament\Resources\PrintOrder\PrintOrders\Schemas\PrintOrderInfolist;
 use App\Filament\Resources\PrintOrder\PrintOrders\Tables\PrintOrdersTable;
+use App\Models\OwnBook\OwnBook;
 use App\Models\PrintOrder\PrintOrder;
 use BackedEnum;
 use Filament\Resources\Resource;
@@ -56,5 +60,17 @@ class PrintOrderResource extends Resource
             'create' => CreatePrintOrder::route('/create'),
             'edit' => EditPrintOrder::route('/{record}/edit'),
         ];
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return PrintOrder::query()
+            ->whereIn('status', [
+                PrintOrderStatusEnums::CREATED,
+                PrintOrderStatusEnums::PAID
+            ])->whereIn('type', [
+                PrintOrderTypeEnums::COLLECTION_ONLY,
+                PrintOrderTypeEnums::OWN_BOOK_ONLY
+            ])->count();
     }
 }

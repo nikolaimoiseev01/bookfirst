@@ -16,6 +16,9 @@ use App\Livewire\Pages\Account\ExtPromotion\ExtPromotionsPage as AccountExtPromo
 use App\Livewire\Pages\Account\FriendInvitePage;
 use App\Livewire\Pages\Account\OwnBook\OwnBookCreatePage;
 use App\Livewire\Pages\Account\OwnBook\OwnBooksPage;
+use App\Livewire\Pages\Account\PurchasePrints\PurchasePrintCreatePage;
+use App\Livewire\Pages\Account\PurchasePrints\PurchasePrintPage;
+use App\Livewire\Pages\Account\PurchasePrints\PurchasePrintsPage;
 use App\Livewire\Pages\Account\PurchasesPage;
 use App\Livewire\Pages\Account\SettingsPage;
 use App\Livewire\Pages\Account\SubscribtionsPage;
@@ -143,6 +146,10 @@ Route::middleware(['userActivityLog'])->group(function () {
         Route::get('friend-invite', FriendInvitePage::class)->name('account.friend-invite');
 
         Route::get('aca-unsubscribe/{aca_id}', ACAUnsubscribedPage::class)->name('account.aca-unsubscribe');
+
+        Route::get('purchase-prints/create/{type}/{id}', PurchasePrintCreatePage::class)->name('account.purchase-print.create');
+        Route::get('purchase-prints/{print_order_id}', PurchasePrintPage::class)->name('account.purchase-print.index');
+        Route::get('purchase-prints', PurchasePrintsPage::class)->name('account.purchase-prints');
     });
 });
 

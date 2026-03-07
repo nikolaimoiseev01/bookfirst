@@ -63,7 +63,7 @@ class OwnBookPaymentSuccessNotification extends Notification
     {
         $subject = match ($this->transactionType) {
             TransactionTypeEnums::OWN_BOOK_WO_PRINT =>  '💸 *Новая оплата по книге!* 💸' . "\n\n",
-            TransactionTypeEnums::OWN_BOOK_PRINT =>  '💸 *Новая оплата *печати* по книге!* 💸' . "\n\n"
+            TransactionTypeEnums::OWN_BOOK_PRINT =>  '💸 *Новая оплата печати по книге!* 💸' . "\n\n"
         };
 
         $text = '*Автор:* ' . $this->ownBook['author'] .

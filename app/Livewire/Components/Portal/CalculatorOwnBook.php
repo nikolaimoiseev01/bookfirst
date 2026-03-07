@@ -25,7 +25,8 @@ class CalculatorOwnBook extends Component
         return view('livewire.components.portal.calculator-own-book');
     }
 
-    public function mount() {
+    public function mount()
+    {
         $this->updatePrices();
     }
 
@@ -37,18 +38,20 @@ class CalculatorOwnBook extends Component
         $this->updatePrices();
     }
 
-    public function updatePrices() {
+    public function updatePrices()
+    {
         $this->prices = ((new CalculateOwnBookService(
             pages: $this->pages,
-            pagesColor: $this->pagesColor,
+        )
+        )->calculateAllPrices(
             needTextDesign: $this->needTextDesign,
             needTextCheck: $this->needTextCheck,
             coverReady: $this->coverReady,
-            needPrint: $this->needPrint,
-            booksCnt: $this->booksCnt,
-            coverType: $this->coverType,
             promoType: $this->internalPromoType,
-        )
-        )->calculate());
+            needPrint: $this->needPrint,
+            pagesColor: $this->pagesColor,
+            booksCnt: $this->booksCnt,
+            coverType: $this->coverType
+        ));
     }
 }

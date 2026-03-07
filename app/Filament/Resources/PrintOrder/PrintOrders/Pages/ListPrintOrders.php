@@ -38,33 +38,24 @@ class ListPrintOrders extends ListRecords
     {
         return [
 
-            // --- ПУБЛИКАЦИЯ СОБСТВЕННОЙ КНИГИ ---
-            PrintOrderTypeEnums::OWN_BOOK_PUBLISH->value => Tab::make()
-                ->badge($this->printOrders[PrintOrderTypeEnums::OWN_BOOK_PUBLISH->value] ?? 0)
+            PrintOrderTypeEnums::OWN_BOOK_ONLY->value => Tab::make()
+                ->badge($this->printOrders[PrintOrderTypeEnums::OWN_BOOK_ONLY->value] ?? 0)
                 ->modifyQueryUsing(fn (Builder $query) =>
-                $query->where('type', PrintOrderTypeEnums::OWN_BOOK_PUBLISH)
+                $query->where('type', PrintOrderTypeEnums::OWN_BOOK_ONLY)
                 ),
 
-            // --- УЧАСТИЕ В СБОРНИКЕ ---
-            PrintOrderTypeEnums::COLLECTION_PARTICIPATION->value => Tab::make()
-                ->badge($this->printOrders[PrintOrderTypeEnums::COLLECTION_PARTICIPATION->value] ?? 0)
+            PrintOrderTypeEnums::COLLECTION_ONLY->value => Tab::make()
+                ->badge($this->printOrders[PrintOrderTypeEnums::COLLECTION_ONLY->value] ?? 0)
                 ->modifyQueryUsing(fn (Builder $query) =>
-                $query->where('type', PrintOrderTypeEnums::COLLECTION_PARTICIPATION)
+                $query->where('type', PrintOrderTypeEnums::COLLECTION_ONLY)
                 ),
 
-            // --- ОСТАЛЬНЫЕ (все, кроме тех двух) ---
-            'Остальные' => Tab::make()
+            'Все' => Tab::make()
                 ->badge(
                     PrintOrder::whereNotIn('type', [
                         PrintOrderTypeEnums::OWN_BOOK_PUBLISH->value,
                         PrintOrderTypeEnums::COLLECTION_PARTICIPATION->value,
                     ])->count()
-                )
-                ->modifyQueryUsing(fn (Builder $query) =>
-                $query->whereNotIn('type', [
-                    PrintOrderTypeEnums::OWN_BOOK_PUBLISH,
-                    PrintOrderTypeEnums::COLLECTION_PARTICIPATION,
-                ])
                 )
         ];
     }

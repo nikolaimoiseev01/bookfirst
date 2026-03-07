@@ -29,13 +29,14 @@ class PrintOrdersTable
                 TextColumn::make('id')
                     ->numeric()
                     ->sortable(),
-                TextColumn::make('user.name')
-                    ->numeric()
+                TextColumn::make('name')
+                    ->label('Пользователь')
+                    ->getStateUsing(fn($record) => $record->user->getUserFullName())
                     ->sortable(),
                 TextColumn::make('status')
                     ->badge()
                     ->color(fn($state): string => match ($state) {
-                        PrintOrderStatusEnums::CREATED => 'primary',
+                        PrintOrderStatusEnums::CREATED, PrintOrderStatusEnums::PAYMENT_REQUIRED => 'primary',
                         PrintOrderStatusEnums::PAID, PrintOrderStatusEnums::PRINTING => 'warning',
                         PrintOrderStatusEnums::SEND_NEED => 'danger',
                         PrintOrderStatusEnums::SENT => 'success',
@@ -45,14 +46,18 @@ class PrintOrdersTable
                     ->sortable()
                     ->toggleable(),
                 TextColumn::make('model.title')
+                    ->label('Издание')
                     ->limit(20)
                     ->searchable(),
                 TextColumn::make('books_cnt')
+                    ->label('Количество')
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('inside_color')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 TextColumn::make('pages_color')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('cover_type')
@@ -61,33 +66,42 @@ class PrintOrdersTable
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('price_send')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('receiver_name')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 TextColumn::make('receiver_telephone')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 TextColumn::make('country')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 TextColumn::make('address_json')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->getStateUsing(function(Model $record) {
                         return $record['address_json']['string'];
                     })
                     ->limit(20)
                     ->searchable(),
                 TextColumn::make('paid_at')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->dateTime()
                     ->sortable(),
                 TextColumn::make('printingCompany.name')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
                 TextColumn::make('logisticCompany.name')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
                 TextInputColumn::make('track_number')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->toggleable(),
                 TextColumn::make('created_at')
+                    ->label('Создан')
                     ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->sortable(),
                 TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()

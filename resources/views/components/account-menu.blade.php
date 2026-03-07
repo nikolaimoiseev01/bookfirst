@@ -23,7 +23,6 @@
                 </div>
             @endif
         </div>
-
     @endforeach
     @hasrole('admin')
     <a href="/admin"

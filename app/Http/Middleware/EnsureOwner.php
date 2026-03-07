@@ -6,6 +6,7 @@ use App\Models\AlmostCompleteAction;
 use App\Models\Collection\Participation;
 use App\Models\ExtPromotion\ExtPromotion;
 use App\Models\OwnBook\OwnBook;
+use App\Models\PrintOrder\PrintOrder;
 use App\Models\Work\Work;
 use Closure;
 use Illuminate\Http\Request;
@@ -29,6 +30,7 @@ class EnsureOwner
             'ext_promotion_id' => ExtPromotion::class,
             'work_id' => Work::class,
             'aca_id' => AlmostCompleteAction::class,
+            'print_order_id' => PrintOrder::class,
         ];
 
         foreach ($map as $param => $modelClass) {

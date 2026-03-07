@@ -99,7 +99,7 @@ class Chat extends Component
             } else {
                 $chatToSend = 'main';
                 $preUrl = match ($this->chat['model_type']) {
-                    'Collection', 'OwnBook', 'Participation' => $this->chat->model->adminEditPageWithoutLogin(),
+                    'Collection', 'OwnBook', 'Participation', 'PrintOrder' => $this->chat->model->adminEditPageWithoutLogin(),
                     default => ViewChat::getUrl(['record' => $this->chat])
                 };
                 $url = route('login_as_secondary_admin', ['url_redirect' => $preUrl]);

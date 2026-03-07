@@ -28,6 +28,10 @@
                             <img src="/fixed/logo-{{$link['platform']}}.png" class="w-16" alt="">
                         </a>
                     @endforeach
+                    <a wire:navigate href="{{route('account.purchase-print.create', ['type' => 'collection', 'id' => $collection['id']])}}" data-check-logged target="_blank"
+                       class="flex gap-4 border text-xl border-dark-100 rounded px-4 py-2 hover:bg-green-500 hover:text-white transition">
+                        Печатная версия (400 руб.)
+                    </a>
                     <a wire:click="createPayment(100)" data-check-logged target="_blank"
                        class="flex gap-4 border text-xl border-dark-100 rounded px-4 py-2 hover:bg-green-500 hover:text-white transition">
                         Электронная версия (100 руб.)

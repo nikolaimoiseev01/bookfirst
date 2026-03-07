@@ -9,6 +9,7 @@
     <div class="flex flex-col gap-2">
         <p class="font-normal text-3xl">{{$collection['title']}}</p>
         <div class="flex flex-col w-full mt-auto gap-4">
+            <p class="text-dark-350 text-base italic">Издан: {{formatDate($collection['created_at'], 'j F Y')}}</p>
             <div x-data="{ open: false }" class="relative inline-block text-left">
                 @if((count(($collection['selling_links'] ?? [])) > 0) || $showEpurchase)
                     <button @click="open = !open"
@@ -24,7 +25,11 @@
                             </a>
                         @endforeach
                         @if($showEpurchase)
-                            <a wire:click="createPayment({{$collection['id']}}, 100)"
+                            <a data-check-logged href="{{route('account.purchase-print.create', ['type' => 'collection', 'id' => $collection['id']])}}"
+                               class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100">
+                                Печатная версия (400 руб.)
+                            </a>
+                            <a data-check-logged wire:click="createPayment({{$collection['id']}}, 100)"
                                class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100">
                                 Электронная версия (100 руб.)
                             </a>

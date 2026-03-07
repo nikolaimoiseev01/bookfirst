@@ -185,17 +185,19 @@ class OwnBookCreatePage extends Component
 
     public function updatePrices()
     {
-        $this->prices = (new CalculateOwnBookService(
-            $this->pages,
-            $this->pagesColor,
-            $this->needTextDesign,
-            $this->needTextCheck,
-            $this->coverReady,
-            $this->needPrint,
-            $this->booksCnt,
-            $this->coverType,
-            $this->internalPromoType,
-        ))->calculate();
+        $this->prices = ((new CalculateOwnBookService(
+            pages: $this->pages,
+        )
+        )->calculateAllPrices(
+            needTextDesign: $this->needTextDesign,
+            needTextCheck: $this->needTextCheck,
+            coverReady: $this->coverReady,
+            promoType: $this->internalPromoType,
+            needPrint: $this->needPrint,
+            pagesColor: $this->pagesColor,
+            booksCnt: $this->booksCnt,
+            coverType: $this->coverType
+        ));
     }
 
     public function getConfirmText() {

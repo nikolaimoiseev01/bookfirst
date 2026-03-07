@@ -41,6 +41,12 @@ class AccountMenu extends Component
                 'new' => false
             ],
             [
+                'name' => 'Заказы печати',
+                'icon' => 'bi-printer',
+                'url' => route('account.purchase-prints'),
+                'new' => false
+            ],
+            [
                 'name' => 'Произведения',
                 'icon' => 'bi-feather',
                 'url' => route('account.works'),
