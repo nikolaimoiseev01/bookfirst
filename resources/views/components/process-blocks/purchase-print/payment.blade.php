@@ -1,4 +1,4 @@
-<x-process-blocks.template status="{{$blockColor}}" title="Оплата участия">
+<x-process-blocks.template status="{{$blockColor}}" title="Оплата печати">
     <div class="flex flex-col py-8 px-4 gap-4">
         <div class="flex gap-8 items-center justify-center">
             <x-price-element price="{{$printOrder['price_print']}}"
