@@ -13,7 +13,7 @@
                 <div @click.away="open = false" x-show="open" x-transition
                      class="absolute mt-2 rounded-lg shadow-lg bg-white ring-1 ring-black/5 z-50">
                     <x-ui.link-simple href="{{route('account.works.create.manual')}}"
-                       class="flex gap-2 px-4 py-2 font-light items-center hover:bg-gray-100">
+                       class="w-full flex gap-2 px-4 py-2 font-light items-center hover:bg-gray-100">
                         <span class="text-xl text-dark-400">Вручную</span>
                         <x-ui.question-mark class="text-lg w-4 h-4">Заполнить заголовок и текст для конкретного произведения
                         </x-ui.question-mark>
