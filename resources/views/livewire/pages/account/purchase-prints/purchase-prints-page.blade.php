@@ -2,6 +2,7 @@
     @section('title')
         Мои заказы на печать
     @endsection
+        <p class="text-xl text-dark-400 italic mb-6">Здесь показываются индивидуальные заказы печатных экземпляров (не в рамках издания) </p>
         <div class="flex gap-4 mb-6">
             <div x-data="{ open: false }" class="relative inline-block text-left sm:mx-auto">
                 <button @click="open = !open"
