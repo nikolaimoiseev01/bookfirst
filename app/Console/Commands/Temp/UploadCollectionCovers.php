@@ -32,6 +32,7 @@ class UploadCollectionCovers extends Command
             $path = public_path("fixed/temp/collection-{$collection->id}.png");
             if (file_exists($path)) {
                 $path = asset("fixed/temp/collection-{$collection->id}.png");
+                $collection->clearMediaCollection('cover_front');
                 $collection->addMediaFromUrl($path)->toMediaCollection('cover_front');
                 $counter++;
             }
