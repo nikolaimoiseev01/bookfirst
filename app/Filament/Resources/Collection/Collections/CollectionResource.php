@@ -18,6 +18,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 use UnitEnum;
 
 class CollectionResource extends Resource
@@ -63,6 +64,18 @@ class CollectionResource extends Resource
     public static function getNavigationBadge(): ?string
     {
         return Participation::where('status', ParticipationStatusEnums::APPROVE_NEEDED)->count();
+    }
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['title'];
+    }
+
+    public static function getGlobalSearchResultDetails(Model $record): array
+    {
+        return [
+            'Сборник' => $record->title_short,
+        ];
     }
 
 }

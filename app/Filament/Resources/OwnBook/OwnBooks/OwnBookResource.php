@@ -17,6 +17,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 
 class OwnBookResource extends Resource
 {
@@ -68,5 +69,17 @@ class OwnBookResource extends Resource
     public static function getNavigationBadge(): ?string
     {
         return OwnBook::where('status_general', OwnBookStatusEnums::REVIEW)->count();
+    }
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['author', 'title'];
+    }
+
+    public static function getGlobalSearchResultDetails(Model $record): array
+    {
+        return [
+            'Автор' => $record->author,
+        ];
     }
 }

@@ -14,6 +14,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 use UnitEnum;
 
 class ParticipationResource extends Resource
@@ -57,6 +58,19 @@ class ParticipationResource extends Resource
             'index' => ListParticipations::route('/'),
             'create' => CreateParticipation::route('/create'),
             'edit' => EditParticipation::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['author_name'];
+    }
+
+    public static function getGlobalSearchResultDetails(Model $record): array
+    {
+        return [
+            'Автор' => $record->author_name,
+            'Сборник' => $record->collection->title_short,
         ];
     }
 }

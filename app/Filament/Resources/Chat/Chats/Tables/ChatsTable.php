@@ -98,7 +98,7 @@ class ChatsTable
                 Action::make('Подробнее')
                     ->url(function ($record) {
                         return match ($record['model_type']) {
-                            'Participation', 'OwnBook', 'ExtPromotion' => $record->model->adminEditPageWithoutLogin(),
+                            'Participation', 'OwnBook', 'ExtPromotion', 'PrintOrder' => $record->model->adminEditPageWithoutLogin(),
                             default => ViewChat::getUrl(['record' => $record])
                         };
                     })
@@ -120,7 +120,7 @@ class ChatsTable
             })
             ->recordUrl(function ($record) {
                 return match ($record['model_type']) {
-                    'Participation', 'OwnBook', 'ExtPromotion' => $record->model->adminEditPageWithoutLogin(),
+                    'Participation', 'OwnBook', 'ExtPromotion', 'PrintOrder' => $record->model->adminEditPageWithoutLogin(),
                     default => ViewChat::getUrl(['record' => $record])
                 };
             })

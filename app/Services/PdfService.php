@@ -70,4 +70,18 @@ class PdfService
             ->usingFileName($fileName ?: ('cut_' . pathinfo($pdfPath, PATHINFO_FILENAME) . '.pdf'))
             ->toMediaCollection($collection);
     }
+
+    /**
+     * Возвращает количество страниц PDF.
+     */
+    public function getPageCount(string $pdfPath): int
+    {
+        if (!is_file($pdfPath)) {
+            throw new FileNotFoundException("PDF not found: {$pdfPath}");
+        }
+
+        $pdf = new Fpdi();
+
+        return $pdf->setSourceFile($pdfPath);
+    }
 }

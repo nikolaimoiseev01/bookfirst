@@ -162,4 +162,9 @@ class RoleResource extends Resource
     {
         return FilamentShieldPlugin::get();
     }
+
+    public static function canGloballySearch(): bool
+    {
+        return false;
+    }
 }

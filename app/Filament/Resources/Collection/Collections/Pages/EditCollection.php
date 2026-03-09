@@ -25,6 +25,7 @@ use PhpOffice\PhpWord\Shared\ZipArchive;
 class EditCollection extends EditRecord
 {
     protected static string $resource = CollectionResource::class;
+    protected array $mediaBefore = [];
 
     protected function getHeaderActions(): array
     {
@@ -38,6 +39,14 @@ class EditCollection extends EditRecord
                     );
                 }),
         ];
+    }
+
+    protected function beforeSave(): void
+    {
+        $this->mediaBefore = $this->record
+            ->getMedia('inside_file')
+            ->pluck('uuid')
+            ->toArray();
     }
 
 
@@ -74,6 +83,7 @@ class EditCollection extends EditRecord
             }
         }
 
+
         if ($this->record->wasChanged('winner_participations')) {
             foreach ($this->record->winner_participations_ordered as $key => $winnerParticipation) {
                 $notification = new CollectionWinnerNotification($this->record, $key + 1, $winnerParticipation['id']);
@@ -81,8 +91,31 @@ class EditCollection extends EditRecord
             }
         }
 
+        $this->updatePagesWhenMediaUpdated()
+
         (new InnerTasksService())->update();
     }
+
+    public function updatePagesWhenMediaUpdated(): void {
+        $mediaAfter = $this->record->getMedia('inside_file');
+
+        $beforeUuid = $this->mediaBefore[0] ?? null;
+        $afterUuid  = $mediaAfter->first()?->uuid;
+
+        // файл добавлен или заменён
+        if ($afterUuid && $beforeUuid !== $afterUuid) {
+
+            $pdfService = new PdfService();
+
+            $pages = $pdfService->getPageCount(
+                $mediaAfter->first()->getPath()
+            );
+
+            $this->record->pages = $pages;
+            $this->record->saveQuietly();
+        }
+    }
+
 
     public
     function hasCombinedRelationManagerTabsWithContent(): bool
