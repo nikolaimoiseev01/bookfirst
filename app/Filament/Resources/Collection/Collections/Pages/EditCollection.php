@@ -91,7 +91,7 @@ class EditCollection extends EditRecord
             }
         }
 
-        $this->updatePagesWhenMediaUpdated()
+        $this->updatePagesWhenMediaUpdated();
 
         (new InnerTasksService())->update();
     }
