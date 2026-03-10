@@ -44,6 +44,11 @@ class EditOwnBook extends EditRecord
         $this->oldStatusGeneral = $this->record->getOriginal('status_general');
         $this->oldStatusInside = $this->record->getOriginal('status_inside');
         $this->oldStatusCover = $this->record->getOriginal('status_cover');
+
+        $this->mediaBefore = $this->record
+            ->getMedia('inside_file')
+            ->pluck('uuid')
+            ->toArray();
     }
 
     protected function sendStatusUpdateNotification(): void
@@ -81,6 +86,19 @@ class EditOwnBook extends EditRecord
             ]);
         }
 
+        if (
+            ($this->record->wasChanged('pages')) ||
+            ($this->record->initialPrintOrder &&
+            $this->record->initialPrintOrder->wasChanged([
+                'books_cnt',
+                'cover_type',
+                'inside_color',
+                'pages_color',
+            ]))
+        ) {
+            $this->updatePrintPrice();
+        }
+
         $this->updatePagesWhenMediaUpdated();
 
         InnerTaskUpdateJob::dispatch();
@@ -94,7 +112,7 @@ class EditOwnBook extends EditRecord
         $afterUuid = $mediaAfter->first()?->uuid;
 
         // файл добавлен или заменён
-        if ($afterUuid && $beforeUuid !== $afterUuid) {
+        if ($afterUuid && ($beforeUuid !== $afterUuid)) {
 
             $pdfService = new PdfService();
 
@@ -120,21 +138,19 @@ class EditOwnBook extends EditRecord
             }
 
             if ($this->record->initialPrintOrder ?? null) {
-                $this->updatePrintPrice($newPages);
+                $this->updatePrintPrice();
             }
-
-
         }
     }
 
-    public function updatePrintPrice($pages): void
+    public function updatePrintPrice(): void
     {
         $printOrder = $this->record->initialPrintOrder;
 
         $oldPrice = $printOrder->price_print;
 
         $newPrintPrice = (new CalculateOwnBookService(
-            pages: $pages,
+            pages: $this->record->pages,
         ))->calculatePrintPrice(
             pagesColor: $printOrder->pages_color ?? 0,
             booksCnt: $printOrder->books_cnt,

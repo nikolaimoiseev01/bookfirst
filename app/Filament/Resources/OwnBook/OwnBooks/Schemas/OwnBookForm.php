@@ -27,6 +27,7 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\HtmlString;
@@ -291,12 +292,6 @@ class OwnBookForm
                                     PrintOrderStatusEnums::SENT => 'success',
                                 }),
                             DatePicker::make('deadline_print')->label('Срок печати'),
-                            TextEntry::make('initialPrintOrder.cover_type')
-                                ->visible(fn($record) => filled($record?->initialPrintOrder))
-                                ->label('Тип обложки'),
-                            TextEntry::make('initialPrintOrder.inside_color')
-                                ->visible(fn($record) => filled($record?->initialPrintOrder))
-                                ->label('Цветность ВБ'),
                             TextEntry::make('initialPrintOrder.address_json')
                                 ->visible(fn($record) => filled($record?->initialPrintOrder))
                                 ->state(fn($record) => $record->initialPrintOrder?->address_json['string'] ?? '—'
@@ -320,17 +315,36 @@ class OwnBookForm
                                     TextInput::make('books_cnt')->label('Экземпляров'),
                                     TextInput::make('price_print')->label('Цена печати'),
                                     TextInput::make('price_send')->label('Цена отправки'),
+
+                                    Select::make('cover_type')
+                                        ->label('Тип обложки')
+                                        ->options([
+                                            'Твердая' => 'Твердая',
+                                            'Мягкая' => 'Мягкая'
+                                        ]),
+                                    Select::make('inside_color')
+                                        ->label('Цветность ВБ')
+                                        ->options([
+                                            'Цветной' => 'Цветной',
+                                            'Черно-белый' => 'Черно-белый',
+                                        ])
+                                        ->reactive()
+                                        ->afterStateUpdated(function (Set $set, $state) {
+                                            if ($state === 'Черно-белый') {
+                                                $set('pages_color', null);
+                                            }
+                                        }),
+                                    TextInput::make('pages_color')
+                                        ->label('Цветных страниц')
+                                        ->disabled(fn (Get $get) => $get('inside_color') === 'Черно-белый')
+                                        ->dehydrated(),
+
                                     TextInput::make('track_number'),
                                     Select::make('printing_company_id')
                                         ->relationship(name: 'printingCompany', titleAttribute: 'name'),
                                     Select::make('logistic_company_id')
                                         ->relationship(name: 'logisticCompany', titleAttribute: 'name'),
-//                                    Select::make('inside_color')
-//                                        ->options([
-//                                            'Цветной' => 'Цветной',
-//                                            'Черно-белый' => 'Черно-белый'
-//                                        ]),
-                                ])->columns(6)->columnSpanFull()
+                                ])->columns(3)->columnSpanFull()->visible(fn($record) => filled($record?->initialPrintOrder))
                         ])->columnSpanFull()->columns(5)
                     ])->columnSpanFull(),
                     Tabs\Tab::make('Ссылки')->schema([
