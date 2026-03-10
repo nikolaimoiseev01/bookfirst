@@ -112,7 +112,9 @@ class CollectionForm
                                 ];
                             })
                     ]),
-                    Tab::make('Распределение печати')->schema([
+                    Tab::make('Распределение печати')
+                        ->visibleOn('edit')
+                        ->schema([
                         ViewField::make('rating')
                             ->dehydrated(false)
                             ->view('filament.components.collection-print-distribution')
@@ -131,7 +133,9 @@ class CollectionForm
                                 ];
                             })
                     ]),
-                    Tabs\Tab::make('Ссылки')->schema([
+                    Tabs\Tab::make('Ссылки')
+                        ->visibleOn('edit')
+                        ->schema([
                         Repeater::make('selling_links')->schema([
                             TextInput::make('platform'),
                             TextInput::make('link')
