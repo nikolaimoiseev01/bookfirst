@@ -117,7 +117,6 @@ class UsersRegistrationWidget extends ChartWidget
 
         // 2️⃣ Все остальные → other
         $otherQuery = User::query()
-            ->whereNotNull($dimension)
             ->whereNotIn($dimension, $topValues);
 
         $datasets = [];

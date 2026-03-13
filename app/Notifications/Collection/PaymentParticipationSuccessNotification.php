@@ -49,7 +49,7 @@ class PaymentParticipationSuccessNotification extends Notification
             ->greeting('Здравствуйте, ' . $notifiable->name . '!')
             ->line($line_1)
             ->line("Вся подробная информация об издании сборника и вашем процессе указана на странице участия:")
-            ->action('"Ваша страница участия"', route('account.participation.index', $this->participation['id']));
+            ->action('Ваша страница участия', route('account.participation.index', $this->participation['id']));
     }
 
     public function toTelegram($notifiable)
