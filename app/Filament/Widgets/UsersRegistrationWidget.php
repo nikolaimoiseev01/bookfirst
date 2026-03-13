@@ -107,9 +107,8 @@ class UsersRegistrationWidget extends ChartWidget
 
         // 1️⃣ Топ-5 значений по количеству
         $topValues = User::query()
-            ->selectRaw("$dimension, COUNT(*) as total")
-            ->whereNotNull($dimension)
-            ->groupBy($dimension)
+            ->selectRaw("COALESCE($dimension, 'N/A') as $dimension, COUNT(*) as total")
+            ->groupByRaw("COALESCE($dimension, 'N/A')")
             ->orderByDesc('total')
             ->limit(5)
             ->pluck($dimension)
