@@ -95,36 +95,36 @@ class UsersRegistrationWidget extends ChartWidget
 
     protected function buildDimensionChart(Trend $trend, string $dimension): array
     {
-        // 🎨 Палитра (можно расширять)
         $colors = [
-            '#3b82f6', // blue
-            '#22c55e', // green
-            '#f97316', // orange
-            '#a855f7', // purple
-            '#ef4444', // red
-            '#64748b', // gray (other)
+            '#3b82f6',
+            '#22c55e',
+            '#f97316',
+            '#a855f7',
+            '#ef4444',
+            '#64748b',
         ];
 
-        // 1️⃣ Топ-5 значений по количеству
-        $topValues = User::query()
-            ->selectRaw("COALESCE($dimension, 'N/A') as $dimension, COUNT(*) as total")
+        // 1️⃣ Получаем ВСЕ значения dimension (NULL -> N/A)
+        $values = User::query()
+            ->selectRaw("COALESCE($dimension, 'N/A') as value")
             ->groupByRaw("COALESCE($dimension, 'N/A')")
-            ->orderByDesc('total')
-            ->limit(5)
-            ->pluck($dimension)
+            ->pluck('value')
             ->toArray();
-
-        // 2️⃣ Все остальные → other
-        $otherQuery = User::query()
-            ->whereNotIn($dimension, $topValues);
 
         $datasets = [];
         $labels = null;
         $colorIndex = 0;
 
-        // 3️⃣ Линии для топ-5
-        foreach ($topValues as $value) {
-            $query = User::query()->where($dimension, $value);
+        foreach ($values as $value) {
+
+            $query = User::query();
+
+            // 2️⃣ Учитываем NULL
+            if ($value === 'N/A') {
+                $query->whereNull($dimension);
+            } else {
+                $query->where($dimension, $value);
+            }
 
             $data = Trend::query($query)
                 ->between(start: $this->start, end: $this->end);
@@ -137,34 +137,11 @@ class UsersRegistrationWidget extends ChartWidget
 
             $data = $data->count();
 
+            $color = $colors[$colorIndex % count($colors)];
+
             $datasets[] = [
                 'label' => (string) $value,
                 'data' => $data->pluck('aggregate'),
-                'borderColor' => $colors[$colorIndex],
-                'backgroundColor' => $colors[$colorIndex],
-                'fill' => false,
-            ];
-
-            $labels ??= $data->pluck('date');
-            $colorIndex++;
-        }
-
-        // 4️⃣ Линия OTHER
-        if ($otherQuery->exists()) {
-            $otherTrend = Trend::query($otherQuery)
-                ->between(start: $this->start, end: $this->end);
-
-            match ($this->filters['grouping'] ?? 'day') {
-                'week'  => $otherTrend->perWeek(),
-                'month' => $otherTrend->perMonth(),
-                default => $otherTrend->perDay(),
-            };
-
-            $otherData = $otherTrend->count();
-            $color = $colors[$colorIndex];
-            $datasets[] = [
-                'label' => 'Other',
-                'data'  => $otherData->pluck('aggregate'),
 
                 'borderColor' => $color,
                 'backgroundColor' => $color,
@@ -174,14 +151,16 @@ class UsersRegistrationWidget extends ChartWidget
 
                 'pointHoverBackgroundColor' => $color,
                 'pointHoverBorderColor' => $color,
+
                 'hoverBorderColor' => $color,
                 'hoverBackgroundColor' => $color,
 
-                'borderDash' => [6, 4],
                 'fill' => false,
             ];
 
-            $labels ??= $otherData->pluck('date');
+            $labels ??= $data->pluck('date');
+
+            $colorIndex++;
         }
 
         return [
