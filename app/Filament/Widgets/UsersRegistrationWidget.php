@@ -106,6 +106,7 @@ class UsersRegistrationWidget extends ChartWidget
 
         // 1️⃣ Получаем ВСЕ значения dimension (NULL -> N/A)
         $values = User::query()
+            ->whereBetween('created_at', [$this->start, $this->end])
             ->selectRaw("COALESCE($dimension, 'N/A') as value")
             ->groupByRaw("COALESCE($dimension, 'N/A')")
             ->pluck('value')
