@@ -49,7 +49,7 @@ class CalculatorOwnBook extends Component
             coverReady: $this->coverReady,
             promoType: $this->internalPromoType,
             needPrint: $this->needPrint,
-            pagesColor: $this->pagesColor,
+            pagesColor:$this->pagesColor == "" ? 0 : ($this->pagesColor ?? 0),
             booksCnt: $this->booksCnt,
             coverType: $this->coverType
         ));

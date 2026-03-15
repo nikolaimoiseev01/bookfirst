@@ -82,7 +82,7 @@
                                            :options="['Черно-белый' => 'черно-белый', 'Цветной' => 'цветной']"/>
                         <div class="flex gap-4" x-show="insideColor == 'Цветной'" x-transition>
                             <p>, цветных страниц: </p>
-                            <input type="number" wire:model.live="pagesColor">
+                            <input type="number" min="1" wire:model.live="pagesColor">
                         </div>
                     </div>
                 </div>
