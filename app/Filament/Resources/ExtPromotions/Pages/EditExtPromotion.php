@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\ExtPromotions\Pages;
 
+use App\Enums\ExtPromotionStatusEnums;
 use App\Filament\Resources\ExtPromotions\ExtPromotionResource;
 use App\Jobs\EmailNotificationJob;
 use App\Notifications\Collection\ParticipationStatusUpdate;
@@ -24,6 +25,12 @@ class EditExtPromotion extends EditRecord
     protected function afterSave(): void
     {
         if ($this->record->wasChanged('status')) {
+            if ($this->record['status'] == ExtPromotionStatusEnums::IN_PROGRESS) {
+                $this->record->update([
+                    'started_at' => now()
+                ]);
+            }
+
             $notification = new ExtPromotionStatusUpdateNotification($this->record, $this->oldStatus, $this->record['status']->value);
             EmailNotificationJob::dispatch($this->record->user_id, $notification);
         }
