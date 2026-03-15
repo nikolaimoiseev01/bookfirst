@@ -5,7 +5,7 @@
             Независимое издательство<br>
                 “Первая Книга”<br>
                 Budapest/Москва<br>
-                ©2016-2025<br>
+                ©2016-{{ now()->year }}<br>
         </div>
         <div class="flex flex-col gap-2 items-center">
             Мы в соц. сетях
