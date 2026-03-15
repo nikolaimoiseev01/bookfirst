@@ -3,12 +3,13 @@
     <x-search-modal/>
     <div class="flex gap-2 items-center">
         <a wire:navigate href="{{route('portal.index')}}"
-            class="flex gap-2 items-center lg:absolute lg:left-1/2 lg:-translate-x-1/2 lg:top-1/2 lg:-translate-y-1/2">
+           class="flex gap-2 items-center lg:absolute lg:left-1/2 lg:-translate-x-1/2 lg:top-1/2 lg:-translate-y-1/2">
             <x-ui.application-logo class="w-12 h-12 mr-2"></x-ui.application-logo>
             <span class="italic text-3xl font-light sm:hidden">Первая Книга</span>
         </a>
         <div class="lg:!hidden">
-            <button @click="mobileMenuOpen = !mobileMenuOpen" :class="mobileMenuOpen ? 'active' : ''"
+            <button @click="mobileMenuOpen = !mobileMenuOpen"
+                    :class="mobileMenuOpen ? 'active' : ''"
                     class="hamburger hamburger--converge !hidden header-1444:!block" type="button">
                 <div class="inner">
                     <span class="bar"></span>
@@ -68,7 +69,8 @@
                             class="absolute left-1/2 -translate-x-1/2 top-1/2 mt-2 w-max invisible opacity-0 scale-y-95 transform transition-all duration-300 ease-out group-hover:opacity-100 group-hover:visible group-hover:scale-y-100 group-hover:top-3/4"
                         >
                             @foreach($link['routes'] as $route)
-                                <a wire:navigate href="{{$route['link']}}"
+                                <a @if(!($route['notLivewire'] ?? null)) wire:navigate
+                                   @endif href="{{$route['link']}}"
                                    class="block px-4 py-2 bg-white hover:bg-gray-100 hover:text-green-500 rounded shadow text-center">
                                     {{$route['name']}}
                                 </a>
@@ -100,7 +102,7 @@
                             class="w-6 h-auto group-hover:text-green-500 transition"
                         />
                         <span class="md:hidden">Мой кабинет</span>
-                        </a>
+                    </a>
                 @else
                     <a
                         :class="window.location.href.includes('login')  || window.location.href.includes('register') ? 'text-green-500' : ''"
@@ -120,8 +122,12 @@
          x-transition:leave-end="opacity-0"
          class="flex-col gap-4 hidden header-1444:flex fixed h-[calc(100vh-58px)] header-1444:w-fit md:!w-full max-w-3xl top-[58px] bg-white left-0 p-8">
         <div class="flex w-ful gap-2 border-b border-gray-200 pb-2 justify-between">
-            <a class="text-2xl font-medium" :class="$store.global.social ? 'text-blue-500' : 'text-dark-200 order-2'" href="{{route('social.index')}}">Социальная сеть</a>
-            <a class="text-2xl font-medium" :class="!$store.global.social ? 'text-green-500 order-1' : 'text-dark-200'" href="{{route('portal.index')}}">Издательство</a>
+            <a class="text-2xl font-medium"
+               :class="$store.global.social ? 'text-blue-500' : 'text-dark-200 order-2'"
+               href="{{route('social.index')}}">Социальная сеть</a>
+            <a class="text-2xl font-medium"
+               :class="!$store.global.social ? 'text-green-500 order-1' : 'text-dark-200'"
+               href="{{route('portal.index')}}">Издательство</a>
         </div>
         @foreach($links as $link)
             @if($link['routes'] ?? null)

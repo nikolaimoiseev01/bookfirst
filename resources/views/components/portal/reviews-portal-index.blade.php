@@ -1,4 +1,4 @@
-<section id="reviews" class="content mb-32">
+<section id="reviews" class="pt-32 -mt-32 content mb-32">
     <div class="flex w-full justify-between items-center mb-8 md:flex-col md:text-center md:justify-center gap-8">
         <h2>Отзывы</h2>
         <x-ui.link-simple :isLivewire="false" target="_blank" class="text-3xl" href="https://vk.com/topic-122176261_35858257">Больше отзывов</x-ui.link-simple>

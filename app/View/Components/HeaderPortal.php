@@ -90,6 +90,7 @@ class HeaderPortal extends Component
                         ],
                         [
                             'name' => 'Отзывы',
+                            'notLivewire' => true,
                             'link' => route('portal.index') . '#reviews'
                         ],
                     ]
