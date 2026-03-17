@@ -54,13 +54,61 @@ class ExtPromotionsTable
 //                    ->numeric(),
                 IconColumn::make('executor_got_payment')
                     ->label('Оплачен исполнителю')
-                    ->icon(fn(int $state): Heroicon => match ($state) {
-                        0 => Heroicon::OutlinedClock,
-                        1 => Heroicon::OutlinedCheckCircle,
+
+                    ->icon(function ($record): Heroicon {
+                        return match (true) {
+
+                            // 👉 если статус не тот — показываем, например, pause/ban
+                            in_array($record->status, [
+                                ExtPromotionStatusEnums::PAYMENT_REQUIRED,
+                                ExtPromotionStatusEnums::REVIEW,
+                                ExtPromotionStatusEnums::NOT_ACTUAL,
+                                ExtPromotionStatusEnums::START_REQUIRED,
+                            ]) => Heroicon::OutlinedMinusCircle,
+
+                            // 👉 если можно платить, но не оплачено
+                            $record->executor_got_payment == 0 => Heroicon::OutlinedClock,
+
+                            // 👉 оплачено
+                            $record->executor_got_payment == 1 => Heroicon::OutlinedCheckCircle,
+                        };
                     })
-                    ->color(fn($state): string => match ($state) {
-                        0 => 'primary',
-                        1 => 'success',
+                    ->tooltip(function ($record): string {
+                        return match (true) {
+
+                            // не актуально
+                            in_array($record->status, [
+                                ExtPromotionStatusEnums::PAYMENT_REQUIRED,
+                                ExtPromotionStatusEnums::REVIEW,
+                                ExtPromotionStatusEnums::NOT_ACTUAL,
+                                ExtPromotionStatusEnums::START_REQUIRED,
+                            ]) => 'Оплата не требуется',
+
+                            // ждёт оплату
+                            $record->executor_got_payment == 0 => 'Необходима оплата',
+
+                            // оплачено
+                            $record->executor_got_payment == 1 => 'Оплачено',
+                        };
+                    })
+
+                    ->color(function ($record): string {
+                        return match (true) {
+
+                            // не актуально
+                            in_array($record->status, [
+                                ExtPromotionStatusEnums::PAYMENT_REQUIRED,
+                                ExtPromotionStatusEnums::REVIEW,
+                                ExtPromotionStatusEnums::NOT_ACTUAL,
+                                ExtPromotionStatusEnums::START_REQUIRED,
+                            ]) => 'gray',
+
+                            // ждёт оплату
+                            $record->executor_got_payment == 0 => 'primary',
+
+                            // оплачено
+                            $record->executor_got_payment == 1 => 'success',
+                        };
                     }),
                 TextColumn::make('created_at')
                     ->label('Создан')
