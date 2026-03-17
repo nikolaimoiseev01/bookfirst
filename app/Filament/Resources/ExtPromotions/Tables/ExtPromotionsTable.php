@@ -140,12 +140,12 @@ class ExtPromotionsTable
 
                     // 👉 дефолт: все КРОМЕ одного
                     ->default(
-                        collect(ExtPromotionStatusEnums::cases())
-                            ->pluck('value')
-                            ->reject(fn($value) => $value === ExtPromotionStatusEnums::NOT_ACTUAL->value)
-                            ->values()
-                            ->toArray()
-                    )
+                        [
+                            ExtPromotionStatusEnums::REVIEW->value,
+                            ExtPromotionStatusEnums::START_REQUIRED->value,
+                            ExtPromotionStatusEnums::IN_PROGRESS->value,
+                            ExtPromotionStatusEnums::WAITING_FOR_AUTHOR_IN_CHAT->value,
+                        ])
             ])
             ->recordActions([
             ])
