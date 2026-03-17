@@ -123,12 +123,21 @@ class ExtPromotionsTable
                     ]),
                 SelectFilter::make('status')
                     ->label('Статус')
-                    ->options([
+                    ->options(
                         collect(ExtPromotionStatusEnums::cases())
-                            ->mapWithKeys(fn($case) => [$case->value => $case->value])
+                            ->mapWithKeys(fn ($case) => [$case->value => $case->value])
                             ->toArray()
-                    ])
+                    )
                     ->multiple()
+
+                    // 👉 дефолт: все КРОМЕ одного
+                    ->default(
+                        collect(ExtPromotionStatusEnums::cases())
+                            ->pluck('value')
+                            ->reject(fn ($value) => $value === ExtPromotionStatusEnums::NOT_ACTUAL->value)
+                            ->values()
+                            ->toArray()
+                    )
             ])
             ->recordActions([
             ])
