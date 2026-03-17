@@ -73,6 +73,7 @@ class ExtPromotionsTable
                                 ExtPromotionStatusEnums::REVIEW,
                                 ExtPromotionStatusEnums::NOT_ACTUAL,
                                 ExtPromotionStatusEnums::START_REQUIRED,
+                                ExtPromotionStatusEnums::WAITING_FOR_AUTHOR_IN_CHAT,
                             ]) => Heroicon::OutlinedMinusCircle,
 
                             // 👉 если можно платить, но не оплачено
@@ -91,6 +92,7 @@ class ExtPromotionsTable
                                 ExtPromotionStatusEnums::REVIEW,
                                 ExtPromotionStatusEnums::NOT_ACTUAL,
                                 ExtPromotionStatusEnums::START_REQUIRED,
+                                ExtPromotionStatusEnums::WAITING_FOR_AUTHOR_IN_CHAT,
                             ]) => 'Оплата не требуется',
 
                             // ждёт оплату
@@ -109,6 +111,7 @@ class ExtPromotionsTable
                                 ExtPromotionStatusEnums::REVIEW,
                                 ExtPromotionStatusEnums::NOT_ACTUAL,
                                 ExtPromotionStatusEnums::START_REQUIRED,
+                                ExtPromotionStatusEnums::WAITING_FOR_AUTHOR_IN_CHAT,
                             ]) => 'gray',
 
                             // ждёт оплату
