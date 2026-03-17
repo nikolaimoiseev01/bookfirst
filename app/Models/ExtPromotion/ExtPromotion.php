@@ -13,6 +13,25 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
+/**
+ * @property int $id
+ * @property int $user_id
+ * @property string $status
+ * @property string $login
+ * @property string $password
+ * @property string $site
+ * @property int $days
+ * @property int $price_total
+ * @property int $price_executor
+ * @property int $price_our
+ * @property int|null $promocode_id
+ * @property \Illuminate\Support\Carbon|null $paid_at
+ * @property string|null $started_at
+ * @property string|null $comment
+ * @property int $executor_got_payment
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ */
 class ExtPromotion extends Model
 {
 
