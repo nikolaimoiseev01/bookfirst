@@ -30,11 +30,21 @@ class ExtPromotionsTable
                 TextColumn::make('status')
                     ->badge()
                     ->sortable()
-                    ->color(fn($state): string => match ($state) {
-                        ExtPromotionStatusEnums::PAYMENT_REQUIRED, ExtPromotionStatusEnums::IN_PROGRESS, ExtPromotionStatusEnums::WAITING_FOR_AUTHOR_IN_CHAT, ExtPromotionStatusEnums::NOT_ACTUAL => 'primary',
-                        ExtPromotionStatusEnums::REVIEW => 'warning',
-                        ExtPromotionStatusEnums::START_REQUIRED => 'danger',
-                        ExtPromotionStatusEnums::DONE => 'success',
+                    ->color(function ($state): string {
+                        $value = $state instanceof ExtPromotionStatusEnums
+                            ? $state->value
+                            : $state;
+
+                        return match ($value) {
+                            ExtPromotionStatusEnums::PAYMENT_REQUIRED->value,
+                            ExtPromotionStatusEnums::WAITING_FOR_AUTHOR_IN_CHAT->value,
+                            ExtPromotionStatusEnums::NOT_ACTUAL->value => 'gray',
+
+                            ExtPromotionStatusEnums::IN_PROGRESS->value => 'info',
+
+                            ExtPromotionStatusEnums::REVIEW->value, ExtPromotionStatusEnums::START_REQUIRED->value => 'danger',
+                            ExtPromotionStatusEnums::DONE->value => 'success',
+                        };
                     }),
                 TextColumn::make('site')
                     ->label('Сайт'),
@@ -54,7 +64,6 @@ class ExtPromotionsTable
 //                    ->numeric(),
                 IconColumn::make('executor_got_payment')
                     ->label('Оплачен исполнителю')
-
                     ->icon(function ($record): Heroicon {
                         return match (true) {
 
@@ -91,7 +100,6 @@ class ExtPromotionsTable
                             $record->executor_got_payment == 1 => 'Оплачено',
                         };
                     })
-
                     ->color(function ($record): string {
                         return match (true) {
 
@@ -125,7 +133,7 @@ class ExtPromotionsTable
                     ->label('Статус')
                     ->options(
                         collect(ExtPromotionStatusEnums::cases())
-                            ->mapWithKeys(fn ($case) => [$case->value => $case->value])
+                            ->mapWithKeys(fn($case) => [$case->value => $case->value])
                             ->toArray()
                     )
                     ->multiple()
@@ -134,7 +142,7 @@ class ExtPromotionsTable
                     ->default(
                         collect(ExtPromotionStatusEnums::cases())
                             ->pluck('value')
-                            ->reject(fn ($value) => $value === ExtPromotionStatusEnums::NOT_ACTUAL->value)
+                            ->reject(fn($value) => $value === ExtPromotionStatusEnums::NOT_ACTUAL->value)
                             ->values()
                             ->toArray()
                     )
