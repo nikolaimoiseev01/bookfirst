@@ -61,6 +61,7 @@ class ParticipationsTable
                     ->sortable(),
                 TextColumn::make('promocode.name')
                     ->label('Промокод')
+                    ->searchable()
                     ->sortable(),
                 TextColumn::make('price_part')
                     ->label('Цена участия')
