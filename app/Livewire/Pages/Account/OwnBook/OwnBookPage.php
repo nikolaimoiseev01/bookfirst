@@ -36,10 +36,11 @@ class OwnBookPage extends Component
             'printOnly' => 'own_book_print_only',
         };
         $urlRedirect = route('account.own_book.index', $this->ownBook['id'])  . "?confirm_payment={$urlRedirectType}";
-        $description = "Оплата {$typeRus} книги '{$this->ownBook['title']}' от автора {$this->ownBook->user->getUserFullName()} (own_book_id: {$this->ownBook['id']})";
+        $ownBookTitle = mb_strimwidth($this->ownBook['title'], 0, 30, '...');
+        $description = "Оплата {$typeRus} книги '{$ownBookTitle}' от автора {$this->ownBook->user->getUserFullName()} (own_book_id: {$this->ownBook['id']})";
         $transactionData = [
             'type' => $transactionType,
-            'description' => mb_strimwidth($description, 0, 127, '...'),
+            'description' => $description,
             'model_type' => 'OwnBook',
             'model_id' => $this->ownBook['id'],
             'data' => [
