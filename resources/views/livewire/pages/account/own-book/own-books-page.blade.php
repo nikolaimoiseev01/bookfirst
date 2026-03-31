@@ -17,12 +17,12 @@
                     <x-book2d :cover="$own_book->getFirstMediaUrl('cover_front')" class="w-32 min-w-32 md:mx-auto"/>
                     <div class="flex flex-col">
                         <p class="font-semibold mb-4 text-3xl line-clamp-2">{{$own_book['title']}}</p>
-                        <p class="text-2xl font-normal">Общий статус: {{$own_book['status_general']}}
+                        <p class="text-xl font-normal">Общий статус: {{$own_book['status_general']}}
                         </p>
-                        <p class="text-2xl"><span
+                        <p class="text-xl"><span
                                 class="font-normal">Статус ВБ: </span> {{$own_book['status_inside']}}
                         </p>
-                        <p class="text-2xl"><span
+                        <p class="text-xl"><span
                                 class="font-normal">Статус обложки: </span> {{$own_book['status_cover']}}
                         </p>
                     </div>

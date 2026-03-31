@@ -39,7 +39,7 @@ class OwnBookPage extends Component
         $description = "Оплата {$typeRus} книги '{$this->ownBook['title']}' от автора {$this->ownBook->user->getUserFullName()} (own_book_id: {$this->ownBook['id']})";
         $transactionData = [
             'type' => $transactionType,
-            'description' => $description,
+            'description' => mb_strimwidth($description, 0, 127, '...'),
             'model_type' => 'OwnBook',
             'model_id' => $this->ownBook['id'],
             'data' => [

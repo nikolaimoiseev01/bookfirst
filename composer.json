@@ -43,7 +43,8 @@
         "spatie/laravel-permission": "^6.23",
         "spatie/livewire-filepond": "^1.5",
         "staudenmeir/eloquent-json-relations": "^1.14",
-        "yoomoney/yookassa-sdk-php": "^3.10"
+        "yoomoney/yookassa-sdk-php": "^3.10",
+        "ext-mbstring": "*"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.15",
