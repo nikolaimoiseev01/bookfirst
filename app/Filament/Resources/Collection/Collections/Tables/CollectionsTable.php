@@ -5,6 +5,8 @@ namespace App\Filament\Resources\Collection\Collections\Tables;
 use App\Enums\CollectionStatusEnums;
 use App\Enums\ParticipationStatusEnums;
 use App\Models\Collection\Collection;
+use App\Models\Collection\Participation;
+use App\Models\PrintOrder\PrintOrder;
 use App\Models\Work\Work;
 use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
@@ -53,25 +55,44 @@ class CollectionsTable
                                     ->size(TextSize::Large)
                                     ->counts([
                                         'participations' => function(Builder $query) {
-                                            $statuses = collect(ParticipationStatusEnums::cases())
-                                                ->filter(fn ($case) => $case->order() > ParticipationStatusEnums::APPROVE_NEEDED->order())
-                                                ->map(fn ($case) => $case->value);
-                                             return $query->whereIn('status', $statuses);
+                                             return $query->where('status', ParticipationStatusEnums::APPROVED);
                                         } ,
                                     ]),
                                 TextColumn::make('participations_sum_price_total')
                                     ->icon('heroicon-o-banknotes')
                                     ->size(TextSize::Large)
                                     ->formatStateUsing(fn(string $state): HtmlString => new HtmlString("{$state}"))
-                                    ->tooltip('Выручка')
-                                    ->sum([
-                                        'participations' => function(Builder $query) {
-                                            $statuses = collect(ParticipationStatusEnums::cases())
-                                                ->filter(fn ($case) => $case->order() > ParticipationStatusEnums::APPROVE_NEEDED->order())
-                                                ->map(fn ($case) => $case->value);
-                                            return $query->whereIn('status', $statuses);
-                                        } ,
-                                    ], 'price_total'),
+                                    ->getStateUsing(function(Collection $collection) {
+                                        $paricipations = Participation::query()
+                                            ->where('collection_id', $collection->id)
+                                            ->where('status', ParticipationStatusEnums::APPROVED)
+                                            ->get();
+                                        $printSum = 0;
+
+                                        foreach ($paricipations as $participation) {
+                                            $printSum += $participation->printOrder?->price_print ?? 0;
+                                        }
+
+                                        return $paricipations->sum('price_total') + $printSum;
+                                    })
+                                    ->tooltip(function(Collection $collection) {
+                                        $participations = Participation::query()
+                                            ->where('collection_id', $collection->id)
+                                            ->where('status', ParticipationStatusEnums::APPROVED)
+                                            ->get();
+                                        $printSum = 0;
+                                        $printCount = 0;
+                                        foreach ($participations as $participation) {
+                                            $printSum += $participation->printOrder?->price_print ?? 0;
+                                            $printCount += $participation->printOrder?->books_cnt ?? 0;
+                                        }
+
+                                        $partSum = $participations->sum('price_total');
+
+                                        return new HtmlString("Участия: $partSum руб. <br>
+                                                Печать: $printSum руб. ($printCount шт.)
+                                        ");
+                                    }),
                                 TextColumn::make('getTotalWorkPagesAttribute')
                                     ->icon('heroicon-o-document-duplicate')
                                     ->tooltip('Страниц работ')
