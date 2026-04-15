@@ -83,7 +83,7 @@ class PreviewComments extends Component
         $text = "*Книга:* " . $this->ownBook->author . ': "' . $this->ownBook->title . '"' .
             "\n*Деадлайн на исправление:* {$correctDeadlineRus}";
         $url = route('login_as_secondary_admin', ['url_redirect' => EditOwnBook::getUrl(['record' => $this->ownBook])]);
-        TelegramNotificationJob::dispatch(new TelegramDefaultNotification($subject, $text, $url, 'extPromotion'));
+        TelegramNotificationJob::dispatch(new TelegramDefaultNotification($subject, $text, $url));
     }
 
     public function sendApproverdNotification()
