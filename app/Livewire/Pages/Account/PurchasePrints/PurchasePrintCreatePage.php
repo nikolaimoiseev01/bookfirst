@@ -13,7 +13,6 @@ use App\Models\Chat\Chat;
 use App\Models\Collection\Collection;
 use App\Models\OwnBook\OwnBook;
 use App\Models\PrintOrder\PrintOrder;
-use App\Notifications\Collection\ParticipationCreatedNotification;
 use App\Notifications\TelegramDefaultNotification;
 use App\Rules\ParticipationLessPrice;
 use App\Services\PriceCalculation\CalculateOwnBookService;

@@ -7,4 +7,5 @@ return [
     App\Providers\VoltServiceProvider::class,
     \SocialiteProviders\Manager\ServiceProvider::class,
     Illuminate\Mail\MailServiceProvider::class,
+    \App\Providers\TelegramServiceProvider::class,
 ];

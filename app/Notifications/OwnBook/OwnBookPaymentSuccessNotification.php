@@ -37,7 +37,7 @@ class OwnBookPaymentSuccessNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['mail', 'telegram'];
+        return ['mail'];
     }
 
     /**
@@ -57,24 +57,6 @@ class OwnBookPaymentSuccessNotification extends Notification
             ->line(new HtmlString($text))
             ->line("Вся подробная информация о процессе указана на странице издания:")
             ->action('Ваша страница издания', route('account.own_book.index', $this->ownBook['id']));
-    }
-
-    public function toTelegram($notifiable)
-    {
-        $subject = match ($this->transactionType) {
-            TransactionTypeEnums::OWN_BOOK_WO_PRINT =>  '💸 *Новая оплата по книге!* 💸' . "\n\n",
-            TransactionTypeEnums::OWN_BOOK_PRINT =>  '💸 *Новая оплата печати по книге!* 💸' . "\n\n"
-        };
-
-        $text = '*Автор:* ' . $this->ownBook['author'] .
-            "\n" . "*Книга:* " . $this->ownBook['title'] .
-            "\n" . "*Сумма:* " . $this->amount . " руб.";
-        $url = route('login_as_secondary_admin', ['url_redirect' => EditOwnBook::getUrl(['record' => $this->ownBook])]);
-        $url = str_replace('http://localhost:8000', 'https://vk.com', $url);
-        return TelegramMessage::create()
-            ->to(getTelegramChatId())
-            ->content($subject . $text)
-            ->button('Подробнее', $url);
     }
 
     /**

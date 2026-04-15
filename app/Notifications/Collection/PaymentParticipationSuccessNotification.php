@@ -33,7 +33,7 @@ class PaymentParticipationSuccessNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['mail', 'telegram'];
+        return ['mail'];
     }
 
     /**
@@ -50,18 +50,6 @@ class PaymentParticipationSuccessNotification extends Notification
             ->line($line_1)
             ->line("Вся подробная информация об издании сборника и вашем процессе указана на странице участия:")
             ->action('Ваша страница участия', route('account.participation.index', $this->participation['id']));
-    }
-
-    public function toTelegram($notifiable)
-    {
-        $subject = '💸 *Новая оплата по сборинку!* 💸' . "\n\n";
-        $text =  '*Автор:* ' . $this->participation['author_name'] .
-            "\n" . "*Сборник:* " . $this->collection['title'] .
-            "\n" . "*Сумма:* " . $this->amount . " руб.";
-
-        return TelegramMessage::create()
-            ->to(getTelegramChatId())
-            ->content($subject . $text);
     }
 
     /**

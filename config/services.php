@@ -46,6 +46,8 @@ return [
         'secret_key' => env('YOOKASSA_SECRET_KEY', null),
     ],
 
+    'telegram-proxy' => env('TELEGRAM_PROXY'),
+
     'telegram-bot-api' => [
         'token' => env('TELEGRAM_BOT_TOKEN')
     ],

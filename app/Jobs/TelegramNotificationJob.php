@@ -30,5 +30,4 @@ class TelegramNotificationJob implements ShouldQueue
 
     }
 
-
 }

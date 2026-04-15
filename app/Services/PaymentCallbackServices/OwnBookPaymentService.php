@@ -8,6 +8,7 @@ use App\Enums\OwnBookStatusEnums;
 use App\Enums\ParticipationStatusEnums;
 use App\Enums\PrintOrderStatusEnums;
 use App\Enums\TransactionTypeEnums;
+use App\Filament\Resources\OwnBook\OwnBooks\Pages\EditOwnBook;
 use App\Jobs\TelegramNotificationJob;
 use App\Models\Award\Award;
 use App\Models\Collection\Participation;
@@ -30,6 +31,21 @@ class OwnBookPaymentService
         $this->yooKassaObject = $yooKassaObject;
     }
 
+    public function makeTelegramNotificationJob($ownBook, $amount, $transactionType) {
+        $subject = match ($transactionType) {
+            TransactionTypeEnums::OWN_BOOK_WO_PRINT =>  '💸 *Новая оплата по книге!* 💸' . "\n\n",
+            TransactionTypeEnums::OWN_BOOK_PRINT =>  '💸 *Новая оплата печати по книге!* 💸' . "\n\n"
+        };
+
+        $notificationText = $subject . '*Автор:* ' . $ownBook['author'] .
+            "\n" . "*Книга:* " . $ownBook['title'] .
+            "\n" . "*Сумма:* " . $amount . " руб.";
+        $url = route('login_as_secondary_admin', ['url_redirect' => EditOwnBook::getUrl(['record' => $ownBook])]);
+        $url = str_replace('http://localhost:8000', 'https://vk.com', $url);
+        $notification = new TelegramDefaultNotification(null, $notificationText, $url);
+        TelegramNotificationJob::dispatch($notification);
+    }
+
     public function firstPayment() {
 
         $transactionData = json_decode($this->yooKassaObject['metadata']['transaction_data'], true);
@@ -48,7 +64,7 @@ class OwnBookPaymentService
         ]);
         $user = User::where('id', $ownBook['user_id'])->first();
         $user->notify(new OwnBookPaymentSuccessNotification($ownBook, $this->yooKassaObject['amount']['value'], TransactionTypeEnums::OWN_BOOK_WO_PRINT));
-
+        $this->makeTelegramNotificationJob($ownBook, $this->yooKassaObject['amount']['value'],TransactionTypeEnums::OWN_BOOK_WO_PRINT);
     }
     public function firstAuthorPrintPayment() {
         $transactionData = json_decode($this->yooKassaObject['metadata']['transaction_data'], true);
@@ -62,6 +78,7 @@ class OwnBookPaymentService
         ]);
         $user = User::where('id', $ownBook['user_id'])->first();
         $user->notify(new OwnBookPaymentSuccessNotification($ownBook, $this->yooKassaObject['amount']['value'], TransactionTypeEnums::OWN_BOOK_PRINT));
+        $this->makeTelegramNotificationJob($ownBook, $this->yooKassaObject['amount']['value'],TransactionTypeEnums::OWN_BOOK_PRINT);
     }
 
     public function ebookPuchase() {

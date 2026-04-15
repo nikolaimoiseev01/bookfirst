@@ -5,6 +5,11 @@
       <LaravelPintConfiguration tool_path="$PROJECT_DIR$/vendor/bin/pint" />
     </laravel_pint_settings>
   </component>
+  <component name="MessDetector">
+    <phpmd_settings>
+      <phpmd_by_interpreter asDefaultInterpreter="true" interpreter_id="7ac68967-dfc4-4135-9661-77446e03e240" timeout="30000" />
+    </phpmd_settings>
+  </component>
   <component name="MessDetectorOptionsConfiguration">
     <option name="transferred" value="true" />
   </component>

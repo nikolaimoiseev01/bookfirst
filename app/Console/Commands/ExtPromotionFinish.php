@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Enums\ExtPromotionStatusEnums;
 use App\Filament\Resources\ExtPromotions\Pages\ListExtPromotions;
+use App\Jobs\TelegramNotificationJob;
 use App\Models\ExtPromotion\ExtPromotion;
 use App\Notifications\TelegramDefaultNotification;
 use App\Services\ExtPromotionStatUpdateService;
@@ -47,8 +48,7 @@ class ExtPromotionFinish extends Command
         if ($updatedCnt > 0) {
             $subject = "📊 Закончили продвижение для авторов: {$updatedCnt}";
             $url = route('login_as_secondary_admin', ['url_redirect' => ListExtPromotions::getUrl()]);
-            Notification::route('telegram', getTelegramChatId('extPromotion'))
-                ->notify(new TelegramDefaultNotification($subject, '', $url, 'extPromotion'));
+            TelegramNotificationJob::dispatch(new TelegramDefaultNotification($subject, "", $url, 'extPromotion'));
         }
     }
 }

@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Enums\ExtPromotionStatusEnums;
 use App\Filament\Resources\ExtPromotions\Pages\ListExtPromotions;
+use App\Jobs\TelegramNotificationJob;
 use App\Models\ExtPromotion\ExtPromotion;
 use App\Notifications\TelegramDefaultNotification;
 use App\Services\ExtPromotionStatUpdateService;
@@ -39,7 +40,6 @@ class ExtPromotionStatUpdate extends Command
         $subject = "📊 Сохранили статистику по продвижениям!";
         $text = "Обработали человек: {$count}";
         $url = null;
-        Notification::route('telegram', getTelegramChatId('extPromotion'))
-            ->notify(new TelegramDefaultNotification($subject, $text, $url, 'extPromotion'));
+        TelegramNotificationJob::dispatch(new TelegramDefaultNotification($subject, $text, $url, 'extPromotion'));
     }
 }

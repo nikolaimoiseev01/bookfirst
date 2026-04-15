@@ -36,7 +36,7 @@ class ExtPromotionPaymentSuccessNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['mail', 'telegram'];
+        return ['mail'];
     }
 
     /**
@@ -52,17 +52,6 @@ class ExtPromotionPaymentSuccessNotification extends Notification
             ->line(new HtmlString($text))
             ->line("Вся подробная информация о процессе указана на странице продвижения:")
             ->action('Ваша страница продвижения', route('account.ext_promotion.index', $this->extPromotion['id']));
-    }
-
-    public function toTelegram($notifiable)
-    {
-        $subject = '💸 *Новая оплата по продвижению!* 💸' . "\n\n";
-
-        $text = '*Автор:* ' . $this->extPromotion->user->getUserFullName() .
-            "\n" . "*Сумма:* " . $this->amount . " руб.";
-        return TelegramMessage::create()
-            ->to(getTelegramChatId('extPromotion'))
-            ->content($subject . $text);
     }
 
     /**

@@ -79,15 +79,11 @@ class PreviewComments extends Component
     public function sendCorrectionNotification($correctDeadline)
     {
         $correctDeadlineRus = formatDate($correctDeadline, 'j F');
+        $subject = "✍ Автор послал исправления по {$this->commentTypeRus}! ✍";
         $text = "*Книга:* " . $this->ownBook->author . ': "' . $this->ownBook->title . '"' .
             "\n*Деадлайн на исправление:* {$correctDeadlineRus}";
         $url = route('login_as_secondary_admin', ['url_redirect' => EditOwnBook::getUrl(['record' => $this->ownBook])]);
-        Notification::route('telegram', getTelegramChatId())
-            ->notify(new TelegramDefaultNotification(
-                "✍ Автор послал исправления по {$this->commentTypeRus}! ✍",
-                $text,
-                $url
-            ));
+        TelegramNotificationJob::dispatch(new TelegramDefaultNotification($subject, $text, $url, 'extPromotion'));
     }
 
     public function sendApproverdNotification()

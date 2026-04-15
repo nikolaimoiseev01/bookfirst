@@ -91,7 +91,9 @@ class InnerTasksService
             OwnBookStatusEnums::PRINT_WAITING =>
             ["Отправить в печать",
             "Отправить книгу в печать: {$ownBook['title']}",
-                $ownBook['paid_at_print_only']->addDays(3)],
+                $ownBook['paid_at_print_only']
+                    ? $ownBook['paid_at_print_only']->addDays(3)
+                    : now()->addDays(3)],
 
             OwnBookStatusEnums::PRINTING =>
             ["Отправить заказ автору",
