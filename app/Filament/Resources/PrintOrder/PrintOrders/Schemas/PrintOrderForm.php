@@ -70,10 +70,11 @@ class PrintOrderForm
 
                             ])->columns(5)
                         ]),
-                        // Добавляем условие для отображения таба "Чат"
-                        $schema->getRecord()->chat ? Tab::make('Чат')->schema([
-                            Livewire::make('components.account.chat', ['chat' => $schema->getRecord()->chat])
-                        ]) : null
+                        Tab::make('Чат')->schema(function () use ($schema) {
+                            return $schema->getRecord()->chat
+                                ? Livewire::make('components.account.chat', ['chat' => $schema->getRecord()->chat])
+                                : null;
+                        })
                     ])->columnSpan(4),
                     Section::make()->schema([
                         TextEntry::make('type')
