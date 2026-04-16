@@ -123,7 +123,7 @@ class ParticipationForm
                         ->schema([
                             Fieldset::make('printOrder')
                                 ->label(function ($record): HtmlString {
-                                    $printOrderLink = EditPrintOrder::getUrl($record->printOrder);
+                                    $printOrderLink = EditPrintOrder::getUrl(['record' => $record->printOrder]);
                                     $link = new HtmlString(
                                         '
                                 <a target="_blank"
