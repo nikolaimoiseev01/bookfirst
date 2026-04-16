@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Collection\Participations\Schemas;
 
 use App\Enums\ParticipationStatusEnums;
 use App\Enums\TransactionStatusEnums;
+use App\Filament\Resources\PrintOrder\PrintOrders\Pages\EditPrintOrder;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -18,6 +19,7 @@ use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
 use Filament\Support\RawJs;
+use Illuminate\Support\HtmlString;
 
 class ParticipationForm
 {
@@ -37,7 +39,7 @@ class ParticipationForm
                                 ->relationship(
                                     name: 'collection',
                                     titleAttribute: 'title',
-                                    modifyQueryUsing: fn ($query) => $query->orderBy('created_at', 'desc')
+                                    modifyQueryUsing: fn($query) => $query->orderBy('created_at', 'desc')
                                 ),
                             Select::make('status')
                                 ->label('Статус')
@@ -120,7 +122,18 @@ class ParticipationForm
                     Tab::make('Печать')
                         ->schema([
                             Fieldset::make('printOrder')
-                                ->label('Заказ печатных экземпляров')
+                                ->label(function ($record): HtmlString {
+                                    $printOrderLink = EditPrintOrder::getUrl($record->printOrder);
+                                    $link = new HtmlString(
+                                        '
+                                <a target="_blank"
+                                   href="' . e($printOrderLink) . '"
+                                   class="inline-flex items-center gap-1 text-primary-600 hover:underline text-sm">
+                                    Заказ печатных экземпляров
+                                </a>');
+                                    return $link;
+                                }
+                                )
                                 ->columns(3)
                                 ->relationship('printOrder')
                                 ->visible(fn($record) => filled($record?->printOrder))
@@ -156,7 +169,7 @@ class ParticipationForm
                                         ->state(function ($record) {
                                             $url = $record?->trackingLink();
 
-                                            if (! $url) {
+                                            if (!$url) {
                                                 return '—';
                                             }
 
@@ -171,7 +184,7 @@ class ParticipationForm
                                 ]),
                             Placeholder::make('no_print')
                                 ->label('Печати нет')
-                                ->visible(fn ($record) => blank($record?->printOrder)),
+                                ->visible(fn($record) => blank($record?->printOrder)),
                         ]),
                     Tab::make('Чат')->schema([
                         Livewire::make('components.account.chat', ['chat' => $schema->getRecord()->chat])
