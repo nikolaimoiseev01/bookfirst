@@ -47,7 +47,7 @@ class ParticipationPaymentService
         $user = User::where('id', $participation['user_id'])->first();
         $subject = '💸 *Новая оплата по сборинку!* 💸' . "\n\n";
         $notificationText =  $subject . '*Автор:* ' . $participation['author_name'] .
-            "\n" . "*Сборник:* " . $participation['title'] .
+            "\n" . "*Сборник:* " . $participation->collection->title_short .
             "\n" . "*Сумма:* " . $amount . " руб.";
 
         $user->notify(new PaymentParticipationSuccessNotification($participation, $participation->collection, $this->yooKassaObject['amount']['value']));
