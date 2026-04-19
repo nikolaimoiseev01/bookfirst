@@ -72,8 +72,12 @@ class PrintOrderForm
                         ]),
                         Tab::make('Чат')->schema(function () use ($schema) {
                             return $schema->getRecord()->chat
-                                ? Livewire::make('components.account.chat', ['chat' => $schema->getRecord()->chat])
-                                : null;
+                                ? [
+                                    Livewire::make('components.account.chat', [
+                                        'chat' => $schema->getRecord()->chat
+                                    ])
+                                ]
+                                : [];
                         })
                     ])->columnSpan(4),
                     Section::make()->schema([
