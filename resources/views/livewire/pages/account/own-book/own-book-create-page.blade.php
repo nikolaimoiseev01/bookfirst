@@ -183,14 +183,19 @@
                                    name="internalPromoType"
                                    id="internal_promo_type_1" value="1">
                             <label for="internal_promo_type_1">Вариант 1</label>
-                            <x-ui.question-mark>Книга окажется в слайдере на главной странице портала</x-ui.question-mark>
+                            <x-ui.question-mark>Книга окажется в слайдере на главной странице
+                                портала
+                            </x-ui.question-mark>
                         </div>
                         <div class="flex gap-2 items-center">
                             <input type="radio" wire:model.live="internalPromoType"
                                    name="internalPromoType"
                                    id="internal_promo_type_2" value="2">
                             <label for="internal_promo_type_2">Вариант 2</label>
-                            <x-ui.question-mark>Книга окажется на самом видном месте в большом индивидуальном блоке на главной странице сайта. Так же в нашей группе ВК будет опубликован отдельный пост о вашем издании.</x-ui.question-mark>
+                            <x-ui.question-mark>Книга окажется на самом видном месте в большом
+                                индивидуальном блоке на главной странице сайта. Так же в нашей
+                                группе ВК будет опубликован отдельный пост о вашем издании.
+                            </x-ui.question-mark>
                         </div>
                     </div>
                 </div>
@@ -214,10 +219,13 @@
                 <div x-show="needPrint" class="flex items-center gap-4" x-collapse.duration.400ms>
                     <x-price-element plus="true" class="pb-6" price="{{$prices['pricePrint']}}"
                                      label="Печать ({{$booksCnt}} экз.)"/>
-                    @if($booksCnt <= 4)
+                    @if($booksCnt <= 11)
                         <x-ui.question-mark>
-                            Стоимость 1,2,3,4 экземпляров будет одинаковая, так как мы печатаем
-                            книгу изначально на А3.
+                            @if($booksCnt <= 4)
+                                Стоимость 1,2,3,4 экземпляров будет одинаковая, так как мы печатаем
+                                книгу изначально на А3.
+                            @endif
+                                Стоимость за экземпляр при тираже менее 11 штук будет выше, так как печатная верстка идет по 12 книг.
                         </x-ui.question-mark>
                     @endif
                 </div>
@@ -240,9 +248,12 @@
         </div>
     </div>
 
-        <div class="flex justify-between gap-4 flex-wrap">
-            <x-ui.button>Отправить заявку</x-ui.button>
-            <x-ui.link-simple class="italic text-xl" href="{{route('account.chat_create',['title' => 'Вопрос по заявке на издание книги'])}}">Получить помощь по заявке</x-ui.link-simple>
-        </div>
+    <div class="flex justify-between gap-4 flex-wrap">
+        <x-ui.button>Отправить заявку</x-ui.button>
+        <x-ui.link-simple class="italic text-xl"
+                          href="{{route('account.chat_create',['title' => 'Вопрос по заявке на издание книги'])}}">
+            Получить помощь по заявке
+        </x-ui.link-simple>
+    </div>
 
 </form>

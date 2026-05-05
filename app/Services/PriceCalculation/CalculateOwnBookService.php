@@ -7,7 +7,7 @@ class CalculateOwnBookService
 {
     public $pages;
 
-    private const PRINT_PROFIT_COEF = 2.5;
+    private const PRINT_PROFIT_COEF = 3;
     private const TEXT_DESIGN_PER_PAGE = 16;
     private const TEXT_CHECK_PER_PAGE = 30;
     private const TEXT_ISBN_PRICE = 300;
@@ -47,7 +47,13 @@ class CalculateOwnBookService
         // Цена одной книги без скидок и накруток
         $pricePrintPre = ($this->pages - $pagesColor + ($pagesColor * 3)) * 0.7 * $coverStyleCoef * $pagesCoef;
 
-        return ceil($pricePrintPre * $booksCntDiscount * $booksCnt * self::PRINT_PROFIT_COEF);
+        $printPrice = ceil($pricePrintPre * $booksCntDiscount * $booksCnt * self::PRINT_PROFIT_COEF);
+
+        if ($booksCnt <= 11) {
+            $printPrice += 2000;
+        }
+
+        return $printPrice;
     }
 
     public function calculateAllPrices($needTextDesign, $needTextCheck, $coverReady, $promoType, $needPrint, $pagesColor, $booksCnt, $coverType)
