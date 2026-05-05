@@ -56,8 +56,19 @@
                 class="min-w-[20%] max-w-[25%] flex border-l border-dark-100 pl-8 lg:w-full lg:max-w-full lg:justify-center lg:text-center lg:border-l-0 lg:border-t lg:py-4 lg:pl-0">
                 <div class="flex flex-col items-center my-auto">
                     <div class="flex flex-col items-center py-2">
-                        <x-price-element price="{{$pricePrint}}"
-                                         label="Печать ({{$booksCnt}} экз.)"/>
+                        <div class="flex gap-2 items-center">
+                            <x-price-element price="{{$pricePrint}}"
+                                             label="Печать ({{$booksCnt}} экз.)"/>
+                            @if($booksCnt <= 11)
+                                <x-ui.question-mark direction="bottom">
+                                    @if($booksCnt <= 4)
+                                        Стоимость 1,2,3,4 экземпляров будет одинаковая, так как мы печатаем
+                                        книгу изначально на А3.
+                                    @endif
+                                    Стоимость за экземпляр при тираже менее 11 штук будет выше, так как печатная верстка идет по 12 книг.
+                                </x-ui.question-mark>
+                            @endif
+                        </div>
                         @if($pages > 0)
                             <p class="text-dark-350 text-base italic">Страниц: {{$pages}}
                                 @if($pagesColor > 0)

@@ -155,6 +155,9 @@ class PurchasePrintCreatePage extends Component
     {
         if ($this->type === 'Collection') {
             $this->pricePrint = $this->collectionPrintPrice();
+            if ($this->booksCnt <= 11) {
+                $this->pricePrint += 2000;
+            }
         } else {
             $this->pricePrint = ((new CalculateOwnBookService(
                 pages: $this->pages,
