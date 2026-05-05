@@ -1,4 +1,4 @@
-<div {{$attributes ->merge(['class' => 'w-full aspect-[230/350] relative text-center group cursor-pointer'])}}>
+<div {{$attributes ->merge(['class' => 'w-full aspect-[148/210] relative text-center group cursor-pointer'])}}>
 
     <!-- Book Cover -->
     <div
