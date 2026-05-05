@@ -22,7 +22,7 @@
                     </svg>
                 </a>
             </div>
-            <livewire:components.subscribe-button/>
+            <x-subscribe-button/>
         </div>
 
         <div class="flex flex-col gap-2 text-center">

@@ -6,6 +6,7 @@ use App\Filament\Pages\StatDashboard;
 use App\Filament\Resources\Chat\Chats\ChatResource;
 use App\Filament\Resources\Chat\MessageTemplates\MessageTemplatesResource;
 use App\Filament\Resources\Roles\RoleResource;
+use App\Filament\Resources\Works\WorkResource;
 use App\Models\Chat\MessageTemplate;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use App\Filament\Resources\Collection\Collections\CollectionResource;
@@ -45,8 +46,7 @@ class AdminPanelProvider extends PanelProvider
     private static function shielded(Resource|string $resourceClass): array
     {
         return collect($resourceClass::getNavigationItems())
-            ->map(fn($item) =>
-            $item->visible(fn() => $resourceClass::canViewAny())
+            ->map(fn($item) => $item->visible(fn() => $resourceClass::canViewAny())
             )
             ->all();
     }
@@ -91,7 +91,8 @@ class AdminPanelProvider extends PanelProvider
                                 ...self::shielded(PrintingCompanyResource::class),
                                 ...self::shielded(MessageTemplatesResource::class),
                                 ...self::shielded(RoleResource::class),
-                            ])
+                                ...self::shielded(WorkResource::class),
+                            ]),
                     ]);
             })
             ->maxContentWidth('full')

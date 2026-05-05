@@ -7,12 +7,20 @@ use App\Traits\WithCustomValidation;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
-class SubscribeButton extends Component
+class ModalSubscribe extends Component
 {
     use WithCustomValidation;
 
     public $email;
     public $subscribed = false;
+
+    public function render()
+    {
+        if(Auth::check()) {
+            $this->subscribed = EmailSubscription::where('user_id', Auth::user()->id)->exists();
+        }
+        return view('livewire.components.modal-subscribe');
+    }
 
     public function rules() {
         return [
@@ -26,13 +34,6 @@ class SubscribeButton extends Component
             'email.email' => 'Поле Email должно быть валидным email.',
             'email.unique' => 'Такой Email уже есть в системе',
         ];
-    }
-    public function render()
-    {
-        if(Auth::check()) {
-            $this->subscribed = EmailSubscription::where('user_id', Auth::user()->id)->exists();
-        }
-        return view('livewire.components.subscribe-button');
     }
 
     public function subscribe() {

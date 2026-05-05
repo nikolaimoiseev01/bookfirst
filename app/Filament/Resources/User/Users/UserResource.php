@@ -11,6 +11,7 @@ use App\Filament\Resources\User\Users\RelationManagers\ChatsAllRelationManager;
 use App\Filament\Resources\User\Users\RelationManagers\ExtPromotionsRelationManager;
 use App\Filament\Resources\User\Users\RelationManagers\OwnBooksRelationManager;
 use App\Filament\Resources\User\Users\RelationManagers\ParticipationsRelationManager;
+use App\Filament\Resources\User\Users\RelationManagers\WorksRelationManager;
 use App\Filament\Resources\User\Users\Schemas\UserForm;
 use App\Filament\Resources\User\Users\Tables\UsersTable;
 use App\Models\User\User;
@@ -51,7 +52,8 @@ class UserResource extends Resource
             ParticipationsRelationManager::class,
             OwnBooksRelationManager::class,
             ExtPromotionsRelationManager::class,
-            ChatsAllRelationManager::class
+            ChatsAllRelationManager::class,
+            WorksRelationManager::class,
         ];
     }
 

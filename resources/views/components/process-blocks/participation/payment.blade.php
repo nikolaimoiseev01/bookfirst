@@ -25,19 +25,24 @@
         @elseif($participation['status'] == \App\Enums\ParticipationStatusEnums::APPROVE_NEEDED)
         <span class="text-dark-300 italic text-2xl text-center">Сейчас ваша заявка проверяется. Как только проверка будет завершена, вы получите оповещение по почте, а в этом блоке появится возможность оплаты.</span>
         @elseif ($participation['status'] == \App\Enums\ParticipationStatusEnums::PAYMENT_REQUIRED)
-            <div class="flex gap-4">
-                @if($paidAmount > 0)
-                    <p class="text-green-400 text-nowrap italic">Уже оплачено: {{$paidAmount}}</p>
-                @endif
-                <x-ui.button wire:click="createPayment({{$amountToPay}})" color="yellow" class="w-full">
+            <x-modal-foreign-payment/>
+            <div class="flex flex-col gap-2">
+                <div class="flex gap-4">
                     @if($paidAmount > 0)
-                        Доплатить
-                    @else
-                        Оплатить
+                        <p class="text-green-400 text-nowrap italic">Уже оплачено: {{$paidAmount}}</p>
                     @endif
-                    {{$amountToPay}} руб.
-                </x-ui.button>
+                    <x-ui.button wire:click="createPayment({{$amountToPay}})" color="yellow" class="w-full">
+                        @if($paidAmount > 0)
+                            Доплатить
+                        @else
+                            Оплатить
+                        @endif
+                        {{$amountToPay}} руб.
+                    </x-ui.button>
+                </div>
+                <x-ui.link-simple @click="$dispatch('open-modal', 'modalForeignPayment')" class="mx-auto" color="yellow">Как оплатить не из РФ?</x-ui.link-simple>
             </div>
+
         @endif
     </div>
 </x-process-blocks.template>

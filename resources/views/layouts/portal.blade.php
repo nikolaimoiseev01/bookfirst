@@ -76,6 +76,7 @@
 <x-toast-referral/>
 @stack('scripts')
 <x-footer/>
+<livewire:components.modal-subscribe/>
 @if(session('swal'))
     <script type="module">
         let params = @json(session('swal') ?? []);

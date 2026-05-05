@@ -74,6 +74,8 @@ class OwnBookCreatePage extends Component
     private const CHAT_TITLE_PREFIX = 'Чат с менеджером по книге {title}';
     private const LOGISTIC_COMPANY_ID = 1;
     private const PRINTING_COMPANY_ID = 1;
+    private const MIN_PAGES = 30;
+    private const MIN_PAGES_HARD_COVER = 60;
 
     protected $listeners = ['getAddress', 'saveApplication'];
 
@@ -106,7 +108,6 @@ class OwnBookCreatePage extends Component
         $rules = [
             'author' => 'required',
             'title' => 'required',
-            'pages' => "required|integer|min:" . $this->minPages,
             'commentAuthorCover' => 'required',
             'insideFiles' => Rule::requiredIf(fn() => $this->insideType == 'Файлом'),
             'selectedWorks' => Rule::requiredIf(fn() => $this->insideType == 'Из системы'),
@@ -124,6 +125,16 @@ class OwnBookCreatePage extends Component
         if ($this->needPrint && $this->insideColor == 'Цветной') {
             $rules['pagesColor'] = 'required|integer|min:1|lte:pages';
         }
+
+        $minPages = $this->coverType === 'Твердая'
+            ? self::MIN_PAGES_HARD_COVER
+            : $this->minPages;
+
+        $rules['pages'] = [
+            'required',
+            'integer',
+            "min:{$minPages}",
+        ];
 
         return $rules;
     }
@@ -160,6 +171,10 @@ class OwnBookCreatePage extends Component
             $messages['addressJson.required'] = 'Пожалуйста, выберите офис сдэк для отправки (кнопка "выбрать" на карте)';
         } else {
             $messages['addressJson.required'] = 'Для международной доставки адрес обязателен';
+        }
+
+        if ($this->coverType === 'Твердая') {
+            $messages['pages.min'] = 'Для твердой обложки минимум :min страниц.';
         }
 
         return $messages;

@@ -74,5 +74,6 @@
     </script>
 @endif
 <x-footer/>
+<livewire:components.modal-subscribe/>
 </body>
 </html>
