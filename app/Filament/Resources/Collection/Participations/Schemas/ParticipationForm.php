@@ -154,10 +154,10 @@ class ParticipationForm
                                         ->state(fn($record) => $record?->address_json['string'] ?? '—')
                                         ->label('Адрес'),
 
-                                    TextEntry::make('receiver_name')
+                                    TextInput::make('receiver_name')
                                         ->label('ФИО'),
 
-                                    TextEntry::make('receiver_telephone')
+                                    TextInput::make('receiver_telephone')
                                         ->label('Телефон'),
                                     Select::make('printing_company_id')
                                         ->relationship(name: 'printingCompany', titleAttribute: 'name'),
