@@ -29,7 +29,7 @@ class CollectionPage extends Component
     {
         $this->collection = Collection::where('slug', $slug)->with('media')->first();
         $this->info = [
-            'Статус сборника' => 'Идет прием заявок',
+            'Статус сборника' => $this->collection->status,
             'Тираж сборника' => '~ 100 экземпляров',
             'Обложка' => 'Мягкая, цветная'
         ];
