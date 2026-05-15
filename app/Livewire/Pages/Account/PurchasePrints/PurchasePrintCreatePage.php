@@ -88,7 +88,7 @@ class PurchasePrintCreatePage extends Component
                     ->where(fn ($q) => $q
                         ->where('model_type', $this->type)
                         ->where('user_id', Auth::id())
-                        ->whereNot('status', PrintOrderStatusEnums::SENT)
+                        ->whereNotIn('status', [PrintOrderStatusEnums::SENT, PrintOrderStatusEnums::PRINTING])
                     )
             ],
             'booksCnt' => 'required|integer|min:4',
