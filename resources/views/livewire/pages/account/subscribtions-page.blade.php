@@ -2,7 +2,7 @@
     @section('title')
         Избранные авторы
     @endsection
-    <div class="flex gap-4">
+    <div class="flex gap-4 flex-wrap">
         @forelse($favAuthors as $author)
             <x-ui.cards.author-card :author="$author"/>
         @empty
