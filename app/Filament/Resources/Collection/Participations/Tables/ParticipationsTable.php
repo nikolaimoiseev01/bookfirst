@@ -90,6 +90,10 @@ class ParticipationsTable
                     ->getStateUsing(fn($record) => $record->priceTotal())
                     ->formatStateUsing(fn (string $state): string => makeMoney($state, 0, true))
                     ->sortable(),
+                TextColumn::make('printOrder.author_name')
+                    ->label('Получатель')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->sortable(),
                 TextColumn::make('created_at')
                     ->label('Дата создания')
                     ->dateTime()
