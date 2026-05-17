@@ -90,7 +90,7 @@ class ParticipationsTable
                     ->getStateUsing(fn($record) => $record->priceTotal())
                     ->formatStateUsing(fn (string $state): string => makeMoney($state, 0, true))
                     ->sortable(),
-                TextColumn::make('printOrder.author_name')
+                TextColumn::make('printOrder.receiver_name')
                     ->getStateUsing(fn($record) => $record->printOrder()->author_name ?? '')
                     ->label('Получатель')
                     ->toggleable(isToggledHiddenByDefault: true),
