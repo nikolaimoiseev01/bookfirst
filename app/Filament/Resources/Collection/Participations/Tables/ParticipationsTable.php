@@ -94,6 +94,9 @@ class ParticipationsTable
                     ->getStateUsing(fn($record) => $record->printOrder()->author_name ?? '')
                     ->label('Получатель')
                     ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('printOrder.country')
+                    ->label('Страна')
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('created_at')
                     ->label('Дата создания')
                     ->dateTime()
