@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Collection\Participations\Tables;
 
+use App\Enums\ChatStatusEnums;
 use App\Enums\ParticipationStatusEnums;
 use App\Filament\Resources\Collection\Participations\ParticipationResource;
 use Filament\Actions\Action;
@@ -9,6 +10,7 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -98,7 +100,14 @@ class ParticipationsTable
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                SelectFilter::make('status')
+                    ->label('Статус')
+                    ->options([
+                        collect(ParticipationStatusEnums::cases())
+                            ->mapWithKeys(fn($case) => [$case->value => $case->value])
+                            ->toArray()
+                    ])
+                    ->multiple()
             ])
             ->defaultSort(function (Builder $query): Builder {
                 return $query
