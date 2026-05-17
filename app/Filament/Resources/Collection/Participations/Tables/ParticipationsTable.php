@@ -93,8 +93,7 @@ class ParticipationsTable
                 TextColumn::make('printOrder.author_name')
                     ->getStateUsing(fn($record) => $record->printOrder()->author_name ?? '')
                     ->label('Получатель')
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->sortable(),
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('created_at')
                     ->label('Дата создания')
                     ->dateTime()
