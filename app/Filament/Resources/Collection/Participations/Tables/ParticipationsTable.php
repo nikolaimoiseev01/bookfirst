@@ -91,7 +91,7 @@ class ParticipationsTable
                     ->formatStateUsing(fn (string $state): string => makeMoney($state, 0, true))
                     ->sortable(),
                 TextColumn::make('printOrder.receiver_name')
-                    ->label('Получатель')
+                    ->label('Получатель') 
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('printOrder.country')
                     ->label('Страна')
