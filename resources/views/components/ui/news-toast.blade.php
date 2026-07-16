@@ -4,7 +4,6 @@
     'storageKey' => 'referral_toast_closed_v1',
     // задержка перед показом (мс)
     'delay' => 2000,
-    'buttonText' => 'Подробнее'
 ])
 
 <div
@@ -55,19 +54,6 @@
             <div>
                 {{$slot}}
             </div>
-            {{-- опционально: кнопка/ссылка --}}
-            <div class="flex items-center gap-3 md:flex-col">
-                <x-ui.link href="{{ $attributes->get('href', '#') }}" data-check-logged
-                           class="!text-lg !py-0">{{$buttonText}}</x-ui.link>
-                <button
-                    type="button"
-                    @click="close()"
-                    class="text-base text-gray-600 hover:text-gray-900 transition"
-                >
-                    Закрыть и больше не показывать
-                </button>
-            </div>
-
         </div>
     </div>
 
