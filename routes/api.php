@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Models\ShortLink;
+use App\Http\Controllers\Api\SamotpravilWebhookController;
 
 Route::middleware(['shortener.key', 'throttle:10,1'])->post('/short-links', function (Request $request) {
     $request->validate([
@@ -20,3 +21,5 @@ Route::middleware(['shortener.key', 'throttle:10,1'])->post('/short-links', func
         'short_url' => url($link->code),
     ]);
 });
+
+Route::post('/webhooks/samotpravil', [SamotpravilWebhookController::class, 'handleWebhook']);

@@ -153,7 +153,7 @@ class CollectionForm
                         SpatieMediaLibraryFileUpload::make('inside_file')
                             ->hiddenLabel()
                             ->collection('inside_file'),
-                    ])
+                    ]),
                 ])->columnSpan(1)
             ]);
     }

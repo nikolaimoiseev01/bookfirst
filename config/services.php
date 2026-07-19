@@ -80,5 +80,11 @@ return [
         'api_key' => env('SHORTENER_API_KEY'),
     ],
 
+    'samotpravil' => [
+        'secret_key' => env('SAMOTPRAVIL_SECRET_KEY'),
+        'email_from' => env('SAMOTPRAVIL_FROM_EMAIL'),
+        'name_from' => env('SAMOTPRAVIL_FROM_NAME'),
+    ],
+
 
 ];

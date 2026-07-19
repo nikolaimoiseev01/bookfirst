@@ -5,9 +5,14 @@ namespace App\Providers\Filament;
 use App\Filament\Pages\StatDashboard;
 use App\Filament\Resources\Chat\Chats\ChatResource;
 use App\Filament\Resources\Chat\MessageTemplates\MessageTemplatesResource;
+use App\Filament\Resources\EmailMarketing\EmailCampaigns\EmailCampaignResource;
+use App\Filament\Resources\EmailMarketing\EmailTemplates\EmailTemplateResource;
+use App\Filament\Resources\EmailMarketing\EmailRecipientLists\EmailRecipientListResource;
 use App\Filament\Resources\Roles\RoleResource;
 use App\Filament\Resources\Works\WorkResource;
 use App\Models\Chat\MessageTemplate;
+use App\Models\EmailMarketing\EmailTemplate;
+use App\Models\EmailMarketing\RecipientList;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use App\Filament\Resources\Collection\Collections\CollectionResource;
 use App\Filament\Resources\ExtPromotions\ExtPromotionResource;
@@ -84,6 +89,13 @@ class AdminPanelProvider extends PanelProvider
                         ->visible(fn() => auth()->user()->hasRole('admin')),
                 ])
                     ->groups([
+                        NavigationGroup::make('Email маркетинг')
+                            ->collapsed()
+                            ->items([
+                                ...self::shielded(EmailCampaignResource::class),
+                                ...self::shielded(EmailTemplateResource::class),
+                                ...self::shielded(EmailRecipientListResource::class),
+                            ]),
                         NavigationGroup::make('Настройки')
                             ->collapsed()
                             ->items([

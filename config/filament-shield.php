@@ -172,6 +172,27 @@ return [
                 'update',
                 'delete',
             ],
+            \App\Filament\Resources\EmailMarketing\EmailCampaigns\EmailCampaignResource::class => [
+                'viewAny',
+                'view',
+                'create',
+                'update',
+                'delete',
+            ],
+            \App\Filament\Resources\EmailMarketing\EmailTemplates\EmailTemplateResource::class => [
+                'viewAny',
+                'view',
+                'create',
+                'update',
+                'delete',
+            ],
+            \App\Filament\Resources\EmailMarketing\EmailRecipientLists\EmailRecipientListResource::class => [
+                'viewAny',
+                'view',
+                'create',
+                'update',
+                'delete',
+            ],
         ],
         'exclude' => [
             //
