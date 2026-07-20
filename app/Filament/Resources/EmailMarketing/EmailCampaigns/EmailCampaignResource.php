@@ -30,7 +30,6 @@ class EmailCampaignResource extends Resource
     protected static ?string $navigationLabel = 'Email кампании';
     protected static ?string $pluralLabel = 'Email кампании';
 
-//    protected static ?string $navigationGroup = 'Email Marketing';
 
     public static function form(Schema $schema): Schema
     {

@@ -29,8 +29,6 @@ class EmailRecipientListResource extends Resource
     protected static ?string $navigationLabel = 'Списки получателей';
     protected static ?string $pluralLabel = 'Списки получателей';
 
-//    protected static ?string $navigationGroup = 'Email Marketing';
-
     public static function form(Schema $schema): Schema
     {
         return EmailRecipientListForm::configure($schema);

@@ -28,8 +28,6 @@ class EmailTemplateResource extends Resource
     protected static ?string $navigationLabel = 'Email шаблоны';
     protected static ?string $pluralLabel = 'Email шаблоны';
 
-//    protected static ?string $navigationGroup = 'Email Marketing';
-
     public static function form(Schema $schema): Schema
     {
         return EmailTemplateForm::configure($schema);

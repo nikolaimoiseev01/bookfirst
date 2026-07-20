@@ -2,42 +2,21 @@
 
 namespace App\Providers\Filament;
 
-use App\Filament\Pages\StatDashboard;
-use App\Filament\Resources\Chat\Chats\ChatResource;
-use App\Filament\Resources\Chat\MessageTemplates\MessageTemplatesResource;
 use App\Filament\Resources\EmailMarketing\EmailCampaigns\EmailCampaignResource;
 use App\Filament\Resources\EmailMarketing\EmailTemplates\EmailTemplateResource;
 use App\Filament\Resources\EmailMarketing\EmailRecipientLists\EmailRecipientListResource;
-use App\Filament\Resources\Roles\RoleResource;
-use App\Filament\Resources\Works\WorkResource;
-use App\Models\Chat\MessageTemplate;
-use App\Models\EmailMarketing\EmailTemplate;
-use App\Models\EmailMarketing\RecipientList;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
-use App\Filament\Resources\Collection\Collections\CollectionResource;
-use App\Filament\Resources\ExtPromotions\ExtPromotionResource;
-use App\Filament\Resources\InnerTasks\InnerTaskResource;
-use App\Filament\Resources\OwnBook\OwnBooks\OwnBookResource;
-use App\Filament\Resources\PrintOrder\LogisticCompanies\LogisticCompanyResource;
-use App\Filament\Resources\PrintOrder\PrintingCompanies\PrintingCompanyResource;
-use App\Filament\Resources\PrintOrder\PrintOrders\PrintOrderResource;
-use App\Filament\Resources\Promocodes\PromocodeResource;
-use App\Filament\Resources\SurveyCompleteds\SurveyCompletedResource;
-use App\Filament\Resources\User\Users\UserResource;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Navigation\NavigationBuilder;
 use Filament\Navigation\NavigationGroup;
-use Filament\Navigation\NavigationItem;
 use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Resources\Resource;
 use Filament\Support\Colors\Color;
-use Filament\Widgets\AccountWidget;
-use Filament\Widgets\FilamentInfoWidget;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -45,9 +24,8 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
-class AdminPanelProvider extends PanelProvider
+class EmailMarketingPanelProvider extends PanelProvider
 {
-
     private static function shielded(Resource|string $resourceClass): array
     {
         return collect($resourceClass::getNavigationItems())
@@ -61,8 +39,8 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->sidebarCollapsibleOnDesktop()
-            ->id('admin')
-            ->path('admin')
+            ->id('email-marketing')
+            ->path('email-marketing')
             ->login()
             ->colors([
                 'primary' => Color::Amber,
@@ -70,37 +48,13 @@ class AdminPanelProvider extends PanelProvider
             ->navigation(function (NavigationBuilder $builder): NavigationBuilder {
                 return $builder->items([
                     ...Dashboard::getNavigationItems(),
-
-                    ...self::shielded(CollectionResource::class),
-                    ...self::shielded(OwnBookResource::class),
-                    ...self::shielded(ExtPromotionResource::class),
-                    ...self::shielded(ChatResource::class),
-                    ...self::shielded(PrintOrderResource::class),
-                    ...self::shielded(UserResource::class),
-                    ...self::shielded(SurveyCompletedResource::class),
-                    ...self::shielded(PromocodeResource::class),
-                    ...self::shielded(InnerTaskResource::class),
-
-                    NavigationItem::make('Email маркетинг')
-                        ->url('/email-marketing')
-                        ->icon('heroicon-o-envelope')
-                        ->sort(50),
-                    NavigationItem::make('Log Viewer')
-                        ->url('/log-viewer')
-                        ->icon('heroicon-o-code-bracket')
-                        ->group('Настройки')
-                        ->sort(999)
-                        ->visible(fn() => auth()->user()->hasRole('admin')),
                 ])
                     ->groups([
-                        NavigationGroup::make('Настройки')
-                            ->collapsed()
+                        NavigationGroup::make('Email маркетинг')
                             ->items([
-                                ...self::shielded(LogisticCompanyResource::class),
-                                ...self::shielded(PrintingCompanyResource::class),
-                                ...self::shielded(MessageTemplatesResource::class),
-                                ...self::shielded(RoleResource::class),
-                                ...self::shielded(WorkResource::class),
+                                ...self::shielded(EmailCampaignResource::class),
+                                ...self::shielded(EmailTemplateResource::class),
+                                ...self::shielded(EmailRecipientListResource::class),
                             ]),
                     ]);
             })
@@ -110,8 +64,6 @@ class AdminPanelProvider extends PanelProvider
             ->pages([\App\Filament\Pages\Dashboard::class])
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
-            ->widgets([
-            ])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,

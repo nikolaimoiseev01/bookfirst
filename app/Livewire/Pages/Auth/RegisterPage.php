@@ -65,7 +65,7 @@ class RegisterPage extends Component
                 'reg_type' => 'self'
             ])));
 
-            $user->assignRole('User');
+            $user->assignRole('user');
             Auth::login($user);
 
             $this->redirectIntended(
