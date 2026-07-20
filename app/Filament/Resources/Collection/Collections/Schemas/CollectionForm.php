@@ -9,6 +9,7 @@ use App\Enums\PrintOrderTypeEnums;
 use App\Models\Collection\Collection;
 use App\Models\Collection\Participation;
 use App\Models\PrintOrder\PrintOrder;
+use App\Models\Work\WorkType;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Repeater;
@@ -40,9 +41,15 @@ class CollectionForm
                                 ->columnSpan(3)
                                 ->required()
                                 ->maxLength(255),
+                            Select::make('work_type_id')
+                                ->label('Тип работ')
+                                ->columnSpan(1)
+                                ->relationship('workType', 'name')
+                                ->searchable()
+                                ->preload(),
                             Select::make('status')
                                 ->label('Статус')
-                                ->columnSpan(3)
+                                ->columnSpan(2)
                                 ->visibleOn('edit')
                                 ->options(
                                     collect(CollectionStatusEnums::cases())
