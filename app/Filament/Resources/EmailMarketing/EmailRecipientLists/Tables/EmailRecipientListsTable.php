@@ -17,6 +17,14 @@ class EmailRecipientListsTable
                     ->label('Название')
                     ->searchable()
                     ->sortable(),
+                TextColumn::make('utm_campaign')
+                    ->label('UTM Campaign')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('promocode.name')
+                    ->label('Промокод')
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('description')
                     ->label('Описание')
                     ->limit(50)
