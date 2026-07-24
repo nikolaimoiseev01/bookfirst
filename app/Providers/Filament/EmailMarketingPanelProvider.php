@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\BulkCreateEmailCampaign;
 use App\Filament\Resources\EmailMarketing\EmailCampaigns\EmailCampaignResource;
 use App\Filament\Resources\EmailMarketing\EmailTemplates\EmailTemplateResource;
 use App\Filament\Resources\EmailMarketing\EmailRecipientLists\EmailRecipientListResource;
@@ -57,6 +58,13 @@ class EmailMarketingPanelProvider extends PanelProvider
                                 ...self::shielded(EmailTemplateResource::class),
                                 ...self::shielded(EmailRecipientListResource::class),
 
+                                NavigationItem::make('bulk_create')
+                                    ->label('Массовое создание кампаний')
+                                    ->url('/email-marketing/bulk-create-email-campaign')
+                                    ->icon('heroicon-o-envelope-open')
+                                    ->visible(fn() => auth()->user()->hasAnyRole('admin|super_admin'))
+                                    ->sort(10),
+
                                 NavigationItem::make('Админка')
                                     ->url('/admin')
                                     ->icon('heroicon-o-user')
@@ -68,7 +76,10 @@ class EmailMarketingPanelProvider extends PanelProvider
             ->maxContentWidth('full')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
-            ->pages([\App\Filament\Pages\Dashboard::class])
+            ->pages([
+                \App\Filament\Pages\Dashboard::class,
+                BulkCreateEmailCampaign::class,
+            ])
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->middleware([

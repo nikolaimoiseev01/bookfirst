@@ -26,6 +26,12 @@ class EmailCampaignsTable
                 TextColumn::make('recipientList.name')
                     ->label('Список получателей')
                     ->sortable(),
+                TextColumn::make('campaignRecipients_count')
+                    ->label('Получателей')
+                    ->getStateUsing(function ($record) {
+                       return $record->campaignRecipients()->count();
+                    })
+                    ->sortable(),
                 TextColumn::make('status')
                     ->label('Статус')
                     ->badge()

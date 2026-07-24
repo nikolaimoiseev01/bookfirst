@@ -7,5 +7,6 @@ Schedule::command('app:internal-tasks-notification')->dailyAt('19:30');
 Schedule::command('app:almost-complete-actions-notification')->dailyAt('20:00');
 Schedule::command('app:ext-promotion-stat-update')->dailyAt('21:00');
 Schedule::command('app:ext-promotion-finish')->dailyAt('21:15');
-Schedule::command('email:fetch-campaign-statistics')->hourly();
+Schedule::command('email:fetch-campaign-statistics')->everyFifteenMinutes();
+Schedule::command('app:send-scheduled-email-campaigns')->everyMinute();
 
