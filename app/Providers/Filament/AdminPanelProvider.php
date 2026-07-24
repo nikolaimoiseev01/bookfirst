@@ -82,7 +82,7 @@ class AdminPanelProvider extends PanelProvider
                     ...self::shielded(InnerTaskResource::class),
 
                     NavigationItem::make('Email маркетинг')
-                        ->url('/email-marketing')
+                        ->url('/email-marketing/email-marketing/email-campaigns')
                         ->icon('heroicon-o-envelope')
                         ->visible(fn() => auth()->user()->hasAnyRole('admin|super_admin'))
                         ->sort(50),
@@ -91,7 +91,7 @@ class AdminPanelProvider extends PanelProvider
                         ->icon('heroicon-o-code-bracket')
                         ->group('Настройки')
                         ->sort(999)
-                        ->visible(fn() => auth()->user()->hasRole('admin')),
+                        ->visible(fn() => auth()->user()->hasRole('admin|super_admin')),
                 ])
                     ->groups([
                         NavigationGroup::make('Настройки')

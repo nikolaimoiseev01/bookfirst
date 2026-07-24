@@ -82,6 +82,8 @@ class SamotpravilWebhookController extends Controller
 
             $campaignRecipient->update($updateData);
 
+            dd($campaignRecipient);
+
             Log::info('Campaign recipient updated', [
                 'campaign_id' => $campaign->id,
                 'recipient_id' => $recipient->id,

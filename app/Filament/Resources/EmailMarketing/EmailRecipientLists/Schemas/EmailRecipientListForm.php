@@ -40,17 +40,20 @@ class EmailRecipientListForm
                         ->nullable(),
                 ]),
                 Grid::make()->schema([
-//                    FileUpload::make('csv_file')
-//                        ->label('Загрузить CSV файл')
-//                        ->acceptedFileTypes(['text/csv', 'application/vnd.ms-excel', 'text/plain'])
-//                        ->helperText('CSV формат: email,name (одна запись на строку)')
-//                        ->reactive()
-//                        ->afterStateUpdated(function ($state, callable $set, callable $get) {
-//                            if ($state) {
-//                                // Process CSV file and add recipients
-//                                // This will be handled in the model's boot method or a custom action
-//                            }
-//                        }),
+                    FileUpload::make('csv_file')
+                        ->label('Загрузить CSV файл')
+                        ->acceptedFileTypes(['text/csv', 'application/vnd.ms-excel', 'text/plain'])
+                        ->helperText('CSV формат: email,name (одна запись на строку)')
+                        ->reactive()
+                        ->disk('public')
+                        ->directory('csv-uploads')
+                        ->dehydrated(false)
+                        ->afterStateUpdated(function ($state, callable $set, callable $get) {
+                            if ($state) {
+                                // Process CSV file and add recipients
+                                // This will be handled in the model's boot method or a custom action
+                            }
+                        }),
                     Textarea::make('manual_recipients')
                         ->label('Или добавить вручную')
                         ->rows(5)

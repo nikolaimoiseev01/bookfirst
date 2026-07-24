@@ -16,6 +16,13 @@ class ViewEmailCampaign extends ViewRecord
     {
         return $schema
             ->components([
+                Section::make('Статистика еще не загружена')
+                    ->description('Для этой кампании пока нет статистики.')
+                    ->icon('heroicon-o-exclamation-triangle')
+                    ->iconColor('warning')
+                    ->visible(fn () => $this->record->statistic->isEmpty())
+                    ->columnSpanFull(),
+
                 Section::make('Статистика')
                     ->schema([
                         TextEntry::make('statistics')
@@ -23,6 +30,7 @@ class ViewEmailCampaign extends ViewRecord
                             ->view('filament.resources.email-marketing.email-campaigns.components.statistics', ['record' => $this->record]),
                     ])
                     ->columnSpanFull()
+                    ->visible(fn () => $this->record->statistic->isNotEmpty())
                     ->collapsible(),
 
                 Section::make('Основная информация')
