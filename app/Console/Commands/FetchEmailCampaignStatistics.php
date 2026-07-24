@@ -62,7 +62,7 @@ class FetchEmailCampaignStatistics extends Command
                 $this->info("Fetching statistics for campaign #{$campaign->id} (mailganer_id: {$campaign->mailganer_id})");
 
                 $response = Http::get('https://api.samotpravil.ru/api/v1/get_issue_stat', [
-                    'id' => $campaign->mailganer_id,
+                    'id' => 2175212, //$campaign->mailganer_id,
                     'key' => $apiKey,
                 ]);
 
@@ -73,6 +73,8 @@ class FetchEmailCampaignStatistics extends Command
                 }
 
                 $data = $response->json();
+
+                dd($data);
 
                 if (!isset($data['stat'])) {
                     $this->error("Invalid response format for campaign #{$campaign->id}");
