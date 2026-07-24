@@ -20,6 +20,7 @@ class CollectionCoverPngService
         $path = $directory . '/collection-' . $collection->id . '-cover-3d.png';
 
         Browsershot::html($html)
+            ->noSandbox()
             ->select('#book')
             ->deviceScaleFactor(2)
             ->save($path);
