@@ -15,7 +15,7 @@ class FetchEmailCampaignStatistics extends Command
      *
      * @var string
      */
-    protected $signature = 'email:fetch-campaign-statistics';
+    protected $signature = 'email:fetch-campaign-statistics {--campaign-id= : Specific campaign ID to fetch statistics for}';
 
     /**
      * The console command description.
@@ -36,8 +36,16 @@ class FetchEmailCampaignStatistics extends Command
             return 1;
         }
 
-        // Get all campaigns with mailganer_id
-        $campaigns = EmailCampaign::whereNotNull('mailganer_id')->get();
+        $campaignId = $this->option('campaign-id');
+
+        // Get campaigns - either specific one or all with mailganer_id
+        $query = EmailCampaign::whereNotNull('mailganer_id');
+
+        if ($campaignId) {
+            $query->where('id', $campaignId);
+        }
+
+        $campaigns = $query->get();
 
         if ($campaigns->isEmpty()) {
             $this->info('No campaigns with mailganer_id found');

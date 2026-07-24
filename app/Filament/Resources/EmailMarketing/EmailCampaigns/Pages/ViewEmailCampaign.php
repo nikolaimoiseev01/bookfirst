@@ -3,14 +3,37 @@
 namespace App\Filament\Resources\EmailMarketing\EmailCampaigns\Pages;
 
 use App\Filament\Resources\EmailMarketing\EmailCampaigns\EmailCampaignResource;
+use Filament\Actions\Action;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Facades\Artisan;
 
 class ViewEmailCampaign extends ViewRecord
 {
     protected static string $resource = EmailCampaignResource::class;
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            Action::make('fetchStatistics')
+                ->label('Обновить статистику')
+                ->icon('heroicon-o-arrow-path')
+                ->color('primary')
+                ->action(function () {
+                    Artisan::call('email:fetch-campaign-statistics', [
+                        '--campaign-id' => $this->record->id,
+                    ]);
+
+                    Notification::make()
+                        ->title('Статистика обновляется')
+                        ->success()
+                        ->send();
+                }),
+        ];
+    }
 
     public function infolist(Schema $schema): Schema
     {
