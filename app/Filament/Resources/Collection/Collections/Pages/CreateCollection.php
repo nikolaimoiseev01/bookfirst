@@ -34,7 +34,6 @@ class CreateCollection extends CreateRecord
 
     protected function afterCreate(): void
     {
-
         CollectionGenerate3dJob::dispatch($this->record->id);
     }
 }
