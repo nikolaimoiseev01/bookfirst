@@ -102,6 +102,23 @@ class EmailCampaignsTable
                             ->success()
                             ->send();
                     }),
+                Action::make('delete')
+                    ->label('Удалить')
+                    ->icon('heroicon-o-trash')
+                    ->color('danger')
+                    ->requiresConfirmation()
+                    ->modalHeading('Удалить рассылку?')
+                    ->modalDescription('Все получатели и статистика будут удалены.')
+                    ->action(function (EmailCampaign $record): void {
+                        $record->campaignRecipients()->delete();
+                        $record->statistic()->delete();
+                        $record->delete();
+
+                        Notification::make()
+                            ->title('Рассылка удалена')
+                            ->success()
+                            ->send();
+                    }),
             ])
             ->defaultSort('created_at', 'desc');
     }
