@@ -3,10 +3,12 @@
 namespace App\Filament\Resources\EmailMarketing\EmailCampaigns\Tables;
 
 use App\Models\EmailMarketing\EmailCampaign;
+use App\Models\EmailMarketing\EmailCampaignStatistic;
 use App\Services\EmailMarketing\SendEmailService;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ViewColumn;
 use Filament\Tables\Table;
 
 class EmailCampaignsTable
@@ -43,6 +45,30 @@ class EmailCampaignsTable
                         'failed' => 'danger',
                         default => 'gray',
                     }),
+                ViewColumn::make('send_ok')
+                    ->label('Отправлено')
+                    ->view('filament.tables.email-campaign-pie-chart', ['field' => 'send_ok', 'color' => '#10b981'])
+                    ->default('-'),
+                ViewColumn::make('send_fail')
+                    ->label('Ошибка')
+                    ->view('filament.tables.email-campaign-pie-chart', ['field' => 'send_fail', 'color' => '#ef4444'])
+                    ->default('-'),
+                ViewColumn::make('open_msg')
+                    ->label('Открыто')
+                    ->view('filament.tables.email-campaign-pie-chart', ['field' => 'open_msg', 'color' => '#3b82f6'])
+                    ->default('-'),
+                ViewColumn::make('click_link')
+                    ->label('Клики')
+                    ->view('filament.tables.email-campaign-pie-chart', ['field' => 'click_link', 'color' => '#f59e0b'])
+                    ->default('-'),
+                ViewColumn::make('bounce')
+                    ->label('Bounce')
+                    ->view('filament.tables.email-campaign-pie-chart', ['field' => 'bounce', 'color' => '#8b5cf6'])
+                    ->default('-'),
+                ViewColumn::make('unsubscribe')
+                    ->label('Отписки')
+                    ->view('filament.tables.email-campaign-pie-chart', ['field' => 'unsubscribe', 'color' => '#6b7280'])
+                    ->default('-'),
                 TextColumn::make('scheduled_at')
                     ->label('Запланировано')
                     ->dateTime()

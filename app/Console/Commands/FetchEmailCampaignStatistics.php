@@ -74,8 +74,6 @@ class FetchEmailCampaignStatistics extends Command
 
                 $data = $response->json();
 
-                dd($data);
-
                 if (!isset($data['stat'])) {
                     $this->error("Invalid response format for campaign #{$campaign->id}");
                     $failCount++;

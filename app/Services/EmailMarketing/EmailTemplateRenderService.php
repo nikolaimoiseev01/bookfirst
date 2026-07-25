@@ -17,7 +17,6 @@ class EmailTemplateRenderService
             ->map(fn (Collection $collection) => $this->renderCollectionBlock($collection))
             ->implode('');
 
-
         $finalHtml = str_replace('{{ACTUAL_COLLECTIONS}}', $collectionsHtml, $template->html_content);
         $finalHtml = str_replace('{{UTM_CAMPAIGN}}', $utmCampaign ?? '', $finalHtml);
         $finalHtml = str_replace('{{PROMOCODE}}', $promoCode ?? '', $finalHtml);
