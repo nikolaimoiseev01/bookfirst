@@ -49,10 +49,6 @@ class EmailCampaignsTable
                     ->label('Отправлено')
                     ->view('filament.tables.email-campaign-pie-chart', ['field' => 'send_ok', 'color' => '#10b981'])
                     ->default('-'),
-                ViewColumn::make('send_fail')
-                    ->label('Ошибка')
-                    ->view('filament.tables.email-campaign-pie-chart', ['field' => 'send_fail', 'color' => '#ef4444'])
-                    ->default('-'),
                 ViewColumn::make('open_msg')
                     ->label('Открыто')
                     ->view('filament.tables.email-campaign-pie-chart', ['field' => 'open_msg', 'color' => '#3b82f6'])
@@ -61,9 +57,9 @@ class EmailCampaignsTable
                     ->label('Клики')
                     ->view('filament.tables.email-campaign-pie-chart', ['field' => 'click_link', 'color' => '#f59e0b'])
                     ->default('-'),
-                ViewColumn::make('bounce')
-                    ->label('Bounce')
-                    ->view('filament.tables.email-campaign-pie-chart', ['field' => 'bounce', 'color' => '#8b5cf6'])
+                ViewColumn::make('send_fail')
+                    ->label('Ошибка')
+                    ->view('filament.tables.email-campaign-pie-chart', ['field' => 'send_fail', 'color' => '#ef4444'])
                     ->default('-'),
                 ViewColumn::make('unsubscribe')
                     ->label('Отписки')
