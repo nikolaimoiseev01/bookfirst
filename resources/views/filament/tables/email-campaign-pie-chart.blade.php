@@ -17,7 +17,7 @@
              #e5e7eb {{ $percent }}% 100%
          );">
         <div class="absolute inset-1 bg-white rounded-full flex items-center justify-center">
-            <span class="text-[10px] font-semibold text-gray-700">{{ $percent }}%</span>
+            <span class="text-[10px] font-semibold text-gray-700 text-center leading-[9px]">{{ $percent }}<br>%</span>
         </div>
         <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-10">
             {{ $value }} из {{ $total }}
