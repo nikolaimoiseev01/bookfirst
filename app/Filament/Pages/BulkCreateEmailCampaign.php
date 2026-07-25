@@ -94,7 +94,13 @@ class BulkCreateEmailCampaign extends Page implements HasForms
                         ->schema([
                             Select::make('email_recipient_list_id')
                                 ->label('Список получателей')
-                                ->options(EmailRecipientList::pluck('name', 'id'))
+                                ->options(
+                                    EmailRecipientList::query()
+                                        ->get()
+                                        ->mapWithKeys(fn (EmailRecipientList $list) => [
+                                            $list->id => "{$list->name} ({$list->utm_campaign})",
+                                        ])
+                                )
                                 ->required()
                                 ->preload()
                                 ->searchable()
