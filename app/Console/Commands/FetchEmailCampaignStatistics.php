@@ -62,7 +62,7 @@ class FetchEmailCampaignStatistics extends Command
                 $this->info("Fetching statistics for campaign #{$campaign->id} (mailganer_id: {$campaign->mailganer_id})");
 
                 $response = Http::get('https://api.samotpravil.ru/api/v1/get_issue_stat', [
-                    'id' => 2175212, //$campaign->mailganer_id,
+                    'id' => $campaign->mailganer_id,
                     'key' => $apiKey,
                 ]);
 
