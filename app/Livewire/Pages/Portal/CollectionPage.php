@@ -34,6 +34,10 @@ class CollectionPage extends Component
             'Обложка' => 'Мягкая, цветная'
         ];
 
+        if($this->collection->workType->name ?? null) {
+            $this->info['Тип произведений'] = $this->collection->workType->name;
+        }
+
         if ($this->collection['status'] == CollectionStatusEnums::APPS_IN_PROGRESS) {
 //            $this->info['Фонд конкурса*'] = '5000 руб.!';
             $this->tabs = [
