@@ -129,6 +129,8 @@ return [
         'ext_promotion_admin' => env('LOGIN_AS_EXT_PROMOTION_ADMIN')
     ],
 
-    'winter_mode' => env('WINTER_MODE', false)
+    'winter_mode' => env('WINTER_MODE', false),
+
+    'email_campaign_main_base' => env('EMAIL_CAMPAIGN_MAIN_BASE', false)
 
 ];
