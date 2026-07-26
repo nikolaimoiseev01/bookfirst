@@ -6,7 +6,7 @@
         <h3>{{$collection['title']}}</h3>
         <p>{{$collection['description']}}</p>
         @if($collection->workType ?? null)
-            <p class="mt-auto"><b>Тип произведений: {{$collection->workType->name}}</b></p>
+            <p class="mt-auto"><b>Тип произведений:</b> {{$collection->workType->name}}</p>
         @endif
 
     </div>
