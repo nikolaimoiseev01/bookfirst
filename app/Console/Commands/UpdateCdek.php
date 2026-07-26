@@ -30,64 +30,67 @@ class UpdateCdek extends Command
 
     public function getOffices()
     {
-        DB::transaction(function() {
-            DB::table('cdek_offices')->truncate();
-            $page = 0;
-            $size = 1000;   // максимум 1000 у CDEK
+        DB::table('cdek_offices')->delete();
+        $page = 0;
+        $size = 1000;   // максимум 1000 у CDEK
 
-            while (true) {
-                $url = $this->urlPrefix . "deliverypoints?page={$page}&size={$size}";
+        while (true) {
+            $url = $this->urlPrefix . "deliverypoints?page={$page}&size={$size}";
 
-                $response = Http::withHeaders([
-                    'Authorization' => 'Bearer ' . $this->token,
-                ])
-                    ->timeout(120)
-                    ->connectTimeout(30)
-                    ->retry(5, 1000) // 5 попыток, шаг 1 секунда
-                    ->withOptions(['curl' => [CURLOPT_FORBID_REUSE => true]])
-                    ->get($url);
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . $this->token,
+            ])
+                ->timeout(120)
+                ->connectTimeout(30)
+                ->retry(5, 1000) // 5 попыток, шаг 1 секунда
+                ->withOptions(['curl' => [CURLOPT_FORBID_REUSE => true]])
+                ->get($url);
 
-                if (!$response->successful()) {
-                    throw new \RuntimeException("Request failed: " . $response->body());
-                }
-
-                $data = $response->json();
-
-                if (empty($data)) {
-                    break; // когда больше нет офисов
-                }
-
-                // пачкой вставляем в таблицу
-                foreach ($data as $row) {
-                    CdekOffice::create([
-                        'code' => $row['code'] ?? null,
-                        'name' => $row['name'] ?? null,
-                        'country_code' => $row['location']['country_code'] ?? null,
-                        'region_code' => $row['location']['region_code'] ?? null,
-                        'longitude' => $row['location']['longitude'] ?? null,
-                        'latitude' => $row['location']['latitude'] ?? null,
-                        'full_data' => $row
-                    ]);
-                }
-
-                unset($rows, $data, $response);
-                gc_collect_cycles();
-
-                echo "Обработали страницу {$page}\n";
-
-                $page++;
+            if (!$response->successful()) {
+                throw new \RuntimeException("Request failed: " . $response->body());
             }
-        });
+
+            $data = $response->json();
+
+            if (empty($data)) {
+                break; // когда больше нет офисов
+            }
+
+            // пачкой вставляем в таблицу
+            $rows = array_map(function ($row) {
+                return [
+                    'code' => $row['code'] ?? null,
+                    'name' => $row['name'] ?? null,
+                    'country_code' => $row['location']['country_code'] ?? null,
+                    'region_code' => $row['location']['region_code'] ?? null,
+                    'longitude' => $row['location']['longitude'] ?? null,
+                    'latitude' => $row['location']['latitude'] ?? null,
+                    'full_data' => $row,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+            }, $data);
+
+            DB::table('cdek_offices')->insert($rows);
+
+            unset($rows, $data, $response);
+            gc_collect_cycles();
+
+            echo "Обработали страницу {$page}\n";
+
+            $page++;
+        }
     }
 
 
     public function getCities()
     {
+        DB::transaction(function () {
 
-        DB::transaction(function() {
-            DB::table('cdek_cities')->truncate();
             $page = 0;
             $size = 1000;   // максимум 1000 у CDEK
+
+            DB::table('cdek_cities')->delete();
 
             while (true) {
                 $url = $this->urlPrefix . "location/cities?country_codes=RU&page={$page}&size={$size}";
@@ -121,9 +124,9 @@ class UpdateCdek extends Command
                     ];
                 }, $data);
 
-                // пачкой вставляем в таблицу
-                foreach ($rows as $row) {
-                    DB::table('cdek_cities')->insert($row);
+//            // пачкой вставляем в таблицу
+                foreach (array_chunk($rows, 500) as $chunk) {
+                    DB::table('cdek_cities')->insert($chunk);
                 }
 
                 unset($rows, $data, $response);
@@ -138,8 +141,7 @@ class UpdateCdek extends Command
 
     public function getRegions()
     {
-
-        DB::table('cdek_regions')->truncate();
+        DB::table('cdek_regions')->delete();
         $page = 0;
         $size = 1000;   // максимум 1000 у CDEK
 
@@ -173,9 +175,7 @@ class UpdateCdek extends Command
             }, $data);
 
             // пачкой вставляем в таблицу
-            foreach ($rows as $row) {
-                DB::table('cdek_regions')->insert($row);
-            }
+            DB::table('cdek_regions')->insert($rows);
 
             unset($rows, $data, $response);
             gc_collect_cycles();
@@ -184,12 +184,14 @@ class UpdateCdek extends Command
 
             $page++;
         }
-
-        dd('GOT'); // общее количество городов
     }
 
     public function handle()
     {
+        DB::disableQueryLog();
+
+        DB::connection()->unsetEventDispatcher();
+
         $this->auth();
         $this->getCities();
     }
