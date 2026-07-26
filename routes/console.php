@@ -10,4 +10,5 @@ Schedule::command('app:ext-promotion-finish')->dailyAt('21:15');
 Schedule::command('email:fetch-campaign-statistics')->everyThirtyMinutes();
 Schedule::command('app:send-scheduled-email-campaigns')->everyMinute();
 Schedule::command('email:sync-new-users')->dailyAt('01:00');
+Schedule::command('cdek:update')->dailyAt('02:00');
 
