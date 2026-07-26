@@ -95,7 +95,6 @@ class SyncNewUsersToEmailList extends Command
             ->exists();
 
         if ($exists) {
-            $this->line("Skipped: {$email} (already in list)");
             $skippedCount++;
             return;
         }
@@ -111,7 +110,6 @@ class SyncNewUsersToEmailList extends Command
                 ],
             ]);
 
-            $this->line("Added: {$email}");
             $addedCount++;
 
         } catch (\Exception $e) {
