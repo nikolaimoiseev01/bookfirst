@@ -84,14 +84,14 @@ class AdminPanelProvider extends PanelProvider
                     NavigationItem::make('Email маркетинг')
                         ->url('/email-marketing/email-marketing/email-campaigns')
                         ->icon('heroicon-o-envelope')
-                        ->visible(fn() => auth()->user()->hasAnyRole('admin|super_admin'))
+                        ->visible(fn() => auth()->user()->hasAnyRole('admin|super_admin|secondary_admin'))
                         ->sort(50),
                     NavigationItem::make('Log Viewer')
                         ->url('/log-viewer')
                         ->icon('heroicon-o-code-bracket')
                         ->group('Настройки')
                         ->sort(999)
-                        ->visible(fn() => auth()->user()->hasRole('admin|super_admin|secondary_admin')),
+                        ->visible(fn() => auth()->user()->hasRole('admin|super_admin')),
                 ])
                     ->groups([
                         NavigationGroup::make('Настройки')
