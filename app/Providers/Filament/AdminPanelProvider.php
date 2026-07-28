@@ -91,7 +91,7 @@ class AdminPanelProvider extends PanelProvider
                         ->icon('heroicon-o-code-bracket')
                         ->group('Настройки')
                         ->sort(999)
-                        ->visible(fn() => auth()->user()->hasRole('admin|super_admin')),
+                        ->visible(fn() => auth()->user()->hasRole('admin|super_admin|secondary_admin')),
                 ])
                     ->groups([
                         NavigationGroup::make('Настройки')
