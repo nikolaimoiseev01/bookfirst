@@ -49,7 +49,7 @@ class EmailTemplateResource extends Resource
 
     public static function getGloballySearchableAttributes(): array
     {
-        return ['name', 'subject'];
+        return ['name'];
     }
 
     public static function getGlobalSearchResultDetails(Model $record): array
