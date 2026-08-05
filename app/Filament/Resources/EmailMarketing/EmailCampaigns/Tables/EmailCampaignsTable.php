@@ -28,6 +28,12 @@ class EmailCampaignsTable
                 TextColumn::make('recipientList.name')
                     ->label('Список получателей')
                     ->sortable(),
+                TextColumn::make('recipientList.urm_campaign')
+                    ->label('UTM Campaign')
+                    ->sortable(),
+                TextColumn::make('recipientList.promocode.name')
+                    ->label('Промокод')
+                    ->sortable(),
                 TextColumn::make('campaignRecipients_count')
                     ->label('Получателей')
                     ->getStateUsing(function ($record) {
