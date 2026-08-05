@@ -28,7 +28,7 @@ class EmailCampaignsTable
                 TextColumn::make('recipientList.name')
                     ->label('Список получателей')
                     ->sortable(),
-                TextColumn::make('recipientList.urm_campaign')
+                TextColumn::make('recipientList.utm_campaign')
                     ->label('UTM Campaign')
                     ->sortable(),
                 TextColumn::make('recipientList.promocode.name')
