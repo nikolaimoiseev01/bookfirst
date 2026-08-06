@@ -3,9 +3,7 @@
 namespace App\Filament\Resources\EmailMarketing\EmailCampaigns\Pages;
 
 use App\Filament\Resources\EmailMarketing\EmailCampaigns\EmailCampaignResource;
-use App\Jobs\BulkCreateEmailCampaignsJob;
 use App\Jobs\CreateOnlyOneEmailCampaignJob;
-use App\Services\EmailMarketing\CreateEmailCampaignService;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Support\Facades\Auth;
 
