@@ -44,19 +44,24 @@ class EmailCampaignForm
                 Section::make('Настройки')->schema([
                     Select::make('email_recipient_list_id')
                         ->label('Список получателей')
-                        ->relationship('recipientList', 'name')
+                        ->options(
+                            EmailRecipientList::query()
+                                ->get()
+                                ->mapWithKeys(fn (EmailRecipientList $list) => [
+                                    $list->id => "{$list->name} ({$list->utm_campaign})",
+                                ])
+                        )
                         ->required()
                         ->preload()
                         ->searchable()
                         ->live()
-                        ->afterStateUpdated(function (?int $state, Set $set): void {
-                            if (! $state) {
-                                return;
+                        ->afterStateUpdated(function ($state, callable $set, callable $get) {
+                            if ($state) {
+                                $recipientList = EmailRecipientList::find($state);
+                                if ($recipientList) {
+                                    $set('name', $recipientList->name);
+                                }
                             }
-
-                            $recipientList = EmailRecipientList::find($state);
-
-                            $set('utm_campaign', str($recipientList->utm_campaign));
                         }),
 
                     Select::make('email_template_id')
