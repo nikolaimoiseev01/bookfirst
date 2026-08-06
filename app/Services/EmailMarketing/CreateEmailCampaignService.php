@@ -44,7 +44,7 @@ class CreateEmailCampaignService
     public function createCampaignRecipients(EmailCampaign $campaign): void
     {
         EmailRecipient::where('email_recipient_list_id', $campaign->email_recipient_list_id)
-            ->chunk(100, function ($recipients) use ($campaign) {
+            ->chunk(500, function ($recipients) use ($campaign) {
                 foreach ($recipients as $recipient) {
                     EmailCampaignRecipient::create([
                         'email_campaign_id' => $campaign->id,
