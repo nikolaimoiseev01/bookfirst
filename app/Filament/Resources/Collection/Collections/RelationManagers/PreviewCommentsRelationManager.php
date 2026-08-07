@@ -60,6 +60,7 @@ class PreviewCommentsRelationManager extends RelationManager
                 TextColumn::make('page')
                     ->searchable(),
                 TextColumn::make('text')
+                    ->limit(30)
                     ->searchable(),
                 TextColumn::make('created_at')
                     ->sortable()
