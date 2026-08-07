@@ -20,6 +20,7 @@ use Filament\Actions\Action;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use PhpOffice\PhpWord\Shared\ZipArchive;
 
 class EditCollection extends EditRecord
@@ -97,22 +98,27 @@ class EditCollection extends EditRecord
     }
 
     public function updatePagesWhenMediaUpdated(): void {
-        $mediaAfter = $this->record->getMedia('inside_file');
+        try {
+            $mediaAfter = $this->record->getMedia('inside_file');
 
-        $beforeUuid = $this->mediaBefore[0] ?? null;
-        $afterUuid  = $mediaAfter->first()?->uuid;
+            $beforeUuid = $this->mediaBefore[0] ?? null;
+            $afterUuid = $mediaAfter->first()?->uuid;
 
-        // файл добавлен или заменён
-        if ($afterUuid && $beforeUuid !== $afterUuid) {
+            // файл добавлен или заменён
+            if ($afterUuid && $beforeUuid !== $afterUuid) {
 
-            $pdfService = new PdfService();
+                $pdfService = new PdfService();
 
-            $pages = $pdfService->getPageCount(
-                $mediaAfter->first()->getPath()
-            );
+                $pages = $pdfService->getPageCount(
+                    $mediaAfter->first()->getPath()
+                );
 
-            $this->record->pages = $pages;
-            $this->record->saveQuietly();
+                $this->record->pages = $pages;
+                $this->record->saveQuietly();
+            }
+        }
+        catch (\Exception $e) {
+            Log::error($e->getMessage());
         }
     }
 
