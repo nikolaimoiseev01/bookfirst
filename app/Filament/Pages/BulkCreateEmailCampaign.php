@@ -136,6 +136,7 @@ class BulkCreateEmailCampaign extends Page implements HasForms
     public function create(): void
     {
         $data = $this->form->getState();
+        $data['created_by'] = auth()->id();
 
         BulkCreateEmailCampaignsJob::dispatch($data);
 
