@@ -61,6 +61,9 @@ class PreviewCommentsRelationManager extends RelationManager
                     ->searchable(),
                 TextColumn::make('text')
                     ->searchable(),
+                TextColumn::make('created_at')
+                    ->sortable()
+                    ->searchable(),
             ])
             ->filters([
                 //
