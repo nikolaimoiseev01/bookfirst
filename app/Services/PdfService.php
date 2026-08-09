@@ -72,6 +72,49 @@ class PdfService
     }
 
     /**
+     * Проставляет зеркальные номера страниц и возвращает бинарную строку PDF.
+     * Отступ $offsetOuter считается от внешнего края (чётные — слева, нечётные — справа).
+     */
+    public function numberPagesToString(
+        string $pdfPath,
+        int $startPage,
+        ?int $endPage,
+        float $offsetOuter,
+        float $offsetTop,
+        float $fontSize = 9
+    ): string {
+        $pdf = new Fpdi();
+        $pageCount = $pdf->setSourceFile($pdfPath);
+        $endPage = min($endPage ?? $pageCount - 1, $pageCount);
+        $pdf->SetAutoPageBreak(false);
+
+        for ($page = 1; $page <= $pageCount; $page++) {
+            $tplId = $pdf->importPage($page);
+            $size = $pdf->getTemplateSize($tplId);
+            $orientation = ($size['width'] > $size['height']) ? 'L' : 'P';
+
+            $pdf->AddPage($orientation, [$size['width'], $size['height']]);
+            $pdf->useTemplate($tplId);
+
+            if ($page >= $startPage && $page <= $endPage) {
+                $pdf->SetFont('Helvetica', '', $fontSize);
+                $pdf->SetTextColor(0, 0, 0);
+
+                $cellWidth = 20;
+                if ($page % 2 === 0) {
+                    $pdf->SetXY($offsetOuter, $offsetTop);
+                    $pdf->Cell($cellWidth, 5, (string) $page, 0, 0, 'L');
+                } else {
+                    $pdf->SetXY($size['width'] - $offsetOuter - $cellWidth, $offsetTop);
+                    $pdf->Cell($cellWidth, 5, (string) $page, 0, 0, 'R');
+                }
+            }
+        }
+
+        return $pdf->Output('S');
+    }
+
+    /**
      * Возвращает количество страниц PDF.
      */
     public function getPageCount(string $pdfPath): int

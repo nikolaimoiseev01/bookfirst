@@ -86,6 +86,11 @@ class AdminPanelProvider extends PanelProvider
                         ->icon('heroicon-o-envelope')
                         ->visible(fn() => auth()->user()->hasAnyRole('admin|super_admin|secondary_admin'))
                         ->sort(50),
+                    NavigationItem::make('Нумерация страниц PDF')
+                        ->url('/admin/pdf-page-numbering')
+                        ->icon('heroicon-o-document-text')
+                        ->visible(fn() => auth()->user()->hasAnyRole('admin|super_admin'))
+                        ->sort(60),
                     NavigationItem::make('Log Viewer')
                         ->url('/log-viewer')
                         ->icon('heroicon-o-code-bracket')
