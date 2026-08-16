@@ -112,6 +112,8 @@ class PaymentService
             $successUrl = urlencode($urlRedirect);
             $successUrlMethod = 'GET';
 
+            $invId = 1000;
+
             // MerchantLogin:OutSum:InvId:SuccessUrl2:SuccessUrl2Method:Пароль#1
             $signature = md5("{$merchantLogin}:{$outSum}:{$invId}:{$successUrl}:{$successUrlMethod}:{$password1}");
 
