@@ -131,6 +131,8 @@ class PaymentService
             $response = Http::asForm()
                 ->post('https://auth.robokassa.ru/Merchant/Indexjson.aspx', $params);
 
+            dd($response->json());
+
             $invoiceId = $response->json('invoiceID');
 
             if (empty($invoiceId)) {
