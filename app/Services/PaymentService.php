@@ -114,6 +114,8 @@ class PaymentService
 
             $invId = 1000;
 
+            $successUrl = "https://pervajakniga.ru/account/participations/2022?confirm_payment=collection_participation";
+
             // MerchantLogin:OutSum:InvId:SuccessUrl2:SuccessUrl2Method:Пароль#1
             $signature = md5("{$merchantLogin}:{$outSum}:{$invId}:{$successUrl}:{$successUrlMethod}:{$password1}");
 
@@ -126,7 +128,7 @@ class PaymentService
                 'SignatureValue' => $signature,
             ];
 
-//            dd($params, $password1);
+            dd($params, $password1);
 
             if ($isTest) {
                 $params['IsTest'] = 1;
