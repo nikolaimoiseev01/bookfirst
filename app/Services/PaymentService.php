@@ -128,6 +128,8 @@ class PaymentService
                 $params['IsTest'] = 1;
             }
 
+            dd($params);
+
             $response = Http::asForm()
                 ->post('https://auth.robokassa.ru/Merchant/Indexjson.aspx', $params);
 
