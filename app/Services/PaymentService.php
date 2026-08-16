@@ -126,7 +126,7 @@ class PaymentService
                 'SignatureValue' => $signature,
             ];
 
-            dd($params);
+            dd($params, $password1);
 
             if ($isTest) {
                 $params['IsTest'] = 1;
