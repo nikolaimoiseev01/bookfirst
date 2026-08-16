@@ -112,10 +112,6 @@ class PaymentService
             $successUrl = urlencode($urlRedirect);
             $successUrlMethod = 'GET';
 
-            $invId = 1000;
-
-            $successUrl = "https://pervajakniga.ru/account/participations/2022?confirm_payment=collection_participation";
-
             // MerchantLogin:OutSum:InvId:SuccessUrl2:SuccessUrl2Method:Пароль#1
             $signature = md5("{$merchantLogin}:{$outSum}:{$invId}:{$successUrl}:{$successUrlMethod}:{$password1}");
 
@@ -128,8 +124,6 @@ class PaymentService
                 'SignatureValue' => $signature,
             ];
 
-            dd($params, $password1);
-
             if ($isTest) {
                 $params['IsTest'] = 1;
             }
@@ -137,7 +131,7 @@ class PaymentService
             $response = Http::asForm()
                 ->post('https://auth.robokassa.ru/Merchant/Indexjson.aspx', $params);
 
-            dd($response->json());
+            dd($params, $response->json(), $password1);
 
             $invoiceId = $response->json('invoiceID');
 
