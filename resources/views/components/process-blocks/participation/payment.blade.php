@@ -40,7 +40,7 @@
                         {{$amountToPay}} руб.
                     </x-ui.button>
                 </div>
-                <x-ui.link-simple wire:click="createForeignPayment({{$amountToPay}})" class="mx-auto" color="yellow">Оплатить иностранной картой</x-ui.link-simple>
+{{--                <x-ui.link-simple wire:click="createForeignPayment({{$amountToPay}})" class="mx-auto" color="yellow">Оплатить иностранной картой</x-ui.link-simple>--}}
             </div>
 
         @endif
