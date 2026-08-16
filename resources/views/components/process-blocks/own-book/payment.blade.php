@@ -33,7 +33,7 @@
                     Оплатить
                     {{$ownBook['price_total']}} руб.
                 </x-ui.button>
-{{--                <x-ui.link-simple wire:click="createForeignPayment({{$ownBook['price_total']}}, 'firstPayment')" class="mx-auto" color="yellow">Оплатить иностранной картой</x-ui.link-simple>--}}
+                <x-ui.link-simple wire:click="createForeignPayment({{$ownBook['price_total']}}, 'firstPayment')" class="mx-auto" color="yellow">Оплатить иностранной картой</x-ui.link-simple>
             </div>
         @endif
     </div>
