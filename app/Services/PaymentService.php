@@ -105,8 +105,6 @@ class PaymentService
             $password1 = config('services.robokassa.password1');
             $isTest = config('services.robokassa.is_test');
 
-            dd($merchantLogin, $password1, $isTest);
-
             $outSum = number_format($amount, 2, '.', '');
             $invId = $transaction->id;
 
