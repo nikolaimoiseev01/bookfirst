@@ -46,6 +46,13 @@ return [
         'secret_key' => env('YOOKASSA_SECRET_KEY', null),
     ],
 
+    'robokassa' => [
+        'merchant_login' => env('ROBOKASSA_MERCHANT_LOGIN', null),
+        'password1' => env('ROBOKASSA_PASSWORD1', null),
+        'password2' => env('ROBOKASSA_PASSWORD2', null),
+        'is_test' => env('ROBOKASSA_IS_TEST', false),
+    ],
+
     'telegram-proxy' => env('TELEGRAM_PROXY'),
 
     'telegram-bot-api' => [

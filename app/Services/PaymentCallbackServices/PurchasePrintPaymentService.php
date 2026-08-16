@@ -3,6 +3,7 @@
 namespace App\Services\PaymentCallbackServices;
 
 
+use App\DTO\PaymentCallbackDto;
 use App\Enums\AwardTypeEnums;
 use App\Enums\ExtPromotionStatusEnums;
 use App\Enums\ParticipationStatusEnums;
@@ -20,20 +21,20 @@ use Illuminate\Support\Facades\Log;
 
 class PurchasePrintPaymentService
 {
-    private array $yooKassaObject;
-    public function __construct(array $yooKassaObject)
+    private PaymentCallbackDto $paymentDto;
+    public function __construct(PaymentCallbackDto $paymentDto)
     {
-        $this->yooKassaObject = $yooKassaObject;
+        $this->paymentDto = $paymentDto;
     }
 
     public function update() {
 
-        $transactionData = json_decode($this->yooKassaObject['metadata']['transaction_data'], true);
+        $transactionData = $this->paymentDto->transactionData;
         $printOrder = PrintOrder::where('id', $transactionData['print_order_id'])->first();
         $printOrder->update([
             'status' => PrintOrderStatusEnums::PAID->value
         ]);
         $user = User::where('id', $printOrder['user_id'])->first();
-        $user->notify(new PurchasePrintPaymentSuccessNotification($printOrder, $this->yooKassaObject['amount']['value']));
+        $user->notify(new PurchasePrintPaymentSuccessNotification($printOrder, $this->paymentDto->amount));
     }
 }

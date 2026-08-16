@@ -3,6 +3,7 @@
 namespace App\Services\PaymentCallbackServices;
 
 
+use App\DTO\PaymentCallbackDto;
 use App\Enums\AwardTypeEnums;
 use App\Enums\ParticipationStatusEnums;
 use App\Enums\PrintOrderStatusEnums;
@@ -16,15 +17,14 @@ use Illuminate\Support\Facades\Log;
 
 class ParticipationPaymentService
 {
-    private array $yooKassaObject;
-    public function __construct(array $yooKassaObject)
+    private PaymentCallbackDto $paymentDto;
+    public function __construct(PaymentCallbackDto $paymentDto)
     {
-        $this->yooKassaObject = $yooKassaObject;
+        $this->paymentDto = $paymentDto;
     }
 
     public function update() {
-
-        $transactionData = json_decode($this->yooKassaObject['metadata']['transaction_data'], true);
+        $transactionData = $this->paymentDto->transactionData;
         $participation = Participation::where('id', $transactionData['participation_id'])->first();
         $participation->update([
             'status' => ParticipationStatusEnums::APPROVED->value
@@ -43,14 +43,14 @@ class ParticipationPaymentService
         $participation->promocodeStat?->update([
             'is_paid' => true
         ]);
-        $amount = $this->yooKassaObject['amount']['value'];
+        $amount = $this->paymentDto->amount;
         $user = User::where('id', $participation['user_id'])->first();
         $subject = '💸 *Новая оплата по сборинку!* 💸' . "\n\n";
         $notificationText =  $subject . '*Автор:* ' . $participation['author_name'] .
             "\n" . "*Сборник:* " . $participation->collection->title_short .
             "\n" . "*Сумма:* " . $amount . " руб.";
 
-        $user->notify(new PaymentParticipationSuccessNotification($participation, $participation->collection, $this->yooKassaObject['amount']['value']));
+        $user->notify(new PaymentParticipationSuccessNotification($participation, $participation->collection, $this->paymentDto->amount));
         $notification = new TelegramDefaultNotification(null, $notificationText, null);
         TelegramNotificationJob::dispatch($notification);
     }

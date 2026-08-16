@@ -28,10 +28,13 @@
         @if ($ownBook['status_general'] == \App\Enums\OwnBookStatusEnums::REVIEW)
             <span class="text-dark-300 italic text-2xl text-center">Сейчас ваша заявка проверяется. Как только проверка будет завершена, вы получите оповещение по почте, а в этом блоке появится возможность оплаты.</span>
         @elseif ($ownBook['status_general'] == \App\Enums\OwnBookStatusEnums::PAYMENT_REQUIRED)
-            <x-ui.button wire:click="createPayment({{$ownBook['price_total']}}, 'firstPayment')" color="yellow" class="w-full">
-                Оплатить
-                {{$ownBook['price_total']}} руб.
-            </x-ui.button>
+            <div class="flex flex-col gap-2">
+                <x-ui.button wire:click="createPayment({{$ownBook['price_total']}}, 'firstPayment')" color="yellow" class="w-full">
+                    Оплатить
+                    {{$ownBook['price_total']}} руб.
+                </x-ui.button>
+                <x-ui.link-simple wire:click="createForeignPayment({{$ownBook['price_total']}}, 'firstPayment')" class="mx-auto" color="yellow">Оплатить иностранной картой</x-ui.link-simple>
+            </div>
         @endif
     </div>
 </x-process-blocks.template>

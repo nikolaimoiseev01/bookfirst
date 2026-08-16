@@ -21,24 +21,18 @@ class OwnBookPage extends Component
         $this->ownBook = OwnBook::where('id', $own_book_id)->with('chat', 'works', 'media')->first();
     }
 
-    public function createPayment($amount, $type)
-    {
-        $typeRus = match($type) {
-            'firstPayment' => 'издания',
-            'printOnly' => 'печати',
-        };
+    private function getPaymentTransactionData($type): array {
         $transactionType = match($type) {
             'firstPayment' => TransactionTypeEnums::OWN_BOOK_WO_PRINT,
             'printOnly' => TransactionTypeEnums::OWN_BOOK_PRINT,
         };
-        $urlRedirectType = match($type) {
-            'firstPayment' => 'own_book_without_print',
-            'printOnly' => 'own_book_print_only',
-        };
-        $urlRedirect = route('account.own_book.index', $this->ownBook['id'])  . "?confirm_payment={$urlRedirectType}";
         $ownBookTitle = mb_strimwidth($this->ownBook['title'], 0, 30, '...');
+        $typeRus = match($type) {
+            'firstPayment' => 'издания',
+            'printOnly' => 'печати',
+        };
         $description = "Оплата {$typeRus} книги '{$ownBookTitle}' от автора {$this->ownBook->user->getUserFullName()} (own_book_id: {$this->ownBook['id']})";
-        $transactionData = [
+        return [
             'type' => $transactionType,
             'description' => $description,
             'model_type' => 'OwnBook',
@@ -47,12 +41,34 @@ class OwnBookPage extends Component
                 'own_book_id' => $this->ownBook['id'],
             ]
         ];
+    }
 
+    private function getPaymentRedirectUrl($type) {
+        $urlRedirectType = match($type) {
+            'firstPayment' => 'own_book_without_print',
+            'printOnly' => 'own_book_print_only',
+        };
+        return route('account.own_book.index', $this->ownBook['id'])  . "?confirm_payment={$urlRedirectType}";
+    }
+
+    public function createPayment($amount, $type)
+    {
         $paymentService = new PaymentService();
         $paymentUrl = $paymentService->createPayment(
             amount: $amount,
-            urlRedirect: $urlRedirect,
-            transactionData: $transactionData
+            urlRedirect: $this->getPaymentRedirectUrl($type),
+            transactionData: $this->getPaymentTransactionData($type)
+        );
+        $this->redirect($paymentUrl);
+    }
+
+    public function createForeignPayment($amount, $type)
+    {
+        $paymentService = new PaymentService();
+        $paymentUrl = $paymentService->createForeignPayment(
+            amount: $amount,
+            urlRedirect: $this->getPaymentRedirectUrl($type),
+            transactionData: $this->getPaymentTransactionData($type)
         );
         $this->redirect($paymentUrl);
     }

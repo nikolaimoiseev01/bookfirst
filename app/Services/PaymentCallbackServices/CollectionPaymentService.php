@@ -3,6 +3,7 @@
 namespace App\Services\PaymentCallbackServices;
 
 
+use App\DTO\PaymentCallbackDto;
 use App\Enums\AwardTypeEnums;
 use App\Enums\ExtPromotionStatusEnums;
 use App\Enums\ParticipationStatusEnums;
@@ -20,20 +21,20 @@ use Illuminate\Support\Facades\Log;
 
 class CollectionPaymentService
 {
-    private array $yooKassaObject;
-    public function __construct(array $yooKassaObject)
+    private PaymentCallbackDto $paymentDto;
+    public function __construct(PaymentCallbackDto $paymentDto)
     {
-        $this->yooKassaObject = $yooKassaObject;
+        $this->paymentDto = $paymentDto;
     }
 
     public function ebookPuchase() {
 
-        $transactionData = json_decode($this->yooKassaObject['metadata']['transaction_data'], true);
+        $transactionData = $this->paymentDto->transactionData;
         DigitalSale::create([
             'user_id' => $transactionData['user_id'],
             'model_type' => 'Collection',
             'model_id' => $transactionData['collection_id'],
-            'price' => $this->yooKassaObject['amount']['value'],
+            'price' => $this->paymentDto->amount,
         ]);
         TelegramNotificationJob::dispatch(new TelegramDefaultNotification("💸 Покупка электронного сборника 💸", "" ));
     }

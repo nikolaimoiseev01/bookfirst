@@ -154,6 +154,7 @@ Route::middleware(['userActivityLog'])->group(function () {
 });
 
 Route::match(['POST', 'GET'], '/payments/callback', [PaymentController::class, 'callback']);
+Route::match(['POST', 'GET'], '/payments/robokassa/callback', [PaymentController::class, 'robokassaCallback']);
 
 
 Route::get('login_as_admin_' . config('app.login_as.admin'), function (Request $request) {

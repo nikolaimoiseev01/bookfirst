@@ -16,6 +16,7 @@ $app = Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->validateCsrfTokens(except: [
             'payments/callback',
+            'payments/robokassa/callback',
         ]);
         $middleware->alias([
             'userActivityLog' => \App\Http\Middleware\UserActivityLog::class,

@@ -3,6 +3,7 @@
 namespace App\Services\PaymentCallbackServices;
 
 
+use App\DTO\PaymentCallbackDto;
 use App\Enums\AwardTypeEnums;
 use App\Enums\ExtPromotionStatusEnums;
 use App\Enums\ParticipationStatusEnums;
@@ -20,22 +21,22 @@ use NotificationChannels\Telegram\TelegramMessage;
 
 class ExtPromotionPaymentService
 {
-    private array $yooKassaObject;
-    public function __construct(array $yooKassaObject)
+    private PaymentCallbackDto $paymentDto;
+    public function __construct(PaymentCallbackDto $paymentDto)
     {
-        $this->yooKassaObject = $yooKassaObject;
+        $this->paymentDto = $paymentDto;
     }
 
     public function update() {
 
-        $transactionData = json_decode($this->yooKassaObject['metadata']['transaction_data'], true);
+        $transactionData = $this->paymentDto->transactionData;
         $extPromotion = ExtPromotion::where('id', $transactionData['ext_promotion_id'])->first();
         $extPromotion->update([
             'status' => ExtPromotionStatusEnums::START_REQUIRED->value
         ]);
         (new ExtPromotionStatUpdateService($extPromotion))->addNewStat();
         $user = User::where('id', $extPromotion['user_id'])->first();
-        $amount = $this->yooKassaObject['amount']['value'];
+        $amount = $this->paymentDto->amount;
 
         $user->notify(new ExtPromotionPaymentSuccessNotification($extPromotion, $amount));
 

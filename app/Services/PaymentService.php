@@ -3,8 +3,10 @@
 namespace App\Services;
 
 use App\Enums\ParticipationStatusEnums;
+use App\Enums\TransactionPaymentProviderEnums;
 use App\Enums\TransactionStatusEnums;
 use App\Enums\TransactionTypeEnums;
+use App\DTO\PaymentCallbackDto;
 use App\Models\award;
 use App\Models\Collection\Participation;
 use App\Models\Transaction;
@@ -15,6 +17,7 @@ use App\Services\PaymentCallbackServices\ParticipationPaymentService;
 use App\Services\PaymentCallbackServices\PurchasePrintPaymentService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use YooKassa\Client;
 
@@ -84,33 +87,89 @@ class PaymentService
         });
     }
 
-    public function callbackPayment($yooKassaObject): void
+    public function createForeignPayment(
+        float  $amount,
+        string $urlRedirect,
+        array  $transactionData = []
+    ): string
     {
-        $metadata = $yooKassaObject['metadata'];
+        return DB::transaction(function () use ($amount, $urlRedirect, $transactionData) {
+            $transaction = Transaction::create(array_merge([
+                'user_id' => Auth::id(),
+                'status' => TransactionStatusEnums::CREATED,
+                'amount' => $amount,
+                'payment_provider' => TransactionPaymentProviderEnums::ROBOKASSA,
+            ], $transactionData));
 
-        if ($metadata['transaction_type'] == TransactionTypeEnums::COLLECTION_PARTICIPATION->value) {
-            (new ParticipationPaymentService($yooKassaObject))->update();
+            $merchantLogin = config('services.robokassa.merchant_login');
+            $password1 = config('services.robokassa.password1');
+            $isTest = config('services.robokassa.is_test');
+
+            $outSum = number_format($amount, 2, '.', '');
+            $invId = $transaction->id;
+
+            // В подписи SuccessUrl2 участвует в url-encoded виде
+            $successUrl = urlencode($urlRedirect);
+            $successUrlMethod = 'GET';
+
+            // MerchantLogin:OutSum:InvId:SuccessUrl2:SuccessUrl2Method:Пароль#1
+            $signature = md5("{$merchantLogin}:{$outSum}:{$invId}:{$successUrl}:{$successUrlMethod}:{$password1}");
+
+            $params = [
+                'MerchantLogin' => $merchantLogin,
+                'OutSum' => $outSum,
+                'InvId' => $invId,
+                'SuccessUrl2' => $successUrl,
+                'SuccessUrl2Method' => $successUrlMethod,
+                'SignatureValue' => $signature,
+            ];
+
+            if ($isTest) {
+                $params['IsTest'] = 1;
+            }
+
+            $response = Http::asForm()
+                ->post('https://auth.robokassa.ru/Merchant/Indexjson.aspx', $params);
+
+            $invoiceId = $response->json('invoiceID');
+
+            if (empty($invoiceId)) {
+                Log::error('Robokassa: не удалось получить ссылку на оплату', [
+                    'status' => $response->status(),
+                    'body' => $response->body(),
+                ]);
+                throw new \RuntimeException('Не удалось создать ссылку на оплату Robokassa');
+            }
+
+            return "https://auth.robokassa.ru/Merchant/Index/{$invoiceId}";
+        });
+    }
+
+    public function callbackPayment(PaymentCallbackDto $paymentDto): void
+    {
+        if ($paymentDto->transactionType == TransactionTypeEnums::COLLECTION_PARTICIPATION->value) {
+            (new ParticipationPaymentService($paymentDto))->update();
         }
-        if ($metadata['transaction_type'] == TransactionTypeEnums::OWN_BOOK_WO_PRINT->value) {
-            (new OwnBookPaymentService($yooKassaObject))->firstPayment();
+        if ($paymentDto->transactionType == TransactionTypeEnums::OWN_BOOK_WO_PRINT->value) {
+            (new OwnBookPaymentService($paymentDto))->firstPayment();
         }
-        if ($metadata['transaction_type'] == TransactionTypeEnums::OWN_BOOK_PRINT->value) {
-            (new OwnBookPaymentService($yooKassaObject))->firstAuthorPrintPayment();
+        if ($paymentDto->transactionType == TransactionTypeEnums::OWN_BOOK_PRINT->value) {
+            (new OwnBookPaymentService($paymentDto))->firstAuthorPrintPayment();
         }
-        if ($metadata['transaction_type'] == TransactionTypeEnums::EXT_PROMOTION_PAYMENT->value) {
-            (new ExtPromotionPaymentService($yooKassaObject))->update();
+        if ($paymentDto->transactionType == TransactionTypeEnums::EXT_PROMOTION_PAYMENT->value) {
+            (new ExtPromotionPaymentService($paymentDto))->update();
         }
-        if ($metadata['transaction_type'] == TransactionTypeEnums::COLLECTION_EBOOK_PURCHASE->value) {
-            (new CollectionPaymentService($yooKassaObject))->ebookPuchase();
+        if ($paymentDto->transactionType == TransactionTypeEnums::COLLECTION_EBOOK_PURCHASE->value) {
+            (new CollectionPaymentService($paymentDto))->ebookPuchase();
         }
-        if ($metadata['transaction_type'] == TransactionTypeEnums::OWN_BOOK_EBOOK_PURCHASE->value) {
-            (new OwnBookPaymentService($yooKassaObject))->ebookPuchase();
+        if ($paymentDto->transactionType == TransactionTypeEnums::OWN_BOOK_EBOOK_PURCHASE->value) {
+            (new OwnBookPaymentService($paymentDto))->ebookPuchase();
         }
-        if (in_array($metadata['transaction_type'], [
+        if (in_array($paymentDto->transactionType, [
             TransactionTypeEnums::OWN_BOOK_ONLY->value,
             TransactionTypeEnums::COLLECTION_ONLY->value
         ])) {
-            (new PurchasePrintPaymentService($yooKassaObject))->update();
+            (new PurchasePrintPaymentService($paymentDto))->update();
         }
     }
 }
