@@ -8,7 +8,7 @@ class CalculateOwnBookService
     public $pages;
 
     private const PRINT_PROFIT_COEF = 3;
-    private const TEXT_DESIGN_PER_PAGE = 16;
+    private const TEXT_DESIGN_PER_PAGE = 25;
     private const TEXT_CHECK_PER_PAGE = 30;
     private const TEXT_ISBN_PRICE = 300;
     private const TEXT_PRICE_CONST = 500;
