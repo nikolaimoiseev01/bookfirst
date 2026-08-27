@@ -77,15 +77,15 @@ class EmailCampaignForm
                                 return;
                             }
 
-                            $utmCampaign = $get('utm_campaign');
                             $recipientListId = $get('email_recipient_list_id');
+                            $recipientList = $recipientListId
+                                ? EmailRecipientList::find($recipientListId)
+                                : null;
+                            $utmCampaign = $recipientList?->utm_campaign;
                             $promoCode = null;
 
-                            if ($recipientListId) {
-                                $recipientList = EmailRecipientList::find($recipientListId);
-                                if ($recipientList && $recipientList->promocode) {
-                                    $promoCode = $recipientList->promocode->name;
-                                }
+                            if ($recipientList?->promocode) {
+                                $promoCode = $recipientList->promocode->name;
                             }
 
                             $renderedHtml = self::renderTemplatePreview($state, $utmCampaign, $promoCode);

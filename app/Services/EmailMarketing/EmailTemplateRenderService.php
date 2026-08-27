@@ -14,7 +14,7 @@ class EmailTemplateRenderService
         $collectionsHtml = Collection::query()
             ->where('status', CollectionStatusEnums::APPS_IN_PROGRESS)
             ->get()
-            ->map(fn (Collection $collection) => $this->renderCollectionBlock($collection))
+            ->map(fn (Collection $collection) => $this->renderCollectionBlock($collection, $utmCampaign))
             ->implode('');
 
         $finalHtml = str_replace('{{ACTUAL_COLLECTIONS}}', $collectionsHtml, $template->html_content);
@@ -23,10 +23,11 @@ class EmailTemplateRenderService
         return $finalHtml;
     }
 
-    private function renderCollectionBlock(Collection $collection): string
+    private function renderCollectionBlock(Collection $collection, ?string $utmCampaign): string
     {
         return view('emails.collection-email-card', [
             'collection' => $collection,
+            'utmCampaign' => $utmCampaign,
         ])->render();
     }
 }

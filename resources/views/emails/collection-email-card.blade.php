@@ -58,7 +58,12 @@
         >
             <a
                 class="button"
-                href="{{ route('portal.collection', $collection->slug)}}?utm_source=email&utm_content={{$collection->slug}}&utm_campaign=@{{UTM_CAMPAIGN}}"
+                href="{{ route('portal.collection', [
+                    'slug' => $collection->slug,
+                    'utm_source' => 'email',
+                    'utm_content' => $collection->slug,
+                    'utm_campaign' => $utmCampaign ?? '',
+                ]) }}"
                 style="width:50%;display:block;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;font-weight:400;background:#ffffff;color:#47AF98;border-radius:7px;border:1px #47AF98 solid;padding:3px 20px;text-decoration:none;"
             >
                 Подробнее
