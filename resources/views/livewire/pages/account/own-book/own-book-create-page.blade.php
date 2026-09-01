@@ -163,7 +163,9 @@
                             <x-ui.input.text name="surname" label="Телефон получателя*"
                                              wire:model="receiverTelephone"/>
                         </div>
-                        <livewire:components.account.address-choose/>
+                        <x-ui.input.text name="address" label="Адрес получателя*"
+                                         placeholder="Укажите полный адрес с индексом"
+                                         wire:model="addressJson.string"/>
                     </div>
                 </div>
             </div>

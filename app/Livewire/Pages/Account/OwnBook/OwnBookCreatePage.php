@@ -13,7 +13,6 @@ use App\Jobs\TelegramNotificationJob;
 use App\Models\Chat\Chat;
 use App\Models\OwnBook\OwnBook;
 use App\Models\OwnBook\OwnBookWork;
-use App\Models\PrintOrder\AddressType;
 use App\Models\PrintOrder\PrintOrder;
 use App\Models\Work\Work;
 use App\Notifications\OwnBook\OwnBookCreatedNotification;
@@ -51,9 +50,12 @@ class OwnBookCreatePage extends Component
     public $insideColor = 'Черно-белый';
     public $pagesColor;
 
-    public $addressType = 'СДЭК';
+    public $addressType = 'custom';
     public $country = 'Россия';
-    public $addressJson;
+    public $addressJson = [
+        'string' => '',
+        'parsed_data' => null,
+    ];
 
     public $receiverName;
     public $receiverTelephone;
@@ -77,7 +79,7 @@ class OwnBookCreatePage extends Component
     private const MIN_PAGES = 30;
     private const MIN_PAGES_HARD_COVER = 60;
 
-    protected $listeners = ['getAddress', 'saveApplication'];
+    protected $listeners = ['saveApplication'];
 
     public function render()
     {
@@ -115,11 +117,7 @@ class OwnBookCreatePage extends Component
             'receiverName' => Rule::requiredIf(fn() => $this->needPrint),
             'receiverTelephone' => Rule::requiredIf(fn() => $this->needPrint),
             'internalPromoType' => Rule::requiredIf(fn() => $this->needPromo),
-            'addressJson' => Rule::requiredIf(fn() => $this->needPrint),
-            'country' => [
-                Rule::requiredIf(fn() => $this->needPrint && $this->addressType == 'foreign'),
-                'min:1',
-            ],
+            'addressJson.string' => Rule::requiredIf(fn() => $this->needPrint),
         ];
 
         if ($this->needPrint && $this->insideColor == 'Цветной') {
@@ -139,13 +137,6 @@ class OwnBookCreatePage extends Component
         return $rules;
     }
 
-    public function getAddress($country, $addressType, $addressJson)
-    {
-        $this->country = $country;
-        $this->addressType = $addressType;
-        $this->addressJson = $addressJson;
-    }
-
     protected function messages(): array
     {
         $messages =  [
@@ -163,15 +154,8 @@ class OwnBookCreatePage extends Component
             'internalPromoType.required' => 'Выберите вариант продвижения, или снимите соответствующую галочку',
             'pagesColor.required' => 'Если цветной внутренний блок, введите количество цветных страниц',
             'pagesColor.min' => 'Если цветной внутренний блок, количество цветных страниц должно быть больше нуля',
-            'country.required' => 'Страна получателя должна быть заполнена',
-            'country.min' => 'Страна получателя должна быть заполнена',
+            'addressJson.string.required' => 'Адрес получателя обязателен для заполнения',
         ];
-
-        if ($this->addressType === 'СДЭК') {
-            $messages['addressJson.required'] = 'Пожалуйста, выберите офис сдэк для отправки (кнопка "выбрать" на карте)';
-        } else {
-            $messages['addressJson.required'] = 'Для международной доставки адрес обязателен';
-        }
 
         if ($this->coverType === 'Твердая') {
             $messages['pages.min'] = 'Для твердой обложки минимум :min страниц.';
