@@ -54,7 +54,7 @@
                         <x-ui.link-simple :isLivewire="false"
                                           @click="$dispatch('open-modal', 'participationAddressVideoModal')"
                                           class="!text-base !font-normal">
-                            как заполнять адрес
+                            Как заполнять адрес
                         </x-ui.link-simple>
                     @endif
                     @if($showChosenAddress)
