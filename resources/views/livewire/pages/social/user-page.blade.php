@@ -32,7 +32,7 @@
             </div>
             <div x-show="tab == 'participations'" class="flex gap-8 flex-wrap">
                 @forelse($user->participations as $participation)
-                    <x-ui.cards.card-social-participation :participation="$participation"/>
+                    <x-ui.cards.card-social-participation  class="!min-w-48 !max-w-48" :participation="$participation"/>
                 @empty
                     <p class="italic text-dark-350">Автор еще не участвовал в опубликованных сборниках, но все еще впереди 🙂</p>
                 @endforelse
