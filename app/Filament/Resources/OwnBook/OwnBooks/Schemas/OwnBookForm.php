@@ -157,7 +157,7 @@ class OwnBookForm
                         SpatieMediaLibraryFileUpload::make('inside_file')
                             ->label('Внутренний блок')
                             ->downloadable()
-                            ->maxSize(15240)
+                            ->maxSize(100240)
                             ->collection('inside_file'),
                         Section::make('Исправления ВБ от автора')->schema([
                             Repeater::make('previewCommentsInside')
