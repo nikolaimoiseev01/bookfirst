@@ -11,7 +11,7 @@
             <x-ui.modal name="userAvatarModal" maxWidth="md">
                 <div class="relative flex items-center justify-center p-4">
                     <button type="button" class="absolute top-2 right-3 text-3xl text-dark-350 hover:text-dark-600" @click="$dispatch('close-modal', 'userAvatarModal')" aria-label="Закрыть">&times;</button>
-                    <img src="{{$fullAvatar}}" class="min-h-[240px] min-w-[240px] max-h-[75vh] max-w-full rounded object-contain" alt="Аватар пользователя {{getUserName($user)}}">
+                    <img src="{{$fullAvatar}}" class="min-h-[240px] min-w-[240px] max-h-[75vh] max-w-[640px] rounded object-contain" alt="Аватар пользователя {{getUserName($user)}}">
                 </div>
             </x-ui.modal>
             <div class="flex flex-col justify-between md:gap-4">
