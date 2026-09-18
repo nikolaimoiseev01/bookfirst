@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
     app:
         build:
@@ -11,11 +9,21 @@ services:
         working_dir: /var/www
         volumes:
             - .:/var/www
+        environment:
+            DB_CONNECTION: pgsql
+            DB_HOST: postgres
+            DB_PORT: 5432
+            DB_DATABASE: bookfirst
+            DB_USERNAME: admin
+            DB_PASSWORD: admin
+        depends_on:
+            postgres:
+                condition: service_healthy
         networks:
             - laravel
 
     nginx:
-        image: nginx:1.25
+        image: nginx:alpine
         container_name: laravel_nginx
         restart: unless-stopped
         ports:
@@ -28,19 +36,23 @@ services:
         networks:
             - laravel
 
-    mysql:
-        image: mysql:8.0
-        container_name: laravel_mysql
+    postgres:
+        image: postgis/postgis:16-3.4
+        container_name: bookfirst-postgres
         restart: unless-stopped
         environment:
-            MYSQL_ROOT_PASSWORD: root
-            MYSQL_DATABASE: laravel
-            MYSQL_USER: laravel
-            MYSQL_PASSWORD: laravel
+            POSTGRES_DB: bookfirst
+            POSTGRES_USER: admin
+            POSTGRES_PASSWORD: admin
         ports:
-            - "3307:3306"
+            - "5432:5432"
         volumes:
-            - mysql_data:/var/lib/mysql
+            - postgres_data:/var/lib/postgresql/data
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U admin -d bookfirst"]
+            interval: 5s
+            timeout: 5s
+            retries: 10
         networks:
             - laravel
 
@@ -48,4 +60,6 @@ networks:
     laravel:
 
 volumes:
-    mysql_data:
+    postgres_data:
+        external: true
+        name: bookfirst-postgres-data

@@ -11,4 +11,9 @@ class WorkComment extends Model
     public function user(): belongsTo {
         return $this->belongsTo(User::class);
     }
+
+    public function work(): belongsTo
+    {
+        return $this->belongsTo(Work::class);
+    }
 }

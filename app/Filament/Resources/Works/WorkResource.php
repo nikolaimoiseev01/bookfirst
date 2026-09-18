@@ -6,6 +6,7 @@ use App\Filament\Resources\Works\Pages\CreateWork;
 use App\Filament\Resources\Works\Pages\EditWork;
 use App\Filament\Resources\Works\Pages\ListWorks;
 use App\Filament\Resources\Works\Pages\ViewWork;
+use App\Filament\Resources\Works\RelationManagers\WorkCommentsRelationManager;
 use App\Filament\Resources\Works\Schemas\WorkForm;
 use App\Filament\Resources\Works\Schemas\WorkInfolist;
 use App\Filament\Resources\Works\Tables\WorksTable;
@@ -46,7 +47,7 @@ class WorkResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            WorkCommentsRelationManager::class,
         ];
     }
 

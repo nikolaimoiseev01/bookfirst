@@ -13,6 +13,8 @@
                 <h3 @click="tab = 'own_books'" :class="tab == 'own_books' ? 'text-blue-500' : ''"
                     class="text-4xl cursor-pointer transition hover:text-blue-500">Собственные
                     книги</h3>
+                <h3 @click="tab = 'participations'" :class="tab == 'participations' ? 'text-blue-500' : ''"
+                    class="text-4xl cursor-pointer transition hover:text-blue-500">Участия в сборниках</h3>
             </div>
             <div x-show="tab == 'works'">
                 @if($user['works_count'] > 0)
@@ -26,6 +28,13 @@
                     <x-ui.cards.card-own-book class="!min-w-48 !max-w-48" :ownbook="$ownBook"/>
                 @empty
                     <p class="italic text-dark-350">Автор еще не издавал у нас книги, но все еще впереди 🙂</p>
+                @endforelse
+            </div>
+            <div x-show="tab == 'participations'" class="flex gap-8 flex-wrap">
+                @forelse($user->participations as $participation)
+                    <x-ui.cards.card-social-participation :participation="$participation"/>
+                @empty
+                    <p class="italic text-dark-350">Автор еще не участвовал в опубликованных сборниках, но все еще впереди 🙂</p>
                 @endforelse
             </div>
         </div>

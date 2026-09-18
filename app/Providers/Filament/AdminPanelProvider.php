@@ -10,6 +10,7 @@ use App\Filament\Resources\EmailMarketing\EmailTemplates\EmailTemplateResource;
 use App\Filament\Resources\EmailMarketing\EmailRecipientLists\EmailRecipientListResource;
 use App\Filament\Resources\Roles\RoleResource;
 use App\Filament\Resources\Works\WorkResource;
+use App\Filament\Resources\WorkComments\WorkCommentResource;
 use App\Models\Chat\MessageTemplate;
 use App\Models\EmailMarketing\EmailTemplate;
 use App\Models\EmailMarketing\RecipientList;
@@ -107,6 +108,10 @@ class AdminPanelProvider extends PanelProvider
                                 ...self::shielded(MessageTemplatesResource::class),
                                 ...self::shielded(RoleResource::class),
                                 ...self::shielded(WorkResource::class),
+                                NavigationItem::make('Комментарии к произведениям')
+                                    ->url('/admin/work-comments')
+                                    ->icon(WorkCommentResource::getNavigationIcon())
+                                    ->visible(fn() => WorkCommentResource::canViewAny()),
                             ]),
                     ]);
             })

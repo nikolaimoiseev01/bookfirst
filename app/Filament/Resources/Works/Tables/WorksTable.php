@@ -17,6 +17,10 @@ class WorksTable
         return $table
             ->columns([
                 TextColumn::make('title')->searchable()->label('Название'),
+                TextColumn::make('id')
+                    ->label('ID')
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('user.name')
                     ->limit(20)
                     ->label('Пользователь')
@@ -27,7 +31,49 @@ class WorksTable
                     ->label('Пользователь')->searchable()
                     ->url(function ($record) {
                         return EditUser::getUrl(['record' => $record->user]);
-                    })
+                    }),
+                TextColumn::make('workType.name')
+                    ->label('Тип работы')
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('workTopic.name')
+                    ->label('Тема')
+                    ->placeholder('Не указана')
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('symbols')
+                    ->label('Символы')
+                    ->numeric()
+                    ->sortable(),
+                TextColumn::make('rows')
+                    ->label('Строки')
+                    ->numeric()
+                    ->sortable(),
+                TextColumn::make('pages')
+                    ->label('Страницы')
+                    ->numeric()
+                    ->sortable(),
+                TextColumn::make('upload_type')
+                    ->label('Загрузка')
+                    ->formatStateUsing(fn (?string $state): string => match ($state) {
+                        'file' => 'Файл',
+                        'text' => 'Текст',
+                        'link' => 'Ссылка',
+                        default => 'Не указан',
+                    }),
+                TextColumn::make('comments_count')
+                    ->label('Комментарии')
+                    ->counts('comments')
+                    ->sortable(),
+                TextColumn::make('created_at')
+                    ->label('Дата создания')
+                    ->dateTime()
+                    ->sortable(),
+                TextColumn::make('updated_at')
+                    ->label('Обновлено')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //

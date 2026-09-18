@@ -1,7 +1,19 @@
 <section x-data="{userHasAwards: @js($userHasAwards)}" class="flex gap-8 mb-8 md:flex-col">
     <div class="flex gap-4" :class="userHasAwards ? 'flex-col w-1/2 md:w-full' : 'w-full md:flex-col'">
         <div :class="userHasAwards ? '' : 'w-1/2 md:w-full'" class="container flex gap-8 p-4 md:min-w-full" x-data="{userOnline: @js($userOnline)}">
-            <img src="{{getUserAvatar($user)}}" class="rounded w-20 h-20" alt="">
+            @php
+                $avatar = getUserAvatar($user);
+                $fullAvatar = $user->getFirstMediaUrl('avatar') ?: $avatar;
+            @endphp
+            <button type="button" class="shrink-0 cursor-zoom-in" @click="$dispatch('open-modal', 'userAvatarModal')">
+                <img src="{{$avatar}}" class="rounded w-20 h-20 object-cover" alt="Аватар пользователя {{getUserName($user)}}">
+            </button>
+            <x-ui.modal name="userAvatarModal" maxWidth="md">
+                <div class="relative flex items-center justify-center p-4">
+                    <button type="button" class="absolute top-2 right-3 text-3xl text-dark-350 hover:text-dark-600" @click="$dispatch('close-modal', 'userAvatarModal')" aria-label="Закрыть">&times;</button>
+                    <img src="{{$fullAvatar}}" class="max-h-[75vh] max-w-full rounded object-contain" alt="Аватар пользователя {{getUserName($user)}}">
+                </div>
+            </x-ui.modal>
             <div class="flex flex-col justify-between md:gap-4">
                 <div class="flex gap-4 items-center flex-wrap">
                     <x-ui.link-simple href="{{route('social.user', $user['id'])}}"

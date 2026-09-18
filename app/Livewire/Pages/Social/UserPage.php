@@ -3,6 +3,7 @@
 namespace App\Livewire\Pages\Social;
 
 use App\Enums\OwnBookStatusEnums;
+use App\Enums\ParticipationStatusEnums;
 use App\Models\User\User;
 use App\Models\Work\Work;
 use Livewire\Component;
@@ -24,6 +25,10 @@ class UserPage extends Component
             ['ownBooks' => function ($query) {
                 $query->where('status_general', OwnBookStatusEnums::DONE);
             },
+                'participations' => function ($query) {
+                    $query->where('status', ParticipationStatusEnums::APPROVED)
+                        ->with('collection.media');
+                },
                 'media', 'awards', 'awards.awardType', 'awards.awardType.media'])->withCount('works', 'awards', 'subscribers', 'subscribedToUsers')->first();
         $this->randomWorks = Work::inRandomOrder()->with('media', 'user')->limit(5)->get();
     }
