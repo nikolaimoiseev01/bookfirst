@@ -186,6 +186,10 @@ return [
                 'update',
                 'delete',
             ],
+            \App\Filament\Resources\WorkComments\WorkCommentResource::class => [
+                'viewAny',
+                'view',
+            ],
             \App\Filament\Resources\EmailMarketing\EmailRecipientLists\EmailRecipientListResource::class => [
                 'viewAny',
                 'view',
