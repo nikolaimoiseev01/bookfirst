@@ -862,7 +862,7 @@ class DatabaseSeeder extends Seeder
 
             $role = DB::table('roles')->insert([
                 'name' => 'admin',
-                'guard_name' => 'admin',
+                'guard_name' => 'web',
                 'public_name' => 'admin'
             ]);
             $role_id = DB::table('roles')->first()->id;

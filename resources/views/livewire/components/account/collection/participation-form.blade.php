@@ -50,6 +50,13 @@
                         <x-ui.input.text name="surname" label="Телефон получателя*"
                                          wire:model="receiverTelephone"/>
                     </div>
+                    @if($formType === 'create')
+                        <x-ui.link-simple :isLivewire="false"
+                                          @click="$dispatch('open-modal', 'participationAddressVideoModal')"
+                                          class="!text-base !font-normal">
+                            как заполнять адрес
+                        </x-ui.link-simple>
+                    @endif
                     @if($showChosenAddress)
                         <div x-show="showChosenAddress" class="flex flex-col gap-2">
                             <p><b>Адрес
@@ -132,5 +139,9 @@
         <x-ui.button>Отправить заявку</x-ui.button>
         <x-ui.link-simple class="italic text-xl" href="{{route('account.chat_create',['title' => 'Вопрос по заявке в сборник'])}}">Получить помощь по заявке</x-ui.link-simple>
     </div>
+
+    @if($formType === 'create')
+        <x-participation-address-video-modal/>
+    @endif
 
 </form>
