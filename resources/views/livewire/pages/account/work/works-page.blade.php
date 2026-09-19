@@ -35,7 +35,7 @@
         <div class="flex gap-6 flex-wrap">
             @forelse ($works as $work)
                 <div class="container p-4 flex flex-col w-fit sm:w-full">
-                    <x-ui.link-simple href="{{route('social.work', $work['id'])}}" class="truncate w-52 text-xl">{{$work['title']}}</x-ui.link-simple>
+                    <x-ui.link-simple href="{{route('social.work', $work['id'])}}" class="truncate w-52 text-xl">{{ \Illuminate\Support\Str::limit($work['title'], 30) }}</x-ui.link-simple>
                     <p class="text-base">
                         Опубликовано: {{ \Carbon\Carbon::parse($work['created_at'])->translatedFormat('j F') }}</p>
                     <div class="h-px w-full bg-dark-100 my-2"></div>
