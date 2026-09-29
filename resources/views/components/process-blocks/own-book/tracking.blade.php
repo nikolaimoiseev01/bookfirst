@@ -10,7 +10,10 @@
             @endif
             @if($ownBook['status_general'] == \App\Enums\OwnBookStatusEnums::PRINT_PAYMENT_REQUIRED)
                 <p class="mb-4">Макеты успешно утверждены! Мы готовы приступить к печати. Для этого необходимо оплатить заказ</p>
-                <x-ui.button wire:click="createPayment({{$ownBook->initialPrintOrder['price_print']}}, 'printOnly')" class="w-full" color="yellow">Оплатить {{$ownBook->initialPrintOrder['price_print']}} руб.</x-ui.button>
+                <div class="flex flex-col gap-2">
+                    <x-ui.button wire:click="createPayment({{$ownBook->initialPrintOrder['price_print']}}, 'printOnly')" class="w-full" color="yellow">Оплатить {{$ownBook->initialPrintOrder['price_print']}} руб.</x-ui.button>
+                    <x-ui.link-simple wire:click="createForeignPayment({{$ownBook->initialPrintOrder['price_print']}}, 'printOnly')" class="mx-auto" color="yellow">Оплатить иностранной картой</x-ui.link-simple>
+                </div>
             @endif
             @if($ownBook['status_general'] == \App\Enums\OwnBookStatusEnums::PRINT_WAITING)
                 <p class="mb-4">
