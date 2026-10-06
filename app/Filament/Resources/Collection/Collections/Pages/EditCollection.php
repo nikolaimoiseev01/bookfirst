@@ -88,7 +88,7 @@ class EditCollection extends EditRecord
         if ($this->record->wasChanged('winner_participations')) {
             foreach ($this->record->winner_participations_ordered as $key => $winnerParticipation) {
                 $place = $key + 1;
-                if ($place == 3) {
+                if ($place == 3 || $place == 1) {
                     if ($winnerParticipation->printOrder ?? null) {
                         $winnerParticipation->printOrder->update([
                             'books_cnt' => $winnerParticipation->printOrder['books_cnt'] + 1
