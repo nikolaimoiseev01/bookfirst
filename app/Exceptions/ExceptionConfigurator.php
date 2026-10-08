@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Livewire\Mechanisms\HandleComponents\CorruptComponentPayloadException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Illuminate\Validation\ValidationException;
@@ -16,6 +17,21 @@ class ExceptionConfigurator
 
     public static function register($exceptions): void
     {
+        // Reject invalid snapshots before the generic 500 handler. Livewire's
+        // client handles 419 by offering to reload the page with fresh state.
+        $exceptions->render(function (CorruptComponentPayloadException $e, Request $request) {
+            $errorId = Str::uuid()->toString();
+
+            Log::warning('Livewire snapshot checksum mismatch', [
+                ...self::context($e, $request, 419, $errorId),
+                'user_agent' => Str::limit((string) $request->userAgent(), 512),
+            ]);
+
+            return response()->json([
+                'message' => 'Не удалось проверить состояние страницы. Обновите страницу и повторите действие.',
+                'error_id' => $errorId,
+            ], 419);
+        });
 
         $exceptions->render(function (AuthenticationException $e, Request $request) {
 

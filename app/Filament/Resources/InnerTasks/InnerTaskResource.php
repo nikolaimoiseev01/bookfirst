@@ -15,6 +15,8 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Toggle;
@@ -45,39 +47,52 @@ class InnerTaskResource extends Resource
                     ->label('Издание')
                     ->html()
                     ->state(function ($record) {
-                        $url =  match ($record['model_type']) {
-                            'Collection' => EditCollection::getUrl(['record' => $record->model]),
-                            'OwnBook' => EditOwnBook::getUrl(['record' => $record->model]),
-                            default => null,
-                        };
-                        $name = match ($record['model_type']) {
-                            'Collection' => $record->model['title_short'],
-                            'OwnBook' => $record->model['title'],
-                            default => null,
-                        };
+                        if ($record) {
+                            $url = match ($record['model_type']) {
+                                'Collection' => EditCollection::getUrl(['record' => $record->model]),
+                                'OwnBook' => EditOwnBook::getUrl(['record' => $record->model]),
+                                default => null,
+                            };
+                            $name = match ($record['model_type']) {
+                                'Collection' => $record->model['title_short'],
+                                'OwnBook' => $record->model['title'],
+                                default => null,
+                            };
 
-                        if (! $url) {
-                            return '—';
-                        }
+                            if (!$url) {
+                                return '—';
+                            }
 
-                        $safeUrl = e($url);
+                            $safeUrl = e($url);
 
-                        return <<<HTML
+                            return <<<HTML
                                             <a href="{$safeUrl}" target="_blank" rel="noopener noreferrer" class="text-primary-600 underline">
                                                 {$name}
                                             </a>
                                             HTML;
+                        } else {
+                            return '';
+                        }
                     }),
-                TextInput::make('responsible'),
-                TextEntry::make('type'),
-                TextEntry::make('title'),
+                Select::make('responsible')
+                    ->options([
+                        'Коля' => 'Коля',
+                        'Ксю' => 'Ксю',
+                        'Крис' => 'Крис',
+                    ]),
+                Hidden::make('type')
+                    ->default(InnerTaskTypeEnums::CUSTOM->value)
+                    ->dehydrated(fn ($operation) => $operation === 'create'),
+                TextInput::make('title'),
                 Textarea::make('description')
                     ->columnSpanFull(),
                 Textarea::make('comment')
                     ->columnSpanFull(),
                 DateTimePicker::make('deadline'),
                 DateTimePicker::make('deadline_inner'),
-                Toggle::make('flg_custom_task'),
+                Toggle::make('flg_custom_task')
+                    ->default(true)
+                    ->dehydrated(fn ($operation) => $operation === 'create'),
                 Toggle::make('flg_custom_finished'),
             ]);
     }
@@ -133,6 +148,7 @@ class InnerTaskResource extends Resource
                             InnerTaskTypeEnums::OWN_BOOK_INSIDE => '📖',
                             InnerTaskTypeEnums::OWN_BOOK_COVER => '📕',
                             InnerTaskTypeEnums::COLLECTION => '📚',
+                            InnerTaskTypeEnums::CUSTOM => '🛠️',
                         };
                         return "$icon $state->value";
                     })

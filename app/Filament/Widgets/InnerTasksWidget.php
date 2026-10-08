@@ -34,6 +34,7 @@ class InnerTasksWidget extends TableWidget
                             InnerTaskTypeEnums::OWN_BOOK_GENERAL => '✒️',
                             InnerTaskTypeEnums::OWN_BOOK_INSIDE => '📖',
                             InnerTaskTypeEnums::OWN_BOOK_COVER => '📕',
+                            InnerTaskTypeEnums::CUSTOM => '🛠️',
                             InnerTaskTypeEnums::COLLECTION => '📚',
                         };
                         return "$icon $state->value";

@@ -38,11 +38,16 @@ class InnerTasksNotification extends Command
             InnerTaskTypeEnums::OWN_BOOK_INSIDE->value => 'Макеты',
             InnerTaskTypeEnums::OWN_BOOK_COVER->value => 'Обложки @Kris_Moi',
             InnerTaskTypeEnums::COLLECTION->value => 'Сборники',
+            InnerTaskTypeEnums::CUSTOM->value => 'Кастомные задачи',
             default => ucfirst($type),
         };
     }
 
     private function formatDeadline($deadline) {
+        if (!$deadline) {
+            return 'без срока';
+        }
+
         $date = Carbon::parse($deadline);
         $days = now()->diffInDays($date, false);
 
@@ -74,7 +79,8 @@ class InnerTasksNotification extends Command
             $i = 1;
             foreach ($items as $item) {
                 $deadline = $this->formatDeadline($item->deadline);
-                $output .= "{$i}. {$item->description}: {$deadline}\n";
+                $description = $item->description ?: $item->title ?: 'Задача';
+                $output .= "{$i}. {$description}: {$deadline}\n";
                 $i++;
             }
 

@@ -9,6 +9,7 @@ enum InnerTaskTypeEnums: string
     case OWN_BOOK_GENERAL = 'Работа со книгой';
     case OWN_BOOK_INSIDE = 'Работа со книгой (ВБ)';
     case OWN_BOOK_COVER = 'Работа со книгой (Обложка)';
+    case CUSTOM = 'Кастомная задача';
 
 
 }

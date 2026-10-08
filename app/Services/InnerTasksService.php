@@ -174,7 +174,8 @@ class InnerTasksService
                 fn($task) => $task->type->value . '-' . $task->model_type . '-' . $task->model_id
             )->toArray();
 
-        InnerTask::truncate();
+        // Keep manually created tasks when regenerating status-based tasks.
+        InnerTask::where('flg_custom_task', false)->delete();
         $this->createCollectionTasks();
         $this->createOwnBookTasks();
     }
