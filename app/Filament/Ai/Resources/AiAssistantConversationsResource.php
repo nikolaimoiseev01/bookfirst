@@ -3,6 +3,7 @@
 namespace App\Filament\Ai\Resources;
 
 use App\Filament\Ai\Resources\AiAssistantConversationsResource\Pages\ListAiAssistantConversations;
+use App\Filament\Resources\User\Users\Pages\EditUser;
 use App\Models\Ai\AiAssistantConversation;
 use BackedEnum;
 use Filament\Actions\ViewAction;
@@ -62,7 +63,17 @@ class AiAssistantConversationsResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('created_at')->label('Дата')->dateTime('d.m.Y H:i')->sortable(),
-                TextColumn::make('user.email')->label('Пользователь')->searchable(),
+                TextColumn::make('user.name')
+                    ->label('Пользователь')
+                    ->getStateUsing(fn (AiAssistantConversation $record): string => $record->user?->getUserFullName() ?? '—')
+                    ->searchable(query: function ($query, string $search): void {
+                        $query->whereHas('user', fn ($userQuery) => $userQuery
+                            ->where('name', 'like', "%{$search}%")
+                            ->orWhere('surname', 'like', "%{$search}%"));
+                    })
+                    ->url(fn (AiAssistantConversation $record): ?string => $record->user
+                        ? EditUser::getUrl(['record' => $record->user])
+                        : null),
                 TextColumn::make('prompt_title')->label('Цель')->searchable(),
                 TextColumn::make('generation_type')
                     ->label('Тип')
