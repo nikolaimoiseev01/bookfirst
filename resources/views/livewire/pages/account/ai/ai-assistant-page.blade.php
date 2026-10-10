@@ -4,11 +4,6 @@
     @endsection
 
     <div class="flex flex-col gap-2 mb-6 max-w-4xl">
-        @if($paymentReturn)
-            <p class="rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-dark-200 dark:border-gray-700 dark:bg-dark_bg">
-                Вернулись со страницы оплаты. Попытки появятся после подтверждения платежа YooKassa; если баланс пока не обновился, обновите страницу чуть позже.
-            </p>
-        @endif
         <p class="font-medium">Бесплатных попыток осталось: <strong class="font-semibold text-green-500">{{ $freeAttemptsRemaining }} из {{ $attemptLimit }}</strong></p>
         @if($freeAttemptsRemaining > 0 && $attemptPackSize > 0 && $attemptPackPrice > 0)
             <p class="w-fit rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-base dark:border-gray-700 dark:bg-dark_bg">
