@@ -17,4 +17,5 @@ enum TransactionTypeEnums: string
     case EXT_PROMOTION_PAYMENT = 'Оплата продвижения';
     case OWN_BOOK_ONLY = 'Оплата отдельной печати собственной книги';
     case COLLECTION_ONLY = 'Оплата отдельно печати сборника';
+    case AI_ATTEMPT_PACK_PURCHASE = 'Покупка попыток ИИ-помощника';
 }

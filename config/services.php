@@ -46,6 +46,17 @@ return [
         'secret_key' => env('YOOKASSA_SECRET_KEY', null),
     ],
 
+    'openrouter' => [
+        'api_key' => env('OPENROUTER_API_KEY'),
+        'model' => env('OPENROUTER_MODEL', 'openai/gpt-4o-mini'),
+        'image_model' => env('OPENROUTER_IMAGE_MODEL', 'openai/gpt-image-1'),
+        'free_attempts' => (int) env('AI_FREE_ATTEMPTS', 3),
+        'paid_attempts' => [
+            'pack_size' => (int) env('AI_ATTEMPT_PACK_SIZE', 10),
+            'pack_price' => (float) env('AI_ATTEMPT_PACK_PRICE', 100),
+        ],
+    ],
+
     'robokassa' => [
         'merchant_login' => env('ROBOKASSA_MERCHANT_LOGIN', null),
         'password1' => env('ROBOKASSA_PASSWORD1', null),

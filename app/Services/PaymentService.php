@@ -11,6 +11,7 @@ use App\Models\award;
 use App\Models\Collection\Participation;
 use App\Models\Transaction;
 use App\Services\PaymentCallbackServices\CollectionPaymentService;
+use App\Services\PaymentCallbackServices\AiAttemptPackPaymentService;
 use App\Services\PaymentCallbackServices\ExtPromotionPaymentService;
 use App\Services\PaymentCallbackServices\OwnBookPaymentService;
 use App\Services\PaymentCallbackServices\ParticipationPaymentService;
@@ -147,6 +148,9 @@ class PaymentService
 
     public function callbackPayment(PaymentCallbackDto $paymentDto): void
     {
+        if ($paymentDto->transactionType == TransactionTypeEnums::AI_ATTEMPT_PACK_PURCHASE->value) {
+            (new AiAttemptPackPaymentService($paymentDto))->update();
+        }
         if ($paymentDto->transactionType == TransactionTypeEnums::COLLECTION_PARTICIPATION->value) {
             (new ParticipationPaymentService($paymentDto))->update();
         }

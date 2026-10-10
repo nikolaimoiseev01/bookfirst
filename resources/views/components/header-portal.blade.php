@@ -10,7 +10,7 @@
         <div class="lg:!hidden">
             <button @click="mobileMenuOpen = !mobileMenuOpen"
                     :class="mobileMenuOpen ? 'active' : ''"
-                    class="hamburger hamburger--converge !hidden header-1444:!block" type="button">
+                    class="hamburger hamburger--converge !hidden header-1625:!block" type="button">
                 <div class="inner">
                     <span class="bar"></span>
                     <span class="bar"></span>
@@ -19,18 +19,18 @@
             </button>
         </div>
 
-        <div class="w-px h-7 bg-gray-300 header-1444:hidden"></div>
+        <div class="w-px h-7 bg-gray-300 header-1625:hidden"></div>
         <a wire:navigate
            :class="$store.global.social ? 'text-dark-400 hover:text-green-500' : 'text-green-500'"
-           class="font-light cursor-pointer italic text-xl header-1444:hidden"
+           class="font-light cursor-pointer italic text-xl header-1625:hidden"
            href="{{route('portal.index')}}">
             Независимое издательство
         </a>
-        <div class="w-px h-7 bg-gray-300 header-1444:hidden"></div>
+        <div class="w-px h-7 bg-gray-300 header-1625:hidden"></div>
 
         <a wire:navigate
            :class="$store.global.social ? 'text-blue-500' : 'text-dark-400 hover:text-blue-500'"
-           class="font-light cursor-pointer italic text-xl header-1444:hidden"
+           class="font-light cursor-pointer italic text-xl header-1625:hidden"
            href="{{route('social.index')}}">
             Социальная сеть
         </a>
@@ -90,6 +90,13 @@
                        class="text-dark-400 lg:hidden transition">{{$link['name']}}</a>
                 @endif
             @endforeach
+            <a wire:navigate data-check-logged
+               :class="window.location.href.includes('account/ai-assistant') ? 'bg-green-500 !text-white shadow-sm' : 'bg-green-50 text-green-600 hover:bg-green-100 dark:bg-green-900/30 dark:text-green-300 dark:hover:bg-green-900/50'"
+               href="{{ route('account.ai-assistant') }}"
+               class="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-base font-semibold lg:hidden transition whitespace-nowrap">
+                <x-heroicon-o-sparkles class="h-5 w-5"/>
+                ИИ-помощник
+            </a>
             <div class="flex gap-2 items-center group cursor-pointer">
                 @auth
                     <a :class="window.location.href.includes('account') ? 'text-green-500' : ''"
@@ -120,7 +127,7 @@
          x-transition:leave="transition ease-in duration-300"
          x-transition:leave-start="opacity-100"
          x-transition:leave-end="opacity-0"
-         class="flex-col gap-4 hidden header-1444:flex fixed h-[calc(100vh-58px)] header-1444:w-fit md:!w-full max-w-3xl top-[58px] bg-white left-0 p-8">
+         class="flex-col gap-4 hidden header-1625:flex fixed h-[calc(100vh-58px)] header-1625:w-fit md:!w-full max-w-3xl top-[58px] bg-white left-0 p-8">
         <div class="flex w-ful gap-2 border-b border-gray-200 pb-2 justify-between">
             <a class="text-2xl font-medium"
                :class="$store.global.social ? 'text-blue-500' : 'text-dark-200 order-2'"
@@ -146,6 +153,13 @@
                 <x-ui.link-simple href="{{$link['route']}}">{{$link['name']}}</x-ui.link-simple>
             @endif
         @endforeach
+        <a wire:navigate data-check-logged href="{{ route('account.ai-assistant') }}"
+           :class="window.location.href.includes('account/ai-assistant') ? 'bg-green-500 text-white shadow-sm' : 'bg-green-50 text-green-700 hover:bg-green-100 dark:bg-green-900/30 dark:text-green-300 dark:hover:bg-green-900/50'"
+           class="flex items-center gap-3 rounded-xl border border-green-200 px-4 py-3 font-semibold transition dark:border-green-800">
+            <x-heroicon-o-sparkles class="h-6 w-6 shrink-0"/>
+            <span>ИИ-помощник</span>
+            <span class="ml-auto rounded-full bg-white/70 px-2 py-0.5 text-xs font-medium text-green-700 dark:bg-black/10 dark:text-green-200">Попробуйте</span>
+        </a>
     </div>
 </header>
 <script type="module">

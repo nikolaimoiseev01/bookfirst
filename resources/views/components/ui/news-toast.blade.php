@@ -4,6 +4,8 @@
     'storageKey' => 'referral_toast_closed_v1',
     // задержка перед показом (мс)
     'delay' => 2000,
+    'inline' => false,
+    'pulseDelay' => 0,
 ])
 
 <div
@@ -13,13 +15,13 @@
     })"
     x-init="init()"
     x-show="open"
-    x-transition:enter="transition ease-[cubic-bezier(.16,1,.3,1)] duration-50"
+    x-transition:enter="transition ease-[cubic-bezier(.16,1,.3,1)] duration-500"
     x-transition:enter-start="opacity-0 translate-y-10 scale-95"
     x-transition:enter-end="opacity-100 translate-y-0 scale-100"
     x-transition:leave="transition ease-in duration-300"
     x-transition:leave-start="opacity-100 translate-y-0 scale-100"
     x-transition:leave-end="opacity-0 translate-y-6 scale-95"
-    class="fixed bottom-4 left-4 right-4 max-w-3xl z-[9999] lg:!mx-auto"
+    {{ $attributes->merge(['class' => $inline ? 'relative w-full' : 'fixed bottom-4 left-4 right-4 max-w-3xl z-[9999] lg:!mx-auto']) }}
     style="display: none;"
     role="status"
     aria-live="polite"
@@ -27,13 +29,14 @@
 
 
     <div
-        class="
-    relative overflow-hidden rounded-2xl
+    class="
+    relative overflow-visible rounded-2xl
     bg-white/95 backdrop-blur
     border border-black/10
     p-5
     animate-shadow-pulse
 "
+        style="animation-delay: -{{ (int) $pulseDelay }}ms;"
     >
 
         <!-- close -->
@@ -57,6 +60,7 @@
         </div>
     </div>
 
+    @once
     <script>
         document.addEventListener('alpine:init', () => {
             Alpine.data('referralToast', ({key, delay}) => ({
@@ -91,6 +95,7 @@
             }));
         });
     </script>
+    @endonce
 </div>
 
 <style>

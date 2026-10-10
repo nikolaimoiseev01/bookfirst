@@ -29,8 +29,21 @@
             </div>
 
             <!-- форма -->
+            <div wire:loading.flex wire:target="generateAiReply" role="status" aria-live="polite"
+                 class="mx-4 mb-2 items-center gap-3 rounded-lg bg-primary-50 px-4 py-3 text-sm text-primary-700 dark:bg-primary-950 dark:text-primary-200">
+                <x-ui.spinner class="h-5 w-5 shrink-0" />
+                <span>ИИ анализирует переписку и готовит ответ…</span>
+            </div>
             <x-ui.input.text-area :messageTemplatesShow="true" model="text"
                                   attachable="true"></x-ui.input.text-area>
+            @if($aiDraft !== '')
+                <div class="mx-4 mt-2 flex justify-end">
+                    <label class="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-gray-200 bg-white px-2.5 py-1.5 text-xs font-medium text-gray-600 shadow-sm transition hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 dark:hover:bg-gray-800">
+                        <x-filament::input.checkbox wire:model="saveAiExample" class="!size-3.5" />
+                        <span>Сохранить ответ как пример</span>
+                    </label>
+                </div>
+            @endif
 
             @push('scripts')
                 <script>

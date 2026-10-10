@@ -73,6 +73,10 @@ class User extends Authenticatable implements FilamentUser, HasMedia, MustVerify
             return $this->hasAnyRole('admin|super_admin');
         }
 
+        if ($panel->getId() === 'ai') {
+            return $this->hasAnyRole('admin|super_admin');
+        }
+
         return $this->hasAnyRole('super_admin|admin|secondary_admin|ext_promotion_admin');
     }
 

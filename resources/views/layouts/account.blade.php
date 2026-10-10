@@ -66,6 +66,7 @@
         </div>
     </section>
 </main>
+<x-toast-telegram-channel/>
 @stack('scripts')
 @if(session('swal'))
     <script type="module">

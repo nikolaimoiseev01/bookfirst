@@ -102,6 +102,85 @@
         </div>
     </section>
 
+    <section class="content mb-24">
+        <div class="relative overflow-hidden rounded-2xl border border-green-100 bg-white px-6 py-6 shadow-sm dark:border-green-900 dark:bg-dark_bg md:px-4 md:py-5">
+            <div class="relative grid grid-cols-[0.85fr_1.15fr] items-center gap-6 lg:grid-cols-1">
+                <div class="flex flex-col items-start gap-3 lg:items-center lg:text-center">
+                    <span class="inline-flex items-center gap-2 rounded-full bg-green-100 px-3 py-1 text-sm font-semibold text-green-700 dark:bg-green-900/50 dark:text-green-300">
+                        <x-heroicon-o-sparkles class="h-4 w-4"/>
+                        Новое на сайте
+                    </span>
+                    <div>
+                        <h2 class="text-3xl font-semibold leading-tight lg:text-2xl">Идея есть — ИИ поможет её воплотить</h2>
+                        <p class="mt-2 max-w-xl text-lg">Напишите поздравление, продолжите начатое произведение или создайте иллюстрацию. Выберите задачу и получите результат за несколько секунд.</p>
+                    </div>
+                    <div class="flex flex-wrap gap-2 lg:justify-center">
+                        <span class="rounded-full border border-green-100 bg-green-50 px-3 py-1 text-sm text-green-800 dark:border-green-900 dark:bg-green-900/30 dark:text-green-200">Поздравление другу</span>
+                        <span class="rounded-full border border-green-100 bg-green-50 px-3 py-1 text-sm text-green-800 dark:border-green-900 dark:bg-green-900/30 dark:text-green-200">Продолжение рассказа</span>
+                        <span class="rounded-full border border-green-100 bg-green-50 px-3 py-1 text-sm text-green-800 dark:border-green-900 dark:bg-green-900/30 dark:text-green-200">Иллюстрация к книге</span>
+                    </div>
+                    <a wire:navigate data-check-logged href="{{ route('account.ai-assistant') }}"
+                       class="inline-flex items-center gap-2 rounded-lg bg-green-600 px-5 py-2.5 font-semibold text-white shadow-sm transition hover:bg-green-700 hover:shadow-md">
+                        Попробовать ИИ-помощника
+                        <x-heroicon-o-arrow-right class="h-5 w-5"/>
+                    </a>
+                    <p class="text-lg text-green-600 font-medium">Бесплатные попытки доступны после регистрации</p>
+                </div>
+
+                <div class="grid w-full grid-cols-2 gap-3 sm:grid-cols-1">
+                    <article class="rounded-2xl border border-gray-100 bg-gray-50 p-4 shadow-sm dark:border-gray-700 dark:bg-white/5">
+                        <div class="mb-4 flex items-center gap-3 border-b border-gray-200 pb-3 dark:border-gray-700">
+                            <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-green-100 text-green-600 dark:bg-green-900/50 dark:text-green-300">
+                                <x-heroicon-o-pencil-square class="h-5 w-5"/>
+                            </div>
+                            <div>
+                                <p class="font-semibold">ИИ-помощник</p>
+                                <p class="text-sm font-normal">Поможет с текстом</p>
+                            </div>
+                            <span class="ml-auto flex items-center gap-1.5 text-xs text-green-600">
+                                <span class="h-2 w-2 animate-pulse rounded-full bg-green-500"></span>
+                                в работе
+                            </span>
+                        </div>
+                        <div class="ml-auto max-w-[88%] rounded-2xl rounded-br-sm bg-green-600 px-4 py-3 text-base leading-relaxed text-white shadow-sm">
+                            Придумай тёплое поздравление другу, который любит книги
+                        </div>
+                        <div class="mt-3 flex gap-3 rounded-2xl rounded-bl-sm bg-white p-3 dark:bg-dark_bg">
+                            <x-heroicon-o-sparkles class="mt-0.5 h-5 w-5 shrink-0 text-green-600"/>
+                            <div class="flex flex-1 flex-col gap-2">
+                                <span class="h-2 w-4/5 animate-pulse rounded-full bg-green-200 dark:bg-green-800"></span>
+                                <span class="h-2 w-full animate-pulse rounded-full bg-gray-200 dark:bg-gray-600"></span>
+                                <span class="h-2 w-3/4 animate-pulse rounded-full bg-gray-200 dark:bg-gray-600"></span>
+                                <div class="mt-1 flex items-center gap-1.5 text-xs text-dark-200">
+                                    <span>Создаёт ответ</span>
+                                    <span class="h-1.5 w-1.5 animate-bounce rounded-full bg-green-500"></span>
+                                    <span class="h-1.5 w-1.5 animate-bounce rounded-full bg-green-500 [animation-delay:120ms]"></span>
+                                    <span class="h-1.5 w-1.5 animate-bounce rounded-full bg-green-500 [animation-delay:240ms]"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="rounded-2xl border border-gray-100 bg-gray-50 p-4 shadow-sm dark:border-gray-700 dark:bg-white/5">
+                        <div class="mb-3 flex items-center gap-2 border-b border-gray-200 pb-3 dark:border-gray-700">
+                            <x-heroicon-o-photo class="h-5 w-5 text-green-600"/>
+                            <span class="font-semibold">Создание картинки</span>
+                        </div>
+                        <p class="mb-3 font-medium rounded-xl rounded-tl-sm bg-green-100 px-3 py-2 text-base leading-relaxed text-green-800 dark:bg-green-900/40 dark:text-green-100">
+                            Уютная книжная иллюстрация с рыжим котом у окна
+                        </p>
+                        <img src="/fixed/ai-assistant-example.png" alt="Рыжий кот у окна на фоне книжного города, созданный ИИ"
+                             loading="lazy" class="aspect-[4/3] w-full rounded-xl object-cover shadow-sm">
+                        <p class="mt-2 flex items-center gap-1.5 text-xs font-medium text-green-700 dark:text-green-300">
+                            <x-heroicon-o-check-circle class="h-4 w-4"/>
+                            Иллюстрация готова
+                        </p>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <x-portal.own-books-index-slider/>
 
     <x-portal.reviews-portal-index/>

@@ -53,6 +53,12 @@ class AccountMenu extends Component
                 'new' => false
             ],
             [
+                'name' => 'ИИ-помощник',
+                'icon' => 'bi-stars',
+                'url' => route('account.ai-assistant'),
+                'new' => true
+            ],
+            [
                 'name' => 'Сообщения',
                 'icon' => 'bi-chat',
                 'url' => route('account.chats'),
@@ -62,7 +68,7 @@ class AccountMenu extends Component
                 'name' => 'Приведи друга',
                 'icon' => 'bi-person-add',
                 'url' => route('account.friend-invite'),
-                'new' => true
+                'new' => false
             ],
             [
                 'name' => 'Избранные авторы',

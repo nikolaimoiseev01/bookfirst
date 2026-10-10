@@ -14,6 +14,7 @@ use App\Livewire\Pages\Account\ExtPromotion\ExtPromotionPage as AccountExtPromot
 use App\Livewire\Pages\Account\ExtPromotion\ExtPromotionCreatePage as AccountExtPromotionCreatePage;
 use App\Livewire\Pages\Account\ExtPromotion\ExtPromotionsPage as AccountExtPromotionsPage;
 use App\Livewire\Pages\Account\FriendInvitePage;
+use App\Livewire\Pages\Account\Ai\AiAssistantPage;
 use App\Livewire\Pages\Account\OwnBook\OwnBookCreatePage;
 use App\Livewire\Pages\Account\OwnBook\OwnBooksPage;
 use App\Livewire\Pages\Account\PurchasePrints\PurchasePrintCreatePage;
@@ -120,6 +121,7 @@ Route::middleware(['userActivityLog'])->group(function () {
     Route::get('/search-result', SearchResultPage::class)->name('portal.search_result');
 
     Route::middleware(['auth', 'verified', 'accountOwner'])->prefix('account')->group(function () {
+        Route::get('ai-assistant', AiAssistantPage::class)->name('account.ai-assistant');
         Route::get('participations', ParticipationsPage::class)->name('account.participations');
         Route::get('participations/create/{collection_id}', ParticipationCreatePage::class)->name('account.participation.create');
         Route::get('participations/edit/{participation_id}', ParticipationEditPage::class)->name('account.participation.edit');

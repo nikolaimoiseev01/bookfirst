@@ -23,6 +23,21 @@
         class="absolute mt-2 rounded-lg border bg-white dark:bg-dark_bg shadow-lg z-50"
         style="width: 250px; overflow: hidden; height: 265px; right: 100%; bottom: 100%;"
     >
+        @hasanyrole(['admin', 'super_admin', 'secondary_admin'])
+        <button
+            type="button"
+            x-show="!selectedType"
+            wire:click="generateAiReply"
+            wire:loading.attr="disabled"
+            wire:target="generateAiReply"
+            @click="open = false; selectedType = null; hideTooltip()"
+            class="flex w-full items-center gap-2 border-b px-4 py-2 text-left font-medium text-primary-600 hover:bg-gray-50 dark:text-primary-300 dark:hover:!bg-dark-500"
+        >
+            <x-lucide-sparkles class="h-4 w-4" />
+            <span>Создать ответ ИИ</span>
+        </button>
+        @endhasanyrole
+
         <!-- ===== ТИПЫ ===== -->
         <div x-show="!selectedType">
             <template x-for="(messages, type) in templates" :key="type">
