@@ -2,7 +2,9 @@
 
 namespace App\Services\Ai;
 
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use RuntimeException;
 
 class AIGenerator
@@ -20,38 +22,61 @@ class AIGenerator
             throw new RuntimeException('ИИ-помощник пока не настроен. Попробуйте позже.');
         }
 
-        $response = Http::acceptJson()
-            ->withToken($apiKey)
-            ->withHeaders([
-                'HTTP-Referer' => config('app.url'),
-                'X-Title' => config('app.name'),
-            ])
-            ->connectTimeout(10)
-            ->timeout(60)
-            ->post('https://openrouter.ai/api/v1/chat/completions', [
+        try {
+            $response = Http::acceptJson()
+                ->withToken($apiKey)
+                ->withHeaders([
+                    'HTTP-Referer' => config('app.url'),
+                    'X-Title' => config('app.name'),
+                ])
+                ->connectTimeout(10)
+                ->timeout(60)
+                ->post('https://openrouter.ai/api/v1/chat/completions', [
+                    'model' => config('services.openrouter.model'),
+                    'messages' => [
+                        [
+                            'role' => 'system',
+                            'content' => $systemPrompt,
+                        ],
+                        [
+                            'role' => 'user',
+                            'content' => $userPrompt,
+                        ],
+                    ],
+                    'temperature' => 0.7,
+                    'max_tokens' => $maxTokens,
+                    'usage' => ['include' => true],
+                ]);
+        } catch (ConnectionException $exception) {
+            Log::error('OpenRouter request failed before receiving a response.', [
                 'model' => config('services.openrouter.model'),
-                'messages' => [
-                    [
-                        'role' => 'system',
-                        'content' => $systemPrompt,
-                    ],
-                    [
-                        'role' => 'user',
-                        'content' => $userPrompt,
-                    ],
-                ],
-                'temperature' => 0.7,
-                'max_tokens' => $maxTokens,
-                'usage' => ['include' => true],
+                'exception' => $exception->getMessage(),
             ]);
 
+            throw new RuntimeException('Не удалось получить ответ от ИИ. Попробуйте позже.', previous: $exception);
+        }
+
         if (!$response->successful()) {
+            Log::error('OpenRouter returned an unsuccessful response.', [
+                'status' => $response->status(),
+                'model' => config('services.openrouter.model'),
+                'request_id' => $response->header('X-Request-Id'),
+                'body' => mb_substr($response->body(), 0, 4000),
+            ]);
+
             throw new RuntimeException('Не удалось получить ответ от ИИ. Попробуйте позже.');
         }
 
         $result = trim((string) $response->json('choices.0.message.content'));
 
         if ($result === '') {
+            Log::warning('OpenRouter returned a successful response without message content.', [
+                'status' => $response->status(),
+                'model' => config('services.openrouter.model'),
+                'request_id' => $response->header('X-Request-Id'),
+                'body' => mb_substr($response->body(), 0, 4000),
+            ]);
+
             throw new RuntimeException('ИИ вернул пустой ответ. Попробуйте еще раз.');
         }
 

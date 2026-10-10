@@ -28,7 +28,7 @@ class RefreshAiSupportDocumentation extends Command
             ->with(['user.roles', 'chat.model'])
             ->whereHas('chat')
             ->orderBy('id')
-            ->chunkById(50, function ($messages) use ($generator, &$generated, &$batch, &$batchChars, &$batchNumber, &$messageCount) {
+            ->chunkById(500, function ($messages) use ($generator, &$generated, &$batch, &$batchChars, &$batchNumber, &$messageCount) {
                 foreach ($messages as $message) {
                     $messageCount++;
                     $text = trim(strip_tags((string) $message->text));
@@ -39,7 +39,7 @@ class RefreshAiSupportDocumentation extends Command
                         : 'Пользователь';
                     $chat = $message->chat;
                     $case = $this->safeCaseContext($chat);
-                    $parts = $this->splitText($text, 5000);
+                    $parts = $this->splitText($text, 50000);
 
                     foreach ($parts as $partIndex => $part) {
                         $record = [
