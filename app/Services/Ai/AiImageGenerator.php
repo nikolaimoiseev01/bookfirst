@@ -19,6 +19,7 @@ class AiImageGenerator
 
         $response = Http::acceptJson()
             ->withToken($apiKey)
+            ->withOptions(['proxy' => config('services.telegram-proxy')])
             ->withHeaders([
                 'HTTP-Referer' => config('app.url'),
                 'X-Title' => config('app.name'),
