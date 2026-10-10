@@ -3,19 +3,6 @@
         ИИ-помощник
     @endsection
 
-    <div x-data="{show: false}" class="mb-6 max-w-4xl">
-        <div @click="show = !show" class="group flex cursor-pointer items-center gap-4">
-            <h4>Как это работает?</h4>
-            <x-bi-chevron-down x-bind:class="show ? 'rotate-180' : ''"
-                               class="w-6 h-auto transition group-hover:scale-115"/>
-        </div>
-        <div x-show="show" x-cloak x-collapse.duration.400ms class="mt-2 italic">
-            <p>Выберите задачу из списка и заполните появившееся поле: добавьте исходный текст, вводные и пожелания.</p>
-            <p class="mt-2">Нажмите «Выполнить задачу» — ИИ подготовит вариант ответа.</p>
-            <p class="mt-2">Сначала расходуются бесплатные попытки. После их использования можно купить дополнительный пакет.</p>
-        </div>
-    </div>
-
     <div class="flex flex-col gap-2 mb-6 max-w-4xl">
         @if($paymentReturn)
             <p class="rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-dark-200 dark:border-gray-700 dark:bg-dark_bg">
@@ -71,8 +58,17 @@
     <section x-show="activeTab === 'text'" role="tabpanel" class="container mb-8 flex max-w-4xl flex-col gap-4 p-5">
         <div>
             <h2 class="text-3xl font-semibold">Создать текст</h2>
-            <p class="mt-1 text-dark-200">Выберите задачу и получите текстовый вариант с помощью ИИ.</p>
         </div>
+        <details class="group rounded-lg border border-gray-200 bg-white/50 px-4 py-3 dark:border-gray-700 dark:bg-dark_bg">
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-3 text-base font-medium marker:hidden">
+                Как это работает?
+                <x-bi-chevron-down class="h-4 w-4 shrink-0 transition group-open:rotate-180"/>
+            </summary>
+            <div class="mt-2 space-y-1 text-sm">
+                <p class="text-lg">Выберите задачу, добавьте исходный текст и пожелания, затем нажмите «Выполнить задачу».</p>
+                <p class="text-lg">Сначала расходуются бесплатные попытки. После их использования можно купить дополнительный пакет.</p>
+            </div>
+        </details>
     @if($prompts->isEmpty())
         <p class="italic">Сейчас нет доступных задач. Попробуйте позже.</p>
     @else
@@ -122,6 +118,16 @@
             <h2 class="text-3xl font-semibold">Создать изображение</h2>
             <p class="mt-1 text-dark-200">Опишите, что должно быть на картинке. Чем подробнее описание, тем точнее результат.</p>
         </div>
+        <details class="group rounded-lg border border-gray-200 bg-white/50 px-4 py-3 dark:border-gray-700 dark:bg-dark_bg">
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-3 text-base font-medium marker:hidden">
+                Как это работает?
+                <x-bi-chevron-down class="h-4 w-4 shrink-0 transition group-open:rotate-180"/>
+            </summary>
+            <div class="mt-2 space-y-1 text-sm">
+                <p class="text-lg">Опишите желаемую картинку и нажмите «Создать изображение». Готовую картинку можно скачать или открыть позже в истории.</p>
+                <p class="text-lg">Для текста и изображения используются общие попытки: сначала бесплатные, затем купленные.</p>
+            </div>
+        </details>
         <form wire:submit="generateImage" class="flex flex-col gap-4">
             <label for="ai-image-prompt" class="text-xl font-light">Описание изображения</label>
             <textarea id="ai-image-prompt" wire:model="imagePrompt" rows="5" maxlength="5000"
