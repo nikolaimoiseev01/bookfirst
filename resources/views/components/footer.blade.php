@@ -21,6 +21,9 @@
                         <path d="M256,259c74.2,0,134.78-58,134.78-129.37C390.76,58,330.18,0,256,0S121.17,58,121.17,129.66C121.17,201.05,181.76,259,256,259Zm0-193.34c36.46,0,66.2,28.6,66.2,64,0,35.08-29.74,63.68-66.2,63.68s-66.2-28.6-66.2-63.68c0-35.39,29.72-64,66.2-64Z" transform="translate(-96)"></path>
                     </svg>
                 </a>
+                <a href="https://t.me/pervajakniga" target="_blank" rel="noopener noreferrer" aria-label="Telegram" title="Telegram">
+                    <x-heroicon-o-paper-airplane class="h-7 w-7 text-white transition hover:scale-110"/>
+                </a>
             </div>
             <x-subscribe-button/>
         </div>
