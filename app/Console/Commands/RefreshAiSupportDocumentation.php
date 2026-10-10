@@ -90,7 +90,7 @@ class RefreshAiSupportDocumentation extends Command
                         ];
                         $recordChars = mb_strlen(json_encode($record, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 
-                        if ($batch && $batchChars + $recordChars > 36000) {
+                        if ($batch && $batchChars + $recordChars > 360000) {
                             $callback($batch, $batchNumber);
                             $batch = [];
                             $batchChars = 0;
