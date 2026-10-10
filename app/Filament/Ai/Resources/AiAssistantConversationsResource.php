@@ -72,7 +72,7 @@ class AiAssistantConversationsResource extends Resource
                             ->orWhere('surname', 'like', "%{$search}%"));
                     })
                     ->url(fn (AiAssistantConversation $record): ?string => $record->user
-                        ? EditUser::getUrl(['record' => $record->user])
+                        ? EditUser::getUrl(['record' => $record->user], panel: 'admin')
                         : null),
                 TextColumn::make('prompt_title')->label('Цель')->searchable(),
                 TextColumn::make('generation_type')
