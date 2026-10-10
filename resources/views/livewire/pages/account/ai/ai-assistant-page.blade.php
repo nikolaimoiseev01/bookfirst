@@ -127,7 +127,7 @@
             <textarea id="ai-image-prompt" wire:model="imagePrompt" rows="5" maxlength="5000"
                       placeholder="Например: уютная книжная иллюстрация с рыжим котом у окна, мягкий вечерний свет"
                       class="w-full rounded-md border border-green-500 px-3 py-2 text-xl text-dark-400 placeholder:text-dark-200 focus:outline-none"></textarea>
-            <p class="text-right text-dark-200">До 5 000 символов</p>
+            <p class="text-right text-base text-dark-200">До 5 000 символов</p>
             <button type="submit" wire:loading.attr="disabled" wire:target="generateImage"
                     class="flex min-w-max items-center justify-center gap-2 rounded-lg border border-green-500 px-8 py-1 text-xl text-green-500 transition hover:bg-green-500 hover:text-white disabled:cursor-wait disabled:opacity-70">
                 <span wire:loading.remove wire:target="generateImage">Создать изображение</span>
