@@ -118,7 +118,7 @@ class RefreshAiSupportDocumentation extends Command
         $generated[] = [
             'title' => 'Знания из истории чатов, часть '.($batchNumber + 1),
             'category' => 'История обращений',
-            'content' => $generator->generate($system, $user, 1800),
+            'content' => $generator->generate($system, $user, 50000),
         ];
     }
 
