@@ -23,6 +23,11 @@
             </p>
         @endif
         <p class="font-medium">Бесплатных попыток осталось: <strong class="font-semibold text-green-500">{{ $freeAttemptsRemaining }} из {{ $attemptLimit }}</strong></p>
+        @if($freeAttemptsRemaining > 0 && $attemptPackSize > 0 && $attemptPackPrice > 0)
+            <p class="w-fit rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-dark-200 dark:border-gray-700 dark:bg-dark_bg">
+                Когда бесплатные попытки закончатся, можно будет купить {{ $attemptPackSize }} попыток за {{ number_format($attemptPackPrice, fmod($attemptPackPrice, 1) === 0.0 ? 0 : 2, ',', ' ') }} ₽.
+            </p>
+        @endif
         @if($purchasedAttempts > 0)
             <p class="font-medium">Платных попыток осталось: <strong class="font-semibold text-green-500">{{ $purchasedAttempts }}</strong></p>
         @endif
