@@ -78,8 +78,6 @@ class AdminPanelProvider extends PanelProvider
                     ...self::shielded(ChatResource::class),
                     ...self::shielded(PrintOrderResource::class),
                     ...self::shielded(UserResource::class),
-                    ...self::shielded(SurveyCompletedResource::class),
-                    ...self::shielded(PromocodeResource::class),
                     ...self::shielded(InnerTaskResource::class),
 
                     NavigationItem::make('Email маркетинг')
@@ -92,11 +90,6 @@ class AdminPanelProvider extends PanelProvider
                         ->icon('heroicon-o-sparkles')
                         ->visible(fn() => auth()->user()->hasAnyRole('admin|super_admin|secondary_admin'))
                         ->sort(50),
-                    NavigationItem::make('Нумерация страниц PDF')
-                        ->url('/admin/pdf-page-numbering')
-                        ->icon('heroicon-o-document-text')
-                        ->visible(fn() => auth()->user()->hasAnyRole('admin|super_admin|secondary_admin'))
-                        ->sort(60),
                     NavigationItem::make('Log Viewer')
                         ->url('/log-viewer')
                         ->icon('heroicon-o-code-bracket')
@@ -108,6 +101,13 @@ class AdminPanelProvider extends PanelProvider
                         NavigationGroup::make('Настройки')
                             ->collapsed()
                             ->items([
+                                NavigationItem::make('Нумерация страниц PDF')
+                                    ->url('/admin/pdf-page-numbering')
+                                    ->icon('heroicon-o-document-text')
+                                    ->visible(fn() => auth()->user()->hasAnyRole('admin|super_admin|secondary_admin'))
+                                    ->sort(60),
+                                ...self::shielded(PromocodeResource::class),
+                                ...self::shielded(SurveyCompletedResource::class),
                                 ...self::shielded(LogisticCompanyResource::class),
                                 ...self::shielded(PrintingCompanyResource::class),
                                 ...self::shielded(MessageTemplatesResource::class),
