@@ -84,6 +84,14 @@ class ChatsTable
                 TextColumn::make('created_at')->label('Создан')->tooltip('Время создания чата')->dateTime('j M H:i')->searchable(),
             ])
             ->filters([
+                SelectFilter::make('flg_admin_chat')
+                    ->label('Тип чата')
+                    ->options([
+                        1 => 'Админ-чат',
+                        0 => 'Личный чат',
+                    ])
+                    ->multiple()
+                    ->default([1]),
                 SelectFilter::make('status')
                     ->label('Статус')
                     ->options([
