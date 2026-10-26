@@ -2,7 +2,9 @@
 
 namespace App\Services\Ai;
 
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use RuntimeException;
 
@@ -17,22 +19,37 @@ class AiImageGenerator
             throw new RuntimeException('Генерация изображений пока не настроена. Попробуйте позже.');
         }
 
-        $response = Http::acceptJson()
-            ->withToken($apiKey)
-            ->withOptions(['proxy' => config('services.telegram-proxy')])
-            ->withHeaders([
-                'HTTP-Referer' => config('app.url'),
-                'X-Title' => config('app.name'),
-            ])
-            ->connectTimeout(10)
-            ->timeout(180)
-            ->post('https://openrouter.ai/api/v1/images', [
+        try {
+            $response = Http::acceptJson()
+                ->withToken($apiKey)
+                ->withOptions(['proxy' => config('services.telegram-proxy')])
+                ->withHeaders([
+                    'HTTP-Referer' => config('app.url'),
+                    'X-Title' => config('app.name'),
+                ])
+                ->connectTimeout(30)
+                ->timeout(180)
+                ->post('https://openrouter.ai/api/v1/images', [
+                    'model' => $model,
+                    'prompt' => $prompt,
+                ]);
+        } catch (ConnectionException $exception) {
+            Log::error('OpenRouter image request could not connect.', [
                 'model' => $model,
-                'prompt' => $prompt,
+                'proxy_configured' => (bool) config('services.telegram-proxy'),
+                'exception' => $exception->getMessage(),
             ]);
 
+            throw $exception;
+        }
 
         if (!$response->successful()) {
+            Log::error('OpenRouter image request returned an error response.', [
+                'status' => $response->status(),
+                'model' => $model,
+                'body' => mb_substr($response->body(), 0, 2000),
+            ]);
+
             throw new RuntimeException('Не удалось создать изображение. Попробуйте позже.');
         }
 

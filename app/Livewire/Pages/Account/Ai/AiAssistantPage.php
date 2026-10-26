@@ -4,13 +4,14 @@ namespace App\Livewire\Pages\Account\Ai;
 
 use App\Models\Ai\AiPrompt;
 use App\Models\Ai\AiAssistantConversation;
+use App\Jobs\GenerateAiAssistantImageJob;
+use App\Jobs\GenerateAiAssistantTextJob;
 use App\Enums\TransactionTypeEnums;
 use App\Services\PaymentService;
-use App\Services\Ai\AIGenerator;
-use App\Services\Ai\AiImageGenerator;
+use Livewire\Attributes\On;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -21,15 +22,21 @@ class AiAssistantPage extends Component
 
     public string $text = '';
     public ?int $selectedPromptId = null;
-    public ?string $result = null;
     public string $imagePrompt = '';
-    public ?string $generatedImageUrl = null;
+    public ?int $currentTaskId = null;
     public bool $paymentReturn = false;
 
     public function mount(): void
     {
         $this->selectedPromptId = null;
         $this->paymentReturn = request()->query('payment') === 'ai_attempt_pack';
+        $this->currentTaskId = $this->findActiveGeneration()?->id;
+    }
+
+    #[On('ai-task-finished')]
+    public function refreshAfterTaskCompletion(): void
+    {
+        // Re-render once so the creation buttons are enabled after completion.
     }
 
     public function selectPrompt(int $promptId): void
@@ -37,16 +44,19 @@ class AiAssistantPage extends Component
         if (AiPrompt::query()->whereKey($promptId)->where('is_active', true)->exists()) {
             $this->selectedPromptId = $promptId;
             $this->resetValidation();
-            $this->result = null;
             $this->dispatch('close-modal', 'aiPromptPicker');
         } else {
             $this->showError('Эта задача сейчас недоступна. Выберите другую.');
         }
     }
 
-    public function generate(AIGenerator $generator): void
+    public function generate(): void
     {
-        $this->result = null;
+        if ($activeTask = $this->findActiveGeneration()) {
+            $this->currentTaskId = $activeTask->id;
+            return;
+        }
+
         $this->resetValidation();
 
         try {
@@ -92,20 +102,21 @@ class AiAssistantPage extends Component
                 ? str_replace('{{input}}', $validated['text'], $prompt->user_prompt_template)
                 : $prompt->user_prompt_template . "\n\n" . $validated['text'];
 
-            $generation = $generator->generateWithUsage($prompt->system_prompt, $userPrompt);
-            AiAssistantConversation::create([
+            $conversation = AiAssistantConversation::create([
                 'user_id' => Auth::id(),
                 'ai_prompt_id' => $prompt->id,
                 'prompt_title' => $prompt->title,
                 'question' => $validated['text'],
-                'answer' => $generation->text,
-                'model' => config('services.openrouter.model'),
-                'openrouter_cost_usd' => $generation->costUsd,
-                'openrouter_generation_id' => $generation->generationId,
+                'answer' => '',
+                'status' => 'pending',
+                'started_at' => now(),
             ]);
-            $this->result = $generation->text;
+            GenerateAiAssistantTextJob::dispatch($conversation->id, $prompt->system_prompt, $userPrompt, $attemptType === 'paid')
+                ->onConnection($this->asyncQueueConnection());
+            $this->currentTaskId = $conversation->id;
             $this->resetPage();
         } catch (\Throwable $exception) {
+            if (isset($conversation)) $conversation->delete();
             if ($attemptType === 'paid') {
                 DB::table('users')->where('id', Auth::id())->increment('ai_attempts_purchased');
             }
@@ -117,9 +128,13 @@ class AiAssistantPage extends Component
         }
     }
 
-    public function generateImage(AiImageGenerator $generator): void
+    public function generateImage(): void
     {
-        $this->generatedImageUrl = null;
+        if ($activeTask = $this->findActiveGeneration()) {
+            $this->currentTaskId = $activeTask->id;
+            return;
+        }
+
         $this->resetValidation();
 
         try {
@@ -147,32 +162,28 @@ class AiAssistantPage extends Component
             return;
         }
 
-        $imagePath = null;
         try {
-            $generation = $generator->generate($validated['imagePrompt']);
-            $imagePath = 'ai-generated/'.Auth::id().'/'.$generation->fileName;
-            if (!Storage::disk('public')->put($imagePath, $generation->imageBytes)) {
-                throw new \RuntimeException('Не удалось сохранить изображение. Попробуйте позже.');
-            }
-
-            AiAssistantConversation::create([
+            $conversation = AiAssistantConversation::create([
                 'user_id' => Auth::id(),
                 'prompt_title' => 'Генерация изображения',
                 'question' => $validated['imagePrompt'],
-                'answer' => 'Изображение создано.',
-                'model' => config('services.openrouter.image_model'),
-                'openrouter_cost_usd' => $generation->costUsd,
-                'openrouter_generation_id' => $generation->generationId,
+                'answer' => '',
+                'status' => 'pending',
+                'started_at' => now(),
                 'generation_type' => 'image',
-                'image_path' => $imagePath,
             ]);
 
-            $this->generatedImageUrl = Storage::disk('public')->url($imagePath);
+            GenerateAiAssistantImageJob::dispatch($conversation->id, $attemptType === 'paid')
+                ->onConnection($this->asyncQueueConnection());
+            $this->currentTaskId = $conversation->id;
             $this->resetPage();
         } catch (\Throwable $exception) {
-            if ($imagePath) {
-                Storage::disk('public')->delete($imagePath);
-            }
+            if (isset($conversation)) $conversation->delete();
+            Log::error('AI assistant image generation failed.', [
+                'user_id' => Auth::id(),
+                'exception' => $exception::class,
+                'message' => $exception->getMessage(),
+            ]);
             if ($attemptType === 'paid') {
                 DB::table('users')->where('id', Auth::id())->increment('ai_attempts_purchased');
             }
@@ -204,6 +215,22 @@ class AiAssistantPage extends Component
 
             return null;
         });
+    }
+
+    private function asyncQueueConnection(): string
+    {
+        $connection = (string) config('queue.default', 'database');
+
+        return $connection === 'sync' ? 'database' : $connection;
+    }
+
+    private function findActiveGeneration(): ?AiAssistantConversation
+    {
+        return AiAssistantConversation::query()
+            ->where('user_id', Auth::id())
+            ->whereIn('status', ['pending', 'running'])
+            ->latest('id')
+            ->first();
     }
 
     public function buyAttempts(PaymentService $paymentService): void
@@ -277,6 +304,11 @@ class AiAssistantPage extends Component
                 && (bool) config('services.yookassa.secret_key'),
             'prompts' => $prompts,
             'selectedPrompt' => $prompts->firstWhere('id', $this->selectedPromptId),
+            'currentTaskId' => $this->currentTaskId,
+            'isGenerating' => AiAssistantConversation::query()
+                ->where('user_id', Auth::id())
+                ->whereIn('status', ['pending', 'running'])
+                ->exists(),
             'history' => AiAssistantConversation::query()
                 ->where('user_id', Auth::id())
                 ->latest()

@@ -50,6 +50,10 @@
             </button>
         </div>
 
+        @if($currentTaskId)
+            <livewire:pages.account.ai.ai-assistant-task-status :task-id="$currentTaskId" :key="'ai-task-status-'.$currentTaskId" />
+        @endif
+
     <section x-show="activeTab === 'text'" role="tabpanel" class="container mb-8 flex max-w-4xl flex-col gap-4 p-5">
         <div>
             <h2 class="text-3xl font-semibold">Создать текст</h2>
@@ -87,25 +91,19 @@
                   class="w-full rounded-md border border-green-500 px-3 py-2 text-xl text-dark-400 placeholder:text-dark-200 focus:outline-none"></textarea>
         <p class="text-right text-base text-dark-200">До 20 000 символов</p>
 
-        <button type="submit" wire:loading.attr="disabled" wire:target="generate"
+        <button type="submit" wire:loading.attr="disabled" wire:target="generate,generateImage" @disabled($isGenerating)
                 class="flex min-w-max items-center justify-center gap-2 rounded-lg border border-green-500 px-8 py-1 text-xl text-green-500 transition hover:bg-green-500 hover:text-white disabled:cursor-wait disabled:opacity-70">
             <span wire:loading.remove wire:target="generate">Выполнить задачу</span>
             <span wire:loading wire:target="generate" class="inline-flex items-center gap-2">
                 <x-ui.spinner class="h-6 w-6 !fill-green-500"/>
             </span>
         </button>
-        <p wire:loading wire:target="generate" class="text-base">Обычно генерация текста занимает около 10 секунд.</p>
+        <p wire:loading wire:target="generate" class="text-sm text-dark-200">Запускаем задачу…</p>
+        <p class="text-sm text-dark-200">Результат появится здесь, если вы не закроете страницу, и будет доступен в истории.</p>
         @endif
     </form>
     @endif
 
-    @if($result)
-        <section class="mt-2 flex flex-col gap-4 rounded-lg bg-white/60 p-4 dark:bg-dark_bg">
-            <h3 class="text-2xl font-medium">Ответ ИИ</h3>
-            <div class="whitespace-pre-line text-xl">{{ $result }}</div>
-            <p class="text-dark-200">Проверьте текст и при необходимости отредактируйте его перед публикацией.</p>
-        </section>
-    @endif
     </section>
 
     <section x-show="activeTab === 'image'" role="tabpanel" class="container mb-8 flex max-w-4xl flex-col gap-4 p-5">
@@ -129,22 +127,17 @@
                       placeholder="Например: уютная книжная иллюстрация с рыжим котом у окна, мягкий вечерний свет"
                       class="w-full rounded-md border border-green-500 px-3 py-2 text-xl text-dark-400 placeholder:text-dark-200 focus:outline-none"></textarea>
             <p class="text-right text-base text-dark-200">До 5 000 символов</p>
-            <button type="submit" wire:loading.attr="disabled" wire:target="generateImage"
+            <button type="submit" wire:loading.attr="disabled" wire:target="generate,generateImage" @disabled($isGenerating)
                     class="flex min-w-max items-center justify-center gap-2 rounded-lg border border-green-500 px-8 py-1 text-xl text-green-500 transition hover:bg-green-500 hover:text-white disabled:cursor-wait disabled:opacity-70">
                 <span wire:loading.remove wire:target="generateImage">Создать изображение</span>
                 <span wire:loading wire:target="generateImage" class="inline-flex items-center gap-2">
                     <x-ui.spinner class="h-6 w-6 !fill-green-500"/>
                 </span>
             </button>
-            <p wire:loading wire:target="generateImage" class="text-base ">Обычно создание изображения занимает около 30 секунд.</p>
+            <p wire:loading wire:target="generateImage" class="text-sm text-dark-200">Запускаем задачу…</p>
+            <p class="text-sm text-dark-200">Результат появится здесь, если вы не закроете страницу, и будет доступен в истории.</p>
         </form>
 
-        @if($generatedImageUrl)
-            <div class="flex flex-col gap-3">
-                <img src="{{ $generatedImageUrl }}" alt="Изображение, созданное ИИ" class="max-h-[700px] w-fit max-w-full rounded-lg object-contain">
-                <a href="{{ $generatedImageUrl }}" download class="w-fit text-green-600 underline hover:text-green-700">Скачать изображение</a>
-            </div>
-        @endif
     </section>
     <section x-show="activeTab === 'history'" role="tabpanel" class="container mb-8 flex max-w-4xl flex-col gap-4 p-5">
         <div>
@@ -159,6 +152,13 @@
                         <span class="rounded-full bg-green-100 px-2.5 py-1 text-sm font-medium text-green-700 dark:bg-green-900/40 dark:text-green-300">
                             {{ $entry->generation_type === 'image' ? 'Картинка' : 'Текст' }}
                         </span>
+                        @if($entry->status === 'pending' || $entry->status === 'running')
+                            <span class="rounded-full bg-amber-100 px-2.5 py-1 text-sm text-amber-800 dark:bg-amber-900/40 dark:text-amber-300">Выполняется</span>
+                        @elseif($entry->status === 'failed')
+                            <span class="rounded-full bg-red-100 px-2.5 py-1 text-sm text-red-700 dark:bg-red-900/40 dark:text-red-300">Ошибка</span>
+                        @else
+                            <span class="rounded-full bg-green-100 px-2.5 py-1 text-sm text-green-700 dark:bg-green-900/40 dark:text-green-300">Готово</span>
+                        @endif
                         <span class="font-semibold">{{ $entry->prompt_title }}</span>
                         <span class="ml-auto text-sm text-dark-200">{{ $entry->created_at?->format('d.m.Y H:i') }}</span>
                         <span class="w-full text-dark-200">{{ \Illuminate\Support\Str::limit($entry->question, 160) }}</span>
@@ -169,7 +169,14 @@
                             <h3 class="text-sm font-medium">Ваш запрос</h3>
                             <p class="whitespace-pre-line text-dark-200">{{ $entry->question }}</p>
                         </div>
-                        @if($entry->generation_type === 'image' && $entry->image_path)
+                        @if($entry->status === 'failed')
+                            <div>
+                                <h3 class="text-sm font-medium text-red-600">Не удалось выполнить задачу</h3>
+                                <p class="whitespace-pre-line text-red-600">{{ $entry->error_message ?: 'Попробуйте запустить задачу еще раз.' }}</p>
+                            </div>
+                        @elseif($entry->status === 'pending' || $entry->status === 'running')
+                            <p class="text-dark-200">Задача выполняется. Результат появится здесь после завершения.</p>
+                        @elseif($entry->generation_type === 'image' && $entry->image_path)
                             <img src="{{ asset('storage/'.$entry->image_path) }}" alt="Изображение из истории запросов"
                                  class="max-h-[600px] w-fit max-w-full rounded-lg object-contain">
                             <a href="{{ asset('storage/'.$entry->image_path) }}" download

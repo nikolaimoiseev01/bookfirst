@@ -8,6 +8,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class AiAssistantConversation extends Model
 {
+    protected $casts = [
+        'started_at' => 'datetime',
+        'completed_at' => 'datetime',
+    ];
+
     protected $fillable = [
         'user_id',
         'ai_prompt_id',
@@ -19,6 +24,10 @@ class AiAssistantConversation extends Model
         'openrouter_generation_id',
         'generation_type',
         'image_path',
+        'status',
+        'error_message',
+        'started_at',
+        'completed_at',
     ];
 
     public function user(): BelongsTo
