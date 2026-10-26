@@ -6,7 +6,7 @@
                     <x-ui.spinner class="h-5 w-5 shrink-0 !fill-green-500" />
                     <div class="min-w-0">
                         <p class="font-medium">{{ $task->generation_type === 'image' ? 'Создаём изображение' : 'Выполняем задачу' }}</p>
-                        <p class="text-sm text-dark-200">Результат появится здесь, если вы не закроете страницу, и будет доступен в истории.</p>
+                        <p class="text-base text-dark-200">Результат появится здесь, если вы не закроете страницу, и будет доступен в истории.</p>
                     </div>
                 </div>
             @elseif($task->status === 'failed')

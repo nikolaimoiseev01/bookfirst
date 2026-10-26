@@ -99,7 +99,7 @@
             </span>
         </button>
         <p wire:loading wire:target="generate" class="text-sm text-dark-200">Запускаем задачу…</p>
-        <p class="text-sm text-dark-200">Результат появится здесь, если вы не закроете страницу, и будет доступен в истории.</p>
+        <p class="text-base text-dark-200">Результат появится здесь, если вы не закроете страницу, и будет доступен в истории.</p>
         @endif
     </form>
     @endif
@@ -135,7 +135,7 @@
                 </span>
             </button>
             <p wire:loading wire:target="generateImage" class="text-sm text-dark-200">Запускаем задачу…</p>
-            <p class="text-sm text-dark-200">Результат появится здесь, если вы не закроете страницу, и будет доступен в истории.</p>
+            <p class="text-base text-dark-200">Результат появится здесь, если вы не закроете страницу, и будет доступен в истории.</p>
         </form>
 
     </section>
