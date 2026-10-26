@@ -16,7 +16,7 @@
             }
         }" class="flex flex-col gap-3">
             <div class="flex items-start justify-between gap-3">
-                <h4 class="whitespace-nowrap text-xl font-semibold">📚 Присоединяйтесь к нашему Telegram-каналу!</h4>
+                <h4 class="whitespace-nowrap text-xl font-semibold">📚 Присоединяйтесь к нашему  <br class="hidden md:block">Telegram-каналу!</h4>
                 <div class="group relative shrink-0">
                     <button type="button" @click="close()" aria-label="Закрыть и больше не показывать"
                             class="rounded-full p-1 text-gray-500 transition hover:bg-black/5 hover:text-gray-800">
