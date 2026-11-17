@@ -6,6 +6,7 @@ use App\Filament\Resources\OwnBook\OwnBooks\OwnBookResource;
 use App\Models\Cdek\CdekShipment;
 use App\Services\Cdek\CdekOrderService;
 use Filament\Actions\Action;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Select;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
@@ -61,6 +62,44 @@ class CdekShipmentHistory extends Page implements HasTable
             });
 
         Notification::make()->title("Обновлено отправлений: {$updated}")->success()->send();
+    }
+
+    private function loadCdekDetails(CdekShipment $shipment): string
+    {
+        if (blank($shipment->cdek_uuid)) {
+            return 'У отправления пока нет UUID СДЭК, подробности запросить нельзя.';
+        }
+
+        try {
+            $response = app(CdekOrderService::class)->getOrder($shipment->cdek_uuid);
+            $createRequest = collect($response['requests'] ?? [])
+                ->reverse()
+                ->first(fn (array $request) => ($request['type'] ?? null) === 'CREATE');
+            $createState = $createRequest['state'] ?? null;
+            $cdekNumber = Arr::get($response, 'entity.cdek_number');
+
+            $shipment->update([
+                'status' => $createState ?: (Arr::get($response, 'entity.uuid') ? 'SUCCESSFUL' : $shipment->status),
+                'cdek_number' => $cdekNumber ?: $shipment->cdek_number,
+                'response_payload' => $response,
+                'error_message' => $createState === 'INVALID'
+                    ? json_encode($createRequest['errors'] ?? [], JSON_UNESCAPED_UNICODE)
+                    : null,
+            ]);
+            $shipment->syncPrintOrderTrackNumber($cdekNumber, $createState);
+
+            return json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)
+                ?: 'Пустой ответ СДЭК.';
+        } catch (Throwable $exception) {
+            report($exception);
+            Notification::make()
+                ->title('Не удалось получить подробности СДЭК')
+                ->body($exception->getMessage())
+                ->danger()
+                ->send();
+
+            return 'Не удалось получить подробности: ' . $exception->getMessage();
+        }
     }
 
     protected function getHeaderActions(): array
@@ -216,6 +255,26 @@ class CdekShipmentHistory extends Page implements HasTable
                 SelectFilter::make('status')
                     ->label('Статус')
                     ->options(fn () => CdekShipment::query()->whereNotNull('status')->distinct()->orderBy('status')->pluck('status', 'status')->all()),
+            ])
+            ->recordActions([
+                Action::make('cdekDetails')
+                    ->label('Подробности')
+                    ->icon('heroicon-o-magnifying-glass')
+                    ->color('gray')
+                    ->modalHeading('Подробности заказа СДЭК')
+                    ->modalWidth('5xl')
+                    ->schema([
+                        Textarea::make('response')
+                            ->label('Ответ API СДЭК')
+                            ->rows(24)
+                            ->readOnly()
+                            ->dehydrated(false),
+                    ])
+                    ->fillForm(fn (CdekShipment $record): array => [
+                        'response' => $this->loadCdekDetails($record),
+                    ])
+                    ->modalSubmitAction(false)
+                    ->modalCancelActionLabel('Закрыть'),
             ])
             ->extraAttributes(['class' => 'text-xs'])
             ->striped()
