@@ -3,6 +3,10 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Pages\StatDashboard;
+use App\Filament\Pages\CdekShipments;
+use App\Filament\Pages\CdekShipmentHistory;
+use App\Filament\Pages\CdekPickupGroups;
+use App\Filament\Pages\CdekCollectionShipment;
 use App\Filament\Resources\Chat\Chats\ChatResource;
 use App\Filament\Resources\Chat\MessageTemplates\MessageTemplatesResource;
 use App\Filament\Resources\EmailMarketing\EmailCampaigns\EmailCampaignResource;
@@ -85,11 +89,10 @@ class AdminPanelProvider extends PanelProvider
                         ->icon('heroicon-o-envelope')
                         ->visible(fn() => auth()->user()->hasAnyRole('admin|super_admin|secondary_admin'))
                         ->sort(50),
-                    NavigationItem::make('ИИ Панель')
-                        ->url('/ai-admin')
-                        ->icon('heroicon-o-sparkles')
-                        ->visible(fn() => auth()->user()->hasAnyRole('admin|super_admin|secondary_admin'))
-                        ->sort(50),
+                    NavigationItem::make('Отправки СДЭК')
+                        ->url(CdekShipmentHistory::getUrl())
+                        ->icon('heroicon-o-clipboard-document-list')
+                        ->visible(fn() => auth()->user()->hasAnyRole('admin|super_admin|secondary_admin')),
                     NavigationItem::make('Log Viewer')
                         ->url('/log-viewer')
                         ->icon('heroicon-o-code-bracket')
@@ -113,6 +116,11 @@ class AdminPanelProvider extends PanelProvider
                                 ...self::shielded(MessageTemplatesResource::class),
                                 ...self::shielded(RoleResource::class),
                                 ...self::shielded(WorkResource::class),
+                                NavigationItem::make('ИИ Панель')
+                                    ->url('/ai-admin')
+                                    ->icon('heroicon-o-sparkles')
+                                    ->visible(fn() => auth()->user()->hasAnyRole('admin|super_admin|secondary_admin'))
+                                    ->sort(50),
                                 NavigationItem::make('Комментарии к произведениям')
                                     ->url('/admin/work-comments')
                                     ->icon(WorkCommentResource::getNavigationIcon())

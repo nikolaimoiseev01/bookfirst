@@ -38,6 +38,10 @@ class PrintOrderInfolist
                 TextEntry::make('price_send')
                     ->numeric()
                     ->placeholder('-'),
+                TextEntry::make('cost_price')
+                    ->label('Себестоимость, ₽')
+                    ->numeric()
+                    ->placeholder('-'),
                 TextEntry::make('receiver_name')
                     ->placeholder('-'),
                 TextEntry::make('receiver_telephone')

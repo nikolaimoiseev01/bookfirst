@@ -315,6 +315,10 @@ class OwnBookForm
                                     TextInput::make('books_cnt')->label('Экземпляров'),
                                     TextInput::make('price_print')->label('Цена печати'),
                                     TextInput::make('price_send')->label('Цена отправки'),
+                                    TextInput::make('cost_price')
+                                        ->label('Себестоимость, ₽')
+                                        ->numeric()
+                                        ->minValue(0),
 
                                     Select::make('cover_type')
                                         ->label('Тип обложки')

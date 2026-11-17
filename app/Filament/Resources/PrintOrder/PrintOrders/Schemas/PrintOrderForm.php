@@ -42,6 +42,10 @@ class PrintOrderForm
                                 TextInput::make('price_send')
                                     ->label('Стоимость отправки')
                                     ->numeric(),
+                                TextInput::make('cost_price')
+                                    ->label('Себестоимость, ₽')
+                                    ->numeric()
+                                    ->minValue(0),
                                 TextInput::make('track_number')->label('Номер отслеживания'),
                                 Select::make('printing_company_id')
                                     ->label('Компания печати')

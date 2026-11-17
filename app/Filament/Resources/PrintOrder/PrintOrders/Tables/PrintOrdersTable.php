@@ -69,6 +69,11 @@ class PrintOrdersTable
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->numeric()
                     ->sortable(),
+                TextColumn::make('cost_price')
+                    ->label('Себестоимость')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->numeric()
+                    ->sortable(),
                 TextColumn::make('receiver_name')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),

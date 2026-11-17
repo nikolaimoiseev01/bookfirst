@@ -50,7 +50,7 @@ class OwnBookCreatePage extends Component
     public $insideColor = 'Черно-белый';
     public $pagesColor;
 
-    public $addressType = 'custom';
+    public $addressType = 'СДЭК';
     public $country = 'Россия';
     public $addressJson = [
         'string' => '',
@@ -79,7 +79,7 @@ class OwnBookCreatePage extends Component
     private const MIN_PAGES = 30;
     private const MIN_PAGES_HARD_COVER = 60;
 
-    protected $listeners = ['saveApplication'];
+    protected $listeners = ['getAddress', 'saveApplication'];
 
     public function render()
     {
@@ -117,7 +117,8 @@ class OwnBookCreatePage extends Component
             'receiverName' => Rule::requiredIf(fn() => $this->needPrint),
             'receiverTelephone' => Rule::requiredIf(fn() => $this->needPrint),
             'internalPromoType' => Rule::requiredIf(fn() => $this->needPromo),
-            'addressJson.string' => Rule::requiredIf(fn() => $this->needPrint),
+            'addressJson.parsed_data' => Rule::requiredIf(fn() => $this->needPrint && $this->addressType === 'СДЭК'),
+            'country' => Rule::requiredIf(fn() => $this->needPrint && !in_array($this->addressType, ['СДЭК'], true)),
         ];
 
         if ($this->needPrint && $this->insideColor == 'Цветной') {
@@ -135,6 +136,13 @@ class OwnBookCreatePage extends Component
         ];
 
         return $rules;
+    }
+
+    public function getAddress($country, $addressType, $addressJson): void
+    {
+        $this->country = $country;
+        $this->addressType = $addressType;
+        $this->addressJson = $addressJson;
     }
 
     protected function messages(): array
@@ -155,7 +163,13 @@ class OwnBookCreatePage extends Component
             'pagesColor.required' => 'Если цветной внутренний блок, введите количество цветных страниц',
             'pagesColor.min' => 'Если цветной внутренний блок, количество цветных страниц должно быть больше нуля',
             'addressJson.string.required' => 'Адрес получателя обязателен для заполнения',
+            'addressJson.parsed_data.required' => 'Пожалуйста, выберите пункт выдачи СДЭК на карте.',
+            'country.required' => 'Укажите страну доставки.',
         ];
+
+        if ($this->addressType === 'СДЭК') {
+            $messages['addressJson.string.required'] = 'Пожалуйста, выберите пункт выдачи СДЭК на карте.';
+        }
 
         if ($this->coverType === 'Твердая') {
             $messages['pages.min'] = 'Для твердой обложки минимум :min страниц.';
@@ -262,6 +276,7 @@ class OwnBookCreatePage extends Component
                 'user_id' => Auth::user()->id,
                 'author' => $this->author,
                 'title' => $this->title,
+                'slug' => (Str::slug($this->title) ?: 'book'),
                 'status_general' => OwnBookStatusEnums::REVIEW,
                 'status_cover' => OwnBookCoverStatusEnums::DEVELOPMENT,
                 'status_inside' => OwnBookInsideStatusEnums::DEVELOPMENT,

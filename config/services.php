@@ -40,6 +40,11 @@ return [
         'base_uri'      => 'https://api.cdek.ru/',
         'token_uri'     => '/v2/oauth/token',
         'api_uri'        => '/v2/',  // базовый путь для API запросов
+        'sender_company' => env('CDEK_SENDER_COMPANY'),
+        'sender_name' => env('CDEK_SENDER_NAME'),
+        'sender_phone' => env('CDEK_SENDER_PHONE'),
+        'tariff_code' => env('CDEK_TARIFF_CODE', 136),
+        'pickup_tariff_code' => env('CDEK_PICKUP_TARIFF_CODE', 138),
     ],
     'yookassa' => [
         'shop_id' => env('YOOKASSA_SHOP_ID', null),

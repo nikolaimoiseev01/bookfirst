@@ -58,6 +58,7 @@ class PrintOrderResource extends Resource
         return [
             'index' => ListPrintOrders::route('/'),
             'create' => CreatePrintOrder::route('/create'),
+            'view' => ViewPrintOrder::route('/{record}'),
             'edit' => EditPrintOrder::route('/{record}/edit'),
         ];
     }
