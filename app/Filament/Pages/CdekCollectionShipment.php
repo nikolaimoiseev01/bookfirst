@@ -287,7 +287,7 @@ class CdekCollectionShipment extends Page implements HasForms
                 'height' => $package['height'],
                 'items' => [[
                     'name' => mb_substr($title, 0, 255),
-                    'ware_key' => 'collection-' . $collection->id,
+                    'ware_key' => mb_substr($title, 0, 255),
                     'payment' => ['value' => 0],
                     'cost' => 0,
                     'weight' => $package['weight'],
