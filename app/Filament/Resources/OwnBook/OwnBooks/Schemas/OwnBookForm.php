@@ -6,6 +6,7 @@ use App\Enums\OwnBookCoverStatusEnums;
 use App\Enums\OwnBookInsideStatusEnums;
 use App\Enums\OwnBookStatusEnums;
 use App\Enums\PrintOrderStatusEnums;
+use App\Filament\Resources\PrintOrder\PrintOrders\Pages\EditPrintOrder;
 use App\Forms\Components\CustomMediaUpload;
 use App\Services\WordService;
 use Filament\Actions\Action;
@@ -309,7 +310,17 @@ class OwnBookForm
                                 ->visible(fn ($record) => blank($record?->initialPrintOrder)),
                             Fieldset::make('initialPrintOrder')
                                 ->visible(fn($record) => filled($record?->initialPrintOrder))
-                                ->label('Настройки заказа печати')
+                                ->label(function ($record): HtmlString {
+                                    $printOrderLink = EditPrintOrder::getUrl(['record' => $record->initialPrintOrder]);
+                                    $link = new HtmlString(
+                                        '
+                                <a target="_blank"
+                                   href="' . e($printOrderLink) . '"
+                                   class="inline-flex items-center gap-1 text-primary-600 hover:underline text-sm">
+                                    Заказ печатных экземпляров
+                                </a>');
+                                    return $link;
+                                })
                                 ->relationship('initialPrintOrder')
                                 ->schema([
                                     TextInput::make('books_cnt')->label('Экземпляров'),
