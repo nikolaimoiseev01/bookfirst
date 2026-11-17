@@ -399,7 +399,7 @@ class CdekPickupGroups extends Page implements HasTable
         $senderPhone = $printingCompany->pickup_contact_phone;
         $orderPayload = [
             'type' => 1,
-            'number' => 'BF-PICKUP-' . $group->id,
+            'number' => 'Заборный заказ-' . $group->id,
             'tariff_code' => (int) config('services.cdek.pickup_tariff_code', 138),
             'comment' => $this->limitedBooksComment('Книги для забора: ', $bookLines),
             'sender' => [
