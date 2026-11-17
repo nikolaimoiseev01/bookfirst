@@ -12,6 +12,7 @@ use Filament\Actions\Action;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
@@ -194,11 +195,31 @@ class CdekPickupGroups extends Page implements HasTable
                     ->options(fn () => CdekPickupGroup::query()->distinct()->orderBy('status')->pluck('status', 'status')->all()),
             ])
             ->recordActions([
+                Action::make('pickupOrderDetails')
+                    ->label('Подробности накладной')
+                    ->icon('heroicon-o-magnifying-glass')
+                    ->visible(fn (CdekPickupGroup $record) => filled($record->cdek_order_uuid))
+                    ->modalHeading('Подробности общей накладной СДЭК')
+                    ->modalWidth('5xl')
+                    ->schema([
+                        Textarea::make('response')
+                            ->label('Ответ API СДЭК')
+                            ->rows(24)
+                            ->readOnly()
+                            ->dehydrated(false),
+                    ])
+                    ->fillForm(fn (CdekPickupGroup $record): array => [
+                        'response' => $this->loadPickupOrderDetails($record),
+                    ])
+                    ->modalSubmitAction(false)
+                    ->modalCancelActionLabel('Закрыть'),
                 Action::make('retryIntake')
                     ->label('Повторить вызов курьера')
                     ->icon('heroicon-o-arrow-path')
                     ->color('warning')
-                    ->visible(fn (CdekPickupGroup $record) => $record->status === 'intake_failed' && filled($record->cdek_order_uuid))
+                    ->visible(fn (CdekPickupGroup $record) => $record->status === 'intake_failed'
+                        && filled($record->cdek_order_uuid)
+                        && strtoupper((string) $record->order_status) !== 'INVALID')
                     ->action(fn (CdekPickupGroup $record) => $this->retryPickupIntake($record->id)),
             ])
             ->defaultSort('created_at', 'desc')
@@ -234,7 +255,13 @@ class CdekPickupGroups extends Page implements HasTable
     private function pickupOptions(): array
     {
         $alreadyPickedUp = CdekPickupGroup::query()
-            ->whereIn('status', ['accepted', 'intake_failed'])
+            ->where(function ($query): void {
+                $query->where('status', 'accepted')
+                    ->orWhere(function ($query): void {
+                        $query->where('status', 'intake_failed')
+                            ->whereRaw("LOWER(COALESCE(order_status, '')) <> ?", ['invalid']);
+                    });
+            })
             ->get()
             ->flatMap(fn (CdekPickupGroup $group) => $group->shipment_ids ?? [])
             ->map(fn ($id) => (int) $id)
@@ -429,13 +456,14 @@ class CdekPickupGroups extends Page implements HasTable
         } catch (Throwable $exception) {
             report($exception);
             $orderWasCreated = filled($group->cdek_order_uuid);
+            $errorMessage = $this->appendOrderDiagnostics($group, $exception);
             $group->update([
                 'status' => $orderWasCreated ? 'intake_failed' : 'failed',
-                'error_message' => $exception->getMessage(),
+                'error_message' => $errorMessage,
             ]);
             Notification::make()
                 ->title($orderWasCreated ? 'Накладная создана, не удалось вызвать курьера' : 'Не удалось создать общую накладную')
-                ->body($exception->getMessage() . ($orderWasCreated ? ' Повторите вызов курьера в этой таблице; накладная повторно не создаётся.' : ''))
+                ->body($errorMessage . ($orderWasCreated ? ' Повторите вызов курьера в этой таблице; накладная повторно не создаётся.' : ''))
                 ->danger()
                 ->send();
         }
@@ -513,11 +541,96 @@ class CdekPickupGroups extends Page implements HasTable
         ]);
     }
 
+    private function appendOrderDiagnostics(CdekPickupGroup $group, Throwable $exception): string
+    {
+        $message = $exception->getMessage();
+        if (blank($group->cdek_order_uuid)) {
+            return $message;
+        }
+
+        try {
+            $orderDetails = app(CdekOrderService::class)->getOrder($group->cdek_order_uuid);
+            $createRequest = collect($orderDetails['requests'] ?? [])
+                ->reverse()
+                ->first(fn (array $request) => ($request['type'] ?? null) === 'CREATE');
+            $createState = $createRequest['state'] ?? null;
+            $statuses = collect(Arr::get($orderDetails, 'entity.statuses', []))
+                ->map(fn (array $status) => array_intersect_key($status, array_flip(['code', 'name', 'date_time'])))
+                ->values()
+                ->all();
+            $diagnostics = [
+                'create_state' => $createState,
+                'errors' => $createRequest['errors'] ?? [],
+                'statuses' => $statuses,
+            ];
+
+            $group->update([
+                'order_status' => $createState ?: $group->order_status,
+                'response_payload' => array_merge($group->response_payload ?? [], ['order_details_after_intake_error' => $orderDetails]),
+            ]);
+
+            return $message . ' Подробности общей накладной: '
+                . json_encode($diagnostics, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        } catch (Throwable $detailsException) {
+            report($detailsException);
+
+            return $message . ' Не удалось запросить подробности общей накладной: ' . $detailsException->getMessage();
+        }
+    }
+
+    private function loadPickupOrderDetails(CdekPickupGroup $group): string
+    {
+        try {
+            $response = app(CdekOrderService::class)->getOrder($group->cdek_order_uuid);
+            $createRequest = collect($response['requests'] ?? [])
+                ->reverse()
+                ->first(fn (array $request) => ($request['type'] ?? null) === 'CREATE');
+            $group->update([
+                'order_status' => $createRequest['state'] ?? $group->order_status,
+                'response_payload' => array_merge($group->response_payload ?? [], ['order_details' => $response]),
+            ]);
+
+            return json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)
+                ?: 'Пустой ответ СДЭК.';
+        } catch (Throwable $exception) {
+            report($exception);
+            Notification::make()->title('Не удалось получить подробности накладной')->body($exception->getMessage())->danger()->send();
+
+            return 'Не удалось получить подробности: ' . $exception->getMessage();
+        }
+    }
+
     private function retryPickupIntake(CdekPickupGroup $group): void
     {
         if (blank($group->cdek_order_uuid)) {
             Notification::make()->title('У общей накладной нет UUID СДЭК — повторный вызов невозможен')->danger()->send();
             return;
+        }
+
+        try {
+            $orderDetails = app(CdekOrderService::class)->getOrder($group->cdek_order_uuid);
+            $createRequest = collect($orderDetails['requests'] ?? [])
+                ->reverse()
+                ->first(fn (array $request) => ($request['type'] ?? null) === 'CREATE');
+            if (($createRequest['state'] ?? null) === 'INVALID') {
+                $details = $createRequest['errors'] ?? [];
+                $message = 'Общая накладная недействительна, повторный вызов курьера невозможен: '
+                    . json_encode($details, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+                $group->update([
+                    'order_status' => 'INVALID',
+                    'response_payload' => array_merge($group->response_payload ?? [], ['order_details' => $orderDetails]),
+                    'error_message' => $message,
+                ]);
+                Notification::make()
+                    ->title('Накладная СДЭК недействительна')
+                    ->body($message . ' Создайте новую общую накладную после исправления тарифа.')
+                    ->warning()
+                    ->send();
+                return;
+            }
+        } catch (Throwable $exception) {
+            report($exception);
+            // If status lookup is temporarily unavailable, keep the existing retry path.
         }
 
         $shipments = CdekShipment::query()->with(['ownBook', 'printOrder'])->whereIn('id', $group->shipment_ids ?? [])->get();
@@ -544,8 +657,9 @@ class CdekPickupGroups extends Page implements HasTable
                 ->send();
         } catch (Throwable $exception) {
             report($exception);
-            $group->update(['status' => 'intake_failed', 'error_message' => $exception->getMessage()]);
-            Notification::make()->title('Не удалось повторно вызвать курьера')->body($exception->getMessage())->danger()->send();
+            $errorMessage = $this->appendOrderDiagnostics($group, $exception);
+            $group->update(['status' => 'intake_failed', 'error_message' => $errorMessage]);
+            Notification::make()->title('Не удалось повторно вызвать курьера')->body($errorMessage)->danger()->send();
         }
     }
 }

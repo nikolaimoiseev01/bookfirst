@@ -44,7 +44,7 @@ return [
         'sender_name' => env('CDEK_SENDER_NAME'),
         'sender_phone' => env('CDEK_SENDER_PHONE'),
         'tariff_code' => env('CDEK_TARIFF_CODE', 136),
-        'pickup_tariff_code' => env('CDEK_PICKUP_TARIFF_CODE', 138),
+        'pickup_tariff_code' => env('CDEK_PICKUP_TARIFF_CODE', 158),
     ],
     'yookassa' => [
         'shop_id' => env('YOOKASSA_SHOP_ID', null),
