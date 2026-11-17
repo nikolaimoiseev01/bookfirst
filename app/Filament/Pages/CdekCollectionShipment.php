@@ -9,6 +9,7 @@ use App\Models\PrintOrder\PrintingCompany;
 use App\Services\Cdek\CdekOrderService;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Contracts\HasForms;
@@ -31,7 +32,6 @@ class CdekCollectionShipment extends Page implements HasForms
     private const RECIPIENT_PHONE = '+79095713756';
     private const DELIVERY_POINT = 'MSK2152';
     private const RECIPIENT_ADDRESS = 'Москва, пункт выдачи СДЭК MSK2152';
-    private const DESTINATION_CITY_CODE = 44;
 
     protected string $view = 'filament.pages.cdek-collection-shipment';
     protected static bool $shouldRegisterNavigation = false;
@@ -91,15 +91,41 @@ class CdekCollectionShipment extends Page implements HasForms
         );
     }
 
+    private function shipmentTotals(mixed $rows): HtmlString|string
+    {
+        $totalWeight = 0.0;
+        $dimensions = ['length' => 0, 'width' => 0, 'height' => 0];
+        $placesCount = 0;
+
+        foreach (is_array($rows) ? $rows : [] as $row) {
+            foreach (is_array($row['packages'] ?? null) ? $row['packages'] : [] as $package) {
+                $totalWeight += (float) ($package['weight_kg'] ?? 0);
+                $dimensions['length'] += (int) ($package['length'] ?? 0);
+                $dimensions['width'] += (int) ($package['width'] ?? 0);
+                $dimensions['height'] += (int) ($package['height'] ?? 0);
+                $placesCount++;
+            }
+        }
+
+        if ($placesCount === 0) {
+            return 'Добавьте места, чтобы увидеть общий вес и сумму габаритов.';
+        }
+
+        return new HtmlString(
+            '<strong>' . $placesCount . ' мест</strong> · общий вес: '
+            . number_format($totalWeight, 3, ',', ' ') . ' кг · сумма габаритов: '
+            . $dimensions['length'] . ' × ' . $dimensions['width'] . ' × ' . $dimensions['height'] . ' см'
+        );
+    }
+
     public function mount(): void
     {
         $this->form->fill([
             'printing_company_id' => null,
-            'collection_ids' => [],
-            'weight_kg' => null,
-            'length' => null,
-            'width' => null,
-            'height' => null,
+            'collections' => [[
+                'collection_id' => null,
+                'packages' => [['weight_kg' => null, 'length' => null, 'width' => null, 'height' => null]],
+            ]],
         ]);
     }
 
@@ -107,7 +133,7 @@ class CdekCollectionShipment extends Page implements HasForms
     {
         return $form->statePath('data')->schema([
             Section::make('Отправление')
-                ->description('Создаётся один заказ СДЭК и одно грузоместо с выбранными сборниками. Получатель и пункт выдачи заданы фиксированно.')
+                ->description('Создаётся один заказ СДЭК. Для каждого сборника укажите одно или несколько мест (коробок); у каждого места свои вес и габариты. Получатель и пункт выдачи заданы фиксированно.')
                 ->schema([
                     Select::make('printing_company_id')
                         ->label('Типография / город отправления')
@@ -120,40 +146,43 @@ class CdekCollectionShipment extends Page implements HasForms
                         ->label('Отправитель и город')
                         ->content(fn (Get $get) => $this->senderPreview($get('printing_company_id')))
                         ->columnSpanFull(),
-                    Select::make('collection_ids')
-                        ->label('Сборники в заказе')
-                        ->multiple()
-                        ->searchable()
-                        ->options(fn () => $this->collectionOptions())
-                        ->rules(['array', 'min:1'])
-                        ->required()
+                    Repeater::make('collections')
+                        ->label('Сборники')
+                        ->schema([
+                            Select::make('collection_id')
+                                ->label('Сборник')
+                                ->options(fn () => $this->collectionOptions())
+                                ->searchable()
+                                ->required()
+                                ->columnSpanFull(),
+                            Repeater::make('packages')
+                                ->label('Места / коробки этого сборника')
+                                ->schema([
+                                    TextInput::make('weight_kg')->label('Вес, кг')->numeric()->minValue(0.001)->step(0.001)->live(onBlur: true)->required(),
+                                    TextInput::make('length')->label('Длина, см')->numeric()->minValue(1)->maxValue(300)->live(onBlur: true)->required(),
+                                    TextInput::make('width')->label('Ширина, см')->numeric()->minValue(1)->maxValue(300)->live(onBlur: true)->required(),
+                                    TextInput::make('height')->label('Высота, см')->numeric()->minValue(1)->maxValue(300)->live(onBlur: true)->required(),
+                                ])
+                                ->columns(4)
+                                ->minItems(1)
+                                ->defaultItems(1)
+                                ->addActionLabel('Добавить коробку')
+                                ->reorderable(false)
+                                ->columnSpanFull(),
+                        ])
+                        ->minItems(1)
+                        ->defaultItems(1)
+                        ->addActionLabel('Добавить сборник')
+                        ->reorderable(false)
                         ->columnSpanFull(),
                     Placeholder::make('recipient_preview')
                         ->label('Получатель')
                         ->content(self::RECIPIENT_NAME . ' · ' . self::RECIPIENT_PHONE . ' · ' . self::RECIPIENT_ADDRESS)
                         ->columnSpanFull(),
-                    TextInput::make('weight_kg')
-                        ->label('Общий вес, кг')
-                        ->helperText('Укажите вес всего отправления. Для товаров в заказе он будет распределён между выбранными сборниками.')
-                        ->numeric()
-                        ->minValue(0.001)
-                        ->step(0.001)
-                        ->required(),
-                    TextInput::make('length')
-                        ->label('Длина, см')
-                        ->numeric()
-                        ->minValue(1)
-                        ->required(),
-                    TextInput::make('width')
-                        ->label('Ширина, см')
-                        ->numeric()
-                        ->minValue(1)
-                        ->required(),
-                    TextInput::make('height')
-                        ->label('Высота, см')
-                        ->numeric()
-                        ->minValue(1)
-                        ->required(),
+                    Placeholder::make('shipment_totals')
+                        ->label('Итого по местам')
+                        ->content(fn (Get $get) => $this->shipmentTotals($get('collections')))
+                        ->columnSpanFull(),
                 ])
                 ->columns(2),
         ]);
@@ -169,17 +198,53 @@ class CdekCollectionShipment extends Page implements HasForms
             return;
         }
 
-        $collectionIds = collect($data['collection_ids'] ?? [])->map(fn ($id) => (int) $id)->unique()->values();
-        $collections = Collection::query()->whereIn('id', $collectionIds)->orderBy('title')->get()->keyBy('id');
-        if ($collectionIds->isEmpty() || $collections->count() !== $collectionIds->count()) {
-            Notification::make()->title('Выберите хотя бы один существующий сборник')->danger()->send();
+        $rows = collect($data['collections'] ?? [])->values();
+        $collectionIds = $rows->pluck('collection_id')->filter()->map(fn ($id) => (int) $id)->values();
+        if ($collectionIds->isEmpty() || $collectionIds->count() !== $collectionIds->unique()->count()) {
+            Notification::make()->title('Добавьте сборники без повторов')->danger()->send();
             return;
         }
 
-        $weightInGrams = (int) round(((float) $data['weight_kg']) * 1000);
-        if ($weightInGrams < $collections->count()) {
-            Notification::make()->title('Общий вес должен быть не меньше 1 грамма на каждый выбранный сборник')->danger()->send();
+        $collections = Collection::query()->whereIn('id', $collectionIds)->orderBy('title')->get()->keyBy('id');
+        if ($collections->count() !== $collectionIds->count()) {
+            Notification::make()->title('Один из выбранных сборников не найден')->danger()->send();
             return;
+        }
+
+        $packages = [];
+        $totalWeight = 0;
+        $dimensionTotals = ['length' => 0, 'width' => 0, 'height' => 0];
+        foreach ($rows as $row) {
+            $collection = $collections->get((int) ($row['collection_id'] ?? 0));
+            $collectionPackages = collect($row['packages'] ?? [])->values();
+            if (!$collection || $collectionPackages->isEmpty()) {
+                Notification::make()->title('У каждого сборника должно быть хотя бы одно место')->danger()->send();
+                return;
+            }
+
+            foreach ($collectionPackages as $index => $package) {
+                $weight = (int) round(((float) ($package['weight_kg'] ?? 0)) * 1000);
+                $length = (int) ($package['length'] ?? 0);
+                $width = (int) ($package['width'] ?? 0);
+                $height = (int) ($package['height'] ?? 0);
+                if ($weight < 1 || min($length, $width, $height) < 1) {
+                    Notification::make()->title('Проверьте вес и габариты каждого места')->danger()->send();
+                    return;
+                }
+
+                $totalWeight += $weight;
+                $dimensionTotals['length'] += $length;
+                $dimensionTotals['width'] += $width;
+                $dimensionTotals['height'] += $height;
+                $packages[] = [
+                    'collection' => $collection,
+                    'place_number' => $index + 1,
+                    'weight' => $weight,
+                    'length' => $length,
+                    'width' => $width,
+                    'height' => $height,
+                ];
+            }
         }
 
         $titles = $collections->map(fn (Collection $collection) => $collection->title_short ?: $collection->title)->values();
@@ -197,29 +262,40 @@ class CdekCollectionShipment extends Page implements HasForms
             'recipient_address' => self::RECIPIENT_ADDRESS,
             'address_type' => 'СДЭК',
             'delivery_point' => self::DELIVERY_POINT,
-            'weight' => $weightInGrams,
-            'length' => (int) $data['length'],
-            'width' => (int) $data['width'],
-            'height' => (int) $data['height'],
+            'weight' => $totalWeight,
+            'length' => $dimensionTotals['length'],
+            'width' => $dimensionTotals['width'],
+            'height' => $dimensionTotals['height'],
             'tariff_code' => (int) config('services.cdek.tariff_code', 136),
             'status' => 'processing',
         ]);
 
         $names = $collections->map(fn (Collection $collection) => $collection->title_short ?: $collection->title)->values()->all();
-        $comment = mb_substr('Сборники к отправке: ' . implode('; ', $names) . '; количество: 1 шт. каждого', 0, 255);
-        $baseItemWeight = intdiv($weightInGrams, $collections->count());
-        $weightRemainder = $weightInGrams % $collections->count();
-        $items = $collections->values()->map(function (Collection $collection, int $index) use ($baseItemWeight, $weightRemainder): array {
+        $comment = mb_substr('Сборники к отправке: ' . implode('; ', $names) . '; мест: ' . count($packages), 0, 255);
+        $cdekPackages = collect($packages)->values()->map(function (array $package, int $index) use ($comment): array {
+            /** @var Collection $collection */
+            $collection = $package['collection'];
+            $title = $collection->title_short ?: $collection->title;
+            $packageComment = mb_substr($title . ' — место ' . $package['place_number'], 0, 255);
+
             return [
-                'name' => mb_substr($collection->title_short ?: $collection->title, 0, 255),
-                'ware_key' => $collection->title_short,
-                'payment' => ['value' => 0],
-                'cost' => 0,
-                'weight' => $baseItemWeight + ($index < $weightRemainder ? 1 : 0),
-                'amount' => 1,
+                'number' => (string) ($index + 1),
+                'comment' => $packageComment ?: $comment,
+                'weight' => $package['weight'],
+                'length' => $package['length'],
+                'width' => $package['width'],
+                'height' => $package['height'],
+                'items' => [[
+                    'name' => mb_substr($title, 0, 255),
+                    'ware_key' => 'collection-' . $collection->id,
+                    'payment' => ['value' => 0],
+                    'cost' => 0,
+                    'weight' => $package['weight'],
+                    'amount' => 1,
+                ]],
             ];
         })->all();
-        $orderNumber = 'Сборники Сумма: ' . $titles->all();
+        $orderNumber = 'Сборники Сумма: ' . $names;
         $payload = [
             'type' => 1,
             'number' => $orderNumber,
@@ -236,15 +312,7 @@ class CdekCollectionShipment extends Page implements HasForms
             ],
             'from_location' => ['code' => (int) $company->pickup_city_code],
             'delivery_point' => self::DELIVERY_POINT,
-            'packages' => [[
-                'number' => '1',
-                'comment' => $comment,
-                'weight' => $weightInGrams,
-                'length' => (int) $data['length'],
-                'width' => (int) $data['width'],
-                'height' => (int) $data['height'],
-                'items' => $items,
-            ]],
+            'packages' => $cdekPackages,
         ];
         $shipment->update(['request_payload' => $payload]);
 

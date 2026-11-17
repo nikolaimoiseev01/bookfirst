@@ -175,7 +175,7 @@ class CdekShipmentHistory extends Page implements HasTable
                     ->wrap(false)
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('dimensions')
-                    ->label('Габариты, см')
+                    ->label('Сумма габаритов, см')
                     ->getStateUsing(fn (CdekShipment $record) => "{$record->length} × {$record->width} × {$record->height}")
                     ->wrap(false)
                     ->toggleable(isToggledHiddenByDefault: true),
