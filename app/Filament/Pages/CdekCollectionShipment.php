@@ -295,7 +295,7 @@ class CdekCollectionShipment extends Page implements HasForms
                 ]],
             ];
         })->all();
-        $orderNumber = 'Сборники Сумма. ' . implode(', ', $names);
+        $orderNumber = 'Сборники. ' . implode(', ', $names);
         $payload = [
             'type' => 1,
             'number' => $orderNumber,
